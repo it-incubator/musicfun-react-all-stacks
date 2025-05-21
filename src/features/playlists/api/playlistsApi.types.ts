@@ -1,9 +1,9 @@
 export type PlaylistsResponse = {
-  data: PlaylistItem[]
+  data: Playlist[]
   meta: Meta
 }
 
-export type PlaylistItem = {
+export type Playlist = {
   id: string
   type: "playlists"
   attributes: Attributes
