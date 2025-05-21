@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify"
 import { Header } from "@/common"
 import { Routing } from "@/common/routing"
 
@@ -6,6 +7,7 @@ export function App() {
     <>
       <Header />
       <Routing />
+      <ToastContainer />
     </>
   )
 }

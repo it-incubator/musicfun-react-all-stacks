@@ -3,6 +3,7 @@ import { useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/main.tsx"
+import { toast } from "react-toastify"
 import { PlaylistQueryKey, playlistsApi } from "../../../api/playlistsApi.ts"
 import { EditPlaylistForm } from "./EditPlaylistForm/EditPlaylistForm.tsx"
 import { PlaylistItem } from "./PlaylistItem/PlaylistItem.tsx"
@@ -23,6 +24,10 @@ export const PlaylistsList = ({ playlists }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] })
     },
+    onError: (error: unknown) => {
+      toast("Не удалось удалить плейлист", { theme: "colored", type: "error" })
+      console.error("Ошибка при удалении:", error)
+    },
   })
 
   const { mutate: updatePlaylistMutation } = useMutation({
@@ -30,6 +35,10 @@ export const PlaylistsList = ({ playlists }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] })
       setEditId(null)
+    },
+    onError: (error: unknown) => {
+      toast("Ошибка при обновлении плейлиста", { theme: "colored", type: "error" })
+      console.error("Ошибка при обновлении:", error)
     },
   })
 
