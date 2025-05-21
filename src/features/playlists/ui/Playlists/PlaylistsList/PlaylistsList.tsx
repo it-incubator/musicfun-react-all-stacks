@@ -1,8 +1,11 @@
+import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
+import { queryClient } from "@/main.tsx"
+import { PlaylistQueryKey, playlistsApi } from "../../../api/playlistsApi.ts"
 import { EditPlaylistForm } from "./EditPlaylistForm/EditPlaylistForm.tsx"
 import { PlaylistItem } from "./PlaylistItem/PlaylistItem.tsx"
 import type { Playlist, UpdatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
-import { useState } from "react"
 import s from "./PlaylistsList.module.css"
 
 type Props = {
@@ -11,6 +14,13 @@ type Props = {
 
 export const PlaylistsList = ({ playlists }: Props) => {
   const [editId, setEditId] = useState<string | null>(null)
+
+  const { mutate: removePlaylistMutation } = useMutation({
+    mutationFn: playlistsApi.removePlaylist,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] })
+    },
+  })
 
   const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
 
@@ -21,6 +31,12 @@ export const PlaylistsList = ({ playlists }: Props) => {
       const { attributes } = playlist
       const { title, description, tags } = attributes
       reset({ title, description, tags })
+    }
+  }
+
+  const removePlaylist = (playlistId: string) => {
+    if (confirm("Вы уверены, что хотите удалить плейлист?")) {
+      removePlaylistMutation(playlistId)
     }
   }
 
@@ -40,7 +56,7 @@ export const PlaylistsList = ({ playlists }: Props) => {
                 register={register}
               />
             ) : (
-              <PlaylistItem playlist={playlist} editPlaylist={editPlaylist} />
+              <PlaylistItem playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
             )}
           </div>
         )

@@ -3,9 +3,10 @@ import type { Playlist } from "../../../../api/playlistsApi.types.ts"
 type Props = {
   playlist: Playlist
   editPlaylist: (playlist: Playlist | null) => void
+  removePlaylist: (playlistId: string) => void
 }
 
-export const PlaylistItem = ({ playlist, editPlaylist }: Props) => {
+export const PlaylistItem = ({ playlist, editPlaylist, removePlaylist }: Props) => {
   const { title, description, tags, addedAt } = playlist.attributes
 
   return (
@@ -23,6 +24,7 @@ export const PlaylistItem = ({ playlist, editPlaylist }: Props) => {
         <b>added date:</b> <span>{new Date(addedAt).toLocaleDateString()}</span>
       </div>
       <button onClick={() => editPlaylist(playlist)}>Редактировать</button>
+      <button onClick={() => removePlaylist(playlist.id)}>Удалить</button>
     </div>
   )
 }
