@@ -28,7 +28,6 @@ export type Meta = {
   pagesCount: number
 }
 
-export type CreatePlaylistArgs = {
-  title: string
-  description: string
-}
+export type CreatePlaylistArgs = Pick<Attributes, "title" | "description">
+
+export type UpdatePlaylistArgs = Partial<Pick<Attributes, "title" | "description" | "tags">>

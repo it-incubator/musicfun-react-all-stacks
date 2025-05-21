@@ -1,5 +1,5 @@
 import { instance } from "@/common/instance/instance.ts"
-import type { CreatePlaylistArgs, PlaylistItem, PlaylistsResponse } from "./playlistsApi.types.ts"
+import type { CreatePlaylistArgs, PlaylistItem, PlaylistsResponse, UpdatePlaylistArgs } from "./playlistsApi.types.ts"
 
 export const PlaylistQueryKey = "playlists"
 const endpoint = "/playlists"
@@ -13,5 +13,9 @@ export const playlistsApi = {
   },
   createPlaylist: (args: CreatePlaylistArgs) => {
     return instance.post<{ data: PlaylistItem }>(endpoint, args)
+  },
+  updatePlaylist: (args: { playlistId: string; payload: UpdatePlaylistArgs }) => {
+    const { playlistId, payload } = args
+    return instance.put<void>(`${endpoint}/${playlistId}`, payload)
   },
 }
