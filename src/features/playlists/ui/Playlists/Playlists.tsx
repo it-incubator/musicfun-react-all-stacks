@@ -1,54 +1,31 @@
-import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { playlistsApi } from "../../api/playlistsApi"
+import { useState } from "react"
+import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
+import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
+import { PlaylistTypeSwitcher } from "./PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
+import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi"
 import s from "./Playlists.module.css"
 
+export type PlaylistType = "all" | "my"
+
 export const Playlists = () => {
-  const [type, setType] = useState<"all" | "my">("all")
+  const [type, setType] = useState<PlaylistType>("all")
 
   const { data, isPending } = useQuery({
-    queryKey: ["playlists", type],
+    queryKey: [PlaylistQueryKey, type],
     queryFn: () => (type === "all" ? playlistsApi.getPlaylists() : playlistsApi.getMyPlaylists()),
   })
 
   return (
-    <>
-      <h1>Playlists</h1>
-
-      <div>
-        <button onClick={() => setType("all")} disabled={type === "all"}>
-          Все плейлисты
-        </button>
-        <button onClick={() => setType("my")} disabled={type === "my"}>
-          Мои плейлисты
-        </button>
-      </div>
-
-      {isPending ? (
-        <span>Loading...</span>
-      ) : (
-        <div>
-          {data?.data.data.map((playlist) => {
-            const { attributes } = playlist
-
-            return (
-              <div key={playlist.id} className={s.item}>
-                <div>
-                  <div>
-                    <b>title:</b> <span>{attributes.title}</span>
-                  </div>
-                  <div>
-                    <b>description:</b> <span>{attributes.description}</span>
-                  </div>
-                  <div>
-                    <b>added date:</b> <span>{new Date(attributes.addedAt).toLocaleDateString()}</span>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
+    <div>
+      <h1 className={s.heading}>Страница с плейлистами</h1>
+      <div className={s.container}>
+        <AddPlaylistForm />
+        <div className={s.typeSwitcherWrapper}>
+          <PlaylistTypeSwitcher type={type} setType={setType} />
         </div>
-      )}
-    </>
+        {isPending ? <span>Loading...</span> : <PlaylistsList playlists={data?.data.data || []} />}
+      </div>
+    </div>
   )
 }

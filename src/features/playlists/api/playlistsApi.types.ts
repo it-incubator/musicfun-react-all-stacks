@@ -27,3 +27,8 @@ export type Meta = {
   totalCount: number
   pagesCount: number
 }
+
+export type CreatePlaylistArgs = {
+  title: string
+  description: string
+}
