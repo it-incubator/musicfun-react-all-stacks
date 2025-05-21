@@ -1,8 +1,9 @@
+import type { Nullable } from "@/common"
 import { type SubmitHandler, type UseFormHandleSubmit, type UseFormRegister } from "react-hook-form"
 import type { Playlist, UpdatePlaylistArgs } from "../../../../api/playlistsApi.types.ts"
 
 type Props = {
-  editPlaylist: (playlist: Playlist | null) => void
+  editPlaylist: (playlist: Nullable<Playlist>) => void
   register: UseFormRegister<UpdatePlaylistArgs>
   handleSubmit: UseFormHandleSubmit<UpdatePlaylistArgs>
   onSubmit: SubmitHandler<UpdatePlaylistArgs>

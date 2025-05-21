@@ -1,3 +1,4 @@
+import type { Nullable } from "@/common"
 import { useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
@@ -13,7 +14,7 @@ type Props = {
 }
 
 export const PlaylistsList = ({ playlists }: Props) => {
-  const [editId, setEditId] = useState<string | null>(null)
+  const [editId, setEditId] = useState<Nullable<string>>(null)
 
   const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
 
@@ -32,7 +33,7 @@ export const PlaylistsList = ({ playlists }: Props) => {
     },
   })
 
-  const editPlaylist = (playlist: Playlist | null) => {
+  const editPlaylist = (playlist: Nullable<Playlist>) => {
     setEditId(playlist?.id || null)
 
     if (playlist) {

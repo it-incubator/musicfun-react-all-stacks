@@ -1,8 +1,9 @@
+import type { Nullable } from "@/common"
 import type { Playlist } from "../../../../api/playlistsApi.types.ts"
 
 type Props = {
   playlist: Playlist
-  editPlaylist: (playlist: Playlist | null) => void
+  editPlaylist: (playlist: Nullable<Playlist>) => void
   removePlaylist: (playlistId: string) => void
 }
 
