@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/main.tsx"
 import { PlaylistQueryKey, playlistsApi } from "../../../api/playlistsApi.ts"
@@ -15,6 +15,8 @@ type Props = {
 export const PlaylistsList = ({ playlists }: Props) => {
   const [editId, setEditId] = useState<string | null>(null)
 
+  const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
+
   const { mutate: removePlaylistMutation } = useMutation({
     mutationFn: playlistsApi.removePlaylist,
     onSuccess: () => {
@@ -22,7 +24,13 @@ export const PlaylistsList = ({ playlists }: Props) => {
     },
   })
 
-  const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
+  const { mutate: updatePlaylistMutation } = useMutation({
+    mutationFn: playlistsApi.updatePlaylist,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] })
+      setEditId(null)
+    },
+  })
 
   const editPlaylist = (playlist: Playlist | null) => {
     setEditId(playlist?.id || null)
@@ -40,6 +48,12 @@ export const PlaylistsList = ({ playlists }: Props) => {
     }
   }
 
+  const onSubmit: SubmitHandler<UpdatePlaylistArgs> = (data) => {
+    if (!editId) return
+    const { tags, description, title } = data
+    updatePlaylistMutation({ playlistId: editId, payload: { title, description, tags } })
+  }
+
   return (
     <div className={s.container}>
       {playlists.map((playlist) => {
@@ -49,8 +63,7 @@ export const PlaylistsList = ({ playlists }: Props) => {
           <div key={playlist.id} className={s.item}>
             {isEditing ? (
               <EditPlaylistForm
-                editId={editId}
-                setEditId={setEditId}
+                onSubmit={onSubmit}
                 editPlaylist={editPlaylist}
                 handleSubmit={handleSubmit}
                 register={register}
