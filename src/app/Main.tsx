@@ -1,7 +1,9 @@
+import { Layout, PageTitle } from "@/common"
+
 export const Main = () => {
   return (
-    <>
-      <h1>Main</h1>
-    </>
+    <Layout>
+      <PageTitle>Домашняя страница</PageTitle>
+    </Layout>
   )
 }

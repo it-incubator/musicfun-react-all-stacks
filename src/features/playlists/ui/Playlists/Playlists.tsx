@@ -14,7 +14,7 @@ export const Playlists = () => {
 
   const { data, isPending } = useQuery({
     queryKey: [PlaylistQueryKey, type],
-    queryFn: () => (type === "all" ? playlistsApi.getPlaylists() : playlistsApi.getMyPlaylists()),
+    queryFn: () => (type === "all" ? playlistsApi.fetchPlaylists() : playlistsApi.fetchMyPlaylists()),
   })
 
   return (

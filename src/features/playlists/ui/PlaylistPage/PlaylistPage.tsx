@@ -15,7 +15,7 @@ export const PlaylistPage = () => {
   })
 
   if (!data) {
-    return <h1>Loading...</h1>
+    return <span>Loading...</span>
   }
 
   return (

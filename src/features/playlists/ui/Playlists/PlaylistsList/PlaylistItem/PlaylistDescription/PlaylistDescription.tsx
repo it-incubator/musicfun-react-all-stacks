@@ -1,7 +1,7 @@
-import type { Attributes } from "@/features/playlists/api/playlistsApi.types.ts"
+import type { PlaylistAttributes } from "../../../../../api/playlistsApi.types.ts"
 
 type Props = {
-  attributes: Attributes
+  attributes: PlaylistAttributes
 }
 
 export const PlaylistDescription = ({ attributes }: Props) => {

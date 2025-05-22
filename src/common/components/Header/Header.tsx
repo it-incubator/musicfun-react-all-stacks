@@ -13,6 +13,9 @@ export const Header = () => {
           <li>
             <NavLink to={Path.Playlists}>Playlists</NavLink>
           </li>
+          <li>
+            <NavLink to={Path.Tracks}>Tracks</NavLink>
+          </li>
         </ul>
       </nav>
     </header>
