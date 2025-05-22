@@ -1,5 +1,11 @@
 import { instance } from "@/common/instance/instance.ts"
-import type { CreatePlaylistArgs, Playlist, PlaylistsResponse, UpdatePlaylistArgs } from "./playlistsApi.types.ts"
+import type {
+  CreatePlaylistArgs,
+  Playlist,
+  PlaylistsResponse,
+  UpdatePlaylistArgs,
+  UploadPlaylistCoverResponse,
+} from "./playlistsApi.types.ts"
 
 export const PlaylistQueryKey = "playlists"
 const endpoint = "/playlists"
@@ -20,5 +26,11 @@ export const playlistsApi = {
   },
   removePlaylist: (playlistId: string) => {
     return instance.delete<void>(`${endpoint}/${playlistId}`)
+  },
+  uploadPlaylistCover: (args: { playlistId: string; file: File }) => {
+    const { playlistId, file } = args
+    const formData = new FormData()
+    formData.append("file", file)
+    return instance.post<UploadPlaylistCoverResponse>(`${endpoint}/${playlistId}/images/main`, formData)
   },
 }

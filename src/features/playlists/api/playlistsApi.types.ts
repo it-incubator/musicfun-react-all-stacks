@@ -16,7 +16,7 @@ export type Attributes = {
   updatedAt: string
   order: number
   images: {
-    main: string[]
+    main: PlaylistCover[]
   }
   tags: string[]
 }
@@ -28,6 +28,19 @@ export type Meta = {
   pagesCount: number
 }
 
+export type PlaylistCover = {
+  url: string
+  fileSize: number
+  width: number
+  height: number
+}
+
+// Arguments
 export type CreatePlaylistArgs = Pick<Attributes, "title" | "description">
 
 export type UpdatePlaylistArgs = Partial<Pick<Attributes, "title" | "description" | "tags">>
+
+// Response
+export type UploadPlaylistCoverResponse = {
+  main: PlaylistCover[]
+}

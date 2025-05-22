@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
+import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi"
 import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
+import s from "./Playlists.module.css"
 import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
 import { PlaylistTypeSwitcher } from "./PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
-import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi"
-import s from "./Playlists.module.css"
 
 export type PlaylistType = "all" | "my"
 
