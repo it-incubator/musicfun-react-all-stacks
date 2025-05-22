@@ -1,4 +1,4 @@
-import { PageTitle } from "@/common"
+import { Layout, PageTitle } from "@/common"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi"
@@ -18,15 +18,13 @@ export const Playlists = () => {
   })
 
   return (
-    <>
+    <Layout>
       <PageTitle>Страница с плейлистами</PageTitle>
-      <div className={"layout"}>
-        <AddPlaylistForm />
-        <div className={s.typeSwitcherWrapper}>
-          <PlaylistTypeSwitcher type={type} setType={setType} />
-        </div>
-        {isPending ? <span>Loading...</span> : <PlaylistsList playlists={data?.data.data || []} />}
+      <AddPlaylistForm />
+      <div className={s.typeSwitcherWrapper}>
+        <PlaylistTypeSwitcher type={type} setType={setType} />
       </div>
-    </>
+      {isPending ? <span>Loading...</span> : <PlaylistsList playlists={data?.data.data || []} />}
+    </Layout>
   )
 }
