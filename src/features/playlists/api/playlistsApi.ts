@@ -33,4 +33,7 @@ export const playlistsApi = {
     formData.append("file", file)
     return instance.post<UploadPlaylistCoverResponse>(`${endpoint}/${playlistId}/images/main`, formData)
   },
+  fetchPlaylistById: (playlistId: string) => {
+    return instance.get<{ data: Playlist }>(`${endpoint}/${playlistId}`)
+  },
 }

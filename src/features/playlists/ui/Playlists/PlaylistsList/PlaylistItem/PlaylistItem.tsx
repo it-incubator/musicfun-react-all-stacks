@@ -1,7 +1,8 @@
-import type { Nullable } from "@/common"
-import { PlaylistDescription } from "./PlaylistDescription/PlaylistDescription.tsx"
-import { PlaylistCover } from "./PlaylistCover/PlaylistCover.tsx"
+import { type Nullable } from "@/common"
+import { PlaylistActions } from "./PlaylistActions/PlaylistActions.tsx"
 import type { Playlist } from "../../../../api/playlistsApi.types.ts"
+import { PlaylistCover } from "./PlaylistCover/PlaylistCover.tsx"
+import { PlaylistDescription } from "./PlaylistDescription/PlaylistDescription.tsx"
 
 type Props = {
   playlist: Playlist
@@ -15,8 +16,7 @@ export const PlaylistItem = ({ playlist, editPlaylist, removePlaylist }: Props) 
       <PlaylistCover playlist={playlist} />
       <PlaylistDescription attributes={playlist.attributes} />
       <hr />
-      <button onClick={() => editPlaylist(playlist)}>Редактировать</button>
-      <button onClick={() => removePlaylist(playlist.id)}>Удалить</button>
+      <PlaylistActions playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
     </>
   )
 }

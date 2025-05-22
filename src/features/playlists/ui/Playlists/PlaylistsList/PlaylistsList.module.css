@@ -11,7 +11,7 @@
     background-color: #fff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.2s ease;
-    width: 300px;
+    width: 345px;
 }
 
 .item:hover {
