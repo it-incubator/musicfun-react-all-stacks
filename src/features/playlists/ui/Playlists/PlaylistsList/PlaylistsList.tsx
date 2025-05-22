@@ -70,7 +70,7 @@ export const PlaylistsList = ({ playlists }: Props) => {
         const isEditing = editId === playlist.id
 
         return (
-          <div key={playlist.id} className={s.item}>
+          <div key={playlist.id} className={"item"}>
             {isEditing ? (
               <EditPlaylistForm
                 onSubmit={onSubmit}

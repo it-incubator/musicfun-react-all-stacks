@@ -1,6 +1,7 @@
 import { Layout, PageTitle } from "@/common"
-import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
 import { useQuery } from "@tanstack/react-query"
+import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
+import s from "./TracksPage.module.css"
 
 export const TracksPage = () => {
   const { data, isPending } = useQuery({
@@ -15,12 +16,12 @@ export const TracksPage = () => {
   return (
     <Layout>
       <PageTitle>Страница треков</PageTitle>
-      <div>
+      <div className={s.container}>
         {data?.data.data.map((track) => {
           const { title, addedAt } = track.attributes
 
           return (
-            <div>
+            <div className={"item"}>
               <div>
                 <b>title:</b> <span>{title}</span>
               </div>
