@@ -1,7 +1,8 @@
-import { Layout, PageTitle } from "@/common"
 import { useQuery } from "@tanstack/react-query"
+import { Layout, PageTitle } from "@/common"
+import { AddTrackForm } from "./AddTrackForm/AddTrackForm.tsx"
+import { TracksList } from "./TracksList/TracksList.tsx"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
-import s from "./TracksPage.module.css"
 
 export const TracksPage = () => {
   const { data, isPending } = useQuery({
@@ -16,22 +17,8 @@ export const TracksPage = () => {
   return (
     <Layout>
       <PageTitle>Страница треков</PageTitle>
-      <div className={s.container}>
-        {data?.data.data.map((track) => {
-          const { title, addedAt } = track.attributes
-
-          return (
-            <div className={"item"}>
-              <div>
-                <b>title:</b> <span>{title}</span>
-              </div>
-              <div>
-                <b>added date:</b> <span>{new Date(addedAt).toLocaleDateString()}</span>
-              </div>
-            </div>
-          )
-        })}
-      </div>
+      <AddTrackForm />
+      <TracksList tracks={data?.data.data || []} />
     </Layout>
   )
 }

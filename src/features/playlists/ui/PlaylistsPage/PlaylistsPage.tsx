@@ -4,8 +4,8 @@ import { useState } from "react"
 import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
 import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
 import s from "./PlaylistsPage.module.css"
-import { PlaylistsList } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx"
-import { PlaylistTypeSwitcher } from "@/features/playlists/ui/PlaylistsPage/PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
+import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
+import { PlaylistTypeSwitcher } from "./PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
 
 export type PlaylistType = "all" | "my"
 
