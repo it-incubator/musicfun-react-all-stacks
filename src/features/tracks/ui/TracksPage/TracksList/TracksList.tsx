@@ -12,7 +12,7 @@ export const TracksList = ({ tracks }: Props) => {
         const { title, addedAt } = track.attributes
 
         return (
-          <div className={"item"} key={track.id}>
+          <div className={"item item--fullwidth"} key={track.id}>
             <div>
               <b>title:</b> <span>{title}</span>
             </div>
