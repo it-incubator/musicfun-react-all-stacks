@@ -1,8 +1,7 @@
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
+import { type Nullable, showErrorToast } from "@/common"
 import { queryClient } from "@/main.tsx"
-import type { Nullable } from "@/common"
-import { toast } from "react-toastify"
 import { TrackQueryKey, tracksApi } from "../../../api/tracksApi.ts"
 import type { TrackDetails, TrackListItemAttributes } from "../../../api/tracksApi.types.ts"
 import s from "./TracksList.module.css"
@@ -20,8 +19,7 @@ export const TracksList = ({ tracks }: Props) => {
       queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
     },
     onError: (error: unknown) => {
-      toast("Не удалось удалить трек", { theme: "colored", type: "error" })
-      console.error("Ошибка при удалении трека:", error)
+      showErrorToast("Не удалось удалить трек", error)
     },
     onSettled: () => {
       setRemovingTrackId(null)

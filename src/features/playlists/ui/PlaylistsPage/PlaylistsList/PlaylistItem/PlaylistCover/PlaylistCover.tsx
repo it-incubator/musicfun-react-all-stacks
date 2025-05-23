@@ -1,11 +1,11 @@
-import { queryClient } from "@/main.tsx"
 import type { ChangeEvent } from "react"
-import { toast } from "react-toastify"
 import { useMutation } from "@tanstack/react-query"
-import s from "./PlaylistCover.module.css"
+import { queryClient } from "@/main.tsx"
+import { showErrorToast } from "@/common"
 import noCover from "../../../../../../../assets/img/no-cover.png"
 import { PlaylistQueryKey, playlistsApi } from "../../../../../api/playlistsApi.ts"
 import type { Playlist } from "../../../../../api/playlistsApi.types.ts"
+import s from "./PlaylistCover.module.css"
 
 type Props = {
   playlist: Playlist
@@ -24,12 +24,12 @@ export const PlaylistCover = ({ playlist }: Props) => {
     if (!file) return
 
     if (!file.type.startsWith("image/")) {
-      toast("Загрузите изображение", { theme: "colored", type: "error" })
+      showErrorToast("Загрузите изображение")
       return
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      toast("Файл слишком большой (макс. 5 МБ).")
+      showErrorToast("Файл слишком большой (макс. 5 МБ)")
       return
     }
 

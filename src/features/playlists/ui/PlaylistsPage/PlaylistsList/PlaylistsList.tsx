@@ -1,13 +1,12 @@
-import type { Nullable } from "@/common"
 import { useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/main.tsx"
-import { toast } from "react-toastify"
+import { type Nullable, showErrorToast } from "@/common"
+import { type SubmitHandler, useForm } from "react-hook-form"
 import { PlaylistQueryKey, playlistsApi } from "../../../api/playlistsApi.ts"
+import type { Playlist, UpdatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
 import { EditPlaylistForm } from "./EditPlaylistForm/EditPlaylistForm.tsx"
 import { PlaylistItem } from "./PlaylistItem/PlaylistItem.tsx"
-import type { Playlist, UpdatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
 import s from "./PlaylistsList.module.css"
 
 type Props = {
@@ -25,8 +24,7 @@ export const PlaylistsList = ({ playlists }: Props) => {
       queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] })
     },
     onError: (error: unknown) => {
-      toast("Не удалось удалить плейлист", { theme: "colored", type: "error" })
-      console.error("Ошибка при удалении:", error)
+      showErrorToast("Не удалось удалить плейлист", error)
     },
   })
 
@@ -37,8 +35,7 @@ export const PlaylistsList = ({ playlists }: Props) => {
       setEditId(null)
     },
     onError: (error: unknown) => {
-      toast("Ошибка при обновлении плейлиста", { theme: "colored", type: "error" })
-      console.error("Ошибка при обновлении:", error)
+      showErrorToast("Ошибка при обновлении плейлиста", error)
     },
   })
 

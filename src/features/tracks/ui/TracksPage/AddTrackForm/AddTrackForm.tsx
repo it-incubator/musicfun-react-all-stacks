@@ -1,10 +1,9 @@
-import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
-import { type ChangeEvent, useState } from "react"
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { toast } from "react-toastify"
-import type { Nullable } from "@/common"
+import { type Nullable, showErrorToast, showSuccessToast } from "@/common"
 import { queryClient } from "@/main.tsx"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { type ChangeEvent, useState } from "react"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { PlaylistQueryKey, playlistsApi } from "../../../../playlists/api/playlistsApi.ts"
 import { TrackQueryKey, tracksApi } from "../../../api/tracksApi.ts"
 
 export const AddTrackForm = () => {
@@ -22,13 +21,13 @@ export const AddTrackForm = () => {
     mutationFn: tracksApi.createTrack,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
-      toast("Трек успешно загружен", { type: "success", theme: "colored" })
+      showSuccessToast("Трек успешно загружен")
       reset()
       setFile(null)
       setPlaylistId(null)
     },
-    onError: () => {
-      toast("Ошибка загрузки трека", { type: "error", theme: "colored" })
+    onError: (error) => {
+      showErrorToast("Ошибка загрузки трека", error)
     },
   })
 
@@ -42,12 +41,12 @@ export const AddTrackForm = () => {
     if (!file) return
 
     if (!file.type.startsWith("audio/")) {
-      toast("Неверный формат", { theme: "colored", type: "error" })
+      showErrorToast("Неверный формат")
       return
     }
 
     if (file.size > 1024 * 1024) {
-      toast("Файл слишком большой (макс. 1 МБ).", { theme: "colored", type: "error" })
+      showErrorToast("Файл слишком большой (макс. 1 МБ).")
       return
     }
 
