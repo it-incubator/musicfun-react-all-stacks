@@ -1,15 +1,15 @@
 import { Layout, PageTitle } from "@/common"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
-import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi"
+import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
 import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
-import s from "./Playlists.module.css"
-import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
-import { PlaylistTypeSwitcher } from "./PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
+import s from "./PlaylistsPage.module.css"
+import { PlaylistsList } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx"
+import { PlaylistTypeSwitcher } from "@/features/playlists/ui/PlaylistsPage/PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
 
 export type PlaylistType = "all" | "my"
 
-export const Playlists = () => {
+export const PlaylistsPage = () => {
   const [type, setType] = useState<PlaylistType>("all")
 
   const { data, isPending } = useQuery({

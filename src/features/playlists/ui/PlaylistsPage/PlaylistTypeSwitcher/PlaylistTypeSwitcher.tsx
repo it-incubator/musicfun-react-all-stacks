@@ -1,4 +1,4 @@
-import type { PlaylistType } from "../Playlists.tsx"
+import type { PlaylistType } from "../PlaylistsPage.tsx"
 
 type Props = {
   type: PlaylistType
