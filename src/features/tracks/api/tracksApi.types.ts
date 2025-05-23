@@ -21,9 +21,9 @@ export type TrackDetailsAttributes = {
   duration: number
   processingStatus: string // "uploaded"
   visibility: string // "private"
-  attachments: TrackAttachment[]
   tags: string[]
   artists: string[]
+  attachments: TrackAttachment[]
 }
 
 export type TrackAttachment = {
@@ -46,11 +46,4 @@ export type FetchTracksResponse = {
 
 export type CreateTrackResponse = {
   data: TrackDetails<TrackDetailsAttributes>
-}
-
-// Arguments
-export type CreateTaskArgs = {
-  playlistId: string
-  title: string
-  file: File
 }

@@ -1,6 +1,6 @@
 import { instance } from "@/common"
 import { playlistsEndpoint } from "@/features/playlists/api/playlistsApi.ts"
-import type { CreateTaskArgs, CreateTrackResponse, FetchTracksResponse } from "./tracksApi.types.ts"
+import type { CreateTrackResponse, FetchTracksResponse } from "./tracksApi.types.ts"
 
 export const TrackQueryKey = "tracks"
 const tracksEndpoint = "/tracks"
@@ -9,11 +9,11 @@ export const tracksApi = {
   fetchTracks: () => {
     return instance.get<FetchTracksResponse>(`${playlistsEndpoint}${tracksEndpoint}`)
   },
-  createTrack: (args: CreateTaskArgs) => {
-    const { playlistId, file, title } = args
-    return instance.post<CreateTrackResponse>(`${playlistsEndpoint}/${playlistId}/${tracksEndpoint}/upload`, {
-      title,
-      file,
-    })
+  createTrack: (args: { playlistId: string; title: string; file: File }) => {
+    const { playlistId, title, file } = args
+    const formData = new FormData()
+    formData.append("title", title)
+    formData.append("file", file)
+    return instance.post<CreateTrackResponse>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/upload`, formData)
   },
 }
