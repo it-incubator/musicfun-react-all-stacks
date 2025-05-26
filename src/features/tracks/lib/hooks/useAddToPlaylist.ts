@@ -7,7 +7,7 @@ import { queryClient } from "@/main.tsx"
 export const useAddToPlaylist = () => {
   const [modalTrackId, setModalTrackId] = useState<Nullable<string>>(null)
 
-  const { mutate: addTrackToPlaylistMutation } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: tracksApi.addTrackToPlaylist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
@@ -19,7 +19,7 @@ export const useAddToPlaylist = () => {
 
   const addTrackToPlaylist = (playlistId: string) => {
     if (!modalTrackId) return
-    addTrackToPlaylistMutation({ trackId: modalTrackId, playlistId })
+    mutate({ trackId: modalTrackId, playlistId })
   }
 
   return { modalTrackId, setModalTrackId, addTrackToPlaylist }

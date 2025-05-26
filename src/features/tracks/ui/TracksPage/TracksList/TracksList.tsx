@@ -1,14 +1,10 @@
-import { type Nullable, showErrorToast } from "@/common"
 import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
 import { useAddToPlaylist } from "@/features/tracks/lib/hooks/useAddToPlaylist.ts"
+import { useEditTrack } from "@/features/tracks/lib/hooks/useEditTrack.ts"
 import { useRemoveTrack } from "@/features/tracks/lib/hooks/useRemoveTrack.ts"
+import { useQuery } from "@tanstack/react-query"
+import type { TrackDetails, TrackListItemAttributes } from "../../../api/tracksApi.types.ts"
 import { AddTrackToPlaylistModal } from "../AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
-import { queryClient } from "@/main.tsx"
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { TrackQueryKey, tracksApi } from "../../../api/tracksApi.ts"
-import type { TrackDetails, TrackListItemAttributes, UpdateTrackArgs } from "../../../api/tracksApi.types.ts"
 import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
 import { TrackItem } from "./TrackItem/TrackItem.tsx"
 import s from "./TracksList.module.css"
@@ -18,40 +14,11 @@ type Props = {
 }
 
 export const TracksList = ({ tracks }: Props) => {
-  const [editId, setEditId] = useState<Nullable<string>>(null)
-  const [playlistId, setPlaylistId] = useState<Nullable<string>>(null)
-
-  const { register, handleSubmit, reset } = useForm<UpdateTrackArgs>()
-
   const { data } = useQuery({ queryKey: [PlaylistQueryKey, "my"], queryFn: playlistsApi.fetchMyPlaylists })
 
   const { removingTrackId, removeTrack } = useRemoveTrack()
-  const { modalTrackId, addTrackToPlaylist, setModalTrackId } = useAddToPlaylist()
-
-  const { mutate: updateTrackMutation } = useMutation({
-    mutationFn: tracksApi.updateTrack,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
-      setEditId(null)
-    },
-    onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
-  })
-
-  const editTrackHandler = (track: Nullable<TrackDetails<TrackListItemAttributes>>) => {
-    setEditId(track?.id ?? null)
-
-    if (track) {
-      const { attributes } = track
-      // TODO: как мне подтянуть свойства трека (например lyrics),
-      //  чтобы их можно было обновить если в треке не содержится эта информация
-      reset({ title: attributes.title })
-    }
-  }
-
-  const onSubmit: SubmitHandler<UpdateTrackArgs> = (payload) => {
-    if (!editId || !playlistId) return
-    updateTrackMutation({ trackId: editId, playlistId, payload })
-  }
+  const { modalTrackId, setModalTrackId, addTrackToPlaylist } = useAddToPlaylist()
+  const { register, handleSubmit, onSubmit, trackId, editTrackHandler, setPlaylistId, playlistId } = useEditTrack()
 
   return (
     <div className={s.container}>
@@ -63,7 +30,7 @@ export const TracksList = ({ tracks }: Props) => {
 
       <>
         {tracks.map((track) => {
-          const isEditing = editId === track.id
+          const isEditing = trackId === track.id
 
           return (
             <div className={`item item--fullwidth`} key={track.id}>

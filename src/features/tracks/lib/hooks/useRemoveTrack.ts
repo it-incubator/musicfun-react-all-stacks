@@ -7,7 +7,7 @@ import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 export const useRemoveTrack = () => {
   const [removingTrackId, setRemovingTrackId] = useState<Nullable<string>>(null)
 
-  const { mutate: removeTrackMutation } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: tracksApi.removeTrack,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [TrackQueryKey] }),
     onError: (err: unknown) => showErrorToast("Не удалось удалить трек", err),
@@ -17,7 +17,7 @@ export const useRemoveTrack = () => {
   const removeTrack = (trackId: string) => {
     if (confirm("Вы уверены, что хотите удалить трек?")) {
       setRemovingTrackId(trackId)
-      removeTrackMutation(trackId)
+      mutate(trackId)
     }
   }
 
