@@ -19,4 +19,10 @@ export const tracksApi = {
   removeTrack: (trackId: string) => {
     return instance.delete<void>(`${playlistsEndpoint}${tracksEndpoint}/${trackId}`)
   },
+  uploadTrackCover: (args: { playlistId: string; trackId: string; file: File }) => {
+    const { playlistId, file, trackId } = args
+    const formData = new FormData()
+    formData.append("file", file)
+    return instance.post<unknown>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}/cover`, formData)
+  },
 }

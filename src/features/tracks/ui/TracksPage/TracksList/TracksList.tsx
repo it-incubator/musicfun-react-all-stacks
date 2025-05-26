@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { type Nullable, showErrorToast } from "@/common"
 import { queryClient } from "@/main.tsx"
+import { TrackItem } from "./TrackItem/TrackItem.tsx"
 import { TrackQueryKey, tracksApi } from "../../../api/tracksApi.ts"
 import type { TrackDetails, TrackListItemAttributes } from "../../../api/tracksApi.types.ts"
 import s from "./TracksList.module.css"
@@ -36,20 +37,8 @@ export const TracksList = ({ tracks }: Props) => {
   return (
     <div className={s.container}>
       {tracks.map((track) => {
-        const { title, addedAt } = track.attributes
-
         return (
-          <div className={"item item--fullwidth"} key={track.id}>
-            <div>
-              <b>title:</b> <span>{title}</span>
-            </div>
-            <div>
-              <b>added date:</b> <span>{new Date(addedAt).toLocaleDateString()}</span>
-            </div>
-            <button onClick={() => removeTrackHandler(track.id)} disabled={removingTrackId === track.id}>
-              {removingTrackId === track.id ? "Удаление..." : "Удалить"}
-            </button>
-          </div>
+          <TrackItem key={track.id} track={track} removeTrack={removeTrackHandler} removingTrackId={removingTrackId} />
         )
       })}
     </div>
