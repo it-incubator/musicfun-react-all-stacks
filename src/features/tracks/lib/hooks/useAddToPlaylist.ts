@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { type Nullable, showErrorToast, showSuccessToast } from "@/common"
-import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
+import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 import { queryClient } from "@/main.tsx"
 
 export const useAddToPlaylist = () => {

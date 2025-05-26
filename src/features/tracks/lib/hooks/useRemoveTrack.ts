@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { type Nullable, showErrorToast } from "@/common"
 import { queryClient } from "@/main.tsx"
-import { TrackQueryKey, tracksApi } from "../../../tracks/api/tracksApi.ts"
+import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 
 export const useRemoveTrack = () => {
   const [removingTrackId, setRemovingTrackId] = useState<Nullable<string>>(null)
