@@ -26,8 +26,7 @@ export const TracksList = ({ tracks }: Props) => {
   const { data } = useQuery({ queryKey: [PlaylistQueryKey, "my"], queryFn: playlistsApi.fetchMyPlaylists })
 
   const { removingTrackId, removeTrack } = useRemoveTrack()
-
-  const { isModalOpen, addTrackToPlaylistHandler, submitAddTrackToPlaylistModal, setIsModalOpen } = useAddToPlaylist()
+  const { modalTrackId, addTrackToPlaylist, setModalTrackId } = useAddToPlaylist()
 
   const { mutate: updateTrackMutation } = useMutation({
     mutationFn: tracksApi.updateTrack,
@@ -57,9 +56,9 @@ export const TracksList = ({ tracks }: Props) => {
   return (
     <div className={s.container}>
       <AddTrackToPlaylistModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={addTrackToPlaylistHandler}
+        open={!!modalTrackId}
+        onClose={() => setModalTrackId(null)}
+        onSave={addTrackToPlaylist}
       />
 
       <>
@@ -84,7 +83,7 @@ export const TracksList = ({ tracks }: Props) => {
                   removeTrack={() => removeTrack(track.id)}
                   removingTrackId={removingTrackId}
                   editTrack={() => editTrackHandler(track)}
-                  addTrackToPlaylist={() => submitAddTrackToPlaylistModal(track.id)}
+                  addTrackToPlaylist={() => setModalTrackId(track.id)}
                 />
               )}
             </div>
