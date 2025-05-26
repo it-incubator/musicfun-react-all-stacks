@@ -1,5 +1,6 @@
 import { type Nullable, showErrorToast } from "@/common"
 import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
+import { useRemoveTrack } from "@/features/playlists/lib/hooks/useRemoveTrack.ts"
 import { AddTrackToPlaylistModal } from "../AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { queryClient } from "@/main.tsx"
 import { useMutation, useQuery } from "@tanstack/react-query"
@@ -17,7 +18,6 @@ type Props = {
 
 export const TracksList = ({ tracks }: Props) => {
   const [editId, setEditId] = useState<Nullable<string>>(null)
-  const [removingTrackId, setRemovingTrackId] = useState<Nullable<string>>(null)
   const [playlistId, setPlaylistId] = useState<Nullable<string>>(null)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -27,12 +27,7 @@ export const TracksList = ({ tracks }: Props) => {
 
   const { data } = useQuery({ queryKey: [PlaylistQueryKey, "my"], queryFn: playlistsApi.fetchMyPlaylists })
 
-  const { mutate: removeTrackMutation } = useMutation({
-    mutationFn: tracksApi.removeTrack,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [TrackQueryKey] }),
-    onError: (err: unknown) => showErrorToast("Не удалось удалить трек", err),
-    onSettled: () => setRemovingTrackId(null),
-  })
+  const { removingTrackId, removeTrack } = useRemoveTrack()
 
   const { mutate: updateTrackMutation } = useMutation({
     mutationFn: tracksApi.updateTrack,
@@ -51,13 +46,6 @@ export const TracksList = ({ tracks }: Props) => {
     },
     onError: (err: unknown) => showErrorToast("Ошибка при добавлении трека в плейлсит", err),
   })
-
-  const removeTrackHandler = (trackId: string) => {
-    if (confirm("Вы уверены, что хотите удалить трек?")) {
-      setRemovingTrackId(trackId)
-      removeTrackMutation(trackId)
-    }
-  }
 
   const editTrackHandler = (track: Nullable<TrackDetails<TrackListItemAttributes>>) => {
     setEditId(track?.id ?? null)
@@ -112,7 +100,7 @@ export const TracksList = ({ tracks }: Props) => {
               ) : (
                 <TrackItem
                   track={track}
-                  removeTrack={() => removeTrackHandler(track.id)}
+                  removeTrack={() => removeTrack(track.id)}
                   removingTrackId={removingTrackId}
                   editTrack={() => editTrackHandler(track)}
                   addTrackToPlaylist={() => submitAddTrackToPlaylistModal(track.id)}
