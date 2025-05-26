@@ -3,16 +3,18 @@ import type { TrackDetails, TrackListItemAttributes } from "../../../../../api/t
 
 type Props = {
   track: TrackDetails<TrackListItemAttributes>
-  removeTrack: (trackId: string) => void
+  removeTrack: () => void
   removingTrackId: Nullable<string>
+  editTrack: () => void
 }
 
-export const TrackActions = ({ removingTrackId, removeTrack, track }: Props) => {
+export const TrackActions = ({ removingTrackId, removeTrack, track, editTrack }: Props) => {
   return (
-    <>
-      <button onClick={() => removeTrack(track.id)} disabled={removingTrackId === track.id}>
+    <div>
+      <button onClick={editTrack}>Редактировать</button>
+      <button onClick={removeTrack} disabled={removingTrackId === track.id}>
         {removingTrackId === track.id ? "Удаление..." : "Удалить"}
       </button>
-    </>
+    </div>
   )
 }

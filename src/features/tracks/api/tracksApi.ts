@@ -1,6 +1,11 @@
 import { instance } from "@/common"
 import { playlistsEndpoint } from "@/features/playlists/api/playlistsApi.ts"
-import type { CreateTrackResponse, FetchTracksResponse } from "./tracksApi.types.ts"
+import type {
+  CreateTrackResponse,
+  FetchTracksResponse,
+  UpdateTrackArgs,
+  UpdateTrackResponse,
+} from "./tracksApi.types.ts"
 
 export const TrackQueryKey = "tracks"
 const tracksEndpoint = "/tracks"
@@ -24,5 +29,9 @@ export const tracksApi = {
     const formData = new FormData()
     formData.append("file", file)
     return instance.post<unknown>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}/cover`, formData)
+  },
+  updateTrack: (args: { playlistId: string; trackId: string; payload: UpdateTrackArgs }) => {
+    const { playlistId, trackId, payload } = args
+    return instance.put<UpdateTrackResponse>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}`, payload)
   },
 }

@@ -7,18 +7,19 @@ import s from "./TrackItem.module.css"
 
 type Props = {
   track: TrackDetails<TrackListItemAttributes>
-  removeTrack: (trackId: string) => void
+  removeTrack: () => void
   removingTrackId: Nullable<string>
+  editTrack: () => void
 }
 
-export const TrackItem = ({ track, removeTrack, removingTrackId }: Props) => {
+export const TrackItem = ({ track, removeTrack, removingTrackId, editTrack }: Props) => {
   return (
-    <div className={`item item--fullwidth ${s.container}`}>
+    <div className={s.container}>
       <div className={s.container}>
         <TrackCover track={track} />
         <TrackDescription attributes={track.attributes} />
       </div>
-      <TrackActions track={track} removeTrack={removeTrack} removingTrackId={removingTrackId} />
+      <TrackActions track={track} removeTrack={removeTrack} removingTrackId={removingTrackId} editTrack={editTrack} />
     </div>
   )
 }
