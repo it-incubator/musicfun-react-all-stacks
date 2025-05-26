@@ -1,5 +1,6 @@
 import { type Nullable, showErrorToast } from "@/common"
 import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
+import { useAddToPlaylist } from "@/features/playlists/lib/hooks/useAddToPlaylist.ts"
 import { useRemoveTrack } from "@/features/playlists/lib/hooks/useRemoveTrack.ts"
 import { AddTrackToPlaylistModal } from "../AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { queryClient } from "@/main.tsx"
@@ -20,14 +21,13 @@ export const TracksList = ({ tracks }: Props) => {
   const [editId, setEditId] = useState<Nullable<string>>(null)
   const [playlistId, setPlaylistId] = useState<Nullable<string>>(null)
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalTrackId, setModalTrackId] = useState<Nullable<string>>(null)
-
   const { register, handleSubmit, reset } = useForm<UpdateTrackArgs>()
 
   const { data } = useQuery({ queryKey: [PlaylistQueryKey, "my"], queryFn: playlistsApi.fetchMyPlaylists })
 
   const { removingTrackId, removeTrack } = useRemoveTrack()
+
+  const { isModalOpen, addTrackToPlaylistHandler, submitAddTrackToPlaylistModal, setIsModalOpen } = useAddToPlaylist()
 
   const { mutate: updateTrackMutation } = useMutation({
     mutationFn: tracksApi.updateTrack,
@@ -36,15 +36,6 @@ export const TracksList = ({ tracks }: Props) => {
       setEditId(null)
     },
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
-  })
-
-  const { mutate: addTrackToPlaylistMutation } = useMutation({
-    mutationFn: tracksApi.addTrackToPlaylist,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
-      setIsModalOpen(false)
-    },
-    onError: (err: unknown) => showErrorToast("Ошибка при добавлении трека в плейлсит", err),
   })
 
   const editTrackHandler = (track: Nullable<TrackDetails<TrackListItemAttributes>>) => {
@@ -56,16 +47,6 @@ export const TracksList = ({ tracks }: Props) => {
       //  чтобы их можно было обновить если в треке не содержится эта информация
       reset({ title: attributes.title })
     }
-  }
-
-  const submitAddTrackToPlaylistModal = (trackId: string) => {
-    setModalTrackId(trackId)
-    setIsModalOpen(true)
-  }
-
-  const addTrackToPlaylistHandler = (playlistId: string) => {
-    if (!modalTrackId) return
-    addTrackToPlaylistMutation({ trackId: modalTrackId, playlistId })
   }
 
   const onSubmit: SubmitHandler<UpdateTrackArgs> = (payload) => {
