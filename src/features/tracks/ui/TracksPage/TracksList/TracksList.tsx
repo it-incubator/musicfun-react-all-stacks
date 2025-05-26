@@ -1,8 +1,6 @@
-import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
-import { useAddToPlaylist } from "@/features/tracks/lib/hooks/useAddToPlaylist.ts"
-import { useEditTrack } from "@/features/tracks/lib/hooks/useEditTrack.ts"
-import { useRemoveTrack } from "@/features/tracks/lib/hooks/useRemoveTrack.ts"
-import { useQuery } from "@tanstack/react-query"
+import { useAddToPlaylist } from "../../../lib/hooks/useAddToPlaylist.ts"
+import { useEditTrack } from "../../../lib/hooks/useEditTrack.ts"
+import { useRemoveTrack } from "../../../lib/hooks/useRemoveTrack.ts"
 import type { TrackDetails, TrackListItemAttributes } from "../../../api/tracksApi.types.ts"
 import { AddTrackToPlaylistModal } from "../AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
@@ -14,8 +12,6 @@ type Props = {
 }
 
 export const TracksList = ({ tracks }: Props) => {
-  const { data } = useQuery({ queryKey: [PlaylistQueryKey, "my"], queryFn: playlistsApi.fetchMyPlaylists })
-
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist } = useAddToPlaylist()
   const { register, handleSubmit, onSubmit, trackId, editTrackHandler, setPlaylistId, playlistId } = useEditTrack()
@@ -40,7 +36,6 @@ export const TracksList = ({ tracks }: Props) => {
                   editTrack={() => editTrackHandler(null)}
                   handleSubmit={handleSubmit}
                   register={register}
-                  playlists={data?.data.data || []}
                   playlistId={playlistId}
                   setPlaylistId={setPlaylistId}
                 />

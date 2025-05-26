@@ -1,9 +1,9 @@
-import { type Nullable, showErrorToast, showSuccessToast } from "@/common"
-import { queryClient } from "@/main.tsx"
-import { useMutation, useQuery } from "@tanstack/react-query"
 import { type ChangeEvent, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { PlaylistQueryKey, playlistsApi } from "../../../../playlists/api/playlistsApi.ts"
+import { useMutation } from "@tanstack/react-query"
+import { type Nullable, showErrorToast, showSuccessToast } from "@/common"
+import { queryClient } from "@/main.tsx"
+import { SelectPlaylists } from "../../../../playlists/lib/components/SelectPlaylists/SelectPlaylists.tsx"
 import { TrackQueryKey, tracksApi } from "../../../api/tracksApi.ts"
 
 export const AddTrackForm = () => {
@@ -29,11 +29,6 @@ export const AddTrackForm = () => {
     onError: (error) => {
       showErrorToast("Ошибка загрузки трека", error)
     },
-  })
-
-  const { data } = useQuery({
-    queryKey: [PlaylistQueryKey, "my"],
-    queryFn: playlistsApi.fetchMyPlaylists,
   })
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,23 +70,9 @@ export const AddTrackForm = () => {
           <input type="file" accept="audio/*" onChange={uploadHandler} />
         </label>
       </div>
-
       <div>
-        <label>
-          Выберите плейлист:
-          <select onChange={(e) => setPlaylistId(e.target.value)} value={playlistId ?? ""}>
-            <option value="" disabled>
-              -- Выберите плейлист --
-            </option>
-            {data?.data.data.map((playlist) => (
-              <option key={playlist.id} value={playlist.id}>
-                {playlist.attributes.title}
-              </option>
-            ))}
-          </select>
-        </label>
+        <SelectPlaylists onChange={setPlaylistId} value={playlistId ?? ""} />
       </div>
-
       <button type="submit" disabled={isSubmitDisabled}>
         {isPending ? "Загрузка..." : "Добавить трек"}
       </button>
