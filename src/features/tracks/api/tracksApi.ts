@@ -34,4 +34,8 @@ export const tracksApi = {
     const { playlistId, trackId, payload } = args
     return instance.put<UpdateTrackResponse>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}`, payload)
   },
+  addTrackToPlaylist: (args: { playlistId: string; trackId: string }) => {
+    const { playlistId, trackId } = args
+    return instance.put<void>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}/add`)
+  },
 }

@@ -10,16 +10,23 @@ type Props = {
   removeTrack: () => void
   removingTrackId: Nullable<string>
   editTrack: () => void
+  addTrackToPlaylist: () => void
 }
 
-export const TrackItem = ({ track, removeTrack, removingTrackId, editTrack }: Props) => {
+export const TrackItem = ({ track, removeTrack, removingTrackId, editTrack, addTrackToPlaylist }: Props) => {
   return (
     <div className={s.container}>
       <div className={s.container}>
         <TrackCover track={track} />
         <TrackDescription attributes={track.attributes} />
       </div>
-      <TrackActions track={track} removeTrack={removeTrack} removingTrackId={removingTrackId} editTrack={editTrack} />
+      <TrackActions
+        track={track}
+        removeTrack={removeTrack}
+        removingTrackId={removingTrackId}
+        editTrack={editTrack}
+        addTrackToPlaylist={addTrackToPlaylist}
+      />
     </div>
   )
 }

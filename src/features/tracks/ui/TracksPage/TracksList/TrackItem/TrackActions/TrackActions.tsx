@@ -6,11 +6,13 @@ type Props = {
   removeTrack: () => void
   removingTrackId: Nullable<string>
   editTrack: () => void
+  addTrackToPlaylist: () => void
 }
 
-export const TrackActions = ({ removingTrackId, removeTrack, track, editTrack }: Props) => {
+export const TrackActions = ({ removingTrackId, removeTrack, track, editTrack, addTrackToPlaylist }: Props) => {
   return (
     <div>
+      <button onClick={addTrackToPlaylist}>Добавить трек в плейлист</button>
       <button onClick={editTrack}>Редактировать</button>
       <button onClick={removeTrack} disabled={removingTrackId === track.id}>
         {removingTrackId === track.id ? "Удаление..." : "Удалить"}
