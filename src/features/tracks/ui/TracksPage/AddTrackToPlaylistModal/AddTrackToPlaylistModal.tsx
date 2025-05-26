@@ -1,6 +1,6 @@
 import { type ChangeEvent, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { Modal } from "@/common/components/Modal/Modal"
+import { Modal } from "@/common"
 import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi"
 
 type Props = {
