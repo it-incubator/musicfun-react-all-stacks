@@ -1,6 +1,6 @@
 import { type Nullable, showErrorToast } from "@/common"
-import { Modal } from "@/common/components/Modal/Modal.tsx"
 import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
+import { AddTrackToPlaylistModal } from "../AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { queryClient } from "@/main.tsx"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useState } from "react"
@@ -25,10 +25,7 @@ export const TracksList = ({ tracks }: Props) => {
 
   const { register, handleSubmit, reset } = useForm<UpdateTrackArgs>()
 
-  const { data } = useQuery({
-    queryKey: [PlaylistQueryKey, "my"],
-    queryFn: playlistsApi.fetchMyPlaylists,
-  })
+  const { data } = useQuery({ queryKey: [PlaylistQueryKey, "my"], queryFn: playlistsApi.fetchMyPlaylists })
 
   const { mutate: removeTrackMutation } = useMutation({
     mutationFn: tracksApi.removeTrack,
@@ -73,13 +70,13 @@ export const TracksList = ({ tracks }: Props) => {
     }
   }
 
-  const addTrackToPlaylistHandler = (trackId: string) => {
+  const submitAddTrackToPlaylistModal = (trackId: string) => {
     setModalTrackId(trackId)
     setIsModalOpen(true)
   }
 
-  const handleSavePlaylist = () => {
-    if (!playlistId || !modalTrackId) return
+  const addTrackToPlaylistHandler = (playlistId: string) => {
+    if (!modalTrackId) return
     addTrackToPlaylistMutation({ trackId: modalTrackId, playlistId })
   }
 
@@ -90,27 +87,13 @@ export const TracksList = ({ tracks }: Props) => {
 
   return (
     <div className={s.container}>
-      {/*AddTrackToPlaylistModal*/}
-      <Modal modalTitle={"Добавить трек в плейлист"} open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <label>
-          Выберите плейлист:
-          <select onChange={(e) => setPlaylistId(e.target.value)} value={playlistId ?? ""}>
-            <option value="" disabled>
-              -- Выберите плейлист --
-            </option>
-            {data?.data.data.map((playlist) => (
-              <option key={playlist.id} value={playlist.id}>
-                {playlist.attributes.title}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button onClick={handleSavePlaylist}>Сохранить</button>
-        <button onClick={() => setIsModalOpen(false)}>Отмена</button>
-      </Modal>
+      <AddTrackToPlaylistModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={addTrackToPlaylistHandler}
+      />
 
-      {/*Tracks*/}
-      <div>
+      <>
         {tracks.map((track) => {
           const isEditing = editId === track.id
 
@@ -132,13 +115,13 @@ export const TracksList = ({ tracks }: Props) => {
                   removeTrack={() => removeTrackHandler(track.id)}
                   removingTrackId={removingTrackId}
                   editTrack={() => editTrackHandler(track)}
-                  addTrackToPlaylist={() => addTrackToPlaylistHandler(track.id)}
+                  addTrackToPlaylist={() => submitAddTrackToPlaylistModal(track.id)}
                 />
               )}
             </div>
           )
         })}
-      </div>
+      </>
     </div>
   )
 }
