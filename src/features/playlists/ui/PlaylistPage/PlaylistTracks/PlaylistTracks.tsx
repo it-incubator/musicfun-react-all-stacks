@@ -14,10 +14,16 @@ export const PlaylistTracks = () => {
     enabled: !!id,
   })
 
+  const tracks = data?.data.data ?? []
+
+  if (tracks.length === 0) {
+    return <h2>В данном плейлисте треков нет 😢</h2>
+  }
+
   return (
-    <div>
+    <>
       <h2>Треки</h2>
-      {data?.data.data.map((track) => {
+      {tracks.map((track) => {
         return (
           <div key={track.id} className={`item item--fullwidth flex-container`}>
             <div className={"flex-container"}>
@@ -28,6 +34,6 @@ export const PlaylistTracks = () => {
           </div>
         )
       })}
-    </div>
+    </>
   )
 }
