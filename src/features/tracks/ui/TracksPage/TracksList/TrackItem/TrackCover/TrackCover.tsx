@@ -1,17 +1,17 @@
 import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
 import { showErrorToast } from "@/common"
-import type { TrackDetails, TrackListItemAttributes } from "@/features/tracks/api/tracksApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import type { ChangeEvent } from "react"
 import { TrackQueryKey, tracksApi } from "../../../../../api/tracksApi.ts"
+import type { BaseAttributes, TrackDetails } from "../../../../../api/tracksApi.types.ts"
 import s from "./TrackCover.module.css"
 
-type Props = {
-  track: TrackDetails<TrackListItemAttributes>
+type Props<T extends BaseAttributes> = {
+  track: TrackDetails<T>
 }
 
-export const TrackCover = ({ track }: Props) => {
+export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
   const { mutate } = useMutation({
     mutationFn: tracksApi.uploadTrackCover,
     onSuccess: () => {

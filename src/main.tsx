@@ -6,13 +6,15 @@ import "./index.css"
 import { BrowserRouter } from "react-router"
 import { App } from "./app/App.tsx"
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000,
-    },
-  },
-})
+export const queryClient = new QueryClient()
+
+// {
+//   defaultOptions: {
+//     queries: {
+//       staleTime: 60 * 1000,
+//     },
+//   },
+// }
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

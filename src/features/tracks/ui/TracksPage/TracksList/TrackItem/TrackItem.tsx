@@ -1,12 +1,11 @@
 import type { Nullable } from "@/common"
+import type { TrackDetails, TrackSummaryAttributes } from "../../../../api/tracksApi.types.ts"
 import { TrackActions } from "./TrackActions/TrackActions.tsx"
 import { TrackCover } from "./TrackCover/TrackCover.tsx"
 import { TrackDescription } from "./TrackDescription/TrackDescription.tsx"
-import type { TrackDetails, TrackListItemAttributes } from "../../../../api/tracksApi.types.ts"
-import s from "./TrackItem.module.css"
 
 type Props = {
-  track: TrackDetails<TrackListItemAttributes>
+  track: TrackDetails<TrackSummaryAttributes>
   removeTrack: () => void
   removingTrackId: Nullable<string>
   editTrack: () => void
@@ -15,9 +14,9 @@ type Props = {
 
 export const TrackItem = ({ track, removeTrack, removingTrackId, editTrack, addTrackToPlaylist }: Props) => {
   return (
-    <div className={s.container}>
-      <div className={s.container}>
-        <TrackCover track={track} />
+    <div className={"flex-container"}>
+      <div className={"flex-container"}>
+        <TrackCover<TrackSummaryAttributes> track={track} />
         <TrackDescription attributes={track.attributes} />
       </div>
       <TrackActions

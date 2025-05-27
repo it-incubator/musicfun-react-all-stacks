@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { type Nullable, showErrorToast } from "@/common"
 import { queryClient } from "@/main.tsx"
-import type { TrackDetails, TrackListItemAttributes, UpdateTrackArgs } from "../../api/tracksApi.types.ts"
+import type { TrackDetails, TrackSummaryAttributes, UpdateTrackArgs } from "../../api/tracksApi.types.ts"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 
 export const useEditTrack = () => {
@@ -21,7 +21,7 @@ export const useEditTrack = () => {
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
   })
 
-  const editTrackHandler = (track: Nullable<TrackDetails<TrackListItemAttributes>>) => {
+  const editTrackHandler = (track: Nullable<TrackDetails<TrackSummaryAttributes>>) => {
     setTrackId(track?.id ?? null)
 
     if (track) {

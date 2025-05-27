@@ -1,14 +1,14 @@
 import { useAddToPlaylist } from "../../../lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "../../../lib/hooks/useEditTrack.ts"
 import { useRemoveTrack } from "../../../lib/hooks/useRemoveTrack.ts"
-import type { TrackDetails, TrackListItemAttributes } from "../../../api/tracksApi.types.ts"
+import type { TrackDetails, TrackSummaryAttributes } from "../../../api/tracksApi.types.ts"
 import { AddTrackToPlaylistModal } from "../AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
 import { TrackItem } from "./TrackItem/TrackItem.tsx"
 import s from "./TracksList.module.css"
 
 type Props = {
-  tracks: TrackDetails<TrackListItemAttributes>[]
+  tracks: TrackDetails<TrackSummaryAttributes>[]
 }
 
 export const TracksList = ({ tracks }: Props) => {

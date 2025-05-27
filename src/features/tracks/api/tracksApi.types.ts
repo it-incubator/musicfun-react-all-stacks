@@ -6,15 +6,18 @@ export type TrackDetails<T> = {
   attributes: T
 }
 
-export type TrackListItemAttributes = {
+// Attributes
+export type BaseAttributes = {
   title: string
   addedAt: string
+}
+
+export type TrackSummaryAttributes = BaseAttributes & {
   attachmentsCount: number
 }
 
-export type TrackDetailsAttributes = {
-  title: string
-  addedAt: string
+// TrackDetailsAttributes
+export type TrackDetailAttributes = BaseAttributes & {
   lyrics: Nullable<string>
   releaseDate: Nullable<string>
   updatedAt: string
@@ -24,6 +27,12 @@ export type TrackDetailsAttributes = {
   tags: string[]
   artists: string[]
   attachments: TrackAttachment[]
+}
+
+export type PlaylistItemAttributes = BaseAttributes & {
+  updatedAt: string
+  attachments: string[]
+  order: number
 }
 
 export type TrackAttachment = {
@@ -40,15 +49,20 @@ export type TrackAttachment = {
 
 // Response
 export type FetchTracksResponse = {
-  data: TrackDetails<TrackListItemAttributes>[]
+  data: TrackDetails<TrackSummaryAttributes>[]
   meta: Meta
 }
 
 export type CreateTrackResponse = {
-  data: TrackDetails<TrackDetailsAttributes>
+  data: TrackDetails<TrackDetailAttributes>
 }
 
-// TODO: Часть свойств можно взять из TrackDetailsAttributes, но не все. Пока хз, как лучше описывать типы
+export type FetchPlaylistsTracksResponse = {
+  data: TrackDetails<PlaylistItemAttributes>[]
+  meta: Meta
+}
+
+// TODO: Часть свойств можно взять из TrackDetailAttributes, но не все. Пока хз, как лучше описывать типы
 export type UpdateTrackResponse = {
   id: string
   addedAt: string
@@ -66,7 +80,7 @@ export type UpdateTrackResponse = {
 }
 
 // Arguments
-// TODO: Часть свойств можно взять из TrackDetailsAttributes, и добавить tagIds, artistsIds
+// TODO: Часть свойств можно взять из TrackDetailAttributes, и добавить tagIds, artistsIds
 // Не факт что станет читаемее
 export type UpdateTrackArgs = {
   title?: string

@@ -1,9 +1,10 @@
+import { Layout, PageTitle, Path } from "@/common"
+import { PlaylistTracks } from "@/features/playlists/ui/PlaylistPage/PlaylistTracks/PlaylistTracks.tsx"
 import { useQuery } from "@tanstack/react-query"
 import { Link, useParams } from "react-router"
-import { Layout, PageTitle, Path } from "@/common"
 import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
-import { PlaylistCover } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistCover/PlaylistCover.tsx"
-import { PlaylistDescription } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx"
+import { PlaylistCover } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistCover/PlaylistCover.tsx"
+import { PlaylistDescription } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx"
 
 export const PlaylistPage = () => {
   const { id } = useParams<string>()
@@ -26,6 +27,7 @@ export const PlaylistPage = () => {
         <PlaylistCover playlist={data?.data.data} />
         <PlaylistDescription attributes={data?.data.data.attributes} />
       </div>
+      <PlaylistTracks />
     </Layout>
   )
 }

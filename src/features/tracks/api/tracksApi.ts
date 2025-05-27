@@ -2,6 +2,7 @@ import { instance } from "@/common"
 import { playlistsEndpoint } from "@/features/playlists/api/playlistsApi.ts"
 import type {
   CreateTrackResponse,
+  FetchPlaylistsTracksResponse,
   FetchTracksResponse,
   UpdateTrackArgs,
   UpdateTrackResponse,
@@ -13,6 +14,10 @@ const tracksEndpoint = "/tracks"
 export const tracksApi = {
   fetchTracks: () => {
     return instance.get<FetchTracksResponse>(`${playlistsEndpoint}${tracksEndpoint}`)
+  },
+  fetchTracksInPlaylist: (args: { playlistId: string }) => {
+    const { playlistId } = args
+    return instance.get<FetchPlaylistsTracksResponse>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}`)
   },
   createTrack: (args: { playlistId: string; title: string; file: File }) => {
     const { playlistId, title, file } = args

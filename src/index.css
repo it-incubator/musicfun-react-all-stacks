@@ -36,3 +36,10 @@ a:hover {
 }
 
 
+/* Flex container */
+.flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
