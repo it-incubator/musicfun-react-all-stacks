@@ -1,10 +1,11 @@
+import { TrackActions } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackActions/TrackActions.tsx"
+import { TrackItem } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
+import type { BaseAttributes, TrackDetails } from "../../../api/tracksApi.types.ts"
 import { useAddToPlaylist } from "../../../lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "../../../lib/hooks/useEditTrack.ts"
 import { useRemoveTrack } from "../../../lib/hooks/useRemoveTrack.ts"
-import type { TrackDetails, BaseAttributes } from "../../../api/tracksApi.types.ts"
 import { AddTrackToPlaylistModal } from "../AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
-import { TrackItem } from "./TrackItem/TrackItem.tsx"
 import s from "./TracksList.module.css"
 
 type Props = {
@@ -29,7 +30,7 @@ export const TracksList = ({ tracks }: Props) => {
           const isEditing = trackId === track.id
 
           return (
-            <div className={`item item--fullwidth`} key={track.id}>
+            <div key={track.id}>
               {isEditing ? (
                 <EditTrackForm
                   onSubmit={onSubmit}
@@ -40,13 +41,15 @@ export const TracksList = ({ tracks }: Props) => {
                   setPlaylistId={setPlaylistId}
                 />
               ) : (
-                <TrackItem
-                  track={track}
-                  removeTrack={() => removeTrack(track.id)}
-                  removingTrackId={removingTrackId}
-                  editTrack={() => editTrackHandler(track)}
-                  addTrackToPlaylist={() => setModalTrackId(track.id)}
-                />
+                <TrackItem track={track}>
+                  <TrackActions
+                    track={track}
+                    removeTrack={() => removeTrack(track.id)}
+                    removingTrackId={removingTrackId}
+                    editTrack={() => editTrackHandler(track)}
+                    addTrackToPlaylist={() => setModalTrackId(track.id)}
+                  />
+                </TrackItem>
               )}
             </div>
           )

@@ -1,8 +1,6 @@
 import { Path } from "@/common"
 import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
-import { Player } from "../../../../tracks/ui/TracksPage/TracksList/TrackItem/Player/Player.tsx"
-import { TrackCover } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackCover/TrackCover.tsx"
-import { TrackDescription } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackDescription/TrackDescription.tsx"
+import { TrackItem } from "../../../../tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
 import { queryClient } from "@/main.tsx"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Navigate, useParams } from "react-router"
@@ -39,14 +37,9 @@ export const PlaylistTracks = () => {
       <h2>Треки</h2>
       {tracks.map((track) => {
         return (
-          <div key={track.id} className={`item item--fullwidth flex-container`}>
-            <div className={"flex-container"}>
-              <TrackCover track={track} />
-              <TrackDescription attributes={track.attributes} />
-            </div>
-            <Player track={track} />
+          <TrackItem track={track} key={track.id}>
             <button onClick={() => removeTrackFromPlaylistHandler(track.id)}>Удалить трек из плейлиста</button>
-          </div>
+          </TrackItem>
         )
       })}
     </>
