@@ -6,15 +6,22 @@ import "./index.css"
 import { BrowserRouter } from "react-router"
 import { App } from "./app/App.tsx"
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      /*  ❗ always stale → fetch again whenever the query is used  */
+      staleTime: 0,
 
-// {
-//   defaultOptions: {
-//     queries: {
-//       staleTime: 60 * 1000,
-//     },
-//   },
-// }
+      /*  no background retries after a failure  */
+      retry: false,
+
+      /*  keep the automatic triggers that make it “always actual”  */
+      refetchOnMount: true,          // when component (re)mounts
+      refetchOnWindowFocus: true,    // when tab gains focus
+      refetchOnReconnect: true,      // when network comes back
+    },
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
