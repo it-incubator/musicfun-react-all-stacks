@@ -1,18 +1,32 @@
+import { Path } from "@/common"
 import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
 import type { PlaylistItemAttributes } from "@/features/tracks/api/tracksApi.types.ts"
 import { TrackCover } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackCover/TrackCover.tsx"
 import { TrackDescription } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackDescription/TrackDescription.tsx"
-import { useQuery } from "@tanstack/react-query"
-import { useParams } from "react-router"
+import { queryClient } from "@/main.tsx"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { Navigate, useParams } from "react-router"
 
 export const PlaylistTracks = () => {
-  const { id } = useParams<string>()
+  const { id: playlistId } = useParams<{ id: string }>()
+
+  if (!playlistId) {
+    return <Navigate to={Path.NotFound} />
+  }
 
   const { data } = useQuery({
     queryKey: [TrackQueryKey],
-    queryFn: () => tracksApi.fetchTracksInPlaylist({ playlistId: id ?? "" }),
-    enabled: !!id,
+    queryFn: () => tracksApi.fetchTracksInPlaylist({ playlistId }),
   })
+
+  const { mutate } = useMutation({
+    mutationFn: tracksApi.removeTrackFromPlaylist,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [TrackQueryKey] }),
+  })
+
+  const removeTrackFromPlaylistHandler = (trackId: string) => {
+    mutate({ playlistId, trackId })
+  }
 
   const tracks = data?.data.data ?? []
 
@@ -32,7 +46,7 @@ export const PlaylistTracks = () => {
               {track.attributes.attachments.length &&  <audio controls src={track.attributes.attachments[0].url}></audio>}
               {!track.attributes.attachments.length &&  <span>no file</span>}
             </div>
-            <button>Удалить трек из плейлиста</button>
+            <button onClick={() => removeTrackFromPlaylistHandler(track.id)}>Удалить трек из плейлиста</button>
           </div>
         )
       })}

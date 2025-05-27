@@ -1,4 +1,5 @@
 import { Main } from "@/app/Main.tsx"
+import { PageNotFound } from "@/common"
 import { PlaylistPage } from "@/features/playlists/ui/PlaylistPage/PlaylistPage.tsx"
 import { PlaylistsPage } from "@/features/playlists/ui/PlaylistsPage/PlaylistsPage.tsx"
 import { TracksPage } from "@/features/tracks/ui/TracksPage/TracksPage.tsx"
@@ -9,6 +10,7 @@ export const Path = {
   Main: "/",
   Playlists: "/playlists",
   Tracks: "/tracks",
+  NotFound: "*",
 } as const
 
 export const Routing = () => (
@@ -17,5 +19,6 @@ export const Routing = () => (
     <Route path={Path.Playlists} element={<PlaylistsPage />} />
     <Route path={`${Path.Playlists}/:id`} element={<PlaylistPage />} />
     <Route path={Path.Tracks} element={<TracksPage />} />
+    <Route path={Path.NotFound} element={<PageNotFound />} />
   </Routes>
 )
