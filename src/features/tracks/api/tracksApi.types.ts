@@ -10,13 +10,9 @@ export type TrackDetails<T> = {
 export type BaseAttributes = {
   title: string
   addedAt: string
-}
-
-export type TrackSummaryAttributes = BaseAttributes & {
   attachments: TrackAttachment[]
 }
 
-// TrackDetailsAttributes
 export type TrackDetailAttributes = BaseAttributes & {
   lyrics: Nullable<string>
   releaseDate: Nullable<string>
@@ -26,12 +22,10 @@ export type TrackDetailAttributes = BaseAttributes & {
   visibility: "private" // TODO: какие еще будут типы ?
   tags: string[]
   artists: string[]
-  attachments: TrackAttachment[]
 }
 
 export type PlaylistItemAttributes = BaseAttributes & {
   updatedAt: string
-  attachments: TrackAttachment[]
   order: number
 }
 
@@ -49,7 +43,7 @@ export type TrackAttachment = {
 
 // Response
 export type FetchTracksResponse = {
-  data: TrackDetails<TrackSummaryAttributes>[]
+  data: TrackDetails<BaseAttributes>[]
   meta: Meta
 }
 

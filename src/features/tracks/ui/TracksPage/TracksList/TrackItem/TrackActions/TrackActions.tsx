@@ -1,8 +1,8 @@
 import type { Nullable } from "@/common"
-import type { TrackDetails, TrackSummaryAttributes } from "../../../../../api/tracksApi.types.ts"
+import type { TrackDetails, BaseAttributes } from "../../../../../api/tracksApi.types.ts"
 
 type Props = {
-  track: TrackDetails<TrackSummaryAttributes>
+  track: TrackDetails<BaseAttributes>
   removeTrack: () => void
   removingTrackId: Nullable<string>
   editTrack: () => void

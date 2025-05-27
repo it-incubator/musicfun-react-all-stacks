@@ -1,11 +1,11 @@
 import type { Nullable } from "@/common"
-import type { TrackDetails, TrackSummaryAttributes } from "../../../../api/tracksApi.types.ts"
+import type { TrackDetails, BaseAttributes } from "../../../../api/tracksApi.types.ts"
 import { TrackActions } from "./TrackActions/TrackActions.tsx"
 import { TrackCover } from "./TrackCover/TrackCover.tsx"
 import { TrackDescription } from "./TrackDescription/TrackDescription.tsx"
 
 type Props = {
-  track: TrackDetails<TrackSummaryAttributes>
+  track: TrackDetails<BaseAttributes>
   removeTrack: () => void
   removingTrackId: Nullable<string>
   editTrack: () => void
@@ -16,7 +16,7 @@ export const TrackItem = ({ track, removeTrack, removingTrackId, editTrack, addT
   return (
     <div className={"flex-container"}>
       <div className={"flex-container"}>
-        <TrackCover<TrackSummaryAttributes> track={track} />
+        <TrackCover<BaseAttributes> track={track} />
         <TrackDescription attributes={track.attributes} />
       </div>
       <TrackActions
@@ -26,8 +26,8 @@ export const TrackItem = ({ track, removeTrack, removingTrackId, editTrack, addT
         editTrack={editTrack}
         addTrackToPlaylist={addTrackToPlaylist}
       />
-      {track.attributes.attachments.length &&  <audio controls src={track.attributes.attachments[0].url}></audio>}
-      {!track.attributes.attachments.length &&  <span>no file</span>}
+      {track.attributes.attachments.length && <audio controls src={track.attributes.attachments[0].url}></audio>}
+      {!track.attributes.attachments.length && <span>no file</span>}
     </div>
   )
 }
