@@ -1,6 +1,6 @@
 import { Path } from "@/common"
 import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
-import type { PlaylistItemAttributes } from "@/features/tracks/api/tracksApi.types.ts"
+import { Player } from "../../../../tracks/ui/TracksPage/TracksList/TrackItem/Player/Player.tsx"
 import { TrackCover } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackCover/TrackCover.tsx"
 import { TrackDescription } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackDescription/TrackDescription.tsx"
 import { queryClient } from "@/main.tsx"
@@ -41,11 +41,10 @@ export const PlaylistTracks = () => {
         return (
           <div key={track.id} className={`item item--fullwidth flex-container`}>
             <div className={"flex-container"}>
-              <TrackCover<PlaylistItemAttributes> track={track} />
+              <TrackCover track={track} />
               <TrackDescription attributes={track.attributes} />
-              {track.attributes.attachments.length &&  <audio controls src={track.attributes.attachments[0].url}></audio>}
-              {!track.attributes.attachments.length &&  <span>no file</span>}
             </div>
+            <Player track={track} />
             <button onClick={() => removeTrackFromPlaylistHandler(track.id)}>Удалить трек из плейлиста</button>
           </div>
         )
