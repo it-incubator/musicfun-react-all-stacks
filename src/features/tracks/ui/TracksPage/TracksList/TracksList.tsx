@@ -1,6 +1,6 @@
 import { TrackActions } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackActions/TrackActions.tsx"
 import { TrackItem } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
-import type { BaseAttributes, TrackDetails } from "../../../api/tracksApi.types.ts"
+import type { FetchTracksAttributes, TrackDetails } from "../../../api/tracksApi.types.ts"
 import { useAddToPlaylist } from "../../../lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "../../../lib/hooks/useEditTrack.ts"
 import { useRemoveTrack } from "../../../lib/hooks/useRemoveTrack.ts"
@@ -9,7 +9,7 @@ import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
 import s from "./TracksList.module.css"
 
 type Props = {
-  tracks: TrackDetails<BaseAttributes>[]
+  tracks: TrackDetails<FetchTracksAttributes>[]
 }
 
 export const TracksList = ({ tracks }: Props) => {

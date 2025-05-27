@@ -1,10 +1,10 @@
-import { useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
 import { type Nullable, showErrorToast } from "@/common"
 import { queryClient } from "@/main.tsx"
-import type { TrackDetails, BaseAttributes, UpdateTrackArgs } from "../../api/tracksApi.types.ts"
+import { useMutation } from "@tanstack/react-query"
+import { useState } from "react"
+import { type SubmitHandler, useForm } from "react-hook-form"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
+import type { FetchTracksAttributes, TrackDetails, UpdateTrackArgs } from "../../api/tracksApi.types.ts"
 
 export const useEditTrack = () => {
   const [trackId, setTrackId] = useState<Nullable<string>>(null)
@@ -21,7 +21,7 @@ export const useEditTrack = () => {
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
   })
 
-  const editTrackHandler = (track: Nullable<TrackDetails<BaseAttributes>>) => {
+  const editTrackHandler = (track: Nullable<TrackDetails<FetchTracksAttributes>>) => {
     setTrackId(track?.id ?? null)
 
     if (track) {

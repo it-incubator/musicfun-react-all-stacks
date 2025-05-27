@@ -13,6 +13,14 @@ export type BaseAttributes = {
   attachments: TrackAttachment[]
 }
 
+export type FetchTracksAttributes = BaseAttributes & {
+  images: string[]
+  user: {
+    id: string
+    name: string
+  }
+}
+
 export type TrackDetailAttributes = BaseAttributes & {
   lyrics: Nullable<string>
   releaseDate: Nullable<string>
@@ -43,7 +51,7 @@ export type TrackAttachment = {
 
 // Response
 export type FetchTracksResponse = {
-  data: TrackDetails<BaseAttributes>[]
+  data: TrackDetails<FetchTracksAttributes>[]
   meta: Meta
 }
 
