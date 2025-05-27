@@ -14,7 +14,9 @@ export const PlaylistActions = ({ removePlaylist, playlist, editPlaylist }: Prop
     <div className={s.actions}>
       <button onClick={() => editPlaylist(playlist)}>Редактировать</button>
       <button onClick={() => removePlaylist(playlist.id)}>Удалить</button>
-      <Link to={`${Path.Playlists}/${playlist.id}`}>Перейти в плейлист</Link>
+      <Link className={"link"} to={`${Path.Playlists}/${playlist.id}`}>
+        Перейти в плейлист
+      </Link>
     </div>
   )
 }

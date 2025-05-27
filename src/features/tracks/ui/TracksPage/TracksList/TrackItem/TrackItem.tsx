@@ -9,7 +9,7 @@ import s from "./TrackItem.module.css"
 
 type Props<T extends BaseAttributes> = {
   track: TrackDetails<T>
-  children: ReactNode
+  children?: ReactNode
 }
 
 export const TrackItem = <T extends BaseAttributes>({ children, track }: Props<T>) => {

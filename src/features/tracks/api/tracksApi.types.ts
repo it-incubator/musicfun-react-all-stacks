@@ -28,8 +28,9 @@ export type TrackDetailAttributes = BaseAttributes & {
   duration: number
   processingStatus: "uploaded" // TODO: какие еще будут статусы ?
   visibility: "private" // TODO: какие еще будут типы ?
-  tags: string[]
-  artists: string[]
+  tags: { id: string; originalName: string }[]
+  artists: { id: string; name: string }[]
+  images: string[]
 }
 
 export type PlaylistItemAttributes = BaseAttributes & {
@@ -53,10 +54,6 @@ export type TrackAttachment = {
 export type FetchTracksResponse = {
   data: TrackDetails<FetchTracksAttributes>[]
   meta: Meta
-}
-
-export type CreateTrackResponse = {
-  data: TrackDetails<TrackDetailAttributes>
 }
 
 export type FetchPlaylistsTracksResponse = {

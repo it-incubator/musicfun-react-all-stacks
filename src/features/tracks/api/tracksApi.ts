@@ -1,9 +1,10 @@
 import { instance } from "@/common"
 import { playlistsEndpoint } from "@/features/playlists/api/playlistsApi.ts"
 import type {
-  CreateTrackResponse,
   FetchPlaylistsTracksResponse,
   FetchTracksResponse,
+  TrackDetailAttributes,
+  TrackDetails,
   UpdateTrackArgs,
   UpdateTrackResponse,
 } from "./tracksApi.types.ts"
@@ -19,12 +20,20 @@ export const tracksApi = {
     const { playlistId } = args
     return instance.get<FetchPlaylistsTracksResponse>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}`)
   },
+  fetchTrackById: (args: { playlistId: string; trackId: string }) => {
+    const { playlistId, trackId } = args
+    return instance.get<{
+      data: TrackDetails<TrackDetailAttributes>
+    }>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}`)
+  },
   createTrack: (args: { playlistId: string; title: string; file: File }) => {
     const { playlistId, title, file } = args
     const formData = new FormData()
     formData.append("title", title)
     formData.append("file", file)
-    return instance.post<CreateTrackResponse>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/upload`, formData)
+    return instance.post<{
+      data: TrackDetails<TrackDetailAttributes>
+    }>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/upload`, formData)
   },
   removeTrack: (trackId: string) => {
     return instance.delete<void>(`${playlistsEndpoint}${tracksEndpoint}/${trackId}`)
