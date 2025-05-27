@@ -13,7 +13,7 @@ export type BaseAttributes = {
 }
 
 export type TrackSummaryAttributes = BaseAttributes & {
-  attachmentsCount: number
+  attachments: TrackAttachment[]
 }
 
 // TrackDetailsAttributes
@@ -31,7 +31,7 @@ export type TrackDetailAttributes = BaseAttributes & {
 
 export type PlaylistItemAttributes = BaseAttributes & {
   updatedAt: string
-  attachments: string[]
+  attachments: TrackAttachment[]
   order: number
 }
 

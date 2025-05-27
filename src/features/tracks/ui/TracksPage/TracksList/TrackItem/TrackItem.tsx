@@ -26,6 +26,8 @@ export const TrackItem = ({ track, removeTrack, removingTrackId, editTrack, addT
         editTrack={editTrack}
         addTrackToPlaylist={addTrackToPlaylist}
       />
+      {track.attributes.attachments.length &&  <audio controls src={track.attributes.attachments[0].url}></audio>}
+      {!track.attributes.attachments.length &&  <span>no file</span>}
     </div>
   )
 }

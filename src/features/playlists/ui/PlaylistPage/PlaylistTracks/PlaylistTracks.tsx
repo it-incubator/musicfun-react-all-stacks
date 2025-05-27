@@ -29,6 +29,8 @@ export const PlaylistTracks = () => {
             <div className={"flex-container"}>
               <TrackCover<PlaylistItemAttributes> track={track} />
               <TrackDescription attributes={track.attributes} />
+              {track.attributes.attachments.length &&  <audio controls src={track.attributes.attachments[0].url}></audio>}
+              {!track.attributes.attachments.length &&  <span>no file</span>}
             </div>
             <button>Удалить трек из плейлиста</button>
           </div>
