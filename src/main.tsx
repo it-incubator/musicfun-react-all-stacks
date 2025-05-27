@@ -14,11 +14,10 @@ export const queryClient = new QueryClient({
 
       /*  no background retries after a failure  */
       retry: false,
-
       /*  keep the automatic triggers that make it “always actual”  */
-      refetchOnMount: true,          // when component (re)mounts
-      refetchOnWindowFocus: true,    // when tab gains focus
-      refetchOnReconnect: true,      // when network comes back
+      refetchOnMount: false,          // when component (re)mounts
+      refetchOnWindowFocus: false,    // when tab gains focus
+      refetchOnReconnect: false,      // when network comes back
     },
   },
 });
