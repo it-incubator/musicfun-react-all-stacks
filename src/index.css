@@ -4,13 +4,13 @@
     font-weight: 400;
 }
 
-a {
+.link {
     color: #007bff;
     text-decoration: none;
     font-size: 14px;
 }
 
-a:hover {
+.link:hover {
     text-decoration: underline;
 }
 
@@ -33,6 +33,7 @@ a:hover {
 .item:hover {
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #f5f5f5;
 }
 
 
@@ -41,5 +42,11 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.flex-container-column {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
 }
 

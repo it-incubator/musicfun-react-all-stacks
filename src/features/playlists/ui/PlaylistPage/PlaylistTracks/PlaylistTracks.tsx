@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react"
 import { Path } from "@/common"
 import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
 import { TrackItem } from "../../../../tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
@@ -22,8 +23,11 @@ export const PlaylistTracks = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [TrackQueryKey] }),
   })
 
-  const removeTrackFromPlaylistHandler = (trackId: string) => {
-    mutate({ playlistId, trackId })
+  const removeTrackFromPlaylistHandler = (e: MouseEvent, trackId: string) => {
+    e.preventDefault()
+    if (confirm("Вы уверены, что хотите удалить трек из плейлиста?")) {
+      mutate({ playlistId, trackId })
+    }
   }
 
   const tracks = data?.data.data ?? []
@@ -38,7 +42,7 @@ export const PlaylistTracks = () => {
       {tracks.map((track) => {
         return (
           <TrackItem track={track} key={track.id}>
-            <button onClick={() => removeTrackFromPlaylistHandler(track.id)}>Удалить трек из плейлиста</button>
+            <button onClick={(e) => removeTrackFromPlaylistHandler(e, track.id)}>Удалить трек из плейлиста</button>
           </TrackItem>
         )
       })}

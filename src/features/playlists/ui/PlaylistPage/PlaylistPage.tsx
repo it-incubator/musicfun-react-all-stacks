@@ -21,7 +21,9 @@ export const PlaylistPage = () => {
 
   return (
     <Layout>
-      <Link to={Path.Playlists}>Вернуться назад</Link>
+      <Link className={"link"} to={Path.Playlists}>
+        Вернуться назад
+      </Link>
       <PageTitle>Информация о плейлисте</PageTitle>
       <div>
         <PlaylistCover playlist={data?.data.data} />

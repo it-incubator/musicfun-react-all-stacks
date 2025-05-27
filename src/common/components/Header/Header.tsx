@@ -8,13 +8,19 @@ export const Header = () => {
       <nav>
         <ul className={s.list}>
           <li>
-            <NavLink to={Path.Main}>Main</NavLink>
+            <NavLink className={"link"} to={Path.Main}>
+              Main
+            </NavLink>
           </li>
           <li>
-            <NavLink to={Path.Playlists}>Playlists</NavLink>
+            <NavLink className={"link"} to={Path.Playlists}>
+              Playlists
+            </NavLink>
           </li>
           <li>
-            <NavLink to={Path.Tracks}>Tracks</NavLink>
+            <NavLink className={"link"} to={Path.Tracks}>
+              Tracks
+            </NavLink>
           </li>
         </ul>
       </nav>

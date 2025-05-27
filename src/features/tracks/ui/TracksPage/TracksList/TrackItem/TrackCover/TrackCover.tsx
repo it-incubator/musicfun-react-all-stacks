@@ -2,7 +2,7 @@ import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
 import { showErrorToast } from "@/common"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
-import type { ChangeEvent } from "react"
+import type { ChangeEvent, MouseEvent } from "react"
 import { TrackQueryKey, tracksApi } from "../../../../../api/tracksApi.ts"
 import type { BaseAttributes, TrackDetails } from "../../../../../api/tracksApi.types.ts"
 import s from "./TrackCover.module.css"
@@ -40,12 +40,12 @@ export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
     mutate({ playlistId, trackId: track.id, file })
   }
 
+  const stopPropagationHandler = (e: MouseEvent<HTMLInputElement>) => e.stopPropagation()
+
   return (
-    <div>
+    <div className={"flex-container-column"}>
       <img src={trackDefaultCover} className={s.cover} alt={"no cover"} />
-      <div>
-        <input type="file" accept="image/*" onChange={uploadHandler} />
-      </div>
+      <input type="file" accept="image/*" onChange={uploadHandler} onClick={stopPropagationHandler} />
     </div>
   )
 }
