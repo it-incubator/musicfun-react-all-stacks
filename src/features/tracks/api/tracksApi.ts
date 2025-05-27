@@ -38,4 +38,8 @@ export const tracksApi = {
     const { playlistId, trackId } = args
     return instance.put<void>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}/add`)
   },
+  removeTrackFromPlaylist: (args: { playlistId: string; trackId: string }) => {
+    const { playlistId, trackId } = args
+    return instance.delete<void>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}`)
+  },
 }
