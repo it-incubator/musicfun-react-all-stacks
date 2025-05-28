@@ -1,4 +1,5 @@
 import { instance } from "@/common/instance"
+import { joinUrl } from "@/common/utils"
 import { playlistsEndpoint } from "@/features/playlists/api/playlistsApi.ts"
 import type {
   FetchPlaylistsTracksResponse,
@@ -8,7 +9,6 @@ import type {
   UpdateTrackArgs,
   UpdateTrackResponse,
 } from "./tracksApi.types.ts"
-import { joinUrl } from "@/common/utils/urlHelper.ts"
 
 export const TrackQueryKey = "tracks"
 const tracksEndpoint = "tracks"

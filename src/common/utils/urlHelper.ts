@@ -1,4 +1,4 @@
-export function joinUrl(...parts: (string | number | undefined | null)[]): string {
+export const joinUrl = (...parts: (string | number | undefined | null)[]): string => {
   return parts
     .filter(Boolean) // убираем undefined / null / ''
     .map((p, i) =>
