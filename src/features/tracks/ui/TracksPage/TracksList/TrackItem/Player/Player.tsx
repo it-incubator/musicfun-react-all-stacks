@@ -9,8 +9,11 @@ export const Player = <T extends BaseAttributes>({ track }: Props<T>) => {
 
   return (
     <div>
-      {attachments.length && <audio controls src={attachments[0].url}></audio>}
-      {!attachments.length && <span>no file</span>}
+      {attachments.length > 0 ? (
+        <audio controls src={attachments[0].url}></audio>
+      ) : (
+        <h3 style={{ color: "red" }}>no file</h3>
+      )}
     </div>
   )
 }

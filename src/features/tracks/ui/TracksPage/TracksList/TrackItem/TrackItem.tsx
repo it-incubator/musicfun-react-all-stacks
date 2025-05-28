@@ -16,7 +16,7 @@ export const TrackItem = <T extends BaseAttributes>({ children, track }: Props<T
   return (
     <Link to={`${Path.Tracks}/${track.id}`} className={s.link}>
       <div className={`item item--fullwidth flex-container`}>
-        <div className={"flex-container"}>
+        <div className={`flex-container ${s.container}`}>
           <TrackCover track={track} />
           <TrackDescription<T> attributes={track.attributes} />
           <Player track={track} />
