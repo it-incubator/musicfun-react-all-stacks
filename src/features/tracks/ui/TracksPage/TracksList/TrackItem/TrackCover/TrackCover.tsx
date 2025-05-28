@@ -8,8 +8,7 @@ import type { BaseAttributes, TrackDetails } from "../../../../../api/tracksApi.
 import s from "./TrackCover.module.css"
 
 type Props<T extends BaseAttributes> = {
-  // track: TrackDetails<T>
-  track: any
+  track: TrackDetails<T>
 }
 
 export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
@@ -29,8 +28,6 @@ export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
   }
 
   const stopPropagationHandler = (e: MouseEvent<HTMLInputElement>) => e.stopPropagation()
-
-  debugger
 
   const originalCover = track.attributes.images.find((img) => img.type === "original")
   // const originalCover = track.attributes.images.main.find((img) => img.type === "original")
