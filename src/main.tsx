@@ -11,16 +11,15 @@ export const queryClient = new QueryClient({
     queries: {
       /*  ❗ always stale → fetch again whenever the query is used  */
       staleTime: 0,
-
       /*  no background retries after a failure  */
       retry: false,
       /*  keep the automatic triggers that make it “always actual”  */
-      refetchOnMount: false,          // when component (re)mounts
-      refetchOnWindowFocus: false,    // when tab gains focus
-      refetchOnReconnect: false,      // when network comes back
+      refetchOnMount: false, // when component (re)mounts
+      refetchOnWindowFocus: false, // when tab gains focus
+      refetchOnReconnect: false, // when network comes back
     },
   },
-});
+})
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

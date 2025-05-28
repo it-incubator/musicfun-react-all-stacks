@@ -1,26 +1,26 @@
 import type { MouseEvent } from "react"
-import { Path } from "@/common"
-import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
-import { TrackItem } from "../../../../tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
-import { queryClient } from "@/main.tsx"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Navigate, useParams } from "react-router"
+import { Path } from "@/common"
+import { queryClient } from "@/main.tsx"
+import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
+import { TrackItem } from "../../../../tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
 
 export const PlaylistTracks = () => {
-  const { id: playlistId } = useParams<{ id: string }>()
+  const { playlistId } = useParams<{ playlistId: string }>()
 
   if (!playlistId) {
     return <Navigate to={Path.NotFound} />
   }
 
   const { data } = useQuery({
-    queryKey: [TrackQueryKey],
+    queryKey: [TrackQueryKey, playlistId],
     queryFn: () => tracksApi.fetchTracksInPlaylist({ playlistId }),
   })
 
   const { mutate } = useMutation({
     mutationFn: tracksApi.removeTrackFromPlaylist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [TrackQueryKey] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [TrackQueryKey, playlistId] }),
   })
 
   const removeTrackFromPlaylistHandler = (e: MouseEvent, trackId: string) => {

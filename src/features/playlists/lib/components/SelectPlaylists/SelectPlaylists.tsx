@@ -1,5 +1,5 @@
-import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
 import { useQuery } from "@tanstack/react-query"
+import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
 
 type Props = {
   onChange: (value: string) => void

@@ -12,8 +12,8 @@ export const TrackPage = () => {
   }
 
   const { data, isPending } = useQuery({
-    queryKey: [TrackQueryKey],
-    queryFn: () => tracksApi.fetchTrackById({ trackId }),
+    queryKey: [TrackQueryKey, trackId],
+    queryFn: () => tracksApi.fetchTrackById(trackId),
   })
 
   if (isPending) {

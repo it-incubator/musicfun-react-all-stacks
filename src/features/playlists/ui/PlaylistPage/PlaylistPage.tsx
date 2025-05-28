@@ -1,22 +1,29 @@
-import { Layout, PageTitle, Path } from "@/common"
-import { PlaylistTracks } from "@/features/playlists/ui/PlaylistPage/PlaylistTracks/PlaylistTracks.tsx"
+import { Link, Navigate, useParams } from "react-router"
 import { useQuery } from "@tanstack/react-query"
-import { Link, useParams } from "react-router"
+import { Layout, PageTitle, Path } from "@/common"
+import { PlaylistTracks } from "./PlaylistTracks/PlaylistTracks.tsx"
 import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
 import { PlaylistCover } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistCover/PlaylistCover.tsx"
 import { PlaylistDescription } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx"
 
 export const PlaylistPage = () => {
-  const { id } = useParams<string>()
+  const { playlistId } = useParams<{ playlistId: string }>()
 
-  const { data } = useQuery({
-    queryKey: [PlaylistQueryKey],
-    queryFn: () => playlistsApi.fetchPlaylistById(id ?? ""),
-    enabled: !!id,
+  if (!playlistId) {
+    return <Navigate to={Path.NotFound} />
+  }
+
+  const { data, isPending } = useQuery({
+    queryKey: [PlaylistQueryKey, playlistId],
+    queryFn: () => playlistsApi.fetchPlaylistById(playlistId ?? ""),
+    enabled: !!playlistId,
   })
 
+  if (isPending) {
+    return <h1>Loading...</h1>
+  }
   if (!data) {
-    return <span>Loading...</span>
+    return <h1>Плейлист не найден</h1>
   }
 
   return (

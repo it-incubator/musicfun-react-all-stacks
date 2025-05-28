@@ -20,11 +20,10 @@ export const tracksApi = {
     const { playlistId } = args
     return instance.get<FetchPlaylistsTracksResponse>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}`)
   },
-  fetchTrackById: (args: { trackId: string }) => {
-    const { trackId } = args
+  fetchTrackById: (trackId: string) => {
     return instance.get<{
       data: TrackDetails<TrackDetailAttributes>
-    }>(`${playlistsEndpoint}/${tracksEndpoint}/${trackId}`)
+    }>(`${playlistsEndpoint}${tracksEndpoint}/${trackId}`)
   },
   createTrack: (args: { playlistId: string; title: string; file: File }) => {
     const { playlistId, title, file } = args
@@ -50,7 +49,7 @@ export const tracksApi = {
   },
   addTrackToPlaylist: (args: { playlistId: string; trackId: string }) => {
     const { playlistId, trackId } = args
-    return instance.post<void>(`${playlistsEndpoint}/${playlistId}/relationships${tracksEndpoint}`, {trackId})
+    return instance.post<void>(`${playlistsEndpoint}/${playlistId}/relationships${tracksEndpoint}`, { trackId })
   },
   removeTrackFromPlaylist: (args: { playlistId: string; trackId: string }) => {
     const { playlistId, trackId } = args

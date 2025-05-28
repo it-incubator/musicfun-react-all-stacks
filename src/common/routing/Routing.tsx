@@ -18,7 +18,7 @@ export const Routing = () => (
   <Routes>
     <Route path={Path.Main} element={<Main />} />
     <Route path={Path.Playlists} element={<PlaylistsPage />} />
-    <Route path={`${Path.Playlists}/:id`} element={<PlaylistPage />} />
+    <Route path={`${Path.Playlists}/:playlistId`} element={<PlaylistPage />} />
     <Route path={Path.Tracks} element={<TracksPage />} />
     <Route path={`${Path.Tracks}/:trackId`} element={<TrackPage />} />
     <Route path={Path.NotFound} element={<PageNotFound />} />
