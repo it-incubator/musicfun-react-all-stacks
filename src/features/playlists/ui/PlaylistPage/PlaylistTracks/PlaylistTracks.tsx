@@ -1,3 +1,4 @@
+import type { PlaylistItemAttributes } from "@/features/tracks/api/tracksApi.types.ts"
 import type { MouseEvent } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Navigate, useParams } from "react-router"
@@ -41,7 +42,7 @@ export const PlaylistTracks = () => {
       <h2>Треки</h2>
       {tracks.map((track) => {
         return (
-          <TrackItem track={track} key={track.id}>
+          <TrackItem<PlaylistItemAttributes> track={track} key={track.id}>
             <button onClick={(e) => removeTrackFromPlaylistHandler(e, track.id)}>Удалить трек из плейлиста</button>
           </TrackItem>
         )

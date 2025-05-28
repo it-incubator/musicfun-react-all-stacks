@@ -41,7 +41,7 @@ export const TracksList = ({ tracks }: Props) => {
                   setPlaylistId={setPlaylistId}
                 />
               ) : (
-                <TrackItem track={track}>
+                <TrackItem<FetchTracksAttributes> track={track}>
                   <TrackActions
                     track={track}
                     removeTrack={() => removeTrack(track.id)}

@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from "react-router"
 import { useQuery } from "@tanstack/react-query"
 import { Path } from "@/common/routing"
 import { Layout, Loader, PageTitle } from "@/common/components"
+import type { TrackDetailAttributes } from "../../api/tracksApi.types.ts"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
 
@@ -27,7 +28,7 @@ export const TrackPage = () => {
         Вернуться назад
       </Link>
       <PageTitle>Информация о треке</PageTitle>
-      <TrackItem track={data?.data.data} />
+      <TrackItem<TrackDetailAttributes> track={data?.data.data} />
     </Layout>
   )
 }

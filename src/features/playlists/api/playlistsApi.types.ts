@@ -16,6 +16,10 @@ export type PlaylistAttributes = {
     main: PlaylistCover[]
   }
   tags: string[]
+  user: {
+    id: string
+    name: string
+  }
 }
 
 export type PlaylistCover = {

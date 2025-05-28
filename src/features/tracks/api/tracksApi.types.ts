@@ -11,10 +11,10 @@ export type BaseAttributes = {
   title: string
   addedAt: string
   attachments: TrackAttachment[]
+  images: string[]
 }
 
 export type FetchTracksAttributes = BaseAttributes & {
-  images: string[]
   user: {
     id: string
     name: string
@@ -30,7 +30,6 @@ export type TrackDetailAttributes = BaseAttributes & {
   visibility: "private" // TODO: какие еще будут типы ?
   tags: { id: string; originalName: string }[]
   artists: { id: string; name: string }[]
-  images: string[]
 }
 
 export type PlaylistItemAttributes = BaseAttributes & {

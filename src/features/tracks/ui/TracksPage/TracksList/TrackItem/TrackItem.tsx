@@ -18,7 +18,7 @@ export const TrackItem = <T extends BaseAttributes>({ children, track }: Props<T
       <div className={`item item--fullwidth flex-container`}>
         <div className={"flex-container"}>
           <TrackCover track={track} />
-          <TrackDescription attributes={track.attributes} />
+          <TrackDescription<T> attributes={track.attributes} />
           <Player track={track} />
         </div>
         {children}
