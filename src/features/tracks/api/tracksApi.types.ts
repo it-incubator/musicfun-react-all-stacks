@@ -1,8 +1,8 @@
-import type { Meta, Nullable } from "@/common/types"
+import type { Cover, Meta, Nullable, User } from "@/common/types"
 
 export type TrackDetails<T> = {
   id: string
-  type: "tracks" // TODO: tracks, playlists. Какие еще типы будут
+  type: "tracks"
   attributes: T
 }
 
@@ -11,14 +11,11 @@ export type BaseAttributes = {
   title: string
   addedAt: string
   attachments: TrackAttachment[]
-  images: string[]
+  images: Cover[]
 }
 
 export type FetchTracksAttributes = BaseAttributes & {
-  user: {
-    id: string
-    name: string
-  }
+  user: User
 }
 
 export type TrackDetailAttributes = BaseAttributes & {

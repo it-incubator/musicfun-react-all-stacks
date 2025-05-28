@@ -1,4 +1,4 @@
-import type { Meta } from "@/common/types"
+import type { Cover, Meta, User } from "@/common/types"
 
 export type Playlist = {
   id: string
@@ -13,20 +13,10 @@ export type PlaylistAttributes = {
   updatedAt: string
   order: number
   images: {
-    main: PlaylistCover[]
+    main: Cover[]
   }
   tags: string[]
-  user: {
-    id: string
-    name: string
-  }
-}
-
-export type PlaylistCover = {
-  url: string
-  fileSize: number
-  width: number
-  height: number
+  user: User
 }
 
 // Response
@@ -36,7 +26,7 @@ export type PlaylistsResponse = {
 }
 
 export type UploadPlaylistCoverResponse = {
-  main: PlaylistCover[]
+  main: Cover[]
 }
 
 // Arguments

@@ -36,13 +36,11 @@ export const PlaylistCover = ({ playlist }: Props) => {
     mutate({ playlistId: playlist.id, file })
   }
 
+  const originalCover = playlist.attributes.images.main?.find((img) => img.type === "original")
+
   return (
     <div className={s.container}>
-      <img
-        src={playlist.attributes.images.main.length ? playlist.attributes.images.main[0].url : noCover}
-        alt={"no cover image"}
-        className={s.cover}
-      />
+      <img src={originalCover ? originalCover.url : noCover} alt={"no cover image"} className={s.cover} />
       <div>
         <input type="file" accept="image/*" onChange={uploadHandler} />
       </div>

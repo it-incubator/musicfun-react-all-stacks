@@ -1,4 +1,5 @@
 import { instance } from "@/common/instance"
+import type { Cover } from "@/common/types"
 import { joinUrl } from "@/common/utils"
 import { playlistsEndpoint } from "@/features/playlists/api/playlistsApi.ts"
 import type {
@@ -44,11 +45,10 @@ export const tracksApi = {
     return instance.delete<void>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId))
   },
 
-  uploadTrackCover: ({ playlistId, trackId, file }: { playlistId: string; trackId: string; file: File }) => {
+  uploadTrackCover: ({ trackId, file }: { trackId: string; file: File }) => {
     const formData = new FormData()
-    formData.append("file", file)
-
-    return instance.post<unknown>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId, "cover"), formData)
+    formData.append("cover", file)
+    return instance.post<Cover>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "cover"), formData)
   },
 
   updateTrack: ({
