@@ -1,7 +1,7 @@
 import { Link, Navigate, useParams } from "react-router"
 import { useQuery } from "@tanstack/react-query"
 import { Path } from "@/common/routing"
-import { Layout, PageTitle } from "@/common/components"
+import { Layout, Loader, PageTitle } from "@/common/components"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
 
@@ -17,13 +17,9 @@ export const TrackPage = () => {
     queryFn: () => tracksApi.fetchTrackById(trackId),
   })
 
-  if (isPending) {
-    return <h1>Loading...</h1>
-  }
+  if (isPending) return <Loader />
 
-  if (!data) {
-    return <h1>Трек не найден</h1>
-  }
+  if (!data) return <h1>Трек не найден</h1>
 
   return (
     <Layout>

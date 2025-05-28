@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { Layout, PageTitle } from "@/common/components"
+import { Layout, Loader, PageTitle } from "@/common/components"
 import { AddTrackForm } from "./AddTrackForm/AddTrackForm.tsx"
 import { TracksList } from "./TracksList/TracksList.tsx"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
@@ -10,9 +10,7 @@ export const TracksPage = () => {
     queryFn: tracksApi.fetchTracks,
   })
 
-  if (isPending) {
-    return <span>Loading...</span>
-  }
+  if (isPending) return <Loader />
 
   return (
     <Layout>

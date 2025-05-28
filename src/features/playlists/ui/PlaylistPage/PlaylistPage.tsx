@@ -1,6 +1,6 @@
 import { Link, Navigate, useParams } from "react-router"
 import { useQuery } from "@tanstack/react-query"
-import { Layout, PageTitle } from "@/common/components"
+import { Layout, Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
 import { PlaylistTracks } from "./PlaylistTracks/PlaylistTracks.tsx"
 import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
@@ -16,16 +16,12 @@ export const PlaylistPage = () => {
 
   const { data, isPending } = useQuery({
     queryKey: [PlaylistQueryKey, playlistId],
-    queryFn: () => playlistsApi.fetchPlaylistById(playlistId ?? ""),
-    enabled: !!playlistId,
+    queryFn: () => playlistsApi.fetchPlaylistById(playlistId),
   })
 
-  if (isPending) {
-    return <h1>Loading...</h1>
-  }
-  if (!data) {
-    return <h1>Плейлист не найден</h1>
-  }
+  if (isPending) return <Loader />
+
+  if (!data) return <h1>Плейлист не найден</h1>
 
   return (
     <Layout>

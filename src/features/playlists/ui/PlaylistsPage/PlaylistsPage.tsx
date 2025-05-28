@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { Layout, PageTitle } from "@/common/components"
+import { Layout, Loader, PageTitle } from "@/common/components"
 import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
 import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
 import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
@@ -24,7 +24,7 @@ export const PlaylistsPage = () => {
       <div className={s.typeSwitcherWrapper}>
         <PlaylistTypeSwitcher type={type} setType={setType} />
       </div>
-      {isPending ? <span>Loading...</span> : <PlaylistsList playlists={data?.data.data || []} />}
+      {isPending ? <Loader /> : <PlaylistsList playlists={data?.data.data || []} />}
     </Layout>
   )
 }
