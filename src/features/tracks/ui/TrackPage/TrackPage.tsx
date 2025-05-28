@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from "react-router"
 import { useQuery } from "@tanstack/react-query"
-import { Layout, PageTitle, Path } from "@/common"
+import { Path } from "@/common/routing"
+import { Layout, PageTitle } from "@/common/components"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
 

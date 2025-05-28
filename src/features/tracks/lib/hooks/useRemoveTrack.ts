@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
-import { type Nullable, showErrorToast } from "@/common"
+import { showErrorToast } from "@/common/utils"
+import type { Nullable } from "@/common/types"
 import { queryClient } from "@/main.tsx"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 

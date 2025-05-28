@@ -1,5 +1,5 @@
 import { ToastContainer } from "react-toastify"
-import { Header } from "@/common"
+import { Header } from "@/common/components"
 import { Routing } from "@/common/routing"
 
 export function App() {

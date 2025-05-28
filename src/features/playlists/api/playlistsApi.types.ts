@@ -1,4 +1,4 @@
-import type { Meta } from "@/common"
+import type { Meta } from "@/common/types"
 
 export type Playlist = {
   id: string

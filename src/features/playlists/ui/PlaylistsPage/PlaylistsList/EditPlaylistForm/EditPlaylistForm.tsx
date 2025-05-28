@@ -1,5 +1,5 @@
-import type { Nullable } from "@/common"
 import { type SubmitHandler, type UseFormHandleSubmit, type UseFormRegister } from "react-hook-form"
+import type { Nullable } from "@/common/types"
 import type { Playlist, UpdatePlaylistArgs } from "../../../../api/playlistsApi.types.ts"
 
 type Props = {

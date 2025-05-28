@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Navigate, useParams } from "react-router"
-import { Path } from "@/common"
+import { Path } from "@/common/routing"
 import { queryClient } from "@/main.tsx"
 import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
 import { TrackItem } from "../../../../tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"

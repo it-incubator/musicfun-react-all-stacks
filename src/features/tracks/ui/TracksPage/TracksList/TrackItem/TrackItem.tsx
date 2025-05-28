@@ -1,4 +1,4 @@
-import { Path } from "@/common"
+import { Path } from "@/common/routing"
 import type { ReactNode } from "react"
 import { Link } from "react-router"
 import type { BaseAttributes, TrackDetails } from "../../../../api/tracksApi.types.ts"

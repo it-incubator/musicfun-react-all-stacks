@@ -1,10 +1,10 @@
 import type { ChangeEvent } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/main.tsx"
-import { showErrorToast } from "@/common"
-import noCover from "../../../../../../../assets/img/no-cover.png"
+import { showErrorToast } from "@/common/utils"
 import { PlaylistQueryKey, playlistsApi } from "../../../../../api/playlistsApi.ts"
 import type { Playlist } from "../../../../../api/playlistsApi.types.ts"
+import noCover from "@/assets/img/no-cover.png"
 import s from "./PlaylistCover.module.css"
 
 type Props = {

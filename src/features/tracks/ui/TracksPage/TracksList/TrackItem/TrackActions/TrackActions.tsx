@@ -1,5 +1,5 @@
 import type { MouseEvent } from "react"
-import type { Nullable } from "@/common"
+import type { Nullable } from "@/common/types"
 import type { FetchTracksAttributes, TrackDetails } from "../../../../../api/tracksApi.types.ts"
 
 type Props = {

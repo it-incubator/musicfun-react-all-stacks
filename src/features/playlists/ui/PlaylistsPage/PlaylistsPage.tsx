@@ -1,11 +1,11 @@
-import { Layout, PageTitle } from "@/common"
-import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { Layout, PageTitle } from "@/common/components"
 import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
 import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
-import s from "./PlaylistsPage.module.css"
 import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
 import { PlaylistTypeSwitcher } from "./PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
+import s from "./PlaylistsPage.module.css"
 
 export type PlaylistType = "all" | "my"
 

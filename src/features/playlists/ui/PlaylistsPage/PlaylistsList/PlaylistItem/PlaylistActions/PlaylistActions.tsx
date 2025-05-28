@@ -1,5 +1,7 @@
 import { Link } from "react-router"
-import { type Nullable, Path } from "@/common"
+import { Path } from "@/common/routing"
+import type { Nullable } from "@/common/types"
+
 import s from "./PlaylistActions.module.css"
 import type { Playlist } from "../../../../../api/playlistsApi.types.ts"
 

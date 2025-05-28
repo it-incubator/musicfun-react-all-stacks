@@ -1,5 +1,5 @@
 import { Main } from "@/app/Main.tsx"
-import { PageNotFound } from "@/common"
+import { PageNotFound } from "@/common/components"
 import { PlaylistPage } from "@/features/playlists/ui/PlaylistPage/PlaylistPage.tsx"
 import { PlaylistsPage } from "@/features/playlists/ui/PlaylistsPage/PlaylistsPage.tsx"
 import { TrackPage } from "@/features/tracks/ui/TrackPage/TrackPage.tsx"

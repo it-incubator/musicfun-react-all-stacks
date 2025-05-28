@@ -1,4 +1,4 @@
-import { type Nullable } from "@/common"
+import { type Nullable } from "@/common/types"
 import { PlaylistActions } from "./PlaylistActions/PlaylistActions.tsx"
 import type { Playlist } from "../../../../api/playlistsApi.types.ts"
 import { PlaylistCover } from "./PlaylistCover/PlaylistCover.tsx"

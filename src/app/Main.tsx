@@ -1,4 +1,4 @@
-import { Layout, PageTitle } from "@/common"
+import { Layout, PageTitle } from "@/common/components"
 
 export const Main = () => {
   return (

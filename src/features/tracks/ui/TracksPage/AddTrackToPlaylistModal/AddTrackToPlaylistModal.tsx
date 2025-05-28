@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Modal } from "@/common"
+import { Modal } from "@/common/components"
 import { SelectPlaylists } from "../../../../playlists/lib/components/SelectPlaylists/SelectPlaylists.tsx"
 
 type Props = {

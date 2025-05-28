@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from "react-router"
 import { useQuery } from "@tanstack/react-query"
-import { Layout, PageTitle, Path } from "@/common"
+import { Layout, PageTitle } from "@/common/components"
+import { Path } from "@/common/routing"
 import { PlaylistTracks } from "./PlaylistTracks/PlaylistTracks.tsx"
 import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
 import { PlaylistCover } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistCover/PlaylistCover.tsx"

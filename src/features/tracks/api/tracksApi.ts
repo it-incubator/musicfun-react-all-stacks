@@ -1,4 +1,4 @@
-import { instance } from "@/common"
+import { instance } from "@/common/instance"
 import { playlistsEndpoint } from "@/features/playlists/api/playlistsApi.ts"
 import type {
   FetchPlaylistsTracksResponse,

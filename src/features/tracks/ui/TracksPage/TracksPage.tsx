@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { Layout, PageTitle } from "@/common"
+import { Layout, PageTitle } from "@/common/components"
 import { AddTrackForm } from "./AddTrackForm/AddTrackForm.tsx"
 import { TracksList } from "./TracksList/TracksList.tsx"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"

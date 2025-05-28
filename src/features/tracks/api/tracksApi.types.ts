@@ -1,4 +1,4 @@
-import type { Meta, Nullable } from "@/common"
+import type { Meta, Nullable } from "@/common/types"
 
 export type TrackDetails<T> = {
   id: string

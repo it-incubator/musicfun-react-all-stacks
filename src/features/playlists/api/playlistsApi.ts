@@ -1,4 +1,4 @@
-import { instance } from "@/common/instance/instance.ts"
+import { instance } from "@/common/instance"
 import type {
   CreatePlaylistArgs,
   Playlist,
