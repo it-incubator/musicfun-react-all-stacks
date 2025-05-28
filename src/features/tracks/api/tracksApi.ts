@@ -20,11 +20,11 @@ export const tracksApi = {
     const { playlistId } = args
     return instance.get<FetchPlaylistsTracksResponse>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}`)
   },
-  fetchTrackById: (args: { playlistId: string; trackId: string }) => {
-    const { playlistId, trackId } = args
+  fetchTrackById: (args: { trackId: string }) => {
+    const { trackId } = args
     return instance.get<{
       data: TrackDetails<TrackDetailAttributes>
-    }>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}`)
+    }>(`${playlistsEndpoint}/${tracksEndpoint}/${trackId}`)
   },
   createTrack: (args: { playlistId: string; title: string; file: File }) => {
     const { playlistId, title, file } = args
@@ -50,10 +50,10 @@ export const tracksApi = {
   },
   addTrackToPlaylist: (args: { playlistId: string; trackId: string }) => {
     const { playlistId, trackId } = args
-    return instance.put<void>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}/add`)
+    return instance.post<void>(`${playlistsEndpoint}/${playlistId}/relationships${tracksEndpoint}`, {trackId})
   },
   removeTrackFromPlaylist: (args: { playlistId: string; trackId: string }) => {
     const { playlistId, trackId } = args
-    return instance.delete<void>(`${playlistsEndpoint}/${playlistId}${tracksEndpoint}/${trackId}`)
+    return instance.delete<void>(`${playlistsEndpoint}/${playlistId}/relationships${tracksEndpoint}/${trackId}`)
   },
 }

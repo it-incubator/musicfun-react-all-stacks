@@ -10,4 +10,12 @@ export default defineConfig({
       "@/": `${path.resolve(__dirname, "src")}/`,
     },
   },
+  server: {
+    host: true,   // ← or '0.0.0.0'
+    port: 5174,
+    allowedHosts: [
+      'domain.prod',      // <-- your custom host
+      'localhost',        // (optional) keep localhost too
+    ],
+  },
 })

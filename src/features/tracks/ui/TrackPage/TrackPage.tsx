@@ -13,7 +13,7 @@ export const TrackPage = () => {
 
   const { data, isPending } = useQuery({
     queryKey: [TrackQueryKey],
-    queryFn: () => tracksApi.fetchTrackById({ playlistId: "HZ", trackId }),
+    queryFn: () => tracksApi.fetchTrackById({ trackId }),
   })
 
   if (isPending) {
