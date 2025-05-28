@@ -1,5 +1,5 @@
 import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
-import { showErrorToast } from "@/common/utils"
+import { uploadCover } from "@/common/utils/uploadCover.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import type { ChangeEvent, MouseEvent } from "react"
@@ -8,7 +8,8 @@ import type { BaseAttributes, TrackDetails } from "../../../../../api/tracksApi.
 import s from "./TrackCover.module.css"
 
 type Props<T extends BaseAttributes> = {
-  track: TrackDetails<T>
+  // track: TrackDetails<T>
+  track: any
 }
 
 export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
@@ -19,29 +20,20 @@ export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
     },
   })
 
-  // TODO. Дублирование с PlaylistCover.
-  const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif"]
-
-    if (!allowedTypes.includes(file.type)) {
-      showErrorToast("Разрешены только изображения JPEG, PNG или GIF")
-      return
-    }
-
-    if (file.size > 100 * 1024) {
-      showErrorToast("Файл слишком большой (макс. 100 КБ)")
-      return
-    }
-
-    mutate({ trackId: track.id, file })
+  const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    uploadCover({
+      event,
+      maxSize: 100 * 1024,
+      onSuccess: (file) => mutate({ trackId: track.id, file }),
+    })
   }
 
   const stopPropagationHandler = (e: MouseEvent<HTMLInputElement>) => e.stopPropagation()
 
+  debugger
+
   const originalCover = track.attributes.images.find((img) => img.type === "original")
+  // const originalCover = track.attributes.images.main.find((img) => img.type === "original")
 
   return (
     <div className={"flex-container-column"}>
@@ -49,7 +41,7 @@ export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
       <input
         type="file"
         accept="image/jpeg,image/png,image/gif"
-        onChange={uploadHandler}
+        onChange={uploadCoverHandler}
         onClick={stopPropagationHandler}
       />
     </div>

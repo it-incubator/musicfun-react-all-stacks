@@ -1,10 +1,10 @@
-import type { ChangeEvent } from "react"
-import { useMutation } from "@tanstack/react-query"
+import { uploadCover } from "@/common/utils/uploadCover.ts"
 import { queryClient } from "@/main.tsx"
-import { showErrorToast } from "@/common/utils"
+import { useMutation } from "@tanstack/react-query"
+import noCover from "@/assets/img/no-cover.png"
+import type { ChangeEvent } from "react"
 import { PlaylistQueryKey, playlistsApi } from "../../../../../api/playlistsApi.ts"
 import type { Playlist } from "../../../../../api/playlistsApi.types.ts"
-import noCover from "@/assets/img/no-cover.png"
 import s from "./PlaylistCover.module.css"
 
 type Props = {
@@ -19,21 +19,12 @@ export const PlaylistCover = ({ playlist }: Props) => {
     },
   })
 
-  const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    if (!file.type.startsWith("image/")) {
-      showErrorToast("Загрузите изображение")
-      return
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      showErrorToast("Файл слишком большой (макс. 5 МБ)")
-      return
-    }
-
-    mutate({ playlistId: playlist.id, file })
+  const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    uploadCover({
+      event,
+      maxSize: 5 * 1024 * 1024,
+      onSuccess: (file) => mutate({ playlistId: playlist.id, file }),
+    })
   }
 
   const originalCover = playlist.attributes.images.main?.find((img) => img.type === "original")
@@ -42,7 +33,7 @@ export const PlaylistCover = ({ playlist }: Props) => {
     <div className={s.container}>
       <img src={originalCover ? originalCover.url : noCover} alt={"no cover image"} className={s.cover} />
       <div>
-        <input type="file" accept="image/*" onChange={uploadHandler} />
+        <input type="file" accept="image/jpeg,image/png,image/gif" onChange={uploadCoverHandler} />
       </div>
     </div>
   )
