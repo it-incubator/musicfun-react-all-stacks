@@ -6,19 +6,13 @@ type Props = {
   track: TrackDetails<FetchTracksAttributes>
   removeTrack: () => void
   removingTrackId: Nullable<string>
-  editTrack: () => void
   addTrackToPlaylist: () => void
 }
 
-export const TrackActions = ({ removingTrackId, removeTrack, track, editTrack, addTrackToPlaylist }: Props) => {
+export const TrackActions = ({ removingTrackId, removeTrack, track, addTrackToPlaylist }: Props) => {
   const addTrackToPlaylistHandler = (e: MouseEvent) => {
     e.preventDefault()
     addTrackToPlaylist()
-  }
-
-  const editTrackHandler = (e: MouseEvent) => {
-    e.preventDefault()
-    editTrack()
   }
 
   const removeTrackHandler = (e: MouseEvent) => {
@@ -29,7 +23,6 @@ export const TrackActions = ({ removingTrackId, removeTrack, track, editTrack, a
   return (
     <div>
       <button onClick={addTrackToPlaylistHandler}>Добавить трек в плейлист</button>
-      <button onClick={editTrackHandler}>Редактировать</button>
       <button onClick={removeTrackHandler} disabled={removingTrackId === track.id}>
         {removingTrackId === track.id ? "Удаление..." : "Удалить"}
       </button>

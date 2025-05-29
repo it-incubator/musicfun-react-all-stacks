@@ -58,23 +58,6 @@ export type FetchPlaylistsTracksResponse = {
   meta: Meta
 }
 
-// TODO: Часть свойств можно взять из TrackDetailAttributes, но не все. Пока хз, как лучше описывать типы
-export type UpdateTrackResponse = {
-  id: string
-  addedAt: string
-  deletedAt: null
-  duration: number
-  lyrics: string
-  processingStatus: "uploaded"
-  releaseDate: null
-  title: string
-  trackTags: []
-  updatedAt: string
-  userId: string
-  version: number
-  visibility: "private"
-}
-
 // Arguments
 // TODO: Часть свойств можно взять из TrackDetailAttributes, и добавить tagIds, artistsIds
 // Не факт что станет читаемее

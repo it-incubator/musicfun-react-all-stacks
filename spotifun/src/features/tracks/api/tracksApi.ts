@@ -8,7 +8,6 @@ import type {
   TrackDetailAttributes,
   TrackDetails,
   UpdateTrackArgs,
-  UpdateTrackResponse,
 } from "./tracksApi.types.ts"
 
 export const TrackQueryKey = "tracks"
@@ -51,16 +50,10 @@ export const tracksApi = {
     return instance.post<Cover>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "cover"), formData)
   },
 
-  updateTrack: ({
-    playlistId,
-    trackId,
-    payload,
-  }: {
-    playlistId: string
-    trackId: string
-    payload: UpdateTrackArgs
-  }) => {
-    return instance.put<UpdateTrackResponse>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId), payload)
+  updateTrack: ({ trackId, payload }: { trackId: string; payload: UpdateTrackArgs }) => {
+    return instance.put<{
+      data: TrackDetails<TrackDetailAttributes>
+    }>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId), payload)
   },
 
   addTrackToPlaylist: ({ playlistId, trackId }: { playlistId: string; trackId: string }) => {

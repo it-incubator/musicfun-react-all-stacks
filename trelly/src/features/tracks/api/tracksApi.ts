@@ -8,7 +8,6 @@ import type {
   TrackDetailAttributes,
   TrackDetails,
   UpdateTrackArgs,
-  UpdateTrackResponse,
 } from "./tracksApi.types.ts"
 
 export const TrackQueryKey = "tracks"
@@ -60,7 +59,7 @@ export const tracksApi = {
     trackId: string
     payload: UpdateTrackArgs
   }) => {
-    return instance.put<UpdateTrackResponse>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId), payload)
+    return instance.put<any>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId), payload)
   },
 
   addTrackToPlaylist: ({ playlistId, trackId }: { playlistId: string; trackId: string }) => {
