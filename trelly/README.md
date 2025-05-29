@@ -4,6 +4,10 @@
 
 [Swagger Документация](https://trelly.it-incubator.app/api)
 
+## 🅿️ Prettier
+
+Обязательно включите в настройках Webstorm `prettier`
+
 ## 🚀 Getting Started
 
 ### 1. Установка зависимостей
