@@ -7,9 +7,10 @@ type Props = {
   removeTrack: () => void
   removingTrackId: Nullable<string>
   addTrackToPlaylist: () => void
+  editTrack: (e: MouseEvent) => void
 }
 
-export const TrackActions = ({ removingTrackId, removeTrack, track, addTrackToPlaylist }: Props) => {
+export const TrackActions = ({ removingTrackId, removeTrack, track, addTrackToPlaylist, editTrack }: Props) => {
   const addTrackToPlaylistHandler = (e: MouseEvent) => {
     e.preventDefault()
     addTrackToPlaylist()
@@ -23,6 +24,7 @@ export const TrackActions = ({ removingTrackId, removeTrack, track, addTrackToPl
   return (
     <div>
       <button onClick={addTrackToPlaylistHandler}>Добавить трек в плейлист</button>
+      <button onClick={(e) => editTrack(e)}>Редактировать</button>
       <button onClick={removeTrackHandler} disabled={removingTrackId === track.id}>
         {removingTrackId === track.id ? "Удаление..." : "Удалить"}
       </button>

@@ -1,12 +1,12 @@
-import { useState } from "react"
-import type { MouseEvent } from "react"
-import { useMutation } from "@tanstack/react-query"
-import { type SubmitHandler, useForm } from "react-hook-form"
 import type { Nullable } from "@/common/types"
 import { showErrorToast } from "@/common/utils"
 import { queryClient } from "@/main.tsx"
+import { useMutation } from "@tanstack/react-query"
+import type { MouseEvent } from "react"
+import { useState } from "react"
+import { type SubmitHandler, useForm } from "react-hook-form"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
-import type { PlaylistItemAttributes, TrackDetails, UpdateTrackArgs } from "../../api/tracksApi.types.ts"
+import type { UpdateTrackArgs } from "../../api/tracksApi.types.ts"
 
 export const useEditTrack = () => {
   const [trackId, setTrackId] = useState<Nullable<string>>(null)
@@ -22,7 +22,8 @@ export const useEditTrack = () => {
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
   })
 
-  const editTrackHandler = (e: MouseEvent, track: Nullable<TrackDetails<PlaylistItemAttributes>>) => {
+  // const editTrackHandler = (e: MouseEvent, track: Nullable<TrackDetails<PlaylistItemAttributes>>) => {
+  const editTrackHandler = (e: MouseEvent, track: any) => {
     e.preventDefault()
 
     setTrackId(track?.id ?? null)

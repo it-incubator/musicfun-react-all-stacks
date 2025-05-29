@@ -1,3 +1,4 @@
+import { showErrorToast } from "@/common/utils"
 import { uploadCover } from "@/common/utils/uploadCover.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
@@ -14,9 +15,8 @@ type Props = {
 export const PlaylistCover = ({ playlist }: Props) => {
   const { mutate } = useMutation({
     mutationFn: playlistsApi.uploadPlaylistCover,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] })
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] }),
+    onError: (err: unknown) => showErrorToast("Ошибка при загрузке изображения", err),
   })
 
   const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {

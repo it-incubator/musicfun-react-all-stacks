@@ -21,12 +21,8 @@ export const PlaylistsList = ({ playlists }: Props) => {
 
   const { mutate: removePlaylistMutation } = useMutation({
     mutationFn: playlistsApi.removePlaylist,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] })
-    },
-    onError: (error: unknown) => {
-      showErrorToast("Не удалось удалить плейлист", error)
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] }),
+    onError: (err: unknown) => showErrorToast("Не удалось удалить плейлист", err),
   })
 
   const { mutate: updatePlaylistMutation } = useMutation({
@@ -64,24 +60,28 @@ export const PlaylistsList = ({ playlists }: Props) => {
 
   return (
     <div className={s.container}>
-      {playlists.map((playlist) => {
-        const isEditing = editId === playlist.id
+      {playlists.length ? (
+        playlists.map((playlist) => {
+          const isEditing = editId === playlist.id
 
-        return (
-          <div key={playlist.id} className={"item"}>
-            {isEditing ? (
-              <EditPlaylistForm
-                onSubmit={onSubmit}
-                editPlaylist={editPlaylist}
-                handleSubmit={handleSubmit}
-                register={register}
-              />
-            ) : (
-              <PlaylistItem playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
-            )}
-          </div>
-        )
-      })}
+          return (
+            <div key={playlist.id} className={"item"}>
+              {isEditing ? (
+                <EditPlaylistForm
+                  onSubmit={onSubmit}
+                  editPlaylist={editPlaylist}
+                  handleSubmit={handleSubmit}
+                  register={register}
+                />
+              ) : (
+                <PlaylistItem playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
+              )}
+            </div>
+          )
+        })
+      ) : (
+        <h1>Плейлисты не созданы</h1>
+      )}
     </div>
   )
 }
