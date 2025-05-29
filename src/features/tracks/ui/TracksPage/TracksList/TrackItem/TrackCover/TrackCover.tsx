@@ -29,8 +29,7 @@ export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
 
   const stopPropagationHandler = (e: MouseEvent<HTMLInputElement>) => e.stopPropagation()
 
-  const originalCover = track.attributes.images.find((img) => img.type === "original")
-  // const originalCover = track.attributes.images.main.find((img) => img.type === "original")
+  const originalCover = track.attributes.images.main.find((img) => img.type === "original")
 
   return (
     <div className={"flex-container-column"}>

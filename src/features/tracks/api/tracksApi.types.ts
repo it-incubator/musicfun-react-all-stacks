@@ -1,4 +1,4 @@
-import type { Cover, Meta, Nullable, User } from "@/common/types"
+import type { Images, Meta, Nullable, User } from "@/common/types"
 
 export type TrackDetails<T> = {
   id: string
@@ -11,7 +11,7 @@ export type BaseAttributes = {
   title: string
   addedAt: string
   attachments: TrackAttachment[]
-  images: Cover[]
+  images: Images
 }
 
 export type FetchTracksAttributes = BaseAttributes & {
@@ -34,6 +34,7 @@ export type PlaylistItemAttributes = BaseAttributes & {
   order: number
 }
 
+// Attachment
 export type TrackAttachment = {
   id: string
   addedAt: string

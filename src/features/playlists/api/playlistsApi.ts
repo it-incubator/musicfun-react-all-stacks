@@ -1,11 +1,6 @@
 import { instance } from "@/common/instance"
-import type {
-  CreatePlaylistArgs,
-  Playlist,
-  PlaylistsResponse,
-  UpdatePlaylistArgs,
-  UploadPlaylistCoverResponse,
-} from "./playlistsApi.types.ts"
+import type { Images } from "@/common/types"
+import type { CreatePlaylistArgs, Playlist, PlaylistsResponse, UpdatePlaylistArgs } from "./playlistsApi.types.ts"
 
 export const PlaylistQueryKey = "playlists"
 export const playlistsEndpoint = "/playlists"
@@ -31,7 +26,7 @@ export const playlistsApi = {
     const { playlistId, file } = args
     const formData = new FormData()
     formData.append("file", file)
-    return instance.post<UploadPlaylistCoverResponse>(`${playlistsEndpoint}/${playlistId}/images/main`, formData)
+    return instance.post<Images>(`${playlistsEndpoint}/${playlistId}/images/main`, formData)
   },
   fetchPlaylistById: (playlistId: string) => {
     return instance.get<{ data: Playlist }>(`${playlistsEndpoint}/${playlistId}`)
