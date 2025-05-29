@@ -1,24 +1,30 @@
-# Spotifun
+# Trelly
 
-## Getting Started
+## 📗 Swagger
 
-### 1. Install dependencies:
+[Swagger Документация](https://trelly.it-incubator.app/api)
+
+## 🚀 Getting Started
+
+### 1. Установка зависимостей
 
 ```bash
 pnpm i
 ```
 
-### 2. Access token
+### 2. Переменные окружения
 
-В файле `.env` замените переменные `VITE_AUTH_TOKEN`, который можно получить при логинизации из `accessToken`
+В файле `.env` замените:
 
-### 3. Start app:
+- `VITE_AUTH_TOKEN`, который можно получить при логинизации из `accessToken`
+
+- `VITE_API_KEY`
+
+### 3. Запуск приложения
 
 ```bash
 pnpm dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 Happy hacking 🚀
 
