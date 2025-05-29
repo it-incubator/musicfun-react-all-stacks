@@ -1,24 +1,9 @@
-# Spotifun
+# Spotifun and trelly apps
 
-## Getting Started
+## Spotifun
 
-### 1. Install dependencies:
+Для того, чтобы запустить `Spotifun` перейдите в директорию `spotifun` и далее смотрите `Readme.md`
 
-```bash
-pnpm i
-```
+## Trelly
 
-### 2. Access token
-
-В файле `.env` замените переменные `VITE_AUTH_TOKEN`, который можно получить при логинизации из `accessToken`
-
-### 3. Start app:
-
-```bash
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-Happy hacking 🚀
-
+Для того, чтобы запустить `Trelly` перейдите в директорию `trelly` и далее смотрите `Readme.md`
