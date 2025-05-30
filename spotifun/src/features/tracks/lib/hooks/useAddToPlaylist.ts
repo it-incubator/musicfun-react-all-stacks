@@ -1,9 +1,9 @@
-import { useState } from "react"
-import { useMutation } from "@tanstack/react-query"
 import type { Nullable } from "@/common/types"
 import { showErrorToast, showSuccessToast } from "@/common/utils"
-import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 import { queryClient } from "@/main.tsx"
+import { useMutation } from "@tanstack/react-query"
+import { type MouseEvent, useState } from "react"
+import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 
 export const useAddToPlaylist = () => {
   const [modalTrackId, setModalTrackId] = useState<Nullable<string>>(null)
@@ -18,10 +18,15 @@ export const useAddToPlaylist = () => {
     onError: (err: unknown) => showErrorToast("Ошибка при добавлении трека в плейлсит", err),
   })
 
+  const openModal = (e: MouseEvent, trackId: string) => {
+    e.preventDefault()
+    setModalTrackId(trackId)
+  }
+
   const addTrackToPlaylist = (playlistId: string) => {
     if (!modalTrackId) return
     mutate({ trackId: modalTrackId, playlistId })
   }
 
-  return { modalTrackId, setModalTrackId, addTrackToPlaylist }
+  return { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal }
 }

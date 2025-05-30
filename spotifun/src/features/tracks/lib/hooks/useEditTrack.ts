@@ -22,8 +22,8 @@ export const useEditTrack = () => {
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
   })
 
-  // const editTrackHandler = (e: MouseEvent, track: Nullable<TrackDetails<PlaylistItemAttributes>>) => {
-  const editTrackHandler = (e: MouseEvent, track: any) => {
+  // const editTrack = (e: MouseEvent, track: Nullable<TrackDetails<PlaylistItemAttributes>>) => {
+  const editTrack = (e: MouseEvent, track: any) => {
     e.preventDefault()
 
     setTrackId(track?.id ?? null)
@@ -41,5 +41,5 @@ export const useEditTrack = () => {
     mutate({ trackId, payload })
   }
 
-  return { register, handleSubmit, onSubmit, trackId, editTrackHandler }
+  return { register, handleSubmit, onSubmit, trackId, editTrack }
 }

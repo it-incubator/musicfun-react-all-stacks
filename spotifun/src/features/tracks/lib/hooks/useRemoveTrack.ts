@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { type MouseEvent, useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { showErrorToast } from "@/common/utils"
 import type { Nullable } from "@/common/types"
@@ -15,7 +15,8 @@ export const useRemoveTrack = () => {
     onSettled: () => setRemovingTrackId(null),
   })
 
-  const removeTrack = (trackId: string) => {
+  const removeTrack = (e: MouseEvent, trackId: string) => {
+    e.preventDefault()
     if (confirm("Вы уверены, что хотите удалить трек?")) {
       setRemovingTrackId(trackId)
       mutate(trackId)

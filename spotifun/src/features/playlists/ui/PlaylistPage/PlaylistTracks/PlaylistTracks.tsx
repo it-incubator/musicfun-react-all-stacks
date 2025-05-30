@@ -1,6 +1,7 @@
 import { Navigate, useParams } from "react-router"
 import { Path } from "@/common/routing"
 import { useFetchTracksInPlaylist } from "../../../lib/hooks/useFetchTracksInPlaylist.ts"
+import { useRemoveTrack } from "../../../../tracks/lib/hooks/useRemoveTrack.ts"
 import type { PlaylistItemAttributes } from "../../../../tracks/api/tracksApi.types.ts"
 import { useEditTrack } from "../../../../tracks/lib/hooks/useEditTrack.ts"
 import { EditTrackForm } from "../../../../tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
@@ -11,8 +12,9 @@ export const PlaylistTracks = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()
 
   const { tracks } = useFetchTracksInPlaylist(playlistId)
-  const { register, handleSubmit, onSubmit, trackId, editTrackHandler } = useEditTrack()
+  const { register, handleSubmit, onSubmit, trackId, editTrack } = useEditTrack()
   const { removeTrackFromPlaylist } = useRemoveTrackFromPlaylist(playlistId)
+  const { removingTrackId, removeTrack } = useRemoveTrack()
 
   if (!playlistId) return <Navigate to={Path.NotFound} />
 
@@ -31,13 +33,16 @@ export const PlaylistTracks = () => {
                 register={register}
                 onSubmit={onSubmit}
                 handleSubmit={handleSubmit}
-                editTrack={(e) => editTrackHandler(e, null)}
+                editTrack={(e) => editTrack(e, null)}
               />
             ) : (
               <TrackItem<PlaylistItemAttributes> track={track}>
                 <div>
-                  <button onClick={(e) => editTrackHandler(e, track)}>Редактировать</button>
+                  <button onClick={(e) => editTrack(e, track)}>Редактировать</button>
                   <button onClick={(e) => removeTrackFromPlaylist(e, track.id)}>Удалить трек из плейлиста</button>
+                  <button onClick={(e) => removeTrack(e, track.id)} disabled={removingTrackId === track.id}>
+                    {removingTrackId === track.id ? "Удаление..." : "Удалить"}
+                  </button>
                 </div>
               </TrackItem>
             )}
