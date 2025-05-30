@@ -1,37 +1,24 @@
-import { ArtistQueryKey, artistsApi } from "@/features/artists/api/artistsApi.ts"
-import { queryClient } from "@/main.tsx"
-import { useMutation, useQuery } from "@tanstack/react-query"
-import s from "./ArtistsList.module.css"
+import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { ArtistQueryKey, artistsApi } from "../../../api/artistsApi.ts"
+import { ArtistItem } from "./ArtistItem/ArtistItem.tsx"
+import { ArtistSearch } from "./ArtistSearch/ArtistSearch.tsx"
 
 export const ArtistsList = () => {
-  const { data } = useQuery({
-    queryKey: [ArtistQueryKey],
-    queryFn: () => artistsApi.findArtists(""),
-  })
+  const [search, setSearch] = useState("")
 
-  const { mutate: removeArtistMutation, isPending: isRemoving } = useMutation({
-    mutationFn: artistsApi.removeArtist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [ArtistQueryKey] }),
+  const { data } = useQuery({
+    queryKey: [ArtistQueryKey, search],
+    queryFn: () => artistsApi.findArtists(search),
   })
 
   return (
-    <div>
+    <>
+      <ArtistSearch search={search} setSearch={setSearch} />
       <h2>Список артистов</h2>
-      <>
-        {data?.data.map((artist) => {
-          const { name, id } = artist
-          return (
-            <div key={id} className={`item item--fullwidth flex-container ${s.container}`}>
-              <div>
-                <b>Name:</b> <span>{name}</span>
-              </div>
-              <button onClick={() => removeArtistMutation(id)} disabled={isRemoving}>
-                {isRemoving ? "Удаление..." : "Удалить"}
-              </button>
-            </div>
-          )
-        })}
-      </>
-    </div>
+      {data?.data.map((artist) => {
+        return <ArtistItem artist={artist} key={artist.id} />
+      })}
+    </>
   )
 }
