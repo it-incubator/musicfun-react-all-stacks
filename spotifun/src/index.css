@@ -4,6 +4,7 @@
     font-weight: 400;
 }
 
+/* Link  */
 .link {
     color: #007bff;
     text-decoration: none;
@@ -12,6 +13,10 @@
 
 .link:hover {
     text-decoration: underline;
+}
+
+.activeLink {
+    font-weight: bold;
 }
 
 
