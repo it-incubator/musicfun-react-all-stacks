@@ -1,4 +1,5 @@
 import type { Images, Meta, Nullable, User } from "@/common/types"
+import type { Artist } from "@/features/artists/api/artistsApi.types.ts"
 
 export type TrackDetails<T> = {
   id: string
@@ -26,7 +27,7 @@ export type TrackDetailAttributes = BaseAttributes & {
   processingStatus: "uploaded" // TODO: какие еще будут статусы ?
   visibility: "private" // TODO: какие еще будут типы ?
   tags: { id: string; originalName: string }[]
-  artists: { id: string; name: string }[]
+  artists: Artist[]
 }
 
 export type PlaylistItemAttributes = BaseAttributes & {
