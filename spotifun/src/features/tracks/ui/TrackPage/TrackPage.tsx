@@ -1,8 +1,10 @@
 import { Layout, Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
 import { useAddToPlaylist } from "@/features/tracks/lib/hooks/useAddToPlaylist.ts"
+import { useEditTrack } from "@/features/tracks/lib/hooks/useEditTrack.ts"
 import { useRemoveTrack } from "@/features/tracks/lib/hooks/useRemoveTrack.ts"
 import { AddTrackToPlaylistModal } from "@/features/tracks/ui/TracksPage/AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
+import { EditTrackForm } from "@/features/tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
 import { useQuery } from "@tanstack/react-query"
 import { Link, Navigate, useNavigate, useParams } from "react-router"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
@@ -19,10 +21,9 @@ export const TrackPage = () => {
     queryFn: () => tracksApi.fetchTrackById(trackId as string),
   })
 
-  const { removingTrackId, removeTrack } = useRemoveTrack(() => {
-    navigate(Path.Tracks)
-  })
+  const { removingTrackId, removeTrack } = useRemoveTrack(() => navigate(Path.Tracks))
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
+  const { register, handleSubmit, onSubmit, trackId: editId, editTrack } = useEditTrack()
 
   if (!trackId) return <Navigate to={Path.NotFound} />
 
@@ -42,14 +43,25 @@ export const TrackPage = () => {
           Вернуться назад
         </Link>
         <PageTitle>Информация о треке</PageTitle>
-        <TrackItem<TrackDetailAttributes> track={data?.data.data}>
-          <div>
-            <button onClick={(e) => openModal(e, trackId)}>Добавить трек в плейлист</button>
-            <button onClick={(e) => removeTrack(e, trackId)} disabled={removingTrackId === trackId}>
-              {removingTrackId === trackId ? "Удаление..." : "Удалить"}
-            </button>
-          </div>
-        </TrackItem>
+
+        {editId ? (
+          <EditTrackForm
+            register={register}
+            onSubmit={onSubmit}
+            handleSubmit={handleSubmit}
+            editTrack={(e) => editTrack(e, null)}
+          />
+        ) : (
+          <TrackItem<TrackDetailAttributes> track={data?.data.data}>
+            <div>
+              <button onClick={(e) => openModal(e, trackId)}>Добавить трек в плейлист</button>
+              <button onClick={(e) => editTrack(e, data?.data.data)}>Редактировать</button>
+              <button onClick={(e) => removeTrack(e, trackId)} disabled={removingTrackId === trackId}>
+                {removingTrackId === trackId ? "Удаление..." : "Удалить"}
+              </button>
+            </div>
+          </TrackItem>
+        )}
       </Layout>
     </>
   )

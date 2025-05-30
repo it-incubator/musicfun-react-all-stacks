@@ -24,6 +24,7 @@ export const useEditTrack = () => {
 
   // const editTrack = (e: MouseEvent, track: Nullable<TrackDetails<PlaylistItemAttributes>>) => {
   const editTrack = (e: MouseEvent, track: any) => {
+    debugger
     e.preventDefault()
 
     setTrackId(track?.id ?? null)
