@@ -1,34 +1,22 @@
-import { useQuery } from "@tanstack/react-query"
 import { Navigate, useParams } from "react-router"
 import { Path } from "@/common/routing"
-import { useRemoveTrackFromPlaylist } from "../../../lib/hooks/useRemoveTrackFromPlaylist.ts"
-import { TrackQueryKey, tracksApi } from "../../../../tracks/api/tracksApi.ts"
+import { useFetchTracksInPlaylist } from "../../../lib/hooks/useFetchTracksInPlaylist.ts"
 import type { PlaylistItemAttributes } from "../../../../tracks/api/tracksApi.types.ts"
 import { useEditTrack } from "../../../../tracks/lib/hooks/useEditTrack.ts"
 import { EditTrackForm } from "../../../../tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
 import { TrackItem } from "../../../../tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
+import { useRemoveTrackFromPlaylist } from "../../../lib/hooks/useRemoveTrackFromPlaylist.ts"
 
 export const PlaylistTracks = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()
 
+  const { tracks } = useFetchTracksInPlaylist(playlistId)
   const { register, handleSubmit, onSubmit, trackId, editTrackHandler } = useEditTrack()
   const { removeTrackFromPlaylist } = useRemoveTrackFromPlaylist(playlistId)
 
-  const { data } = useQuery({
-    queryKey: [TrackQueryKey, playlistId],
-    queryFn: () => tracksApi.fetchTracksInPlaylist({ playlistId: playlistId as string }),
-    enabled: !!playlistId,
-  })
+  if (!playlistId) return <Navigate to={Path.NotFound} />
 
-  if (!playlistId) {
-    return <Navigate to={Path.NotFound} />
-  }
-
-  const tracks = data?.data.data ?? []
-
-  if (tracks.length === 0) {
-    return <h2>В данном плейлисте треков нет 😢</h2>
-  }
+  if (tracks.length === 0) return <h2>В данном плейлисте треков нет 😢</h2>
 
   return (
     <>
