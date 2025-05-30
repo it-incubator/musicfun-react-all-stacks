@@ -8,16 +8,17 @@ import { PlaylistCover } from "../PlaylistsPage/PlaylistsList/PlaylistItem/Playl
 import { PlaylistDescription } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx"
 
 export const PlaylistPage = () => {
-  const { playlistId } = useParams<{ playlistId: string }>()
+  const { playlistId } = useParams<{ playlistId?: string }>()
+
+  const { data, isPending } = useQuery({
+    queryKey: [PlaylistQueryKey, playlistId],
+    queryFn: () => playlistsApi.fetchPlaylistById(playlistId as string),
+    enabled: !!playlistId,
+  })
 
   if (!playlistId) {
     return <Navigate to={Path.NotFound} />
   }
-
-  const { data, isPending } = useQuery({
-    queryKey: [PlaylistQueryKey, playlistId],
-    queryFn: () => playlistsApi.fetchPlaylistById(playlistId),
-  })
 
   if (isPending) return <Loader />
 

@@ -7,16 +7,16 @@ import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
 
 export const TrackPage = () => {
-  const { trackId } = useParams<{ trackId: string }>()
+  const { trackId } = useParams<{ trackId?: string }>()
+
+  const { data, isPending } = useQuery({
+    queryKey: [TrackQueryKey, trackId],
+    queryFn: () => tracksApi.fetchTrackById(trackId as string),
+  })
 
   if (!trackId) {
     return <Navigate to={Path.NotFound} />
   }
-
-  const { data, isPending } = useQuery({
-    queryKey: [TrackQueryKey, trackId],
-    queryFn: () => tracksApi.fetchTrackById(trackId),
-  })
 
   if (isPending) return <Loader />
 
