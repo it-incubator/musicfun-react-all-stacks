@@ -2,28 +2,26 @@ import { Path } from "@/common/routing"
 import { NavLink } from "react-router"
 import s from "./Header.module.css"
 
-export const Header = () => {
-  return (
-    <header className={s.wrapper}>
-      <nav>
-        <ul className={s.list}>
-          <li>
-            <NavLink className={"link"} to={Path.Main}>
-              Main
+const navItems = [
+  { to: Path.Main, label: "Main" },
+  { to: Path.Playlists, label: "Playlists" },
+  { to: Path.Tracks, label: "Tracks" },
+  { to: Path.Artists, label: "Artists" },
+  { to: Path.Tags, label: "Tags" },
+]
+
+export const Header = () => (
+  <header className={s.wrapper}>
+    <nav>
+      <ul className={s.list}>
+        {navItems.map((item) => (
+          <li key={item.to}>
+            <NavLink to={item.to} className={({ isActive }) => `${s.link} ${isActive ? s.active : ""}`}>
+              {item.label}
             </NavLink>
           </li>
-          <li>
-            <NavLink className={"link"} to={Path.Playlists}>
-              Playlists
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className={"link"} to={Path.Tracks}>
-              Tracks
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-    </header>
-  )
-}
+        ))}
+      </ul>
+    </nav>
+  </header>
+)

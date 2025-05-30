@@ -6,3 +6,8 @@
     display: flex;
     gap: 40px;
 }
+
+.active {
+    color: #337ab7;
+    font-weight: bold;
+}

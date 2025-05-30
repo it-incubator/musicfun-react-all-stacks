@@ -1,4 +1,4 @@
-import { Layout, Loader, PageTitle } from "@/common/components"
+import { Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
 import { useAddToPlaylist } from "@/features/tracks/lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "@/features/tracks/lib/hooks/useEditTrack.ts"
@@ -38,7 +38,7 @@ export const TrackPage = () => {
         onClose={() => setModalTrackId(null)}
         onSave={addTrackToPlaylist}
       />
-      <Layout>
+      <>
         <Link className={"link"} to={Path.Tracks}>
           Вернуться назад
         </Link>
@@ -62,7 +62,7 @@ export const TrackPage = () => {
             </div>
           </TrackItem>
         )}
-      </Layout>
+      </>
     </>
   )
 }

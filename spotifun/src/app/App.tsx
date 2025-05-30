@@ -1,12 +1,14 @@
 import { ToastContainer } from "react-toastify"
-import { Header } from "@/common/components"
+import { Header, Layout } from "@/common/components"
 import { Routing } from "@/common/routing"
 
 export function App() {
   return (
     <>
       <Header />
-      <Routing />
+      <Layout>
+        <Routing />
+      </Layout>
       <ToastContainer />
     </>
   )
