@@ -1,24 +1,32 @@
-import { useState } from "react"
+import { useDebounceValue } from "@/common/hooks"
 import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 import { ArtistQueryKey, artistsApi } from "../../../api/artistsApi.ts"
 import { ArtistItem } from "./ArtistItem/ArtistItem.tsx"
 import { ArtistSearch } from "./ArtistSearch/ArtistSearch.tsx"
 
 export const ArtistsList = () => {
   const [search, setSearch] = useState("")
+  const [debouncedSearch] = useDebounceValue(search, 700)
 
-  const { data } = useQuery({
-    queryKey: [ArtistQueryKey, search],
-    queryFn: () => artistsApi.findArtists(search),
+  const { data, isPending } = useQuery({
+    queryKey: [ArtistQueryKey, debouncedSearch],
+    queryFn: () => artistsApi.findArtists(debouncedSearch),
   })
 
   return (
     <>
-      <ArtistSearch search={search} setSearch={setSearch} />
-      <h2>Список артистов</h2>
-      {data?.data.map((artist) => {
-        return <ArtistItem artist={artist} key={artist.id} />
-      })}
+      <ArtistSearch search={search} setSearch={setSearch} isPending={isPending} />
+      {Array.isArray(data?.data) && data.data.length ? (
+        <div>
+          <h2>Список артистов</h2>
+          {data?.data.map((artist) => {
+            return <ArtistItem artist={artist} key={artist.id} />
+          })}
+        </div>
+      ) : (
+        <h2>По заданному условию артисты не найдены. Измените параметры поиска</h2>
+      )}
     </>
   )
 }
