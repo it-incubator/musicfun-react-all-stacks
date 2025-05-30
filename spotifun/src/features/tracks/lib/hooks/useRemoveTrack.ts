@@ -1,16 +1,20 @@
 import { type MouseEvent, useState } from "react"
 import { useMutation } from "@tanstack/react-query"
-import { showErrorToast } from "@/common/utils"
+import { showErrorToast, showSuccessToast } from "@/common/utils"
 import type { Nullable } from "@/common/types"
 import { queryClient } from "@/main.tsx"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
 
-export const useRemoveTrack = () => {
+export const useRemoveTrack = (onSuccess?: () => void) => {
   const [removingTrackId, setRemovingTrackId] = useState<Nullable<string>>(null)
 
   const { mutate } = useMutation({
     mutationFn: tracksApi.removeTrack,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [TrackQueryKey] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
+      showSuccessToast("Трек удален")
+      onSuccess?.() // Чтобы сделать редирект на странице одного трека
+    },
     onError: (err: unknown) => showErrorToast("Не удалось удалить трек", err),
     onSettled: () => setRemovingTrackId(null),
   })

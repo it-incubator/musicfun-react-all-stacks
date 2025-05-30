@@ -1,12 +1,15 @@
-import { Link, Navigate, useParams } from "react-router"
-import { useQuery } from "@tanstack/react-query"
-import { Path } from "@/common/routing"
 import { Layout, Loader, PageTitle } from "@/common/components"
-import type { TrackDetailAttributes } from "../../api/tracksApi.types.ts"
+import { Path } from "@/common/routing"
+import { useRemoveTrack } from "@/features/tracks/lib/hooks/useRemoveTrack.ts"
+import { useQuery } from "@tanstack/react-query"
+import { Link, Navigate, useNavigate, useParams } from "react-router"
 import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
+import type { TrackDetailAttributes } from "../../api/tracksApi.types.ts"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
 
 export const TrackPage = () => {
+  const navigate = useNavigate()
+
   const { trackId } = useParams<{ trackId?: string }>()
 
   const { data, isPending } = useQuery({
@@ -14,9 +17,11 @@ export const TrackPage = () => {
     queryFn: () => tracksApi.fetchTrackById(trackId as string),
   })
 
-  if (!trackId) {
-    return <Navigate to={Path.NotFound} />
-  }
+  const { removingTrackId, removeTrack } = useRemoveTrack(() => {
+    navigate(Path.Tracks)
+  })
+
+  if (!trackId) return <Navigate to={Path.NotFound} />
 
   if (isPending) return <Loader />
 
@@ -28,7 +33,13 @@ export const TrackPage = () => {
         Вернуться назад
       </Link>
       <PageTitle>Информация о треке</PageTitle>
-      <TrackItem<TrackDetailAttributes> track={data?.data.data} />
+      <TrackItem<TrackDetailAttributes> track={data?.data.data}>
+        <div>
+          <button onClick={(e) => removeTrack(e, trackId)} disabled={removingTrackId === trackId}>
+            {removingTrackId === trackId ? "Удаление..." : "Удалить"}
+          </button>
+        </div>
+      </TrackItem>
     </Layout>
   )
 }
