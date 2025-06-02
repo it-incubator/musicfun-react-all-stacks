@@ -1,34 +1,34 @@
-import { ArtistQueryKey, artistsApi } from "@/features/artists/api/artistsApi.ts"
-import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import { type SubmitHandler, useForm } from "react-hook-form"
+import { queryClient } from "@/main.tsx"
+import { tagsApi, TagsQueryKey } from "../../../api/tagsApi.ts"
 
 type Inputs = {
-  name: string
+  value: string
 }
 
-export const AddArtistForm = () => {
+export const AddTagForm = () => {
   const { register, handleSubmit, reset } = useForm<Inputs>()
 
   const { mutate } = useMutation({
-    mutationFn: artistsApi.createArtist,
+    mutationFn: tagsApi.createTag,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [ArtistQueryKey] })
+      queryClient.invalidateQueries({ queryKey: [TagsQueryKey] })
       reset()
     },
   })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    mutate(data.name)
+    mutate(data.value)
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Создать нового исполнителя</h2>
       <div>
-        <input {...register("name")} placeholder="Введите имя артиста" />
+        <input {...register("value")} placeholder="Введите название тега" />
       </div>
-      <button>Создать исполнителя</button>
+      <button>Создать тег</button>
     </form>
   )
 }
