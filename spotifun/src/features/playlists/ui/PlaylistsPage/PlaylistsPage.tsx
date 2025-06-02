@@ -1,5 +1,6 @@
 import { playlistsKey } from "@/common/apiEntities"
-import { Loader, PageTitle } from "@/common/components"
+import { PageTitle, Pagination } from "@/common/components"
+import type { PlaylistsResponse } from "@/features/playlists/api/playlistsApi.types.ts"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { playlistsApi } from "../../api/playlistsApi.ts"
@@ -12,11 +13,21 @@ export type PlaylistType = "all" | "my"
 
 export const PlaylistsPage = () => {
   const [type, setType] = useState<PlaylistType>("all")
+  const [pageNumber, setPageNumber] = useState(1)
 
-  const { data, isPending } = useQuery({
-    queryKey: [playlistsKey, type],
-    queryFn: () => (type === "all" ? playlistsApi.fetchPlaylists() : playlistsApi.fetchMyPlaylists()),
+  const { data } = useQuery({
+    queryKey: [playlistsKey, type, pageNumber],
+    queryFn: () =>
+      type === "all"
+        ? playlistsApi.fetchPlaylists({
+            search: "",
+            pageNumber,
+          })
+        : playlistsApi.fetchMyPlaylists(),
   })
+
+  const playlists = data?.data.data || []
+  const meta = type === "all" ? (data?.data as PlaylistsResponse)?.meta : undefined
 
   return (
     <>
@@ -25,7 +36,8 @@ export const PlaylistsPage = () => {
       <div className={s.typeSwitcherWrapper}>
         <PlaylistTypeSwitcher type={type} setType={setType} />
       </div>
-      {isPending ? <Loader /> : <PlaylistsList playlists={data?.data.data || []} />}
+      <PlaylistsList playlists={playlists} />
+      {meta && <Pagination current={pageNumber} pagesCount={meta.pagesCount} onChange={setPageNumber} />}
     </>
   )
 }
