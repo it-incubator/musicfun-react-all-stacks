@@ -4,14 +4,8 @@ import type { Images } from "@/common/types"
 import type { CreatePlaylistArgs, Playlist, PlaylistsResponse, UpdatePlaylistArgs } from "./playlistsApi.types.ts"
 
 export const playlistsApi = {
-  fetchPlaylists: ({ pageSize = 4, pageNumber, search }: { pageSize?: number; pageNumber: number; search: string }) => {
-    return instance.get<PlaylistsResponse>(playlistsEndpoint, {
-      params: {
-        pageSize,
-        pageNumber,
-        search,
-      },
-    })
+  fetchPlaylists: (params: { pageSize?: number; pageNumber: number; search: string }) => {
+    return instance.get<PlaylistsResponse>(playlistsEndpoint, { params })
   },
   fetchMyPlaylists: () => {
     return instance.get<Omit<PlaylistsResponse, "meta">>(`${playlistsEndpoint}/my`)

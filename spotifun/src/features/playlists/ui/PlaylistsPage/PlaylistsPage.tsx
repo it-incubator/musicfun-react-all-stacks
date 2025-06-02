@@ -14,17 +14,24 @@ export type PlaylistType = "all" | "my"
 export const PlaylistsPage = () => {
   const [type, setType] = useState<PlaylistType>("all")
   const [pageNumber, setPageNumber] = useState(1)
+  const [pageSize, setPageSize] = useState(4)
 
   const { data } = useQuery({
-    queryKey: [playlistsKey, type, pageNumber],
+    queryKey: [playlistsKey, type, pageNumber, pageSize],
     queryFn: () =>
       type === "all"
         ? playlistsApi.fetchPlaylists({
             search: "",
             pageNumber,
+            pageSize,
           })
         : playlistsApi.fetchMyPlaylists(),
   })
+
+  const changePageSize = (size: number) => {
+    setPageSize(size)
+    setPageNumber(1)
+  }
 
   const playlists = data?.data.data || []
   const meta = type === "all" ? (data?.data as PlaylistsResponse)?.meta : undefined
@@ -36,8 +43,19 @@ export const PlaylistsPage = () => {
       <div className={s.typeSwitcherWrapper}>
         <PlaylistTypeSwitcher type={type} setType={setType} />
       </div>
+
       <PlaylistsList playlists={playlists} />
-      {meta && <Pagination current={pageNumber} pagesCount={meta.pagesCount} onChange={setPageNumber} />}
+      {meta && (
+        <>
+          <Pagination
+            current={pageNumber}
+            pagesCount={meta.pagesCount}
+            pageSize={pageSize}
+            changePageNumber={setPageNumber}
+            changePageSize={changePageSize}
+          />
+        </>
+      )}
     </>
   )
 }

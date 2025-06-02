@@ -1,8 +1,15 @@
+.container {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    margin: 0 auto;
+    gap: 40px;
+}
+
 .pagination {
     display: flex;
     gap: 8px;
     justify-content: center;
-    margin-top: 24px;
 }
 
 .pageButton {
