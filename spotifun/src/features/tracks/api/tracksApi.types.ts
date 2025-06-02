@@ -24,8 +24,8 @@ export type TrackDetailAttributes = BaseAttributes & {
   releaseDate: Nullable<string>
   updatedAt: string
   duration: number
-  processingStatus: "uploaded" // TODO: какие еще будут статусы ?
-  visibility: "private" // TODO: какие еще будут типы ?
+  processingStatus: TrackProcessingStatus
+  visibility: TrackVisibility
   tags: { id: string; originalName: string }[]
   artists: Artist[]
 }
@@ -63,8 +63,13 @@ export type FetchPlaylistsTracksResponse = {
 export type UpdateTrackArgs = {
   title?: string
   lyrics?: string
-  visibility?: "private"
+  visibility?: TrackVisibility
   releaseDate?: string
   tagIds?: string[]
   artistsIds?: string[]
 }
+
+// Literal types
+type TrackVisibility = "private" | "public"
+
+type TrackProcessingStatus = "uploaded" | "converting" | "ready"
