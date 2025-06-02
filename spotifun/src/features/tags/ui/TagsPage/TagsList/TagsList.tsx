@@ -1,29 +1,28 @@
-import s from "@/features/artists/ui/ArtistsPage/ArtistsList/ArtistSearch/ArtistSearch.module.css"
-import { tagsApi, TagsQueryKey } from "@/features/tags/api/tagsApi.ts"
-import { TagItem } from "@/features/tags/ui/TagsPage/TagsList/TagItem/TagItem.tsx"
+import { SearchInput } from "@/common/components"
+import { useDebounceValue } from "@/common/hooks"
+import { tagsApi, TagsQueryKey } from "../../../api/tagsApi.ts"
+import { TagItem } from "./TagItem/TagItem.tsx"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 
 export const TagsList = () => {
   const [search, setSearch] = useState("")
+  const [debouncedSearch] = useDebounceValue(search, 700)
 
-  const { data } = useQuery({
-    queryKey: [TagsQueryKey, search],
-    queryFn: () => tagsApi.findTags(search),
+  const { data, isPending } = useQuery({
+    queryKey: [TagsQueryKey, debouncedSearch],
+    queryFn: () => tagsApi.findTags(debouncedSearch),
   })
 
   return (
-    <div>
-      <>
-        <h1>TagsList</h1>
-        <input
-          className={s.search}
-          placeholder="Введите тег"
-          value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
-          autoFocus
-        />
-      </>
+    <>
+      <SearchInput
+        search={search}
+        setSearch={setSearch}
+        isPending={isPending}
+        title="Поиск по тегу"
+        placeholder="Введите тег"
+      />
       {Array.isArray(data?.data) && data.data.length ? (
         <div>
           <h2>Список тегов</h2>
@@ -34,6 +33,6 @@ export const TagsList = () => {
       ) : (
         <h2>По заданному условию теги не найдены. Измените параметры поиска</h2>
       )}
-    </div>
+    </>
   )
 }

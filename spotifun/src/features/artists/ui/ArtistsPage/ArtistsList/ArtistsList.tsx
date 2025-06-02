@@ -1,9 +1,9 @@
+import { SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { ArtistQueryKey, artistsApi } from "../../../api/artistsApi.ts"
 import { ArtistItem } from "./ArtistItem/ArtistItem.tsx"
-import { ArtistSearch } from "./ArtistSearch/ArtistSearch.tsx"
 
 export const ArtistsList = () => {
   const [search, setSearch] = useState("")
@@ -16,7 +16,13 @@ export const ArtistsList = () => {
 
   return (
     <>
-      <ArtistSearch search={search} setSearch={setSearch} isPending={isPending} />
+      <SearchInput
+        search={search}
+        setSearch={setSearch}
+        isPending={isPending}
+        title="Поиск по имени артиста"
+        placeholder="Введите имя"
+      />
       {Array.isArray(data?.data) && data.data.length ? (
         <div>
           <h2>Список артистов</h2>
