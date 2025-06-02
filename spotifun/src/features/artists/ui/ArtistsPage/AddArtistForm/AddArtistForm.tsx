@@ -10,7 +10,7 @@ type Inputs = {
 export const AddArtistForm = () => {
   const { register, handleSubmit, reset } = useForm<Inputs>()
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: artistsApi.createArtist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [ArtistQueryKey] })
@@ -28,7 +28,7 @@ export const AddArtistForm = () => {
       <div>
         <input {...register("name")} placeholder="Введите имя артиста" />
       </div>
-      <button>Создать исполнителя</button>
+      <button disabled={isPending}>Создать исполнителя</button>
     </form>
   )
 }
