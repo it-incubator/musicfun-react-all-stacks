@@ -1,5 +1,6 @@
 import { playlistsKey } from "@/common/apiEntities"
-import { PageTitle, Pagination } from "@/common/components"
+import { PageTitle, Pagination, SearchInput } from "@/common/components"
+import { useDebounceValue } from "@/common/hooks"
 import type { PlaylistsResponse } from "@/features/playlists/api/playlistsApi.types.ts"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
@@ -16,16 +17,13 @@ export const PlaylistsPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize, setPageSize] = useState(4)
 
-  const { data } = useQuery({
-    queryKey: [playlistsKey, type, pageNumber, pageSize],
+  const [search, setSearch] = useState("")
+  const [debouncedSearch] = useDebounceValue(search, 700)
+
+  const { data, isPending } = useQuery({
+    queryKey: [playlistsKey, type, pageNumber, pageSize, debouncedSearch],
     queryFn: () =>
-      type === "all"
-        ? playlistsApi.fetchPlaylists({
-            search: "",
-            pageNumber,
-            pageSize,
-          })
-        : playlistsApi.fetchMyPlaylists(),
+      type === "all" ? playlistsApi.fetchPlaylists({ search, pageNumber, pageSize }) : playlistsApi.fetchMyPlaylists(),
   })
 
   const changePageSize = (size: number) => {
@@ -43,7 +41,15 @@ export const PlaylistsPage = () => {
       <div className={s.typeSwitcherWrapper}>
         <PlaylistTypeSwitcher type={type} setType={setType} />
       </div>
-
+      {type === "all" && (
+        <SearchInput
+          search={search}
+          setSearch={setSearch}
+          isPending={isPending}
+          title="Поиск по названию плейлиста"
+          placeholder="Введите название плейлиста"
+        />
+      )}
       <PlaylistsList playlists={playlists} />
       {meta && (
         <>
