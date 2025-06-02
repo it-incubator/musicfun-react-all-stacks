@@ -7,11 +7,14 @@ import { playlistsApi } from "../../../api/playlistsApi.ts"
 import type { CreatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
 
 export const AddPlaylistForm = () => {
-  const { register, handleSubmit } = useForm<CreatePlaylistArgs>()
+  const { register, handleSubmit, reset } = useForm<CreatePlaylistArgs>()
 
   const { mutate } = useMutation({
     mutationFn: playlistsApi.createPlaylist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [playlistsKey] })
+      reset()
+    },
     onError: (err: unknown) => showErrorToast("Ошибка при создании плейлиста", err),
   })
 

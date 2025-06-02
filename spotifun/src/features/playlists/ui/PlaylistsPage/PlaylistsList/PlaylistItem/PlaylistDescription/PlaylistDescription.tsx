@@ -12,7 +12,7 @@ export const PlaylistDescription = ({ attributes }: Props) => {
         <b>title:</b> <span>{title}</span>
       </div>
       <div>
-        <b>description:</b> <span>{description}</span>
+        <b>description:</b> <span>{description || "Описание не добавлено"}</span>
       </div>
       <div>
         <b>tags:</b> <span>{tags.length ? tags.map((t) => t) : "Теги не добавлены"}</span>
