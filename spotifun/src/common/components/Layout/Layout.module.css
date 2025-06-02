@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 24px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 auto 200px;
     box-sizing: border-box;
 }
 

@@ -1,7 +1,9 @@
+import { PageTitle } from "@/common/components"
+
 export const TagsPage = () => {
   return (
     <div>
-      <h1>TagsPage</h1>
+      <PageTitle>Страница тегов</PageTitle>
     </div>
   )
 }
