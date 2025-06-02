@@ -8,7 +8,7 @@ import { useState } from "react"
 
 export const TagsList = () => {
   const [search, setSearch] = useState("")
-  const [debouncedSearch] = useDebounceValue(search, 700)
+  const [debouncedSearch] = useDebounceValue(search)
 
   const { data, isPending } = useQuery({
     queryKey: [tagsKey, debouncedSearch],

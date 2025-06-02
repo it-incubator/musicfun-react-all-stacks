@@ -8,7 +8,7 @@ import { ArtistItem } from "./ArtistItem/ArtistItem.tsx"
 
 export const ArtistsList = () => {
   const [search, setSearch] = useState("")
-  const [debouncedSearch] = useDebounceValue(search, 700)
+  const [debouncedSearch] = useDebounceValue(search)
 
   const { data, isPending } = useQuery({
     queryKey: [artistsKey, debouncedSearch],
