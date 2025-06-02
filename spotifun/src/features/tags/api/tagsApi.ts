@@ -1,7 +1,7 @@
 import { instance } from "@/common/instance"
-import type { Tag } from "@/features/tags/api/tagsApi.types.ts"
+import type { Tag } from "./tagsApi.types.ts"
 
-export const TagsQueryKey = "artists"
+export const TagsQueryKey = "tags"
 const tagsEndpoint = "tags"
 
 export const tagsApi = {
