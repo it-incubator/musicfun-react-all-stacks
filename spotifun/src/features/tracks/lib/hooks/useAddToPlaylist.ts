@@ -1,9 +1,10 @@
+import { tracksKey } from "@/common/apiEntities"
 import type { Nullable } from "@/common/types"
 import { showErrorToast, showSuccessToast } from "@/common/utils"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import { type MouseEvent, useState } from "react"
-import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
+import { tracksApi } from "../../api/tracksApi.ts"
 
 export const useAddToPlaylist = () => {
   const [modalTrackId, setModalTrackId] = useState<Nullable<string>>(null)
@@ -11,7 +12,7 @@ export const useAddToPlaylist = () => {
   const { mutate } = useMutation({
     mutationFn: tracksApi.addTrackToPlaylist,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
+      queryClient.invalidateQueries({ queryKey: [tracksKey] })
       setModalTrackId(null)
       showSuccessToast("Трек успешно добавлен")
     },

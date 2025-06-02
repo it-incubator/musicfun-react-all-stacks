@@ -1,3 +1,4 @@
+import { tracksKey } from "@/common/apiEntities"
 import { Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
 import { useAddToPlaylist } from "@/features/tracks/lib/hooks/useAddToPlaylist.ts"
@@ -7,7 +8,7 @@ import { AddTrackToPlaylistModal } from "@/features/tracks/ui/TracksPage/AddTrac
 import { EditTrackForm } from "@/features/tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
 import { useQuery } from "@tanstack/react-query"
 import { Link, Navigate, useNavigate, useParams } from "react-router"
-import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
+import { tracksApi } from "../../api/tracksApi.ts"
 import type { TrackDetailAttributes } from "../../api/tracksApi.types.ts"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
 
@@ -17,7 +18,7 @@ export const TrackPage = () => {
   const { trackId } = useParams<{ trackId?: string }>()
 
   const { data, isPending } = useQuery({
-    queryKey: [TrackQueryKey, trackId],
+    queryKey: [tracksKey, trackId],
     queryFn: () => tracksApi.fetchTrackById(trackId as string),
   })
 

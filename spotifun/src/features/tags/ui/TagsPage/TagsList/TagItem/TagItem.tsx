@@ -1,4 +1,5 @@
-import { tagsApi, TagsQueryKey } from "@/features/tags/api/tagsApi.ts"
+import { tagsKey } from "@/common/apiEntities"
+import { tagsApi } from "@/features/tags/api/tagsApi.ts"
 import type { Tag } from "../../../../api/tagsApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
@@ -13,7 +14,7 @@ export const TagItem = ({ tag }: Props) => {
 
   const { mutate, isPending: isRemoving } = useMutation({
     mutationFn: tagsApi.removeTag,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [TagsQueryKey] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [tagsKey] }),
   })
 
   return (

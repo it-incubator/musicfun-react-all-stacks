@@ -1,3 +1,4 @@
+import { tracksKey } from "@/common/apiEntities"
 import { type ChangeEvent, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
@@ -5,7 +6,7 @@ import { showErrorToast, showSuccessToast } from "@/common/utils"
 import type { Nullable } from "@/common/types"
 import { queryClient } from "@/main.tsx"
 import { SelectPlaylists } from "../../../../playlists/lib/components/SelectPlaylists/SelectPlaylists.tsx"
-import { TrackQueryKey, tracksApi } from "../../../api/tracksApi.ts"
+import { tracksApi } from "../../../api/tracksApi.ts"
 
 export const AddTrackForm = () => {
   const [file, setFile] = useState<Nullable<File>>(null)
@@ -21,7 +22,7 @@ export const AddTrackForm = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: tracksApi.createTrack,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
+      queryClient.invalidateQueries({ queryKey: [tracksKey] })
       showSuccessToast("Трек успешно загружен")
       reset()
       setFile(null)

@@ -1,7 +1,7 @@
+import { playlistsEndpoint, tracksEndpoint } from "@/common/apiEntities"
 import { instance } from "@/common/instance"
 import type { Cover } from "@/common/types"
 import { joinUrl } from "@/common/utils"
-import { playlistsEndpoint } from "@/features/playlists/api/playlistsApi.ts"
 import type {
   FetchPlaylistsTracksResponse,
   FetchTracksResponse,
@@ -10,8 +10,6 @@ import type {
   UpdateTrackArgs,
 } from "./tracksApi.types.ts"
 
-export const TrackQueryKey = "tracks"
-const tracksEndpoint = "tracks"
 const relationshipsSegment = "relationships"
 
 export const tracksApi = {

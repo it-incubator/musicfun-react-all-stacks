@@ -1,9 +1,10 @@
+import { tracksKey } from "@/common/apiEntities"
 import { type MouseEvent, useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { showErrorToast, showSuccessToast } from "@/common/utils"
 import type { Nullable } from "@/common/types"
 import { queryClient } from "@/main.tsx"
-import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
+import { tracksApi } from "../../api/tracksApi.ts"
 
 export const useRemoveTrack = (onSuccess?: () => void) => {
   const [removingTrackId, setRemovingTrackId] = useState<Nullable<string>>(null)
@@ -11,7 +12,7 @@ export const useRemoveTrack = (onSuccess?: () => void) => {
   const { mutate } = useMutation({
     mutationFn: tracksApi.removeTrack,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
+      queryClient.invalidateQueries({ queryKey: [tracksKey] })
       showSuccessToast("Трек удален")
       onSuccess?.() // Чтобы сделать редирект на странице одного трека
     },

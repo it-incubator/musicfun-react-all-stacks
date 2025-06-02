@@ -1,5 +1,6 @@
+import { playlistsKey } from "@/common/apiEntities"
 import { useQuery } from "@tanstack/react-query"
-import { PlaylistQueryKey, playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
+import { playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
 
 type Props = {
   onChange: (value: string) => void
@@ -7,7 +8,7 @@ type Props = {
 }
 
 export const SelectPlaylists = ({ onChange, value }: Props) => {
-  const { data } = useQuery({ queryKey: [PlaylistQueryKey, "my"], queryFn: playlistsApi.fetchMyPlaylists })
+  const { data } = useQuery({ queryKey: [playlistsKey, "my"], queryFn: playlistsApi.fetchMyPlaylists })
 
   return (
     <select onChange={(e) => onChange(e.currentTarget.value)} value={value}>

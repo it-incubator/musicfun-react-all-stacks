@@ -1,8 +1,9 @@
+import { playlistsKey } from "@/common/apiEntities"
 import { showErrorToast } from "@/common/utils"
 import { useMutation } from "@tanstack/react-query"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { queryClient } from "@/main.tsx"
-import { PlaylistQueryKey, playlistsApi } from "../../../api/playlistsApi.ts"
+import { playlistsApi } from "../../../api/playlistsApi.ts"
 import type { CreatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
 
 export const AddPlaylistForm = () => {
@@ -10,7 +11,7 @@ export const AddPlaylistForm = () => {
 
   const { mutate } = useMutation({
     mutationFn: playlistsApi.createPlaylist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
     onError: (err: unknown) => showErrorToast("Ошибка при создании плейлиста", err),
   })
 

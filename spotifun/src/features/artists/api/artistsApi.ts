@@ -1,8 +1,6 @@
+import { artistsEndpoint } from "@/common/apiEntities"
 import { instance } from "@/common/instance"
 import type { Artist } from "./artistsApi.types.ts"
-
-export const ArtistQueryKey = "artists"
-const artistsEndpoint = "artists"
 
 export const artistsApi = {
   findArtists: (name: string) => {

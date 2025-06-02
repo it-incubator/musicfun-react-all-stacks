@@ -1,9 +1,7 @@
+import { playlistsEndpoint } from "@/common/apiEntities"
 import { instance } from "@/common/instance"
 import type { Images } from "@/common/types"
 import type { CreatePlaylistArgs, Playlist, PlaylistsResponse, UpdatePlaylistArgs } from "./playlistsApi.types.ts"
-
-export const PlaylistQueryKey = "playlists"
-export const playlistsEndpoint = "/playlists"
 
 export const playlistsApi = {
   fetchPlaylists: () => {

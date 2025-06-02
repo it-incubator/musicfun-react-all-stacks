@@ -1,4 +1,5 @@
-import { ArtistQueryKey, artistsApi } from "@/features/artists/api/artistsApi.ts"
+import { artistsKey } from "@/common/apiEntities"
+import { artistsApi } from "@/features/artists/api/artistsApi.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import { type SubmitHandler, useForm } from "react-hook-form"
@@ -13,7 +14,7 @@ export const AddArtistForm = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: artistsApi.createArtist,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [ArtistQueryKey] })
+      queryClient.invalidateQueries({ queryKey: [artistsKey] })
       reset()
     },
   })

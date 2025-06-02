@@ -1,7 +1,8 @@
+import { playlistsKey } from "@/common/apiEntities"
 import { Loader, PageTitle } from "@/common/components"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
-import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
+import { playlistsApi } from "../../api/playlistsApi.ts"
 import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
 import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
 import s from "./PlaylistsPage.module.css"
@@ -13,7 +14,7 @@ export const PlaylistsPage = () => {
   const [type, setType] = useState<PlaylistType>("all")
 
   const { data, isPending } = useQuery({
-    queryKey: [PlaylistQueryKey, type],
+    queryKey: [playlistsKey, type],
     queryFn: () => (type === "all" ? playlistsApi.fetchPlaylists() : playlistsApi.fetchMyPlaylists()),
   })
 

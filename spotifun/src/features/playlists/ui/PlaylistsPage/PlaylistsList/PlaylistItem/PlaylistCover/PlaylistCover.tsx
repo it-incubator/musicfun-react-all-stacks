@@ -1,10 +1,11 @@
+import { playlistsKey } from "@/common/apiEntities"
 import { showErrorToast } from "@/common/utils"
 import { uploadCover } from "@/common/utils/uploadCover.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import noCover from "@/assets/img/no-cover.png"
 import type { ChangeEvent } from "react"
-import { PlaylistQueryKey, playlistsApi } from "../../../../../api/playlistsApi.ts"
+import { playlistsApi } from "../../../../../api/playlistsApi.ts"
 import type { Playlist } from "../../../../../api/playlistsApi.types.ts"
 import s from "./PlaylistCover.module.css"
 
@@ -15,7 +16,7 @@ type Props = {
 export const PlaylistCover = ({ playlist }: Props) => {
   const { mutate } = useMutation({
     mutationFn: playlistsApi.uploadPlaylistCover,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
     onError: (err: unknown) => showErrorToast("Ошибка при загрузке изображения", err),
   })
 

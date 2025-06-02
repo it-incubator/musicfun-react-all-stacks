@@ -1,4 +1,5 @@
-import { TrackQueryKey, tracksApi } from "@/features/tracks/api/tracksApi.ts"
+import { tracksKey } from "@/common/apiEntities"
+import { tracksApi } from "@/features/tracks/api/tracksApi.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import type { MouseEvent } from "react"
@@ -6,7 +7,7 @@ import type { MouseEvent } from "react"
 export const useRemoveTrackFromPlaylist = (playlistId?: string) => {
   const { mutate } = useMutation({
     mutationFn: tracksApi.removeTrackFromPlaylist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [TrackQueryKey, playlistId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [tracksKey, playlistId] }),
   })
 
   const removeTrackFromPlaylist = (e: MouseEvent, trackId: string) => {

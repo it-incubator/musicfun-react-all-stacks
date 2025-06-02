@@ -1,4 +1,5 @@
-import { ArtistQueryKey, artistsApi } from "@/features/artists/api/artistsApi.ts"
+import { artistsKey } from "@/common/apiEntities"
+import { artistsApi } from "@/features/artists/api/artistsApi.ts"
 import type { Artist } from "@/features/artists/api/artistsApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
@@ -13,7 +14,7 @@ export const ArtistItem = ({ artist }: Props) => {
 
   const { mutate, isPending: isRemoving } = useMutation({
     mutationFn: artistsApi.removeArtist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [ArtistQueryKey] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [artistsKey] }),
   })
 
   return (

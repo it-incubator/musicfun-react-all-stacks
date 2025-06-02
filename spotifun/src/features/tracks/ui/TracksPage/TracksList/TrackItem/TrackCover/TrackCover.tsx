@@ -1,9 +1,10 @@
 import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
+import { tracksKey } from "@/common/apiEntities"
 import { uploadCover } from "@/common/utils/uploadCover.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import type { ChangeEvent, MouseEvent } from "react"
-import { TrackQueryKey, tracksApi } from "../../../../../api/tracksApi.ts"
+import { tracksApi } from "../../../../../api/tracksApi.ts"
 import type { BaseAttributes, TrackDetails } from "../../../../../api/tracksApi.types.ts"
 import s from "./TrackCover.module.css"
 
@@ -14,9 +15,7 @@ type Props<T extends BaseAttributes> = {
 export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
   const { mutate } = useMutation({
     mutationFn: tracksApi.uploadTrackCover,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [tracksKey] }),
   })
 
   const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {

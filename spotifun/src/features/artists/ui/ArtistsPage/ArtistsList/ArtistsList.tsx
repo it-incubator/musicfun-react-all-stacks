@@ -1,8 +1,9 @@
+import { artistsKey } from "@/common/apiEntities"
 import { SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
-import { ArtistQueryKey, artistsApi } from "../../../api/artistsApi.ts"
+import { artistsApi } from "../../../api/artistsApi.ts"
 import { ArtistItem } from "./ArtistItem/ArtistItem.tsx"
 
 export const ArtistsList = () => {
@@ -10,7 +11,7 @@ export const ArtistsList = () => {
   const [debouncedSearch] = useDebounceValue(search, 700)
 
   const { data, isPending } = useQuery({
-    queryKey: [ArtistQueryKey, debouncedSearch],
+    queryKey: [artistsKey, debouncedSearch],
     queryFn: () => artistsApi.findArtists(debouncedSearch),
   })
 

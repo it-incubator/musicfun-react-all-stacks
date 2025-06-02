@@ -1,10 +1,11 @@
+import { playlistsKey } from "@/common/apiEntities"
 import { useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { showErrorToast } from "@/common/utils"
 import type { Nullable } from "@/common/types/common.types.ts"
 import { queryClient } from "@/main.tsx"
-import { PlaylistQueryKey, playlistsApi } from "../../../api/playlistsApi.ts"
+import { playlistsApi } from "../../../api/playlistsApi.ts"
 import type { Playlist, UpdatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
 import { EditPlaylistForm } from "./EditPlaylistForm/EditPlaylistForm.tsx"
 import { PlaylistItem } from "./PlaylistItem/PlaylistItem.tsx"
@@ -21,14 +22,14 @@ export const PlaylistsList = ({ playlists }: Props) => {
 
   const { mutate: removePlaylistMutation } = useMutation({
     mutationFn: playlistsApi.removePlaylist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
     onError: (err: unknown) => showErrorToast("Не удалось удалить плейлист", err),
   })
 
   const { mutate: updatePlaylistMutation } = useMutation({
     mutationFn: playlistsApi.updatePlaylist,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PlaylistQueryKey] })
+      queryClient.invalidateQueries({ queryKey: [playlistsKey] })
       setEditId(null)
     },
     onError: (error: unknown) => {

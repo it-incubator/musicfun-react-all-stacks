@@ -1,3 +1,4 @@
+import { tracksKey } from "@/common/apiEntities"
 import type { Nullable } from "@/common/types"
 import { showErrorToast } from "@/common/utils"
 import { queryClient } from "@/main.tsx"
@@ -5,7 +6,7 @@ import { useMutation } from "@tanstack/react-query"
 import type { MouseEvent } from "react"
 import { useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { TrackQueryKey, tracksApi } from "../../api/tracksApi.ts"
+import { tracksApi } from "../../api/tracksApi.ts"
 import type { BaseAttributes, TrackDetails, UpdateTrackArgs } from "../../api/tracksApi.types.ts"
 
 export const useEditTrack = () => {
@@ -16,7 +17,7 @@ export const useEditTrack = () => {
   const { mutate } = useMutation({
     mutationFn: tracksApi.updateTrack,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [TrackQueryKey] })
+      queryClient.invalidateQueries({ queryKey: [tracksKey] })
       setTrackId(null)
     },
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),

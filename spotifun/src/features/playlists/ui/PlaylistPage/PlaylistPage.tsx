@@ -1,8 +1,9 @@
+import { playlistsKey } from "@/common/apiEntities"
 import { Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
 import { useQuery } from "@tanstack/react-query"
 import { Link, Navigate, useParams } from "react-router"
-import { PlaylistQueryKey, playlistsApi } from "../../api/playlistsApi.ts"
+import { playlistsApi } from "../../api/playlistsApi.ts"
 import { PlaylistCover } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistCover/PlaylistCover.tsx"
 import { PlaylistDescription } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx"
 import { PlaylistTracks } from "./PlaylistTracks/PlaylistTracks.tsx"
@@ -11,7 +12,7 @@ export const PlaylistPage = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()
 
   const { data, isPending } = useQuery({
-    queryKey: [PlaylistQueryKey, playlistId],
+    queryKey: [playlistsKey, playlistId],
     queryFn: () => playlistsApi.fetchPlaylistById(playlistId as string),
     enabled: !!playlistId,
   })

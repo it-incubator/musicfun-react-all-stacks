@@ -1,8 +1,6 @@
+import { tagsEndpoint } from "@/common/apiEntities"
 import { instance } from "@/common/instance"
 import type { Tag } from "./tagsApi.types.ts"
-
-export const TagsQueryKey = "tags"
-const tagsEndpoint = "tags"
 
 export const tagsApi = {
   findTags: (value: string) => {
