@@ -11,7 +11,7 @@ type Props = {
 export const ArtistItem = ({ artist }: Props) => {
   const { name, id } = artist
 
-  const { mutate: removeArtistMutation, isPending: isRemoving } = useMutation({
+  const { mutate, isPending: isRemoving } = useMutation({
     mutationFn: artistsApi.removeArtist,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [ArtistQueryKey] }),
   })
@@ -21,7 +21,7 @@ export const ArtistItem = ({ artist }: Props) => {
       <div>
         <b>Name:</b> <span>{name}</span>
       </div>
-      <button onClick={() => removeArtistMutation(id)} disabled={isRemoving}>
+      <button onClick={() => mutate(id)} disabled={isRemoving}>
         {isRemoving ? "Удаление..." : "Удалить"}
       </button>
     </div>
