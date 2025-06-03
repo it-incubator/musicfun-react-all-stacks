@@ -15,7 +15,7 @@ export type PlaylistType = "all" | "my"
 export const PlaylistsPage = () => {
   const [type, setType] = useState<PlaylistType>("all")
   const [pageNumber, setPageNumber] = useState(1)
-  const [pageSize, setPageSize] = useState(4)
+  const [pageSize, setPageSize] = useState(16)
 
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounceValue(search)
@@ -31,7 +31,7 @@ export const PlaylistsPage = () => {
     setPageNumber(1)
   }
 
-  const playlists = data?.data.data || []
+  const playlists = (data?.data.data || []).slice().sort((a, b) => a.attributes.order - b.attributes.order)
   const meta = type === "all" ? (data?.data as PlaylistsResponse)?.meta : undefined
 
   return (

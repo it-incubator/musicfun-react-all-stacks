@@ -5,7 +5,7 @@ type Props = {
 }
 
 export const PlaylistDescription = ({ attributes }: Props) => {
-  const { title, description, tags, addedAt } = attributes
+  const { title, description, tags, addedAt, order } = attributes
   return (
     <>
       <div>
@@ -13,6 +13,9 @@ export const PlaylistDescription = ({ attributes }: Props) => {
       </div>
       <div>
         <b>description:</b> <span>{description || "Описание не добавлено"}</span>
+      </div>
+      <div>
+        <b>order:</b> <span>{order}</span>
       </div>
       <div>
         <b>tags:</b> <span>{tags.length ? tags.map((t) => t) : "Теги не добавлены"}</span>

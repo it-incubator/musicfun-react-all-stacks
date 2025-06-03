@@ -12,11 +12,11 @@ type Props = {
 
 export const PlaylistItem = ({ playlist, editPlaylist, removePlaylist }: Props) => {
   return (
-    <>
+    <div>
       <PlaylistCover playlist={playlist} />
       <PlaylistDescription attributes={playlist.attributes} />
       <hr />
       <PlaylistActions playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
-    </>
+    </div>
   )
 }
