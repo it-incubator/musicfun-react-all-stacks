@@ -1,3 +1,4 @@
+import { useRemovePlaylist } from "@/features/playlists/lib/hooks/useRemovePlaylist.ts"
 import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
@@ -22,19 +23,16 @@ type Props = {
 export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
   const [editId, setEditId] = useState<Nullable<string>>(null)
 
+  // Нужно чтобы DND отрабатывал без задержки.
+  // Чтобы не использовать useEffect можно попробовать реализовать через optimistic update
   const [playlists, setPlaylists] = useState(initialPlaylists)
-
   useEffect(() => {
     setPlaylists(initialPlaylists)
   }, [initialPlaylists])
 
   const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
 
-  const { mutate: removePlaylistMutation } = useMutation({
-    mutationFn: playlistsApi.removePlaylist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
-    onError: (err: unknown) => showErrorToast("Не удалось удалить плейлист", err),
-  })
+  const { removePlaylist } = useRemovePlaylist()
 
   const { mutate: updatePlaylistMutation } = useMutation({
     mutationFn: playlistsApi.updatePlaylist,
@@ -58,12 +56,6 @@ export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
       const { attributes } = playlist
       const { title, description, tags } = attributes
       reset({ title, description, tags })
-    }
-  }
-
-  const removePlaylist = (playlistId: string) => {
-    if (confirm("Вы уверены, что хотите удалить плейлист?")) {
-      removePlaylistMutation(playlistId)
     }
   }
 
@@ -113,7 +105,7 @@ export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
                       register={register}
                     />
                   ) : (
-                    <SortableItem id={playlist.id}>
+                    <SortableItem id={playlist.id} title={playlist.attributes.title}>
                       <PlaylistItem playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
                     </SortableItem>
                   )}
