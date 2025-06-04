@@ -1,28 +1,24 @@
+import { playlistsKey } from "@/common/apiEntities"
+import { showErrorToast } from "@/common/utils"
 import { useRemovePlaylist } from "@/features/playlists/lib/hooks/useRemovePlaylist.ts"
-import { useEffect, useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
+import { useUpdatePlaylist } from "@/features/playlists/lib/hooks/useUpdatePlaylist.ts"
+import { queryClient } from "@/main.tsx"
 import { DndContext, type DragEndEvent } from "@dnd-kit/core"
 import { arrayMove, SortableContext } from "@dnd-kit/sortable"
-
-import { queryClient } from "@/main.tsx"
-import { playlistsKey } from "@/common/apiEntities"
-import type { Nullable } from "@/common/types/common.types.ts"
-import { showErrorToast } from "@/common/utils"
-import { SortableItem } from "./SortableItem/SortableItem.tsx"
+import { useMutation } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
 import { playlistsApi } from "../../../api/playlistsApi.ts"
-import type { Playlist, UpdatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
+import type { Playlist } from "../../../api/playlistsApi.types.ts"
 import { EditPlaylistForm } from "./EditPlaylistForm/EditPlaylistForm.tsx"
 import { PlaylistItem } from "./PlaylistItem/PlaylistItem.tsx"
 import s from "./PlaylistsList.module.css"
+import { SortableItem } from "./SortableItem/SortableItem.tsx"
 
 type Props = {
   playlists: Playlist[]
 }
 
 export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
-  const [editId, setEditId] = useState<Nullable<string>>(null)
-
   // Нужно чтобы DND отрабатывал без задержки.
   // Чтобы не использовать useEffect можно попробовать реализовать через optimistic update
   const [playlists, setPlaylists] = useState(initialPlaylists)
@@ -30,34 +26,14 @@ export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
     setPlaylists(initialPlaylists)
   }, [initialPlaylists])
 
-  const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
-
   const { removePlaylist } = useRemovePlaylist()
-
-  const { mutate: updatePlaylistMutation } = useMutation({
-    mutationFn: playlistsApi.updatePlaylist,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [playlistsKey] })
-      setEditId(null)
-    },
-    onError: (err: unknown) => showErrorToast("Ошибка при обновлении плейлиста", err),
-  })
+  const { playlistId, editPlaylist, register, onSubmit, handleSubmit } = useUpdatePlaylist()
 
   const { mutate: reorderPlaylistMutation } = useMutation({
     mutationFn: playlistsApi.reorderPlaylist,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
     onError: (err: unknown) => showErrorToast("Не удалось обновить порядок плейлистов", err),
   })
-
-  const editPlaylist = (playlist: Nullable<Playlist>) => {
-    setEditId(playlist?.id || null)
-
-    if (playlist) {
-      const { attributes } = playlist
-      const { title, description, tags } = attributes
-      reset({ title, description, tags })
-    }
-  }
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
@@ -81,19 +57,13 @@ export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
     reorderPlaylistMutation({ playlistId, putAfterItemId })
   }
 
-  const onSubmit: SubmitHandler<UpdatePlaylistArgs> = (data) => {
-    if (!editId) return
-    const { tags, description, title } = data
-    updatePlaylistMutation({ playlistId: editId, payload: { title, description, tags } })
-  }
-
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <SortableContext items={playlists}>
         <div className={s.container}>
           {playlists.length ? (
             playlists.map((playlist) => {
-              const isEditing = editId === playlist.id
+              const isEditing = playlistId === playlist.id
 
               return (
                 <div key={playlist.id} className={"item"}>
