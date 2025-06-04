@@ -1,5 +1,6 @@
 import { TaskCard } from "@/features/dnd/DndPage/Column/TaskCard/TaskCard.tsx"
 import { useDroppable } from "@dnd-kit/core"
+import { SortableContext } from "@dnd-kit/sortable"
 import type { ColumnType, Task } from "../DndPage.tsx"
 
 type Props = {
@@ -12,7 +13,7 @@ export const Column = ({ column, tasks }: Props) => {
 
   const style = {
     color: isOver ? "red" : "black",
-    border: "1px solid green",
+    background: "lightgrey",
     minHeight: "400px",
     width: "300px",
     padding: "20px",
@@ -22,11 +23,11 @@ export const Column = ({ column, tasks }: Props) => {
   return (
     <div ref={setNodeRef} style={style}>
       <h2>{column.title}</h2>
-      <div>
+      <SortableContext items={tasks}>
         {tasks.map((task) => {
           return <TaskCard key={task.id} task={task} />
         })}
-      </div>
+      </SortableContext>
     </div>
   )
 }

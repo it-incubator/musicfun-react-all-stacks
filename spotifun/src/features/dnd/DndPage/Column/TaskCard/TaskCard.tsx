@@ -1,5 +1,5 @@
 import type { Task } from "@/features/dnd/DndPage/DndPage.tsx"
-import { useDraggable } from "@dnd-kit/core"
+import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 }
 
 export const TaskCard = ({ task }: Props) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: task.id })
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: task.id })
 
   const style = {
     background: "lightblue",
@@ -15,6 +15,7 @@ export const TaskCard = ({ task }: Props) => {
     padding: "10px",
     cursor: "grab",
     transform: CSS.Translate.toString(transform),
+    transition,
   }
 
   return (
