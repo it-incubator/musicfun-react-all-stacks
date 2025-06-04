@@ -5,7 +5,7 @@ import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 
 export const useRemovePlaylist = () => {
-  const { mutate: removePlaylistMutation } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: playlistsApi.removePlaylist,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
     onError: (err: unknown) => showErrorToast("Не удалось удалить плейлист", err),
@@ -13,7 +13,7 @@ export const useRemovePlaylist = () => {
 
   const removePlaylist = (playlistId: string) => {
     if (confirm("Вы уверены, что хотите удалить плейлист?")) {
-      removePlaylistMutation(playlistId)
+      mutate(playlistId)
     }
   }
 

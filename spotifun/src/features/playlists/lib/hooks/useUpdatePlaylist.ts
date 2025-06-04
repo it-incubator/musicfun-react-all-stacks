@@ -13,7 +13,7 @@ export const useUpdatePlaylist = () => {
 
   const [playlistId, setPlaylistId] = useState<Nullable<string>>(null)
 
-  const { mutate: updatePlaylistMutation } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: playlistsApi.updatePlaylist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [playlistsKey] })
@@ -35,7 +35,7 @@ export const useUpdatePlaylist = () => {
   const onSubmit: SubmitHandler<UpdatePlaylistArgs> = (data) => {
     if (!playlistId) return
     const { tags, description, title } = data
-    updatePlaylistMutation({ playlistId, payload: { title, description, tags } })
+    mutate({ playlistId, payload: { title, description, tags } })
   }
 
   return { register, handleSubmit, onSubmit, editPlaylist, playlistId }
