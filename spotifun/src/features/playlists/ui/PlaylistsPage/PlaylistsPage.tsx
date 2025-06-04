@@ -15,7 +15,7 @@ export type PlaylistType = "all" | "my"
 export const PlaylistsPage = () => {
   const [type, setType] = useState<PlaylistType>("all")
   const [pageNumber, setPageNumber] = useState(1)
-  const [pageSize, setPageSize] = useState(16)
+  const [pageSize, setPageSize] = useState(4)
 
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounceValue(search)

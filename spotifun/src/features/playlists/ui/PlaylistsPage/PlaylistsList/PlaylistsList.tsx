@@ -1,36 +1,22 @@
-import { playlistsKey } from "@/common/apiEntities"
-import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
-import { showErrorToast } from "@/common/utils"
-import type { Nullable } from "@/common/types/common.types.ts"
+import { DndContext, type DragEndEvent } from "@dnd-kit/core"
+import { arrayMove, SortableContext } from "@dnd-kit/sortable"
+
 import { queryClient } from "@/main.tsx"
+import { playlistsKey } from "@/common/apiEntities"
+import type { Nullable } from "@/common/types/common.types.ts"
+import { showErrorToast } from "@/common/utils"
+import { SortableItem } from "./SortableItem/SortableItem.tsx"
 import { playlistsApi } from "../../../api/playlistsApi.ts"
 import type { Playlist, UpdatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
 import { EditPlaylistForm } from "./EditPlaylistForm/EditPlaylistForm.tsx"
 import { PlaylistItem } from "./PlaylistItem/PlaylistItem.tsx"
 import s from "./PlaylistsList.module.css"
-import { closestCenter, DndContext } from "@dnd-kit/core"
-import { CSS } from "@dnd-kit/utilities"
 
 type Props = {
   playlists: Playlist[]
-}
-
-function SortableItem({ id, children }: { id: string; children: React.ReactNode }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id })
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.4 : 1,
-    cursor: "grab",
-  }
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {children}
-    </div>
-  )
 }
 
 export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
@@ -81,16 +67,23 @@ export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
     }
   }
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    if (!over || active.id === over.id) return
-    const oldIndex = playlists.findIndex((p) => p.id === active.id)
-    const newIndex = playlists.findIndex((p) => p.id === over.id)
+    const activeId = active.id as string
+    const overId = over && (over.id as string)
+
+    if (!overId || activeId === overId) return
+
+    // Локальное обновление
+    // https://docs.dndkit.com/presets/sortable#overview
+    const oldIndex = playlists.findIndex((p) => p.id === activeId)
+    const newIndex = playlists.findIndex((p) => p.id === overId)
     if (oldIndex === -1 || newIndex === -1) return
     const newList = arrayMove(playlists, oldIndex, newIndex)
     setPlaylists(newList)
+
     // Отправляем на сервер новый порядок (putAfterItemId = id предыдущего в списке)
-    const playlistId = active.id
+    const playlistId = activeId
     const putAfterItemId = newIndex > 0 ? newList[newIndex - 1].id : null
     if (!putAfterItemId) return
     reorderPlaylistMutation({ playlistId, putAfterItemId })
@@ -103,8 +96,8 @@ export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
   }
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={playlists.map((p) => p.id)} strategy={verticalListSortingStrategy}>
+    <DndContext onDragEnd={handleDragEnd}>
+      <SortableContext items={playlists}>
         <div className={s.container}>
           {playlists.length ? (
             playlists.map((playlist) => {
@@ -120,7 +113,7 @@ export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
                       register={register}
                     />
                   ) : (
-                    <SortableItem key={playlist.id} id={playlist.id}>
+                    <SortableItem id={playlist.id}>
                       <PlaylistItem playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
                     </SortableItem>
                   )}
