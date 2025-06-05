@@ -33,7 +33,8 @@ export const useEditTrack = () => {
   useEffect(() => {
     if (trackResponse) {
       const { title, lyrics, tags } = trackResponse.data.data.attributes
-      reset({ title, lyrics: lyrics ?? "", tagIds: tags?.map((tag) => tag.id) ?? [] })
+      reset({ title, lyrics: lyrics ?? "" })
+      setSelectedTags(tags?.map((tag) => tag.id) ?? [])
       setEnabled(false)
     }
   }, [trackResponse, reset])
