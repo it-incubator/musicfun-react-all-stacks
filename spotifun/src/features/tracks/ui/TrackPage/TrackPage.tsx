@@ -24,7 +24,7 @@ export const TrackPage = () => {
 
   const { removingTrackId, removeTrack } = useRemoveTrack(() => navigate(Path.Tracks))
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId: editId, editTrack } = useEditTrack()
+  const { register, handleSubmit, onSubmit, trackId: editId, editTrack, setSelectedTags, selectedTags } = useEditTrack()
 
   if (!trackId) return <Navigate to={Path.NotFound} />
 
@@ -50,13 +50,15 @@ export const TrackPage = () => {
             register={register}
             onSubmit={onSubmit}
             handleSubmit={handleSubmit}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
             editTrack={(e) => editTrack(e, null)}
           />
         ) : (
           <TrackItem<TrackDetailAttributes> track={data?.data.data}>
             <div>
               <button onClick={(e) => openModal(e, trackId)}>Добавить трек в плейлист</button>
-              <button onClick={(e) => editTrack(e, data?.data.data)}>Редактировать</button>
+              <button onClick={(e) => editTrack(e, trackId)}>Редактировать</button>
               <button onClick={(e) => removeTrack(e, trackId)} disabled={removingTrackId === trackId}>
                 {removingTrackId === trackId ? "Удаление..." : "Удалить"}
               </button>

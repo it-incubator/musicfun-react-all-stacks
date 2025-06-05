@@ -14,7 +14,7 @@ type Props = {
 export const TracksList = ({ tracks }: Props) => {
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId, editTrack } = useEditTrack()
+  const { register, handleSubmit, onSubmit, trackId, editTrack, selectedTags, setSelectedTags } = useEditTrack()
 
   return (
     <div className={s.container}>
@@ -28,19 +28,21 @@ export const TracksList = ({ tracks }: Props) => {
           const isEditing = trackId === track.id
 
           return (
-            <div>
+            <div key={track.id}>
               {isEditing ? (
                 <EditTrackForm
                   register={register}
                   onSubmit={onSubmit}
                   handleSubmit={handleSubmit}
+                  selectedTags={selectedTags}
+                  setSelectedTags={setSelectedTags}
                   editTrack={(e) => editTrack(e, null)}
                 />
               ) : (
-                <TrackItem<FetchTracksAttributes> track={track} key={track.id}>
+                <TrackItem<FetchTracksAttributes> track={track}>
                   <div>
                     <button onClick={(e) => openModal(e, track.id)}>Добавить трек в плейлист</button>
-                    <button onClick={(e) => editTrack(e, track)}>Редактировать</button>
+                    <button onClick={(e) => editTrack(e, track.id)}>Редактировать</button>
                     <button onClick={(e) => removeTrack(e, track.id)} disabled={removingTrackId === track.id}>
                       {removingTrackId === track.id ? "Удаление..." : "Удалить"}
                     </button>
