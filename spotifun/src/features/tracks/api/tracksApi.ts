@@ -27,13 +27,13 @@ export const tracksApi = {
     )
   },
 
-  createTrack: ({ playlistId, title, file }: { playlistId: string; title: string; file: File }) => {
+  createTrack: ({ title, file }: { title: string; file: File }) => {
     const formData = new FormData()
     formData.append("title", title)
     formData.append("file", file)
 
     return instance.post<{ data: TrackDetails<TrackDetailAttributes> }>(
-      joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, "upload"),
+      joinUrl(playlistsEndpoint, tracksEndpoint, "upload"),
       formData,
     )
   },
