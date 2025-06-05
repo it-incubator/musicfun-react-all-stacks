@@ -1,6 +1,6 @@
 import { tracksKey } from "@/common/apiEntities"
 import type { Nullable } from "@/common/types"
-import { showErrorToast } from "@/common/utils"
+import { showErrorToast, showSuccessToast } from "@/common/utils"
 import { queryClient } from "@/main.tsx"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { type MouseEvent, useEffect, useState } from "react"
@@ -20,6 +20,7 @@ export const useEditTrack = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [tracksKey] })
       setTrackId(null)
+      showSuccessToast("Трек успешно обновлен")
     },
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
   })
