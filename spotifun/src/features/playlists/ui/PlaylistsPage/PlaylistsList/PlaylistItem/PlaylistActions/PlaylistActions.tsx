@@ -1,9 +1,9 @@
-import { Link } from "react-router"
 import { Path } from "@/common/routing"
 import type { Nullable } from "@/common/types"
+import { Link } from "react-router"
+import type { Playlist } from "../../../../../api/playlistsApi.types.ts"
 
 import s from "./PlaylistActions.module.css"
-import type { Playlist } from "../../../../../api/playlistsApi.types.ts"
 
 type Props = {
   playlist: Playlist

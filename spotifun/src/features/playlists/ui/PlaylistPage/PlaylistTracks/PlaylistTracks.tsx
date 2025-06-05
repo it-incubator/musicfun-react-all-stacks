@@ -12,7 +12,7 @@ export const PlaylistTracks = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()
 
   const { tracks } = useFetchTracksInPlaylist(playlistId)
-  const { register, handleSubmit, onSubmit, trackId, editTrack } = useEditTrack()
+  const { register, handleSubmit, onSubmit, trackId, editTrack, selectedTags, setSelectedTags } = useEditTrack()
   const { removeTrackFromPlaylist } = useRemoveTrackFromPlaylist(playlistId)
   const { removingTrackId, removeTrack } = useRemoveTrack()
 
@@ -33,12 +33,14 @@ export const PlaylistTracks = () => {
                 register={register}
                 onSubmit={onSubmit}
                 handleSubmit={handleSubmit}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
                 editTrack={(e) => editTrack(e, null)}
               />
             ) : (
               <TrackItem<PlaylistItemAttributes> track={track}>
                 <div>
-                  <button onClick={(e) => editTrack(e, track)}>Редактировать</button>
+                  <button onClick={(e) => editTrack(e, track.id)}>Редактировать</button>
                   <button onClick={(e) => removeTrackFromPlaylist(e, track.id)}>Удалить трек из плейлиста</button>
                   <button onClick={(e) => removeTrack(e, track.id)} disabled={removingTrackId === track.id}>
                     {removingTrackId === track.id ? "Удаление..." : "Удалить"}

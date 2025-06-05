@@ -1,88 +1,53 @@
-import { playlistsKey } from "@/common/apiEntities"
-import { useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
-import { showErrorToast } from "@/common/utils"
-import type { Nullable } from "@/common/types/common.types.ts"
-import { queryClient } from "@/main.tsx"
-import { playlistsApi } from "../../../api/playlistsApi.ts"
-import type { Playlist, UpdatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
+import { useRemovePlaylist } from "@/features/playlists/lib/hooks/useRemovePlaylist.ts"
+import { useUpdatePlaylist } from "@/features/playlists/lib/hooks/useUpdatePlaylist.ts"
+import { useReorderPlaylist } from "@/features/playlists/lib/hooks/useReorderPlaylist.ts"
+import { DndContext } from "@dnd-kit/core"
+import { SortableContext } from "@dnd-kit/sortable"
+import type { Playlist } from "../../../api/playlistsApi.types.ts"
 import { EditPlaylistForm } from "./EditPlaylistForm/EditPlaylistForm.tsx"
 import { PlaylistItem } from "./PlaylistItem/PlaylistItem.tsx"
 import s from "./PlaylistsList.module.css"
+import { SortableItem } from "./SortableItem/SortableItem.tsx"
 
 type Props = {
   playlists: Playlist[]
 }
 
-export const PlaylistsList = ({ playlists }: Props) => {
-  const [editId, setEditId] = useState<Nullable<string>>(null)
-
-  const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
-
-  const { mutate: removePlaylistMutation } = useMutation({
-    mutationFn: playlistsApi.removePlaylist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
-    onError: (err: unknown) => showErrorToast("Не удалось удалить плейлист", err),
-  })
-
-  const { mutate: updatePlaylistMutation } = useMutation({
-    mutationFn: playlistsApi.updatePlaylist,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [playlistsKey] })
-      setEditId(null)
-    },
-    onError: (error: unknown) => {
-      showErrorToast("Ошибка при обновлении плейлиста", error)
-    },
-  })
-
-  const editPlaylist = (playlist: Nullable<Playlist>) => {
-    setEditId(playlist?.id || null)
-
-    if (playlist) {
-      const { attributes } = playlist
-      const { title, description, tags } = attributes
-      reset({ title, description, tags })
-    }
-  }
-
-  const removePlaylist = (playlistId: string) => {
-    if (confirm("Вы уверены, что хотите удалить плейлист?")) {
-      removePlaylistMutation(playlistId)
-    }
-  }
-
-  const onSubmit: SubmitHandler<UpdatePlaylistArgs> = (data) => {
-    if (!editId) return
-    const { tags, description, title } = data
-    updatePlaylistMutation({ playlistId: editId, payload: { title, description, tags } })
-  }
+export const PlaylistsList = ({ playlists: initialPlaylists }: Props) => {
+  const { removePlaylist } = useRemovePlaylist()
+  const { playlistId, editPlaylist, register, onSubmit, handleSubmit } = useUpdatePlaylist()
+  const { handleDragEnd, playlists } = useReorderPlaylist(initialPlaylists)
 
   return (
-    <div className={s.container}>
-      {playlists.length ? (
-        playlists.map((playlist) => {
-          const isEditing = editId === playlist.id
+    <DndContext onDragEnd={handleDragEnd}>
+      <SortableContext items={playlists}>
+        <div className={s.container}>
+          {playlists.length ? (
+            playlists.map((playlist) => {
+              const isEditing = playlistId === playlist.id
 
-          return (
-            <div key={playlist.id} className={"item"}>
-              {isEditing ? (
-                <EditPlaylistForm
-                  onSubmit={onSubmit}
-                  editPlaylist={editPlaylist}
-                  handleSubmit={handleSubmit}
-                  register={register}
-                />
-              ) : (
-                <PlaylistItem playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
-              )}
-            </div>
-          )
-        })
-      ) : (
-        <h1>Плейлисты не созданы</h1>
-      )}
-    </div>
+              return (
+                <div key={playlist.id} className={"item"}>
+                  {isEditing ? (
+                    <EditPlaylistForm
+                      onSubmit={onSubmit}
+                      editPlaylist={editPlaylist}
+                      handleSubmit={handleSubmit}
+                      register={register}
+                    />
+                  ) : (
+                    <SortableItem id={playlist.id} title={playlist.attributes.title}>
+                      <PlaylistItem playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
+                    </SortableItem>
+                  )}
+                </div>
+              )
+            })
+          ) : (
+            <h1>Плейлисты не созданы</h1>
+          )}
+        </div>
+      </SortableContext>
+    </DndContext>
   )
 }

@@ -55,3 +55,20 @@
     flex-direction: column;
 }
 
+/* Tags */
+.tagsList {
+    display: flex;
+    gap: 15px;
+}
+
+.tagItem {
+    background-color: #ecebeb;
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.selectedTag {
+    background-color: #333;
+    color: white;
+}

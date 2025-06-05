@@ -1,10 +1,10 @@
 import { tracksKey } from "@/common/apiEntities"
+import type { Nullable } from "@/common/types"
+import { showErrorToast, showSuccessToast } from "@/common/utils"
+import { queryClient } from "@/main.tsx"
+import { useMutation } from "@tanstack/react-query"
 import { type ChangeEvent, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
-import { showErrorToast, showSuccessToast } from "@/common/utils"
-import type { Nullable } from "@/common/types"
-import { queryClient } from "@/main.tsx"
 import { tracksApi } from "../../../api/tracksApi.ts"
 
 export const AddTrackForm = () => {
@@ -25,9 +25,7 @@ export const AddTrackForm = () => {
       reset()
       setFile(null)
     },
-    onError: (error) => {
-      showErrorToast("Ошибка загрузки трека", error)
-    },
+    onError: (error) => showErrorToast("Ошибка загрузки трека", error),
   })
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {

@@ -31,7 +31,7 @@ export const PlaylistsPage = () => {
     setPageNumber(1)
   }
 
-  const playlists = data?.data.data || []
+  const playlists = (data?.data.data || []).slice().sort((a, b) => a.attributes.order - b.attributes.order)
   const meta = type === "all" ? (data?.data as PlaylistsResponse)?.meta : undefined
 
   return (

@@ -29,4 +29,7 @@ export const playlistsApi = {
   fetchPlaylistById: (playlistId: string) => {
     return instance.get<{ data: Playlist }>(`${playlistsEndpoint}/${playlistId}`)
   },
+  reorderPlaylist: ({ playlistId, putAfterItemId }: { playlistId: string; putAfterItemId: string }) => {
+    return instance.put<void>(`${playlistsEndpoint}/${playlistId}/reorder`, { putAfterItemId })
+  },
 }
