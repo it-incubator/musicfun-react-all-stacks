@@ -1,5 +1,6 @@
 import type { Images, Meta, Nullable, User } from "@/common/types"
 import type { Artist } from "@/features/artists/api/artistsApi.types.ts"
+import type { Tag } from "@/features/tags/api/tagsApi.types.ts"
 
 export type TrackDetails<T> = {
   id: string
@@ -26,8 +27,12 @@ export type TrackDetailAttributes = BaseAttributes & {
   duration: number
   processingStatus: TrackProcessingStatus
   visibility: TrackVisibility
-  tags: { id: string; originalName: string }[]
+  tags: Tag[]
   artists: Artist[]
+  // likes
+  currentUserReaction: number // [-1, 1, 0]
+  dislikesCount: number
+  likesCount: number
 }
 
 export type PlaylistItemAttributes = BaseAttributes & {

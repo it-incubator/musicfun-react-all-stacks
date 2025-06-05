@@ -1,16 +1,14 @@
 import { tracksKey } from "@/common/apiEntities"
+import type { Nullable } from "@/common/types"
+import { showErrorToast, showSuccessToast } from "@/common/utils"
+import { queryClient } from "@/main.tsx"
+import { useMutation } from "@tanstack/react-query"
 import { type ChangeEvent, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
-import { showErrorToast, showSuccessToast } from "@/common/utils"
-import type { Nullable } from "@/common/types"
-import { queryClient } from "@/main.tsx"
-import { SelectPlaylists } from "../../../../playlists/lib/components/SelectPlaylists/SelectPlaylists.tsx"
 import { tracksApi } from "../../../api/tracksApi.ts"
 
 export const AddTrackForm = () => {
   const [file, setFile] = useState<Nullable<File>>(null)
-  const [playlistId, setPlaylistId] = useState<Nullable<string>>(null)
 
   const {
     register,
@@ -26,11 +24,8 @@ export const AddTrackForm = () => {
       showSuccessToast("Трек успешно загружен")
       reset()
       setFile(null)
-      setPlaylistId(null)
     },
-    onError: (error) => {
-      showErrorToast("Ошибка загрузки трека", error)
-    },
+    onError: (error) => showErrorToast("Ошибка загрузки трека", error),
   })
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,11 +46,11 @@ export const AddTrackForm = () => {
   }
 
   const onSubmit: SubmitHandler<{ title: string }> = ({ title }) => {
-    if (!playlistId || !file) return
-    mutate({ playlistId, title, file })
+    if (!file) return
+    mutate({ title, file })
   }
 
-  const isSubmitDisabled = !playlistId || !file || !isValid || isPending
+  const isSubmitDisabled = !file || !isValid || isPending
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,9 +66,6 @@ export const AddTrackForm = () => {
           Загрузите аудио файл:
           <input type="file" accept="audio/*" onChange={uploadHandler} />
         </label>
-      </div>
-      <div>
-        <SelectPlaylists onChange={setPlaylistId} value={playlistId ?? ""} />
       </div>
       <button type="submit" disabled={isSubmitDisabled}>
         {isPending ? "Загрузка..." : "Добавить трек"}
