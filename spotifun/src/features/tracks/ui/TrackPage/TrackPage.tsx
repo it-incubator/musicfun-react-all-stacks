@@ -15,28 +15,19 @@ import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
 export const TrackPage = () => {
   const navigate = useNavigate()
 
-  const { trackId } = useParams<{ trackId?: string }>()
+  const { trackId: id } = useParams<{ trackId?: string }>()
 
   const { data, isPending } = useQuery({
-    queryKey: [tracksKey, trackId],
-    queryFn: () => tracksApi.fetchTrackById(trackId as string),
+    queryKey: [tracksKey, id],
+    queryFn: () => tracksApi.fetchTrackById(id as string),
   })
 
   const { removingTrackId, removeTrack } = useRemoveTrack(() => navigate(Path.Tracks))
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const {
-    register,
-    handleSubmit,
-    onSubmit,
-    trackId: editId,
-    editTrack,
-    tagIds,
-    setTagIds,
-    artistsIds,
-    setArtistsIds,
-  } = useEditTrack()
+  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
+    useEditTrack()
 
-  if (!trackId) return <Navigate to={Path.NotFound} />
+  if (!id) return <Navigate to={Path.NotFound} />
 
   if (isPending) return <Loader />
 
@@ -55,7 +46,7 @@ export const TrackPage = () => {
         </Link>
         <PageTitle>Информация о треке</PageTitle>
 
-        {editId ? (
+        {trackId ? (
           <EditTrackForm
             register={register}
             onSubmit={onSubmit}
@@ -69,10 +60,10 @@ export const TrackPage = () => {
         ) : (
           <TrackItem<TrackDetailAttributes> track={data?.data.data}>
             <div>
-              <button onClick={(e) => openModal(e, trackId)}>Добавить трек в плейлист</button>
-              <button onClick={(e) => editTrack(e, trackId)}>Редактировать</button>
-              <button onClick={(e) => removeTrack(e, trackId)} disabled={removingTrackId === trackId}>
-                {removingTrackId === trackId ? "Удаление..." : "Удалить"}
+              <button onClick={(e) => openModal(e, id)}>Добавить трек в плейлист</button>
+              <button onClick={(e) => editTrack(e, id)}>Редактировать</button>
+              <button onClick={(e) => removeTrack(e, id)} disabled={removingTrackId === id}>
+                {removingTrackId === id ? "Удаление..." : "Удалить"}
               </button>
             </div>
           </TrackItem>
