@@ -24,7 +24,7 @@ dist-ssr
 *.sw?
 
 # env files
-.env.local
+spotifun/.env.local
 .env.development.local
 .env.test.local
 .env.production.local
