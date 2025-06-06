@@ -43,7 +43,7 @@ export const TracksList = ({ tracks }: Props) => {
                 />
               ) : (
                 <TrackItem<FetchTracksAttributes> track={track}>
-                  <div>
+                  <div className={"trackActions"}>
                     <button onClick={(e) => openModal(e, track.id)}>Добавить трек в плейлист</button>
                     <button onClick={(e) => editTrack(e, track.id)}>Редактировать</button>
                     <button onClick={(e) => removeTrack(e, track.id)} disabled={removingTrackId === track.id}>

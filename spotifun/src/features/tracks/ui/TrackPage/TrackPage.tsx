@@ -59,7 +59,7 @@ export const TrackPage = () => {
           />
         ) : (
           <TrackItem<TrackDetailAttributes> track={data?.data.data}>
-            <div>
+            <div className={"trackActions"}>
               <button onClick={(e) => openModal(e, id)}>Добавить трек в плейлист</button>
               <button onClick={(e) => editTrack(e, id)}>Редактировать</button>
               <button onClick={(e) => removeTrack(e, id)} disabled={removingTrackId === id}>

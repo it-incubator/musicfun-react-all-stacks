@@ -50,7 +50,7 @@ export const PlaylistTracks = () => {
               ) : (
                 <SortableItem id={track.id} title={track.attributes.title}>
                   <TrackItem<PlaylistItemAttributes> track={track}>
-                    <div>
+                    <div className={"trackActions"}>
                       <button onClick={(e) => editTrack(e, track.id)}>Редактировать</button>
                       <button onClick={(e) => removeTrackFromPlaylist(e, track.id)}>Удалить трек из плейлиста</button>
                       <button onClick={(e) => removeTrack(e, track.id)} disabled={removingTrackId === track.id}>

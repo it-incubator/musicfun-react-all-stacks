@@ -32,13 +32,19 @@
 }
 
 .item--fullwidth {
-    width: 100%;
+    width: auto;
 }
 
 .item:hover {
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     background: #f5f5f5;
+}
+
+.trackActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 
