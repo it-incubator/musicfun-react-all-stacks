@@ -9,7 +9,7 @@ export const useFetchTracksInPlaylist = (playlistId?: string) => {
     enabled: !!playlistId,
   })
 
-  const tracks = data?.data.data ?? []
+  const initialTracks = data?.data.data ?? []
 
-  return { tracks }
+  return { initialTracks }
 }

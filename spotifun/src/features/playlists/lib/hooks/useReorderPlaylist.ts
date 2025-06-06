@@ -1,12 +1,12 @@
 import { playlistsKey } from "@/common/apiEntities"
 import { showErrorToast } from "@/common/utils"
-import { playlistsApi } from "../../api/playlistsApi.ts"
-import type { Playlist } from "../../api/playlistsApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import type { DragEndEvent } from "@dnd-kit/core"
 import { arrayMove } from "@dnd-kit/sortable"
 import { useMutation } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
+import { playlistsApi } from "../../api/playlistsApi.ts"
+import type { Playlist } from "../../api/playlistsApi.types.ts"
 
 export const useReorderPlaylist = (initialPlaylists: Playlist[]) => {
   // Нужно чтобы DND отрабатывал без задержки.
@@ -38,10 +38,8 @@ export const useReorderPlaylist = (initialPlaylists: Playlist[]) => {
     setPlaylists(newList)
 
     // Отправляем на сервер новый порядок (putAfterItemId = id предыдущего в списке)
-    const playlistId = activeId
     const putAfterItemId = newIndex > 0 ? newList[newIndex - 1].id : null
-    if (!putAfterItemId) return
-    mutate({ playlistId, putAfterItemId })
+    mutate({ playlistId: activeId, putAfterItemId })
   }
 
   return { handleDragEnd, playlists }

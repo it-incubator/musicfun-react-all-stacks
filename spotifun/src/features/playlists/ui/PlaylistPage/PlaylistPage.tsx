@@ -17,9 +17,7 @@ export const PlaylistPage = () => {
     enabled: !!playlistId,
   })
 
-  if (!playlistId) {
-    return <Navigate to={Path.NotFound} />
-  }
+  if (!playlistId) return <Navigate to={Path.NotFound} />
 
   if (isPending) return <Loader />
 

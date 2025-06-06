@@ -1,6 +1,6 @@
 import { playlistsEndpoint, tracksEndpoint } from "@/common/apiEntities"
 import { instance } from "@/common/instance"
-import type { Cover } from "@/common/types"
+import type { Cover, Nullable } from "@/common/types"
 import { joinUrl } from "@/common/utils"
 import type {
   FetchPlaylistsTracksResponse,
@@ -9,8 +9,6 @@ import type {
   TrackDetails,
   UpdateTrackArgs,
 } from "./tracksApi.types.ts"
-
-const relationshipsSegment = "relationships"
 
 export const tracksApi = {
   fetchTracks: () => {
@@ -54,12 +52,26 @@ export const tracksApi = {
   },
 
   addTrackToPlaylist: ({ playlistId, trackId }: { playlistId: string; trackId: string }) => {
-    return instance.post<void>(joinUrl(playlistsEndpoint, playlistId, relationshipsSegment, tracksEndpoint), {
+    return instance.post<void>(joinUrl(playlistsEndpoint, playlistId, "relationships", tracksEndpoint), {
       trackId,
     })
   },
 
   removeTrackFromPlaylist: ({ playlistId, trackId }: { playlistId: string; trackId: string }) => {
-    return instance.delete<void>(joinUrl(playlistsEndpoint, playlistId, relationshipsSegment, tracksEndpoint, trackId))
+    return instance.delete<void>(joinUrl(playlistsEndpoint, playlistId, "relationships", tracksEndpoint, trackId))
+  },
+
+  reorderTracks: ({
+    trackId,
+    playlistId,
+    putAfterItemId,
+  }: {
+    trackId: string
+    playlistId: string
+    putAfterItemId: Nullable<string>
+  }) => {
+    return instance.put<void>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId, "reorder"), {
+      putAfterItemId,
+    })
   },
 }
