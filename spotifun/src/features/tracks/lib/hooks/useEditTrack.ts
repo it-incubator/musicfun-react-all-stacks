@@ -23,6 +23,11 @@ export const useEditTrack = () => {
       queryClient.invalidateQueries({ queryKey: [tracksKey] })
       setTrackId(null)
       showSuccessToast("Трек успешно обновлен")
+      // removeQueries нужен чтобы очистить кеш запроса за треком.
+      // Иначе при переходе на страницу трека пользователь увидит устарвешие данные
+      if (trackId) {
+        queryClient.removeQueries({ queryKey: [tracksKey, trackId] })
+      }
     },
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
   })
