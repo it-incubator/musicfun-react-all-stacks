@@ -1,6 +1,6 @@
 import { playlistsEndpoint } from "@/common/apiEntities"
 import { instance } from "@/common/instance"
-import type { Images } from "@/common/types"
+import type { Images, Nullable } from "@/common/types"
 import type { CreatePlaylistArgs, Playlist, PlaylistsResponse, UpdatePlaylistArgs } from "./playlistsApi.types.ts"
 
 export const playlistsApi = {
@@ -29,7 +29,7 @@ export const playlistsApi = {
   fetchPlaylistById: (playlistId: string) => {
     return instance.get<{ data: Playlist }>(`${playlistsEndpoint}/${playlistId}`)
   },
-  reorderPlaylist: ({ playlistId, putAfterItemId }: { playlistId: string; putAfterItemId: string }) => {
+  reorderPlaylist: ({ playlistId, putAfterItemId }: { playlistId: string; putAfterItemId: Nullable<string> }) => {
     return instance.put<void>(`${playlistsEndpoint}/${playlistId}/reorder`, { putAfterItemId })
   },
 }

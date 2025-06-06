@@ -1,4 +1,4 @@
-import { EditTrackForm } from "@/features/tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
+import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
 import type { FetchTracksAttributes, TrackDetails } from "../../../api/tracksApi.types.ts"
 import { useAddToPlaylist } from "../../../lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "../../../lib/hooks/useEditTrack.ts"
@@ -14,7 +14,8 @@ type Props = {
 export const TracksList = ({ tracks }: Props) => {
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId, editTrack, selectedTags, setSelectedTags } = useEditTrack()
+  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
+    useEditTrack()
 
   return (
     <div className={s.container}>
@@ -34,13 +35,15 @@ export const TracksList = ({ tracks }: Props) => {
                   register={register}
                   onSubmit={onSubmit}
                   handleSubmit={handleSubmit}
-                  selectedTags={selectedTags}
-                  setSelectedTags={setSelectedTags}
+                  tagIds={tagIds}
+                  setTagIds={setTagIds}
+                  artistsIds={artistsIds}
+                  setArtistsIds={setArtistsIds}
                   editTrack={(e) => editTrack(e, null)}
                 />
               ) : (
                 <TrackItem<FetchTracksAttributes> track={track}>
-                  <div>
+                  <div className={"trackActions"}>
                     <button onClick={(e) => openModal(e, track.id)}>Добавить трек в плейлист</button>
                     <button onClick={(e) => editTrack(e, track.id)}>Редактировать</button>
                     <button onClick={(e) => removeTrack(e, track.id)} disabled={removingTrackId === track.id}>

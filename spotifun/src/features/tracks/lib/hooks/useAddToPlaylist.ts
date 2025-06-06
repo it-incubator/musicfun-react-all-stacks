@@ -8,15 +8,17 @@ import { tracksApi } from "../../api/tracksApi.ts"
 
 export const useAddToPlaylist = () => {
   const [modalTrackId, setModalTrackId] = useState<Nullable<string>>(null)
+  const [playlistId, setPlaylistId] = useState<Nullable<string>>(null)
 
   const { mutate } = useMutation({
     mutationFn: tracksApi.addTrackToPlaylist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [tracksKey] })
       setModalTrackId(null)
-      showSuccessToast("Трек успешно добавлен")
+      showSuccessToast(`Трек успешно добавлен ${playlistId}`)
+      queryClient.removeQueries({ queryKey: [tracksKey, playlistId] })
     },
-    onError: (err: unknown) => showErrorToast("Ошибка при добавлении трека в плейлсит", err),
+    onError: (err: unknown) => showErrorToast("Ошибка при добавлении трека в плейлист", err),
   })
 
   const openModal = (e: MouseEvent, trackId: string) => {
@@ -26,6 +28,7 @@ export const useAddToPlaylist = () => {
 
   const addTrackToPlaylist = (playlistId: string) => {
     if (!modalTrackId) return
+    setPlaylistId(playlistId)
     mutate({ trackId: modalTrackId, playlistId })
   }
 

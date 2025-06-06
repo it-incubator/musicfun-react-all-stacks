@@ -11,7 +11,9 @@ import type { UpdateTrackArgs } from "../../api/tracksApi.types.ts"
 export const useEditTrack = () => {
   const [trackId, setTrackId] = useState<Nullable<string>>(null)
   const [enabled, setEnabled] = useState(false)
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+  const [tagIds, setTagIds] = useState<string[]>([])
+  const [artistsIds, setArtistsIds] = useState<string[]>([])
 
   const { register, handleSubmit, reset } = useForm<UpdateTrackArgs>()
 
@@ -21,6 +23,11 @@ export const useEditTrack = () => {
       queryClient.invalidateQueries({ queryKey: [tracksKey] })
       setTrackId(null)
       showSuccessToast("Трек успешно обновлен")
+      // removeQueries нужен чтобы очистить кеш запроса за треком.
+      // Иначе при переходе на страницу трека пользователь увидит устарвешие данные
+      if (trackId) {
+        queryClient.removeQueries({ queryKey: [tracksKey, trackId] })
+      }
     },
     onError: (err: unknown) => showErrorToast("Ошибка при обновлении трека", err),
   })
@@ -33,9 +40,10 @@ export const useEditTrack = () => {
 
   useEffect(() => {
     if (trackResponse) {
-      const { title, lyrics, tags } = trackResponse.data.data.attributes
+      const { title, lyrics, tags, artists } = trackResponse.data.data.attributes
       reset({ title, lyrics: lyrics ?? "" })
-      setSelectedTags(tags?.map((tag) => tag.id) ?? [])
+      setTagIds(tags?.map((tag) => tag.id) ?? [])
+      setArtistsIds(artists?.map((artist) => artist.id) ?? [])
       setEnabled(false)
     }
   }, [trackResponse, reset])
@@ -50,9 +58,8 @@ export const useEditTrack = () => {
 
   const onSubmit: SubmitHandler<UpdateTrackArgs> = (payload) => {
     if (!trackId) return
-    const fullPayload = { ...payload, tagIds: selectedTags }
-    mutate({ trackId, payload: fullPayload })
+    mutate({ trackId, payload: { ...payload, tagIds, artistsIds } })
   }
 
-  return { register, handleSubmit, onSubmit, trackId, editTrack, selectedTags, setSelectedTags }
+  return { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds }
 }
