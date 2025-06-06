@@ -11,8 +11,6 @@ type Props = {
 }
 
 export const Pagination = ({ current, pagesCount, pageSize, changePageNumber, changePageSize }: Props) => {
-  if (pagesCount <= 1) return null
-
   return (
     <div className={s.container}>
       <PaginationNav current={current} pagesCount={pagesCount} onChange={changePageNumber} />

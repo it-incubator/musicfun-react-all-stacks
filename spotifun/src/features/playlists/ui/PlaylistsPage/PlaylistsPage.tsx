@@ -50,7 +50,6 @@ export const PlaylistsPage = () => {
           placeholder="Введите название плейлиста"
         />
       )}
-      <PlaylistsList playlists={playlists} />
       {meta && (
         <>
           <Pagination
@@ -62,6 +61,7 @@ export const PlaylistsPage = () => {
           />
         </>
       )}
+      <PlaylistsList playlists={playlists} />
     </>
   )
 }
