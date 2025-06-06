@@ -1,8 +1,7 @@
 import { playlistsKey } from "@/common/apiEntities"
-import { showErrorToast } from "@/common/utils"
+import { dragEndUtilsHandler, showErrorToast, showSuccessToast } from "@/common/utils"
 import { queryClient } from "@/main.tsx"
 import type { DragEndEvent } from "@dnd-kit/core"
-import { arrayMove } from "@dnd-kit/sortable"
 import { useMutation } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { playlistsApi } from "../../api/playlistsApi.ts"
@@ -18,28 +17,17 @@ export const useReorderPlaylist = (initialPlaylists: Playlist[]) => {
 
   const { mutate } = useMutation({
     mutationFn: playlistsApi.reorderPlaylist,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [playlistsKey] })
+      showSuccessToast("Порядок плейлистов обновлен")
+    },
     onError: (err: unknown) => showErrorToast("Не удалось обновить порядок плейлистов", err),
   })
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
-    const activeId = active.id as string
-    const overId = over && (over.id as string)
-
-    if (!overId || activeId === overId) return
-
-    // Локальное обновление
-    // https://docs.dndkit.com/presets/sortable#overview
-    const oldIndex = playlists.findIndex((p) => p.id === activeId)
-    const newIndex = playlists.findIndex((p) => p.id === overId)
-    if (oldIndex === -1 || newIndex === -1) return
-    const newList = arrayMove(playlists, oldIndex, newIndex)
-    setPlaylists(newList)
-
-    // Отправляем на сервер новый порядок (putAfterItemId = id предыдущего в списке)
-    const putAfterItemId = newIndex > 0 ? newList[newIndex - 1].id : null
-    mutate({ playlistId: activeId, putAfterItemId })
+    const putAfterItemId = dragEndUtilsHandler({ event, items: playlists, setItems: setPlaylists })
+    if (putAfterItemId === undefined) return
+    mutate({ playlistId: event.active.id as string, putAfterItemId })
   }
 
   return { handleDragEnd, playlists }
