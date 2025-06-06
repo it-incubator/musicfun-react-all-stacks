@@ -14,7 +14,8 @@ type Props = {
 export const TracksList = ({ tracks }: Props) => {
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId, editTrack, selectedTags, setSelectedTags } = useEditTrack()
+  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
+    useEditTrack()
 
   return (
     <div className={s.container}>
@@ -34,8 +35,10 @@ export const TracksList = ({ tracks }: Props) => {
                   register={register}
                   onSubmit={onSubmit}
                   handleSubmit={handleSubmit}
-                  selectedTags={selectedTags}
-                  setSelectedTags={setSelectedTags}
+                  tagIds={tagIds}
+                  setTagIds={setTagIds}
+                  artistsIds={artistsIds}
+                  setArtistsIds={setArtistsIds}
                   editTrack={(e) => editTrack(e, null)}
                 />
               ) : (

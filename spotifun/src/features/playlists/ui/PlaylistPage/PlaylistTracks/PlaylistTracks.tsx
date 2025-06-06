@@ -12,7 +12,8 @@ export const PlaylistTracks = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()
 
   const { tracks } = useFetchTracksInPlaylist(playlistId)
-  const { register, handleSubmit, onSubmit, trackId, editTrack, selectedTags, setSelectedTags } = useEditTrack()
+  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
+    useEditTrack()
   const { removeTrackFromPlaylist } = useRemoveTrackFromPlaylist(playlistId)
   const { removingTrackId, removeTrack } = useRemoveTrack()
 
@@ -33,8 +34,10 @@ export const PlaylistTracks = () => {
                 register={register}
                 onSubmit={onSubmit}
                 handleSubmit={handleSubmit}
-                selectedTags={selectedTags}
-                setSelectedTags={setSelectedTags}
+                tagIds={tagIds}
+                setTagIds={setTagIds}
+                artistsIds={artistsIds}
+                setArtistsIds={setArtistsIds}
                 editTrack={(e) => editTrack(e, null)}
               />
             ) : (

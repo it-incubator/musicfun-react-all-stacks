@@ -55,19 +55,22 @@
     flex-direction: column;
 }
 
-/* Tags */
+/* Tags, artists */
+.artistList,
 .tagsList {
     display: flex;
     gap: 15px;
 }
 
-.tagItem {
+.tagItem,
+.artistItem {
     background-color: #ecebeb;
     padding: 5px;
     border-radius: 10px;
     font-weight: bold;
 }
 
+.selectedArtist,
 .selectedTag {
     background-color: #333;
     color: white;

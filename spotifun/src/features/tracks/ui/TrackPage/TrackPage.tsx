@@ -4,7 +4,7 @@ import { Path } from "@/common/routing"
 import { useAddToPlaylist } from "@/features/tracks/lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "@/features/tracks/lib/hooks/useEditTrack.ts"
 import { useRemoveTrack } from "@/features/tracks/lib/hooks/useRemoveTrack.ts"
-import { AddTrackToPlaylistModal } from "@/features/tracks/ui/TracksPage/AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
+import { AddTrackToPlaylistModal } from "../TracksPage/AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { EditTrackForm } from "@/features/tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
 import { useQuery } from "@tanstack/react-query"
 import { Link, Navigate, useNavigate, useParams } from "react-router"
@@ -24,7 +24,17 @@ export const TrackPage = () => {
 
   const { removingTrackId, removeTrack } = useRemoveTrack(() => navigate(Path.Tracks))
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId: editId, editTrack, setSelectedTags, selectedTags } = useEditTrack()
+  const {
+    register,
+    handleSubmit,
+    onSubmit,
+    trackId: editId,
+    editTrack,
+    tagIds,
+    setTagIds,
+    artistsIds,
+    setArtistsIds,
+  } = useEditTrack()
 
   if (!trackId) return <Navigate to={Path.NotFound} />
 
@@ -50,8 +60,10 @@ export const TrackPage = () => {
             register={register}
             onSubmit={onSubmit}
             handleSubmit={handleSubmit}
-            selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
+            tagIds={tagIds}
+            setTagIds={setTagIds}
+            artistsIds={artistsIds}
+            setArtistsIds={setArtistsIds}
             editTrack={(e) => editTrack(e, null)}
           />
         ) : (
