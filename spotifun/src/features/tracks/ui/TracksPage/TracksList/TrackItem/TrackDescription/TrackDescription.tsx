@@ -44,7 +44,7 @@ export const TrackDescription = <T extends BaseAttributes>({ attributes }: Props
             {tags.map((t) => {
               return (
                 <div key={t.id} className={"tagItem"}>
-                  {"#" + " " + t.name}
+                  {`# ${t.name}`}
                 </div>
               )
             })}
@@ -55,7 +55,16 @@ export const TrackDescription = <T extends BaseAttributes>({ attributes }: Props
       {/* Artists  */}
       {!!artists?.length && (
         <div>
-          <b>Artists:</b> <span>{artists.map((a) => a.name)}</span>
+          <b>Artists:</b>{" "}
+          <div className={"artistList"}>
+            {artists.map((a) => {
+              return (
+                <div key={a.id} className={"artistItem"}>
+                  {`🎙️ ${a.name}`}
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
 
