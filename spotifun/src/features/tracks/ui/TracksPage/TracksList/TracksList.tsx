@@ -1,4 +1,4 @@
-import { EditTrackForm } from "@/features/tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
+import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
 import type { FetchTracksAttributes, TrackDetails } from "../../../api/tracksApi.types.ts"
 import { useAddToPlaylist } from "../../../lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "../../../lib/hooks/useEditTrack.ts"
