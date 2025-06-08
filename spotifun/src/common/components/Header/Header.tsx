@@ -1,6 +1,7 @@
 import { Path } from "@/common/routing"
 import { NavLink } from "react-router"
 import s from "./Header.module.css"
+import { UserBlock } from "@/features/auth/ui/UserBlock.tsx"
 
 const navItems = [
   { to: Path.Main, label: "Main" },
@@ -10,18 +11,21 @@ const navItems = [
   { to: Path.Tags, label: "Tags" },
 ]
 
-export const Header = () => (
-  <header className={s.wrapper}>
-    <nav>
-      <ul className={s.list}>
-        {navItems.map((item) => (
-          <li key={item.to}>
-            <NavLink to={item.to} className={({ isActive }) => `link ${isActive ? "activeLink" : ""}`}>
-              {item.label}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </header>
-)
+export const Header = () => {
+  return (
+    <header className={s.wrapper}>
+      <nav>
+        <ul className={s.list}>
+          {navItems.map((item) => (
+            <li key={item.to}>
+              <NavLink to={item.to} className={({ isActive }) => `link ${isActive ? "activeLink" : ""}`}>
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+        <UserBlock />
+      </nav>
+    </header>
+  )
+}

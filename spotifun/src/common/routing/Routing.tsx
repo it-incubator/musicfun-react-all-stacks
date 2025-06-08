@@ -8,6 +8,7 @@ import { TrackPage } from "@/features/tracks/ui/TrackPage/TrackPage.tsx"
 import { TracksPage } from "@/features/tracks/ui/TracksPage/TracksPage.tsx"
 
 import { Route, Routes } from "react-router"
+import { OAuthCallback } from "@/features/auth/ui/OAuthRedirect/OAuthCallback.tsx"
 
 export const Path = {
   Main: "/",
@@ -15,6 +16,7 @@ export const Path = {
   Tracks: "/tracks",
   Artists: "/artists",
   Tags: "/tags",
+  OAuthRedirect: "/oauth/callback",
   NotFound: "*",
 } as const
 
@@ -27,6 +29,7 @@ export const Routing = () => (
     <Route path={`${Path.Tracks}/:trackId`} element={<TrackPage />} />
     <Route path={Path.Artists} element={<ArtistsPage />} />
     <Route path={Path.Tags} element={<TagsPage />} />
+    <Route path={Path.OAuthRedirect} element={<OAuthCallback />} />
     <Route path={Path.NotFound} element={<PageNotFound />} />
   </Routes>
 )
