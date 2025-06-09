@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    gap: 6px;
+    color: #333;
+}
+
+.btn.active svg {
+    fill: black;
+}

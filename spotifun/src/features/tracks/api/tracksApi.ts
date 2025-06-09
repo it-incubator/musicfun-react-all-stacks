@@ -5,6 +5,7 @@ import { joinUrl } from "@/common/utils"
 import type {
   FetchPlaylistsTracksResponse,
   FetchTracksResponse,
+  ReactionResponse,
   TrackDetailAttributes,
   TrackDetails,
   UpdateTrackArgs,
@@ -73,5 +74,13 @@ export const tracksApi = {
     return instance.put<void>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId, "reorder"), {
       putAfterItemId,
     })
+  },
+
+  like: (trackId: string) => {
+    return instance.post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "like"))
+  },
+
+  dislike: (trackId: string) => {
+    return instance.post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "dislike"))
   },
 }

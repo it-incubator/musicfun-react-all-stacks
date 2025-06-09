@@ -4,12 +4,13 @@ import { Path } from "@/common/routing"
 import { useAddToPlaylist } from "@/features/tracks/lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "@/features/tracks/lib/hooks/useEditTrack.ts"
 import { useRemoveTrack } from "@/features/tracks/lib/hooks/useRemoveTrack.ts"
-import { AddTrackToPlaylistModal } from "../TracksPage/AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { EditTrackForm } from "@/features/tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
+import { Reactions } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/Reactions/Reactions.tsx"
 import { useQuery } from "@tanstack/react-query"
 import { Link, Navigate, useNavigate, useParams } from "react-router"
 import { tracksApi } from "../../api/tracksApi.ts"
 import type { TrackDetailAttributes } from "../../api/tracksApi.types.ts"
+import { AddTrackToPlaylistModal } from "../TracksPage/AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
 
 export const TrackPage = () => {
@@ -32,6 +33,8 @@ export const TrackPage = () => {
   if (isPending) return <Loader />
 
   if (!data) return <h1>Трек не найден</h1>
+
+  const track = data?.data.data
 
   return (
     <>
@@ -58,8 +61,14 @@ export const TrackPage = () => {
             editTrack={(e) => editTrack(e, null)}
           />
         ) : (
-          <TrackItem<TrackDetailAttributes> track={data?.data.data}>
+          <TrackItem<TrackDetailAttributes> track={track}>
             <div className={"trackActions"}>
+              <Reactions
+                currentUserReaction={track.attributes.currentUserReaction}
+                likesCount={track.attributes.likesCount}
+                dislikesCount={track.attributes.dislikesCount}
+                trackId={id}
+              />
               <button onClick={(e) => openModal(e, id)}>Добавить трек в плейлист</button>
               <button onClick={(e) => editTrack(e, id)}>Редактировать</button>
               <button onClick={(e) => removeTrack(e, id)} disabled={removingTrackId === id}>
