@@ -1,3 +1,4 @@
+import type { Nullable } from "@/common/types"
 import axios, { type AxiosError } from "axios"
 import { authApi } from "@/features/auth/api/authApi.ts"
 import { localStorageKeys } from "@/features/auth/api/authApi.types.ts"
@@ -15,7 +16,7 @@ let failedQueue: {
   reject: (err: unknown) => void
 }[] = []
 
-const processQueue = (error: unknown, token: string | null) => {
+const processQueue = (error: unknown, token: Nullable<string>) => {
   failedQueue.forEach((prom) => {
     if (token) {
       prom.resolve(token)

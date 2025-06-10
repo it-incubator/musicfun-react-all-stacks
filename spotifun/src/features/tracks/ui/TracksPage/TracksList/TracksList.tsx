@@ -1,3 +1,5 @@
+import { Loader } from "@/common/components"
+import { useInfiniteScrollTrigger } from "@/common/hooks/useInfiniteScrollTrigger.ts"
 import { useFetchTracks } from "@/features/tracks/lib/hooks/useFetchTracks.ts"
 import { Fragment } from "react"
 import type { FetchTracksAttributes } from "../../../api/tracksApi.types.ts"
@@ -15,6 +17,8 @@ export const TracksList = () => {
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
   const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
     useEditTrack()
+
+  const { triggerRef } = useInfiniteScrollTrigger({ isFetchingNextPage, hasNextPage, callback: fetchNextPage })
 
   return (
     <div className={s.container}>
@@ -61,12 +65,10 @@ export const TracksList = () => {
         )
       })}
 
-      {/* Load More  */}
-      <div>
-        <button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetching}>
-          {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Load More" : "Nothing more to load"}
-        </button>
-      </div>
+      {/* Infinity Scroll Trigger */}
+      <div ref={triggerRef} style={{ height: "1px" }} />
+      {isFetchingNextPage && <Loader />}
+      {!hasNextPage && !isFetching && <p>Все треки загружены</p>}
     </div>
   )
 }

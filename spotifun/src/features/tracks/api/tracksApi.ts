@@ -13,7 +13,7 @@ import type {
 } from "./tracksApi.types.ts"
 
 export const tracksApi = {
-  fetchTracks: ({ pageSize = 2, pageNumber, search = "" }: FetchTracksArgs) => {
+  fetchTracks: ({ pageSize = 3, pageNumber, search = "" }: FetchTracksArgs) => {
     return instance.get<FetchTracksResponse>(joinUrl(playlistsEndpoint, tracksEndpoint), {
       params: {
         pageSize,
