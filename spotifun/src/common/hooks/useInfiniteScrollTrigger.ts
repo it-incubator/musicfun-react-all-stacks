@@ -17,6 +17,8 @@ export const useInfiniteScrollTrigger = ({
     const node = triggerRef.current
     if (!node || !hasNextPage) return
 
+    // IntersectionObserver следит за элементами и сообщает, насколько они видимы во вьюпорте.
+    // https://developer.mozilla.org/ru/docs/Web/API/Intersection_Observer_API
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
@@ -24,6 +26,7 @@ export const useInfiniteScrollTrigger = ({
           callback()
         }
       },
+      // Сработает только когда элемент полностью войдёт в зону видимости.
       { threshold: 1.0 },
     )
 
