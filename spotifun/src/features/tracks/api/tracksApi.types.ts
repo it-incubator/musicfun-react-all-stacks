@@ -73,6 +73,12 @@ export type ReactionResponse = {
 }
 
 // Arguments
+export type FetchTracksArgs = {
+  pageSize?: number
+  pageNumber: number
+  search?: string
+}
+
 export type UpdateTrackArgs = {
   title?: string
   lyrics?: string

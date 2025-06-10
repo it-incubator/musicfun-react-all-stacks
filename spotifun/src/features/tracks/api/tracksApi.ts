@@ -4,6 +4,7 @@ import type { Cover, Nullable } from "@/common/types"
 import { joinUrl } from "@/common/utils"
 import type {
   FetchPlaylistsTracksResponse,
+  FetchTracksArgs,
   FetchTracksResponse,
   ReactionResponse,
   TrackDetailAttributes,
@@ -12,8 +13,14 @@ import type {
 } from "./tracksApi.types.ts"
 
 export const tracksApi = {
-  fetchTracks: () => {
-    return instance.get<FetchTracksResponse>(joinUrl(playlistsEndpoint, tracksEndpoint))
+  fetchTracks: ({ pageSize = 2, pageNumber, search = "" }: FetchTracksArgs) => {
+    return instance.get<FetchTracksResponse>(joinUrl(playlistsEndpoint, tracksEndpoint), {
+      params: {
+        pageSize,
+        pageNumber,
+        search,
+      },
+    })
   },
 
   fetchTracksInPlaylist: ({ playlistId }: { playlistId: string }) => {
