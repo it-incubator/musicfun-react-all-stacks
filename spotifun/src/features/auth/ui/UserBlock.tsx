@@ -1,6 +1,6 @@
-import { useMe } from "@/features/auth/api/hooks.ts"
-import { Login } from "@/features/auth/ui/Login/Login.tsx"
-import { MeInfo } from "@/features/auth/ui/MeInfo/MeInfo.tsx"
+import { useMe } from "../api/useMe.ts"
+import { Login } from "./Login/Login.tsx"
+import { MeInfo } from "./MeInfo/MeInfo.tsx"
 
 export const UserBlock = () => {
   const {
@@ -8,9 +8,9 @@ export const UserBlock = () => {
   } = useMe()
 
   return (
-    <div>
+    <>
       {!data && <Login />}
       {data && <MeInfo />}
-    </div>
+    </>
   )
 }

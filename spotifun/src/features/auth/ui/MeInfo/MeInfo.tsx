@@ -1,4 +1,5 @@
-import { useLogoutMutation, useMe } from "@/features/auth/api/hooks.ts"
+import { Logout } from "../Logout/Logout.tsx"
+import { useMe } from "../../api/useMe.ts"
 
 export const MeInfo = () => {
   const {
@@ -6,23 +7,9 @@ export const MeInfo = () => {
   } = useMe()
 
   return (
-    <span>
-      userLogin: {data?.data.login} <Logout />
-    </span>
-  )
-}
-
-export const Logout = () => {
-  const { mutate } = useLogoutMutation()
-
-  return (
-    <button
-      onClick={() => {
-        alert("работает пока некорректно.. ждём апдейта бекенда. Можно пока почистить в ls токены руками")
-        mutate()
-      }}
-    >
-      logout
-    </button>
+    <div>
+      userLogin: {data?.data.login}
+      <Logout />
+    </div>
   )
 }

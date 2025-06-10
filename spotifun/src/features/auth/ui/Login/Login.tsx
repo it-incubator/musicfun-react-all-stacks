@@ -1,6 +1,6 @@
-import { authApi } from "@/features/auth/api/authApi.ts"
-import { localStorageKeys } from "@/features/auth/api/authApi.types.ts"
-import { useMe } from "@/features/auth/api/hooks.ts"
+import { authApi } from "../../api/authApi.ts"
+import { localStorageKeys } from "../../api/authApi.types.ts"
+import { useMe } from "../../api/useMe.ts"
 
 export const Login = () => {
   const loginHandler = () => {
