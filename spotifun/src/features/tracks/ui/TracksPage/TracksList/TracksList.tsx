@@ -1,17 +1,17 @@
-import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
-import type { FetchTracksAttributes, TrackDetails } from "../../../api/tracksApi.types.ts"
+import { tracksKey } from "@/common/apiEntities"
+import { tracksApi } from "@/features/tracks/api/tracksApi.ts"
+import { useQuery } from "@tanstack/react-query"
+import type { FetchTracksAttributes } from "../../../api/tracksApi.types.ts"
 import { useAddToPlaylist } from "../../../lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "../../../lib/hooks/useEditTrack.ts"
 import { useRemoveTrack } from "../../../lib/hooks/useRemoveTrack.ts"
 import { AddTrackToPlaylistModal } from "../AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
+import { EditTrackForm } from "./EditTrackForm/EditTrackForm.tsx"
 import { TrackItem } from "./TrackItem/TrackItem.tsx"
 import s from "./TracksList.module.css"
 
-type Props = {
-  tracks: TrackDetails<FetchTracksAttributes>[]
-}
-
-export const TracksList = ({ tracks }: Props) => {
+export const TracksList = () => {
+  const { data } = useQuery({ queryKey: [tracksKey], queryFn: tracksApi.fetchTracks })
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
   const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
@@ -25,7 +25,7 @@ export const TracksList = ({ tracks }: Props) => {
         onSave={addTrackToPlaylist}
       />
       <>
-        {tracks.map((track) => {
+        {data?.data.data.map((track) => {
           const isEditing = trackId === track.id
 
           return (
