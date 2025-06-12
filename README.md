@@ -26,11 +26,25 @@ pnpm build:sdk
 pnpm build:sdk:simple
 ```
 
-3. Запусти проект spotifun на tanstack
+3. Запусти проект 
 
-```bash
- pnpm start:spotify-tanstack
-```
+   1. spotifun на tanstack
+
+    ```bash
+     pnpm start:spotifun-tanstack
+    ```
+
+   2. spotifun на rtk-query
+
+    ```bash
+     pnpm start:spotifun-rtk
+    ```
+
+   3. spotifun на nextjs
+
+    ```bash
+      pnpm start:spotifun-nextjs
+    ```
 
 # Spotifun and trelly apps
 

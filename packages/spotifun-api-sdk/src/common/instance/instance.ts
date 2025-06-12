@@ -47,10 +47,17 @@ function createInstance() {
 
   // 👉 REQUEST INTERCEPTOR — добавляем accessToken
   instance.interceptors.request.use((config) => {
-    const token = localStorage.getItem(localStorageKeys.accessToken)
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+    if (typeof localStorage !== 'undefined') {
+      const token = localStorage.getItem(localStorageKeys.accessToken)
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
     }
+
+    if (typeof window === 'undefined') {
+      config.headers.Origin = "http://localhost:3000" // hack for nextjs server request
+    }
+
     return config
   })
 
@@ -61,6 +68,10 @@ function createInstance() {
       const originalRequest = error.config as any
 
       if (error.response?.status === 401 && !originalRequest._retry) {
+        if(typeof localStorage === 'undefined') {
+          return Promise.reject(error)
+        }
+
         const refreshToken = localStorage.getItem(localStorageKeys.refreshToken)
         if (!refreshToken) {
           return Promise.reject(error)
