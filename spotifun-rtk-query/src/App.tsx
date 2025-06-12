@@ -1,9 +1,13 @@
 import "./App.css"
-import { useGetPokemonByNameQuery } from "./store/tracks.ts"
+import { useFetchTracksQuery } from "./store/tracks.ts"
 
 function App() {
 
-  const {data, error, isError, isLoading} = useGetPokemonByNameQuery()
+  const {data, error, isError, isLoading} = useFetchTracksQuery({
+    pageNumber: 1,
+    pageSize: 5,
+    search: '1',
+  })
 
 
   if (isLoading) return <span>loading...</span>
