@@ -1,0 +1,17 @@
+{
+  "name": "spotifun-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:sdk": "pnpm --filter @it-incubator/spotifun-api-sdk run build-and-clean",
+    "build:sdk:simple": "pnpm --filter @it-incubator/spotifun-api-sdk run build",
+    "start:spotify-tanstack": "pnpm --filter spotifun run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.1"
+}

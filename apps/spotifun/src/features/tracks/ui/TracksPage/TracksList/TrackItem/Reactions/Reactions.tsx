@@ -1,0 +1,38 @@
+import { tracksKey } from "@/common/apiEntities"
+import { ReactionIcon } from "@/common/components"
+import { showErrorToast } from "@/common/utils"
+import { CurrentUserReaction } from "../../../../../lib/enums/enums.ts"
+import { queryClient } from "@/main.tsx"
+import { useMutation } from "@tanstack/react-query"
+import s from "./Reactions.module.css"
+import { tracksApi } from "@it-incubator/spotifun-api-sdk"
+
+type Props = {
+  currentUserReaction: CurrentUserReaction
+  likesCount: number
+  dislikesCount: number
+  trackId: string
+}
+
+export const Reactions = ({ currentUserReaction, likesCount, dislikesCount, trackId }: Props) => {
+  const { mutate } = useMutation({
+    mutationFn: (reaction: "like" | "dislike") =>
+      reaction === "like" ? tracksApi.like(trackId) : tracksApi.dislike(trackId),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [tracksKey, trackId] }),
+    onError: (err: unknown) => showErrorToast("Ошибка", err),
+  })
+
+  const isLiked = currentUserReaction === CurrentUserReaction.Like
+  const isDisliked = currentUserReaction === CurrentUserReaction.Dislike
+
+  return (
+    <div className={s.container}>
+      <button className={`${s.btn} ${isLiked ? s.active : ""}`} onClick={() => mutate("like")}>
+        <ReactionIcon active={isLiked} activeColor={"green"} type={"like"} /> {likesCount}
+      </button>
+      <button className={`${s.btn} ${isDisliked ? s.active : ""}`} onClick={() => mutate("dislike")}>
+        <ReactionIcon active={isDisliked} activeColor={"red"} type={"dislike"} /> {dislikesCount}
+      </button>
+    </div>
+  )
+}
