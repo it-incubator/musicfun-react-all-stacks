@@ -14,7 +14,8 @@
     "axios": "^1.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "@it-incubator/spotifun-api-sdk": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

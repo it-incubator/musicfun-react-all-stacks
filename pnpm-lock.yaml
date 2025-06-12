@@ -98,6 +98,9 @@ importers:
 
   apps/spotifun-rtk-query:
     dependencies:
+      '@it-incubator/spotifun-api-sdk':
+        specifier: workspace:*
+        version: link:../../packages/spotifun-api-sdk
       '@reduxjs/toolkit':
         specifier: ^2.8.2
         version: 2.8.2(react-redux@9.2.0(@types/react@19.1.4)(react@19.1.0)(redux@5.0.1))(react@19.1.0)

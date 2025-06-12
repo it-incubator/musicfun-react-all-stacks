@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
-import { tracksApi } from "./tracksApi.ts"
+import { tracksApi } from "@it-incubator/spotifun-api-sdk"
 
 export const tracksAPI = createApi({
   reducerPath: 'tracks',
