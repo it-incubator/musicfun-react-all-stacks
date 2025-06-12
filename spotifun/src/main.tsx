@@ -1,11 +1,14 @@
+import { getSharedSocket } from "@/socket.ts"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { useEffect } from "react"
+import { type ReactNode, useEffect } from "react"
 import { createRoot } from "react-dom/client"
 import "./index.css"
 import { BrowserRouter } from "react-router"
 import { App } from "./app/App.tsx"
-import { getSharedSocket } from "@/socket.ts"
+import { PlayerProvider } from "./features/player/lib/context/PlayerProvider.tsx"
+import { PlayerCore } from "./features/player/model/PlayerCore.ts"
+import { PlayerLogic } from "./features/player/model/PlayerLogic.ts"
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,18 +25,25 @@ export const queryClient = new QueryClient({
   },
 })
 
+export const playerCore = new PlayerCore()
+export const playerLogic = new PlayerLogic(playerCore)
+
+playerLogic.pause()
+
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-      <WebSocketProvider>
-        <App />
-      </WebSocketProvider>
+      <PlayerProvider player={playerLogic}>
+        <WebSocketProvider>
+          <App />
+        </WebSocketProvider>
+      </PlayerProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </BrowserRouter>,
 )
 
-function WebSocketProvider({ children }: { children: React.ReactNode }) {
+function WebSocketProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const socket = getSharedSocket(import.meta.env.VITE_AUTH_TOKEN)
 
