@@ -26,7 +26,8 @@ export const TrackPlayer = <T extends BaseAttributes>({ track }: Props<T>) => {
 
   const [player, isPlayingMe] = usePlayer(false, playerBeatDTO)
 
-  const playHandler = () => {
+  const playHandler = (e: MouseEvent<HTMLInputElement>) => {
+    e.preventDefault()
     if (isPlayingMe) {
       player.pause()
     } else {
