@@ -1,7 +1,7 @@
 import type { Nullable } from "@/common/types"
 import { PlayStatus } from "../lib/enums/enums.ts"
-import { type SubscriberType, SubscribingObject } from "./SubscribingObject"
 import { PlayerCore } from "./PlayerCore"
+import { type SubscriberType, SubscribingObject } from "./SubscribingObject"
 
 export type PlayerLogicEvents = "ended" | "progress" | "timeupdate" | "pause" | "play" | "change-progress"
 
@@ -12,11 +12,6 @@ export type PlayerLogicTrack = {
   type: string
   format: string
   url: string
-  images: {
-    original: string
-    thumbnail: string
-    middle: string
-  }
 }
 
 export class PlayerLogic {
@@ -71,11 +66,11 @@ export class PlayerLogic {
     return this.eventsObject.addSubscriber(eventName, subscriber)
   }
 
-  public play<T>(track: PlayerLogicTrack, data: T | null = null) {
+  public play<T>(track: PlayerLogicTrack, data: Nullable<T> = null) {
     this.status = PlayStatus.Playing
     this.currentTrack = track
     this.trackDataValue = data
-    this.playerCore.play({ src: track.url })
+    this.playerCore.play(track.url)
     this.eventsObject.triggerEvent("play", { track, data })
   }
 
@@ -85,7 +80,7 @@ export class PlayerLogic {
       return
     }
     this.status = PlayStatus.Playing
-    this.playerCore.play({ src: this.currentTrack.url })
+    this.playerCore.play(this.currentTrack.url)
     this.eventsObject.triggerEvent("play", { track: this.currentTrack, data: this.trackData })
   }
 
@@ -114,7 +109,7 @@ export class PlayerLogic {
     this.eventsObject.triggerEvent("change-progress", { percent })
   }
 
-  public setPlayList(tracks: Array<any>) {
+  public setPlayList(tracks: PlayerLogicTrack[]) {
     this.playlist = tracks
   }
 

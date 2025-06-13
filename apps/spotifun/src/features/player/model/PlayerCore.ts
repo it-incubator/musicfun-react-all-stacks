@@ -1,3 +1,5 @@
+import type { PlayerLogicEvents } from "./PlayerLogic.ts"
+
 export class PlayerCore {
   private audio: HTMLAudioElement
   private currentSrc = ""
@@ -13,17 +15,14 @@ export class PlayerCore {
     return 100 * (this.audio.currentTime / this.audio.duration)
   }
 
-  // if parameter 'src' passed then load new beat and start play
-  play(track: { src: string }) {
-    // continue playing current track
-    if (track.src === this.currentSrc) {
+  play(src: string) {
+    if (src === this.currentSrc) {
       this.audio.play()
       return
     }
 
-    this.setSrc(track.src)
+    this.setSrc(src)
     this.audio.play()
-    return
   }
 
   setSrc(src: string) {
@@ -31,7 +30,6 @@ export class PlayerCore {
     this.audio.src = src
   }
 
-  // activates 'pause' mode. Call play method to start
   pause() {
     this.audio.pause()
   }
@@ -65,7 +63,7 @@ export class PlayerCore {
   }
 
   // activates 'pause' mode. Call play method to start
-  bindEvent(eventName: string, callback: any) {
+  bindEvent(eventName: PlayerLogicEvents, callback: (event: Event) => void) {
     this.audio.addEventListener(eventName, callback, false)
     return () => {
       this.audio.removeEventListener(eventName, callback)

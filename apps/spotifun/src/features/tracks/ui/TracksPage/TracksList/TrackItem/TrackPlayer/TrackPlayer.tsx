@@ -15,9 +15,7 @@ export const TrackPlayer = <T extends BaseAttributes>({ track }: Props<T>) => {
     id: track.id,
     artist: "",
     title: track.attributes.title,
-    format: "mp3",
     url: track.attributes.attachments[0].url,
-    type: "beat",
     images: {
       thumbnail: track.attributes.images.main[0]?.url ?? trackDefaultCover,
       middle: track.attributes.images.main[1]?.url ?? trackDefaultCover,
