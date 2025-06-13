@@ -40,11 +40,13 @@ export class PlayerLogic {
   private eventsObject: SubscribingObject<PlayerLogicEvents> = new SubscribingObject<PlayerLogicEvents>()
 
   private playlist: PlayerLogicTrack[] = []
+  private playerCore: PlayerCore
 
   playingProgressPercent = 0
   loadingProgressPercent = 0
 
-  constructor(private playerCore: PlayerCore) {
+  constructor(playerCore: PlayerCore) {
+    this.playerCore = playerCore
     playerCore.bindEvent("timeupdate", () => {
       this.playingProgressPercent = playerCore.currentPositionInPercent()
       this.eventsObject.triggerEvent("timeupdate", {

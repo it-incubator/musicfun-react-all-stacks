@@ -34,8 +34,6 @@ setInstanceConfig({
 export const playerCore = new PlayerCore()
 export const playerLogic = new PlayerLogic(playerCore)
 
-playerLogic.pause()
-
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>

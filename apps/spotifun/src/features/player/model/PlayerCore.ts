@@ -3,13 +3,8 @@ export type PlayerCoreTrackType = {
   format: string // 'm3u8' | 'mp3'
 }
 
-export interface IPlayer {
-  checkFormat: (format: string) => boolean
-  play: (src: string) => void
-}
-
 export class PlayerCore {
-  private audio: Audio
+  private audio: HTMLAudioElement
   private currentSrc = ""
   protected allowRewindToNotLoadedPosition = true
 

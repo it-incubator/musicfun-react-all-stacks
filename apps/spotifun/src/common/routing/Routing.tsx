@@ -1,7 +1,7 @@
 import { Main } from "@/app/Main.tsx"
 import { PageNotFound } from "@/common/components"
 import { ArtistsPage } from "@/features/artists/ui/ArtistsPage/ArtistsPage.tsx"
-import { Players } from "@/features/player/ui/Players/Players.tsx"
+import { OAuthCallback } from "@/features/auth/ui/OAuthRedirect/OAuthCallback.tsx"
 import { PlaylistPage } from "@/features/playlists/ui/PlaylistPage/PlaylistPage.tsx"
 import { PlaylistsPage } from "@/features/playlists/ui/PlaylistsPage/PlaylistsPage.tsx"
 import { TagsPage } from "@/features/tags/ui/TagsPage/TagsPage.tsx"
@@ -9,7 +9,6 @@ import { TrackPage } from "@/features/tracks/ui/TrackPage/TrackPage.tsx"
 import { TracksPage } from "@/features/tracks/ui/TracksPage/TracksPage.tsx"
 
 import { Route, Routes } from "react-router"
-import { OAuthCallback } from "@/features/auth/ui/OAuthRedirect/OAuthCallback.tsx"
 
 export const Path = {
   Main: "/",
@@ -18,7 +17,6 @@ export const Path = {
   Artists: "/artists",
   Tags: "/tags",
   OAuthRedirect: "/oauth/callback",
-  Player: "/player",
   NotFound: "*",
 } as const
 
@@ -32,7 +30,6 @@ export const Routing = () => (
     <Route path={Path.Artists} element={<ArtistsPage />} />
     <Route path={Path.Tags} element={<TagsPage />} />
     <Route path={Path.OAuthRedirect} element={<OAuthCallback />} />
-    <Route path={Path.Player} element={<Players />} />
     <Route path={Path.NotFound} element={<PageNotFound />} />
   </Routes>
 )

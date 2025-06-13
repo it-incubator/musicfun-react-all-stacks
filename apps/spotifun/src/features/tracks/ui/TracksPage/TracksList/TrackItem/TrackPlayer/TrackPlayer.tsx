@@ -1,3 +1,4 @@
+import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
 import { PauseIcon } from "@/common/icons/PauseIcon/PauseIcon.tsx"
 import { PlayIcon } from "@/common/icons/PlayIcon/PlayIcon.tsx"
 import { usePlayer } from "@/features/player/lib/hooks/usePlayer.ts"
@@ -18,9 +19,9 @@ export const TrackPlayer = <T extends BaseAttributes>({ track }: Props<T>) => {
     url: track.attributes.attachments[0].url,
     type: "beat",
     images: {
-      thumbnail: track.attributes.images.main[0]?.url,
-      middle: track.attributes.images.main[1]?.url,
-      original: track.attributes.images.main[2]?.url,
+      thumbnail: track.attributes.images.main[0]?.url ?? trackDefaultCover,
+      middle: track.attributes.images.main[1]?.url ?? trackDefaultCover,
+      original: track.attributes.images.main[2]?.url ?? trackDefaultCover,
     },
   }
 
