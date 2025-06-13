@@ -22,7 +22,7 @@ export const PlayerMob = <T extends BaseAttributes>({ player, track, toggleMobMo
         <div className={s.progressBarContainer}>
           <ProgressBar player={player} />
         </div>
-        <PlayerControls player={player} track={track} mobMode={true} />
+        <PlayerControls player={player} track={track} />
       </div>
     </div>
   )

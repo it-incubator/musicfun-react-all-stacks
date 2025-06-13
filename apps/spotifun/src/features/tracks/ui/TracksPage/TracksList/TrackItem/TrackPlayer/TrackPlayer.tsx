@@ -1,3 +1,4 @@
+import { IconButton } from "@/common/components"
 import { PauseIcon, PlayIcon } from "@/common/icons"
 import { usePlayer } from "@/features/player/lib/hooks/usePlayer.ts"
 import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
@@ -10,7 +11,7 @@ type Props<T extends BaseAttributes> = {
 export const TrackPlayer = <T extends BaseAttributes>({ track }: Props<T>) => {
   const [player, isPlayingMe] = usePlayer(false, track)
 
-  const playHandler = (e: MouseEvent<HTMLInputElement>) => {
+  const playHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (isPlayingMe) {
       player.pause()
@@ -19,5 +20,5 @@ export const TrackPlayer = <T extends BaseAttributes>({ track }: Props<T>) => {
     }
   }
 
-  return <div onClick={playHandler}>{isPlayingMe ? <PauseIcon /> : <PlayIcon />}</div>
+  return <IconButton onClick={playHandler}>{isPlayingMe ? <PauseIcon /> : <PlayIcon />}</IconButton>
 }

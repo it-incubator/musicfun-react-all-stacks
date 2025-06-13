@@ -108,7 +108,6 @@ export class PlayerLogic {
   }
 
   public playNext() {
-    // no current - no next
     if (!this.currentTrack) {
       return
     }
