@@ -1,5 +1,6 @@
 import { GlobalLinearProgress, Header, Layout } from "@/common/components"
 import { Routing } from "@/common/routing"
+import { Players } from "@/features/player/ui/Players/Players.tsx"
 import { ToastContainer } from "react-toastify"
 
 export function App() {
@@ -10,6 +11,7 @@ export function App() {
       <Layout>
         <Routing />
       </Layout>
+      <Players />
       <ToastContainer />
     </>
   )

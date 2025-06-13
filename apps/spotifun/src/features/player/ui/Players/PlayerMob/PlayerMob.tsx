@@ -1,30 +1,27 @@
-import React from "react"
+import { PlayerLogic, type PlayerLogicTrack } from "../../../model/PlayerLogic.ts"
+import { TrackDescr } from "../Player/TrackDescr/TrackDescr.tsx"
+import { ProgressBar } from "../Player/ProgressBar/ProgressBar.tsx"
+import { PlayerControls } from "../Player/PlayerControls/PlayerControls.tsx"
 import s from "./PlayerMob.module.scss"
-import { TrackDescr } from "@/features/player/ui/Players/Player/TrackDescr/TrackDescr"
-import { ProgressBar } from "@/features/player/ui/Players/Player/ProgressBar/ProgressBar"
-import { PlayerControls } from "@/features/player/ui/Players/Player/PlayerControls/PlayerControls"
-import { PlayerLogic, PlayerLogicTrack } from "../../../Domain/PlayerLogic"
 
-type PropsType = {
+type Props = {
   toggleMobMode: () => void
   player: PlayerLogic
   track: PlayerLogicTrack
 }
 
-export const PlayerMob = (props: PropsType) => {
+export const PlayerMob = ({ player, track, toggleMobMode }: Props) => {
   return (
     <div className={s.container}>
       <div className={s.btnCloseContainer}>
-        <button className={s.btnClose} onClick={props.toggleMobMode}>
-          {" "}
-        </button>
+        <button className={s.btnClose} onClick={toggleMobMode} />
       </div>
       <div className={s.content}>
-        <TrackDescr track={props.track} mobMode={true} />
+        <TrackDescr track={track} mobMode={true} />
         <div className={s.progressBarContainer}>
-          <ProgressBar player={props.player} />
+          <ProgressBar player={player} />
         </div>
-        <PlayerControls player={props.player} track={props.track} mobMode={true} />
+        <PlayerControls player={player} track={track} mobMode={true} />
       </div>
     </div>
   )

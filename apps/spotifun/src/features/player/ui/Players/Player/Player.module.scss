@@ -25,6 +25,7 @@
 .soundRangeContainer {
   justify-self: end;
   display: flex;
+
   .btnCollapsed {
     margin-left: 20px;
     cursor: pointer;
@@ -32,7 +33,7 @@
     height: 15px;
     margin-bottom: 20px;
     content: '';
-    background: url('../../../assets/images/player-icons/down-arrow.svg') center no-repeat;
+    background: url('../../../lib/img/down-arrow.svg') center no-repeat;
     background-size: cover;
   }
 }
@@ -46,13 +47,14 @@
   .btnOpenContainer {
     display: flex;
     justify-self: end;
+
     .btnCollapsed {
       margin-left: 5px;
       cursor: pointer;
       width: 20px;
       height: 15px;
       content: '';
-      background: url('../../../assets/images/player-icons/down-arrow.svg') center no-repeat;
+      background: url('../../../lib/img/down-arrow.svg') center no-repeat;
       background-size: cover;
     }
   }
@@ -61,7 +63,7 @@
     width: 9px;
     height: 30px;
     content: '';
-    background: url('../../../assets/images/player-icons/more-info.svg') center no-repeat;
+    background: url('../../../lib/img/more-info.svg') center no-repeat;
     background-size: cover;
     border: none;
   }

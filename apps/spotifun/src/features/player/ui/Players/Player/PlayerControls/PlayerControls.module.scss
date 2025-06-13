@@ -14,7 +14,7 @@
     content: '';
     border: none;
 
-    background: url('../../../assets/images/player-icons/next-track-white.svg');
+    background: url('../../../../lib/img/next-track-white.svg');
     background-size: cover;
   }
 
@@ -25,7 +25,7 @@
     @include prevBtn;
 
     &--mob {
-      background: url('../../../assets/images/player-icons/next-track-white.svg') center no-repeat;
+      background: url('../../../../lib/img/next-track-white.svg') center no-repeat;
     }
   }
 
@@ -34,7 +34,7 @@
     @include prevBtn;
 
     &--mob {
-      background: url('../../../assets/images/player-icons/next-track-white.svg') center no-repeat;
+      background: url('../../../../lib/img/next-track-white.svg') center no-repeat;
     }
   }
 

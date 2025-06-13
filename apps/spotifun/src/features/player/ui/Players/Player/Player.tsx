@@ -17,20 +17,18 @@ export const Player = ({ player, toggleMobMode, toggleCollapsed, track }: Props)
     <div className={s.player}>
       <ProgressBar player={player} />
 
-      <div>
-        <div className={s.playerContainer}>
-          <TrackDescr track={track} mobMode={false} />
-          <div className={s.playerControls}>
-            <PlayerControls mobMode={false} player={player} track={track} />
-          </div>
-          <div className={s.soundRangeContainer}>
-            <SoundRange player={player} />
-            <button className={s.btnCollapsed} onClick={toggleCollapsed} />
-          </div>
-          <div className={s.btnOpenContainer}>
-            <button className={s.btnOpen} onClick={toggleMobMode} />
-            <button className={s.btnCollapsed} onClick={toggleCollapsed} />
-          </div>
+      <div className={s.playerContainer}>
+        <TrackDescr track={track} mobMode={false} />
+        <div className={s.playerControls}>
+          <PlayerControls mobMode={false} player={player} track={track} />
+        </div>
+        <div className={s.soundRangeContainer}>
+          <SoundRange player={player} />
+          <button className={s.btnCollapsed} onClick={toggleCollapsed} />
+        </div>
+        <div className={s.btnOpenContainer}>
+          <button className={s.btnOpen} onClick={toggleMobMode} />
+          <button className={s.btnCollapsed} onClick={toggleCollapsed} />
         </div>
       </div>
     </div>

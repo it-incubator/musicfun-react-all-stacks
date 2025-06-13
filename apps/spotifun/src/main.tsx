@@ -44,7 +44,7 @@ createRoot(document.getElementById("root")!).render(
           <App />
         </WebSocketProvider>
       </PlayerProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition={"top-right"} />
     </QueryClientProvider>
   </BrowserRouter>,
 )

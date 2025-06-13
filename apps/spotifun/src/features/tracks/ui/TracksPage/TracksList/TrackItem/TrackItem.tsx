@@ -1,7 +1,7 @@
 import { Path } from "@/common/routing"
 import type { ReactNode } from "react"
 import { Link } from "react-router"
-import { Player } from "./Player/Player.tsx"
+import { TrackPlayer } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackPlayer/TrackPlayer.tsx"
 import { TrackCover } from "./TrackCover/TrackCover.tsx"
 import { TrackDescription } from "./TrackDescription/TrackDescription.tsx"
 import s from "./TrackItem.module.css"
@@ -19,7 +19,7 @@ export const TrackItem = <T extends BaseAttributes>({ children, track }: Props<T
         <div className={`flex-container ${s.container}`}>
           <TrackCover track={track} />
           <TrackDescription<T> attributes={track.attributes} />
-          <Player track={track} />
+          <TrackPlayer track={track} />
         </div>
         {children}
       </div>
