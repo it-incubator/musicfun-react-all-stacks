@@ -3,6 +3,7 @@ import { PauseIcon, PlayIcon } from "@/common/icons"
 import { usePlayer } from "@/features/player/lib/hooks/usePlayer.ts"
 import type { PlayerLogicTrack } from "@/features/player/model/PlayerLogic.ts"
 import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
+import { type MouseEvent } from "react"
 
 type Props<T extends BaseAttributes> = {
   track: TrackDetails<T>

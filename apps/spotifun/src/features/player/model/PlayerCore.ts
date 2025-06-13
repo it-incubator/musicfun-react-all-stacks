@@ -1,8 +1,3 @@
-export type PlayerCoreTrackType = {
-  src: string
-  format: string // 'm3u8' | 'mp3'
-}
-
 export class PlayerCore {
   private audio: HTMLAudioElement
   private currentSrc = ""
@@ -19,7 +14,7 @@ export class PlayerCore {
   }
 
   // if parameter 'src' passed then load new beat and start play
-  play(track: PlayerCoreTrackType) {
+  play(track: { src: string }) {
     // continue playing current track
     if (track.src === this.currentSrc) {
       this.audio.play()
@@ -77,8 +72,7 @@ export class PlayerCore {
     }
   }
 
-  // get time position by persent position
-  private getTimePositionByPercentPosition(percent: any) {
+  private getTimePositionByPercentPosition(percent: number) {
     if (this.audio.buffered.length === 0) {
       return 0
     }
@@ -94,7 +88,7 @@ export class PlayerCore {
     return (this.audio.duration * percent) / 100
   }
 
-  setVolume(volume: any) {
+  setVolume(volume: number) {
     this.audio.volume = volume
   }
 }

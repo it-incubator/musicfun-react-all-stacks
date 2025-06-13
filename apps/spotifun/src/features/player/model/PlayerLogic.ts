@@ -1,3 +1,5 @@
+import type { Nullable } from "@/common/types"
+import { PlayStatus } from "../lib/enums/enums.ts"
 import { type SubscriberType, SubscribingObject } from "./SubscribingObject"
 import { PlayerCore } from "./PlayerCore"
 
@@ -17,19 +19,13 @@ export type PlayerLogicTrack = {
   }
 }
 
-export enum PlayStatus {
-  Stopped,
-  Playing,
-  Paused,
-}
-
 export class PlayerLogic {
   get isPlaying() {
     return this.status === PlayStatus.Playing
   }
 
   private trackDataValue: any // data of beat, playing in core
-  public currentTrack: PlayerLogicTrack | null = null
+  public currentTrack: Nullable<PlayerLogicTrack> = null
 
   public get trackData() {
     return this.trackDataValue
@@ -73,20 +69,13 @@ export class PlayerLogic {
 
   subscribe(eventName: PlayerLogicEvents, subscriber: SubscriberType) {
     return this.eventsObject.addSubscriber(eventName, subscriber)
-
-    // if (
-    //     (eventName === 'play' && this.isPlaying) ||
-    //     (eventName === 'pause' && !this.isPlaying && !!this.currentTrack)
-    // ) {
-    //     subscriber(this.currentTrack)
-    // }
   }
 
   public play<T>(track: PlayerLogicTrack, data: T | null = null) {
     this.status = PlayStatus.Playing
     this.currentTrack = track
     this.trackDataValue = data
-    this.playerCore.play({ src: track.url, format: track.format })
+    this.playerCore.play({ src: track.url })
     this.eventsObject.triggerEvent("play", { track, data })
   }
 
@@ -96,14 +85,8 @@ export class PlayerLogic {
       return
     }
     this.status = PlayStatus.Playing
-    this.playerCore.play({
-      src: this.currentTrack.url,
-      format: this.currentTrack.format,
-    })
-    this.eventsObject.triggerEvent("play", {
-      track: this.currentTrack,
-      data: this.trackData,
-    })
+    this.playerCore.play({ src: this.currentTrack.url })
+    this.eventsObject.triggerEvent("play", { track: this.currentTrack, data: this.trackData })
   }
 
   public setTrack<T>(track: PlayerLogicTrack, data: T | null = null) {
