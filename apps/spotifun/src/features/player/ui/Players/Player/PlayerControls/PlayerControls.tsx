@@ -1,13 +1,14 @@
-import type { PlayerLogic, PlayerLogicTrack } from "../../../../model/PlayerLogic.ts"
+import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
+import type { PlayerLogic } from "../../../../model/PlayerLogic.ts"
 import s from "./PlayerControls.module.scss"
 
-type Props = {
+type Props<T extends BaseAttributes> = {
   mobMode: boolean
   player: PlayerLogic
-  track: PlayerLogicTrack
+  track: TrackDetails<T>
 }
 
-export const PlayerControls = ({ mobMode, player, track }: Props) => {
+export const PlayerControls = <T extends BaseAttributes>({ mobMode, player, track }: Props<T>) => {
   const pauseHandler = () => player.pause()
   const playHandler = () => player.play(track)
   const prevTrackHandler = () => player.playPrev()

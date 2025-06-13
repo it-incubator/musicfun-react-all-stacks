@@ -1,24 +1,25 @@
-import type { PlayerLogic, PlayerLogicTrack } from "../../../model/PlayerLogic.ts"
-import { ProgressBar } from "./ProgressBar/ProgressBar.tsx"
+import { PlayerDescription } from "./PlayerDescription/PlayerDescription.tsx"
+import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
+import type { PlayerLogic } from "../../../model/PlayerLogic.ts"
 import { PlayerControls } from "./PlayerControls/PlayerControls.tsx"
-import { TrackDescr } from "./TrackDescr/TrackDescr.tsx"
+import { ProgressBar } from "./ProgressBar/ProgressBar.tsx"
 import { SoundRange } from "./SoundRange/SoundRange.tsx"
 import s from "./Player.module.scss"
 
-type Props = {
+type Props<T extends BaseAttributes> = {
   toggleMobMode: () => void
   player: PlayerLogic
-  track: PlayerLogicTrack
+  track: TrackDetails<T>
   toggleCollapsed: () => void
 }
 
-export const Player = ({ player, toggleMobMode, toggleCollapsed, track }: Props) => {
+export const Player = <T extends BaseAttributes>({ player, toggleMobMode, toggleCollapsed, track }: Props<T>) => {
   return (
     <div className={s.player}>
       <ProgressBar player={player} />
 
       <div className={s.playerContainer}>
-        <TrackDescr track={track} mobMode={false} />
+        <PlayerDescription track={track} mobMode={false} />
         <div className={s.playerControls}>
           <PlayerControls mobMode={false} player={player} track={track} />
         </div>

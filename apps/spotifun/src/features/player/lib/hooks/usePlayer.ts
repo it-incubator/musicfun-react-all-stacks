@@ -1,9 +1,10 @@
 import type { Nullable } from "@/common/types"
-import { PlayerContext } from "../context/PlayerContext.ts"
-import type { PlayerLogic, PlayerLogicTrack } from "../../model/PlayerLogic.ts"
+import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import type { PlayerLogic } from "../../model/PlayerLogic.ts"
+import { PlayerContext } from "../context/PlayerContext.ts"
 
-export const usePlayer = (needProgress: boolean, track: Nullable<PlayerLogicTrack>) => {
+export const usePlayer = <T extends BaseAttributes>(needProgress: boolean, track: Nullable<TrackDetails<T>>) => {
   const player = useContext(PlayerContext) as PlayerLogic
 
   const unsubscribersRef = useRef<Array<() => void>>([])
@@ -12,7 +13,6 @@ export const usePlayer = (needProgress: boolean, track: Nullable<PlayerLogicTrac
   const [isPlayingMe, setIsPlayingMe] = useState(false)
 
   const playStatusChanged = useCallback(() => {
-    // rerender only if I changed status
     if (track) {
       const isMyTrack = player.isMyTrack(track.id, track.type)
       const actualIsPlayingMe = isMyTrack && player.isPlaying
@@ -22,7 +22,7 @@ export const usePlayer = (needProgress: boolean, track: Nullable<PlayerLogicTrac
     } else {
       setIsPlayingMe(player.isPlaying)
     }
-  }, [isPlayingMe])
+  }, [isPlayingMe, track, player])
 
   const refresh = () => {
     setCounter((s) => s + 1)
@@ -42,7 +42,7 @@ export const usePlayer = (needProgress: boolean, track: Nullable<PlayerLogicTrac
       unsubscribersRef.current.forEach((unsubscriber) => unsubscriber())
       unsubscribersRef.current = []
     }
-  }, [playStatusChanged])
+  }, [playStatusChanged, needProgress, player])
 
   return [player, isPlayingMe] as [PlayerLogic, boolean]
 }

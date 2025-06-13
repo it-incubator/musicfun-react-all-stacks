@@ -1,26 +1,20 @@
 import type { Nullable } from "@/common/types"
+import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
 import { PlayStatus } from "../lib/enums/enums.ts"
 import { PlayerCore } from "./PlayerCore"
 import { type SubscriberType, SubscribingObject } from "./SubscribingObject"
 
 export type PlayerLogicEvents = "ended" | "progress" | "timeupdate" | "pause" | "play" | "change-progress"
 
-export type PlayerLogicTrack = {
-  id: string | number
-  title: string
-  artist: string
-  type: string
-  format: string
-  url: string
-}
+export type PlayerLogicTrack<T extends BaseAttributes> = TrackDetails<T>
 
 export class PlayerLogic {
   get isPlaying() {
     return this.status === PlayStatus.Playing
   }
 
-  private trackDataValue: any // data of beat, playing in core
-  public currentTrack: Nullable<PlayerLogicTrack> = null
+  private trackDataValue: any
+  public currentTrack: Nullable<PlayerLogicTrack<BaseAttributes>> = null
 
   public get trackData() {
     return this.trackDataValue
@@ -30,7 +24,7 @@ export class PlayerLogic {
 
   private eventsObject: SubscribingObject<PlayerLogicEvents> = new SubscribingObject<PlayerLogicEvents>()
 
-  private playlist: PlayerLogicTrack[] = []
+  private playlist: PlayerLogicTrack<BaseAttributes>[] = []
   private playerCore: PlayerCore
 
   playingProgressPercent = 0
@@ -58,7 +52,7 @@ export class PlayerLogic {
     })
   }
 
-  isMyTrack(id: number | string, type: string) {
+  isMyTrack(id: string, type: string) {
     return this.currentTrack?.id === id && this.currentTrack?.type === type
   }
 
@@ -66,25 +60,25 @@ export class PlayerLogic {
     return this.eventsObject.addSubscriber(eventName, subscriber)
   }
 
-  public play<T>(track: PlayerLogicTrack, data: Nullable<T> = null) {
+  public play<T extends BaseAttributes>(track: TrackDetails<T>, data: Nullable<T> = null) {
     this.status = PlayStatus.Playing
     this.currentTrack = track
     this.trackDataValue = data
-    this.playerCore.play(track.url)
+    this.playerCore.play(track.attributes.attachments[0].url)
     this.eventsObject.triggerEvent("play", { track, data })
   }
 
   public continuePlayAfterPause() {
     if (!this.currentTrack) {
-      console.warn("No track for continue playing")
+      console.log("No track for continue playing")
       return
     }
     this.status = PlayStatus.Playing
-    this.playerCore.play(this.currentTrack.url)
+    this.playerCore.play(this.currentTrack.attributes.attachments[0].url)
     this.eventsObject.triggerEvent("play", { track: this.currentTrack, data: this.trackData })
   }
 
-  public setTrack<T>(track: PlayerLogicTrack, data: T | null = null) {
+  public setTrack<T extends BaseAttributes>(track: TrackDetails<T>, data: T | null = null) {
     this.status = PlayStatus.Stopped
     this.currentTrack = track
     this.trackDataValue = data
@@ -109,7 +103,7 @@ export class PlayerLogic {
     this.eventsObject.triggerEvent("change-progress", { percent })
   }
 
-  public setPlayList(tracks: PlayerLogicTrack[]) {
+  public setPlayList<T extends BaseAttributes>(tracks: TrackDetails<T>[]) {
     this.playlist = tracks
   }
 
