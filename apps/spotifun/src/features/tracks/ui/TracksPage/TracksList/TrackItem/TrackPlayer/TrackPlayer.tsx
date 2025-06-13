@@ -1,6 +1,5 @@
 import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
-import { PauseIcon } from "@/common/icons/PauseIcon/PauseIcon.tsx"
-import { PlayIcon } from "@/common/icons/PlayIcon/PlayIcon.tsx"
+import { PauseIcon, PlayIcon } from "@/common/icons"
 import { usePlayer } from "@/features/player/lib/hooks/usePlayer.ts"
 import type { PlayerLogicTrack } from "@/features/player/model/PlayerLogic.ts"
 import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"

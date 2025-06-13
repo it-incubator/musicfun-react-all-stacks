@@ -1,5 +1,5 @@
 import { tracksKey } from "@/common/apiEntities"
-import { ReactionIcon } from "@/common/components"
+import { ReactionIcon } from "@/common/icons"
 import { showErrorToast } from "@/common/utils"
 import { CurrentUserReaction } from "../../../../../lib/enums/enums.ts"
 import { queryClient } from "@/main.tsx"
