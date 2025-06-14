@@ -1,24 +1,25 @@
-import { getInstance } from "../../common/instance/instance"
 import { AuthTokensResponse, MeResponseResponse, RefreshTokensRequest } from "./authApi.types"
 import { authEndpoint } from "../../common/apiEntities/apiEntities"
+import { getApiClient } from "../../v2/request"
+import { joinUrl } from "../../common/utils/urlHelper"
 
 
 export const authApi = {
   login: (payload: OAuthLoginRequest) => {
-    return getInstance().post<AuthTokensResponse>(`${authEndpoint}/login`, payload)
+    return getApiClient().post<AuthTokensResponse>(`${authEndpoint}/login`, payload)
   },
   logout: (payload: RefreshTokensRequest) => {
-    return getInstance().post(`${authEndpoint}/logout`, payload)
+    return getApiClient().post(`${authEndpoint}/logout`, payload)
   },
   oauthUrl: (redirectUrl: string): string => {
-    const url = getInstance().getUri() + `/auth/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`
+    const url = joinUrl(getApiClient().getConfig().baseURL, `/auth/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`);
     return url
   },
   refreshToken: (payload: RefreshTokensRequest) => {
-    return getInstance().post<AuthTokensResponse>(`${authEndpoint}/refresh`, payload)
+    return getApiClient().post<AuthTokensResponse>(`${authEndpoint}/refresh`, payload)
   },
   getMe: () => {
-    return getInstance().get<MeResponseResponse>(`${authEndpoint}/me`)
+    return getApiClient().get<MeResponseResponse>(`${authEndpoint}/me`)
   },
 }
 

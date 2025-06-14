@@ -7,15 +7,15 @@ import type {
   TrackDetails,
   UpdateTrackArgs,
 } from "./tracksApi.types.ts"
-import { getInstance } from "../../common/instance/instance"
 import { joinUrl } from "../../common/utils/urlHelper"
 import { playlistsEndpoint, tracksEndpoint } from "../../common/apiEntities/apiEntities.js"
 import { Cover } from "../../common/types/playlists-tracks.types.js"
 import { Nullable } from "../../common/types/common.types"
+import { getApiClient } from "../../v2/request"
 
 export const tracksApi = {
   fetchTracks: ({ pageSize = 3, pageNumber, search = "" }: FetchTracksArgs) => {
-    return getInstance().get<FetchTracksResponse>(joinUrl(playlistsEndpoint, tracksEndpoint), {
+    return getApiClient().get<FetchTracksResponse>(joinUrl(playlistsEndpoint, tracksEndpoint), {
       params: {
         pageSize,
         pageNumber,
@@ -25,11 +25,11 @@ export const tracksApi = {
   },
 
   fetchTracksInPlaylist: ({ playlistId }: { playlistId: string }) => {
-    return getInstance().get<FetchPlaylistsTracksResponse>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint))
+    return getApiClient().get<FetchPlaylistsTracksResponse>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint))
   },
 
   fetchTrackById: (trackId: string) => {
-    return getInstance().get<{ data: TrackDetails<TrackDetailAttributes> }>(
+    return getApiClient().get<{ data: TrackDetails<TrackDetailAttributes> }>(
       joinUrl(playlistsEndpoint, tracksEndpoint, trackId),
     )
   },
@@ -38,36 +38,36 @@ export const tracksApi = {
     const formData = new FormData()
     formData.append("title", title)
     formData.append("file", file)
-    return getInstance().post<{ data: TrackDetails<TrackDetailAttributes> }>(
+    return getApiClient().post<{ data: TrackDetails<TrackDetailAttributes> }>(
       joinUrl(playlistsEndpoint, tracksEndpoint, "upload"),
       formData,
     )
   },
 
   removeTrack: (trackId: string) => {
-    return getInstance().delete<void>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId))
+    return getApiClient().delete<void>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId))
   },
 
   uploadTrackCover: ({ trackId, file }: { trackId: string; file: File }) => {
     const formData = new FormData()
     formData.append("cover", file)
-    return getInstance().post<Cover>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "cover"), formData)
+    return getApiClient().post<Cover>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "cover"), formData)
   },
 
   updateTrack: ({ trackId, payload }: { trackId: string; payload: UpdateTrackArgs }) => {
-    return getInstance().put<{
+    return getApiClient().put<{
       data: TrackDetails<TrackDetailAttributes>
     }>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId), payload)
   },
 
   addTrackToPlaylist: ({ playlistId, trackId }: { playlistId: string; trackId: string }) => {
-    return getInstance().post<void>(joinUrl(playlistsEndpoint, playlistId, "relationships", tracksEndpoint), {
+    return getApiClient().post<void>(joinUrl(playlistsEndpoint, playlistId, "relationships", tracksEndpoint), {
       trackId,
     })
   },
 
   removeTrackFromPlaylist: ({ playlistId, trackId }: { playlistId: string; trackId: string }) => {
-    return getInstance().delete<void>(joinUrl(playlistsEndpoint, playlistId, "relationships", tracksEndpoint, trackId))
+    return getApiClient().delete<void>(joinUrl(playlistsEndpoint, playlistId, "relationships", tracksEndpoint, trackId))
   },
 
   reorderTracks: ({
@@ -79,16 +79,16 @@ export const tracksApi = {
     playlistId: string
     putAfterItemId: Nullable<string>
   }) => {
-    return getInstance().put<void>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId, "reorder"), {
+    return getApiClient().put<void>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId, "reorder"), {
       putAfterItemId,
     })
   },
 
   like: (trackId: string) => {
-    return getInstance().post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "like"))
+    return getApiClient().post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "like"), {})
   },
 
   dislike: (trackId: string) => {
-    return getInstance().post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "dislike"))
+    return getApiClient().post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "dislike"), {})
   },
 }

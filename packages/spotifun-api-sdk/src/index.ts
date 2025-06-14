@@ -13,4 +13,4 @@ export * from './api/tracks/tracksApi.types'
 export * from './api/playlists/playlistsApi'
 export * from './api/playlists/playlistsApi.types'
 
-export * from './common/instance/instance'
+export * from './v2/request'

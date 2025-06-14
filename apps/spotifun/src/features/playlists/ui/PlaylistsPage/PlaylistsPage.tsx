@@ -7,7 +7,7 @@ import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
 import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
 import s from "./PlaylistsPage.module.css"
 import { PlaylistTypeSwitcher } from "./PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
-import { playlistsApi, type PlaylistsResponse } from "@it-incubator/spotifun-api-sdk"
+import { playlistsApi } from "@it-incubator/spotifun-api-sdk"
 
 export type PlaylistType = "all" | "my"
 
@@ -30,8 +30,9 @@ export const PlaylistsPage = () => {
     setPageNumber(1)
   }
 
-  const playlists = (data?.data.data || []).slice().sort((a, b) => a.attributes.order - b.attributes.order)
-  const meta = type === "all" ? (data?.data as PlaylistsResponse)?.meta : undefined
+  const playlists = (data?.data || []).slice().sort((a, b) => a.attributes.order - b.attributes.order)
+  // @ts-expect-error сдеалть 2 отдельных хука
+  const meta = type === "all" ? data?.meta : undefined
 
   return (
     <>

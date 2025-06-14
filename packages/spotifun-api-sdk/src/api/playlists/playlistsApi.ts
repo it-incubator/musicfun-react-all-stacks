@@ -1,36 +1,38 @@
 import type { CreatePlaylistArgs, Playlist, PlaylistsResponse, UpdatePlaylistArgs } from "./playlistsApi.types.ts"
-import { getInstance } from "../../common/instance/instance"
 import { playlistsEndpoint } from "../../common/apiEntities/apiEntities"
 import { Images } from "../../common/types/playlists-tracks.types"
 import { Nullable } from "../../common/types/common.types"
+import { getApiClient } from "../../v2/request"
 
 export const playlistsApi = {
   fetchPlaylists: (params: { pageSize?: number; pageNumber: number; search: string }) => {
-    return getInstance().get<PlaylistsResponse>(playlistsEndpoint, { params })
+    let playlistsResponsePromise: Promise<PlaylistsResponse> = getApiClient().get<PlaylistsResponse>(playlistsEndpoint, { params })
+    return playlistsResponsePromise
   },
   fetchMyPlaylists: () => {
-    return getInstance().get<Omit<PlaylistsResponse, "meta">>(`${playlistsEndpoint}/my`)
+    let promise: Promise<Omit<PlaylistsResponse, "meta">> = getApiClient().get<Omit<PlaylistsResponse, "meta">>(`${playlistsEndpoint}/my`)
+    return promise
   },
   createPlaylist: (args: CreatePlaylistArgs) => {
-    return getInstance().post<{ data: Playlist }>(playlistsEndpoint, args)
+    return getApiClient().post<{ data: Playlist }>(playlistsEndpoint, args)
   },
   updatePlaylist: (args: { playlistId: string; payload: UpdatePlaylistArgs }) => {
     const { playlistId, payload } = args
-    return getInstance().put<void>(`${playlistsEndpoint}/${playlistId}`, payload)
+    return getApiClient().put<void>(`${playlistsEndpoint}/${playlistId}`, payload)
   },
   removePlaylist: (playlistId: string) => {
-    return getInstance().delete<void>(`${playlistsEndpoint}/${playlistId}`)
+    return getApiClient().delete<void>(`${playlistsEndpoint}/${playlistId}`)
   },
   uploadPlaylistCover: (args: { playlistId: string; file: File }) => {
     const { playlistId, file } = args
     const formData = new FormData()
     formData.append("file", file)
-    return getInstance().post<Images>(`${playlistsEndpoint}/${playlistId}/images/main`, formData)
+    return getApiClient().post<Images>(`${playlistsEndpoint}/${playlistId}/images/main`, formData)
   },
   fetchPlaylistById: (playlistId: string) => {
-    return getInstance().get<{ data: Playlist }>(`${playlistsEndpoint}/${playlistId}`)
+    return getApiClient().get<{ data: Playlist }>(`${playlistsEndpoint}/${playlistId}`)
   },
   reorderPlaylist: ({ playlistId, putAfterItemId }: { playlistId: string; putAfterItemId: Nullable<string> }) => {
-    return getInstance().put<void>(`${playlistsEndpoint}/${playlistId}/reorder`, { putAfterItemId })
+    return getApiClient().put<void>(`${playlistsEndpoint}/${playlistId}/reorder`, { putAfterItemId })
   },
 }

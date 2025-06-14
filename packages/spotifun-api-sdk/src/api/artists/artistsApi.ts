@@ -1,15 +1,15 @@
 import type { Artist } from "./artistsApi.types.ts"
-import { getInstance } from "../../common/instance/instance"
 import { artistsEndpoint } from "../../common/apiEntities/apiEntities"
+import { getApiClient } from "../../v2/request"
 
 export const artistsApi = {
   findArtists: (name: string) => {
-    return getInstance().get<Artist[]>(`${artistsEndpoint}/search?term=${name}`)
+    return getApiClient().get<Artist[]>(`${artistsEndpoint}/search?term=${name}`)
   },
   createArtist: (name: string) => {
-    return getInstance().post<Artist>(artistsEndpoint, { name })
+    return getApiClient().post<Artist>(artistsEndpoint, { name })
   },
   removeArtist: (id: string) => {
-    return getInstance().delete<void>(`${artistsEndpoint}/${id}`)
+    return getApiClient().delete<void>(`${artistsEndpoint}/${id}`)
   },
 }

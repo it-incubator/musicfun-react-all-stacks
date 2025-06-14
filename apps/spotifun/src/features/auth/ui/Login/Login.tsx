@@ -20,8 +20,8 @@ export const Login = () => {
         popup?.close()
         window.removeEventListener("message", receiveMessage)
         const tokens = await authApi.login({ code, accessTokenTTL: "3m", redirectUri, rememberMe: true })
-        localStorage.setItem(localStorageKeys.refreshToken, tokens.data.refreshToken)
-        localStorage.setItem(localStorageKeys.accessToken, tokens.data.accessToken)
+        localStorage.setItem(localStorageKeys.refreshToken, tokens.refreshToken)
+        localStorage.setItem(localStorageKeys.accessToken, tokens.accessToken)
         invalidate()
       }
     }
