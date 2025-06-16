@@ -1,6 +1,6 @@
-import { useFetchTracksQuery } from "./store/tracks.ts";
+import { useFetchTracksQuery } from "../../api/tracksApi.ts";
 
-function App() {
+export const TracksPage = () => {
   const { data, error, isError, isLoading } = useFetchTracksQuery({
     pageNumber: 1,
     pageSize: 5,
@@ -16,6 +16,4 @@ function App() {
       ))}
     </ul>
   );
-}
-
-export default App;
+};

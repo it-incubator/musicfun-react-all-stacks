@@ -2,9 +2,10 @@ import { configureApi, localStorageKeys } from "@it-incubator/spotifun-api-sdk";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
+import { BrowserRouter } from "react-router";
 import { Provider } from "react-redux";
-import { store } from "./store/store.ts";
+import { App } from "./app/App.tsx";
+import { store } from "./app/store.ts";
 
 configureApi({
   baseURL: import.meta.env.VITE_BASE_URL!,
@@ -19,8 +20,10 @@ configureApi({
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
   </StrictMode>,
 );

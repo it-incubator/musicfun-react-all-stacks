@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { tracksAPI } from "./tracks.ts";
+import { tracksAPI } from "../features/tracks/api/tracksApi.ts";
 
 export const store = configureStore({
   reducer: {
