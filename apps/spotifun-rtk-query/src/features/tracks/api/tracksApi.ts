@@ -1,13 +1,9 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
+import { baseApi } from "@/app/api/baseApi.ts"
 import { tracksApi } from "@it-incubator/spotifun-api-sdk"
 
-export const tracksAPI = createApi({
-  reducerPath: "tracks",
-  baseQuery: () => ({ data: undefined }),
+export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchTracks: build.query({
-      queryFn: tracksApi.fetchTracks,
-    }),
+    fetchTracks: build.query({ queryFn: tracksApi.fetchTracks }),
   }),
 })
 

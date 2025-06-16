@@ -4,8 +4,8 @@ import { createRoot } from "react-dom/client"
 import "./index.css"
 import { BrowserRouter } from "react-router"
 import { Provider } from "react-redux"
-import { App } from "./app/App.tsx"
-import { store } from "./app/store.ts"
+import { App } from "./app/ui/App.tsx"
+import { store } from "./app/model/store.ts"
 
 configureApi({
   baseURL: import.meta.env.VITE_BASE_URL!,
@@ -25,5 +25,5 @@ createRoot(document.getElementById("root")!).render(
         <App />
       </Provider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 )
