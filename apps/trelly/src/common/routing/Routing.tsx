@@ -1,4 +1,4 @@
-import { Main } from "@/app/Main.tsx"
+import { MainPage } from "@/app/Main.tsx"
 
 import { Route, Routes } from "react-router"
 
@@ -8,6 +8,6 @@ export const Path = {
 
 export const Routing = () => (
   <Routes>
-    <Route path={Path.Main} element={<Main />} />
+    <Route path={Path.Main} element={<MainPage />} />
   </Routes>
 )

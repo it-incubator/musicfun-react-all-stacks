@@ -1,4 +1,4 @@
-export const Main = () => {
+export const MainPage = () => {
   return (
     <div>
       <h1>Главная страница</h1>
@@ -7,5 +7,5 @@ export const Main = () => {
       <div>Made for you</div>
       <div>...</div>
     </div>
-  );
-};
+  )
+}
