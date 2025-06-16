@@ -20,7 +20,7 @@ export const tracksApi = {
         pageSize,
         pageNumber,
         search,
-      },
+      }
     })
   },
 

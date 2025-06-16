@@ -27,6 +27,11 @@ type ResponseInterceptor = (
   retry: () => Promise<Response>
 ) => Promise<Response>
 
+export interface ApiResponse<T> {
+  data: T
+  response: Response
+}
+
 export class ApiClient {
   private config: ApiClientConfig
   private requestInterceptors: RequestInterceptor[] = []
@@ -36,14 +41,11 @@ export class ApiClient {
 
   constructor(config: ApiClientConfig) {
     this.config = config
-    // default interceptors
     this.addRequestInterceptor(this.authRequestInterceptor.bind(this))
     this.addResponseInterceptor(this.tokenRefreshInterceptor.bind(this))
   }
 
-  /**
-   * Returns a shallow copy of the current configuration.
-   */
+  /** Shallow copy of config */
   getConfig(): ApiClientConfig {
     return { ...this.config }
   }
@@ -61,12 +63,8 @@ export class ApiClient {
     init: RequestInit
   ): Promise<[RequestInfo, RequestInit]> {
     const token = this.config.getAccessToken()
-    if (token) {
-      init.headers = { ...(init.headers ?? {}), Authorization: `Bearer ${token}` }
-    }
-    if (this.config.apiKey) {
-      init.headers = { ...(init.headers ?? {}), "API-KEY": this.config.apiKey }
-    }
+    if (token) init.headers = { ...(init.headers ?? {}), Authorization: `Bearer ${token}` }
+    if (this.config.apiKey) init.headers = { ...(init.headers ?? {}), "API-KEY": this.config.apiKey }
     return [input, init]
   }
 
@@ -75,13 +73,9 @@ export class ApiClient {
     retry: () => Promise<Response>
   ): Promise<Response> {
     if (response.status !== 401) return response
-
-    if (!this.refreshPromise) {
-      this.refreshPromise = this.handleRefresh()
-    }
+    if (!this.refreshPromise) this.refreshPromise = this.handleRefresh()
     await this.refreshPromise
     this.refreshPromise = null
-
     return retry()
   }
 
@@ -102,6 +96,7 @@ export class ApiClient {
         body: JSON.stringify({ refreshToken }),
       })
       if (!res.ok) throw new Error("Refresh failed")
+
       const { accessToken, refreshToken: newRefresh } = await res.json()
       this.config.setTokens(accessToken, newRefresh)
     } finally {
@@ -109,9 +104,6 @@ export class ApiClient {
     }
   }
 
-  /**
-   * Build full URL from baseURL, path and query params.
-   */
   private buildUrl(path: string, params?: Record<string, any>): string {
     const url = new URL(joinUrl(this.config.baseURL, path))
     if (params) {
@@ -122,18 +114,11 @@ export class ApiClient {
     return url.toString()
   }
 
-  /**
-   * Core fetch with request/response interceptors and retry logic.
-   */
-  /**
-   * Core fetch with request/response interceptors and retry logic.
-   */
-  private async fetchWithInterceptors(
+  private async sendRequest(
     method: string,
     path: string,
     opts: RequestOptions = {}
   ): Promise<Response> {
-    // prepare immutable base input and init
     const baseInput: RequestInfo = this.buildUrl(path, opts.params)
     const baseInit: RequestInit = {
       method,
@@ -147,89 +132,89 @@ export class ApiClient {
       signal: opts.signal,
       ...(opts.nextOptions ? { next: opts.nextOptions } : {}),
     }
-
-    // fetch call that reapplies request interceptors on each retry
     const fetchCall = async (): Promise<Response> => {
+      // Явно указываем типы, чтобы TS не сузил reqInput до string
       let reqInput: RequestInfo = baseInput
       let reqInit: RequestInit = { ...baseInit }
+
       for (const interceptor of this.requestInterceptors) {
-        [reqInput, reqInit] = await interceptor(reqInput, reqInit)
+        const [nextInput, nextInit]: [RequestInfo, RequestInit] =
+          await interceptor(reqInput, reqInit)
+
+        reqInput = nextInput
+        reqInit = nextInit
       }
+
       return fetch(reqInput, reqInit)
     }
 
-    // initial request
-    let response = await fetchCall()
 
-    // apply response interceptors (e.g., token refresh)
+    let response = await fetchCall()
     for (const interceptor of this.responseInterceptors) {
       response = await interceptor(response, fetchCall)
     }
-
     return response
   }
 
-  /**
-   * Execute fetch and parse JSON, throwing on non-2xx.
-   */
-  private async fetchJson<T>(
+  private async request<T>(
     method: string,
     path: string,
     opts?: RequestOptions
-  ): Promise<T> {
-    const response = await this.fetchWithInterceptors(method, path, opts)
+  ): Promise<ApiResponse<T>> {
+    const response = await this.sendRequest(method, path, opts)
+
     if (!response.ok) {
-      const text = await response.text()
-      throw new Error(text || response.statusText)
+      const errText = await response.text()
+      throw new Error(errText || response.statusText)
     }
-    return (await response.json()) as T
+
+    // Клонируем, чтобы не «съесть» оригинальный response
+    const clone = response.clone()
+    const text = await clone.text()
+
+    const data: T | null = text
+      ? (JSON.parse(text) as T)
+      : null
+
+    return { data: data as T, response }
   }
 
-  /**
-   * Execute fetch and return both JSON data and original Response.
-   */
-  private async fetchFull<T>(
-    method: string,
+
+  /** GET returning `{ data, response }` (data may be null on 204) */
+  get<T>(path: string, opts?: RequestOptions): Promise<ApiResponse<T>> {
+    return this.request<T>("GET", path, opts)
+  }
+
+  /** POST returning `{ data, response }` */
+  post<T, B = any>(
+    path: string,
+    body: B,
+    opts?: RequestOptions
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("POST", path, { ...opts, body })
+  }
+
+  /** PUT returning `{ data, response }` */
+  put<T, B = any>(
+    path: string,
+    body: B,
+    opts?: RequestOptions
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("PUT", path, { ...opts, body })
+  }
+
+  /** DELETE returning `{ data, response }` */
+  delete<T>(
     path: string,
     opts?: RequestOptions
-  ): Promise<{ data: T; response: Response }> {
-    const response = await this.fetchWithInterceptors(method, path, opts)
-    if (!response.ok) {
-      const text = await response.text()
-      throw new Error(text || response.statusText)
-    }
-    const data = (await response.clone().json()) as T
-    return { data, response }
-  }
-
-  /** Public GET returning parsed JSON */
-  get<T>(path: string, opts?: RequestOptions): Promise<T> {
-    return this.fetchJson<T>("GET", path, opts)
-  }
-
-  /** Public GET returning data and raw Response */
-  getFull<T>(path: string, opts?: RequestOptions): Promise<{ data: T; response: Response }> {
-    return this.fetchFull<T>("GET", path, opts)
-  }
-
-  /** Public POST returning parsed JSON */
-  post<T, B = any>(path: string, body: B, opts?: RequestOptions): Promise<T> {
-    return this.fetchJson<T>("POST", path, { ...opts, body })
-  }
-
-  /** Public PUT returning parsed JSON */
-  put<T, B = any>(path: string, body: B, opts?: RequestOptions): Promise<T> {
-    return this.fetchJson<T>("PUT", path, { ...opts, body })
-  }
-
-  /** Public DELETE returning parsed JSON */
-  delete<T>(path: string, opts?: RequestOptions): Promise<T> {
-    return this.fetchJson<T>("DELETE", path, opts)
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("DELETE", path, opts)
   }
 }
 
-// Singleton instance
+// singleton instance
 let client: ApiClient
+
 export function createApiClient(config: ApiClientConfig): ApiClient {
   client = new ApiClient(config)
   return client
@@ -240,7 +225,5 @@ export function getApiClient(): ApiClient {
   return client
 }
 
-// Convenience initializer
-export function configureApi(config: ApiClientConfig): ApiClient {
-  return createApiClient(config)
-}
+// alias for createApiClient
+export const configureApi = createApiClient

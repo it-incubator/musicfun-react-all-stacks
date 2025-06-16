@@ -30,7 +30,7 @@ export const PlaylistsPage = () => {
     setPageNumber(1)
   }
 
-  const playlists = (data?.data || []).slice().sort((a, b) => a.attributes.order - b.attributes.order)
+  const playlists = (data?.data.data || []).slice().sort((a, b) => a.attributes.order - b.attributes.order)
   // @ts-expect-error сдеалть 2 отдельных хука
   const meta = type === "all" ? data?.meta : undefined
 

@@ -6,12 +6,10 @@ import { getApiClient } from "../../v2/request"
 
 export const playlistsApi = {
   fetchPlaylists: (params: { pageSize?: number; pageNumber: number; search: string }) => {
-    let playlistsResponsePromise: Promise<PlaylistsResponse> = getApiClient().get<PlaylistsResponse>(playlistsEndpoint, { params })
-    return playlistsResponsePromise
+    return getApiClient().get<PlaylistsResponse>(playlistsEndpoint, { params })
   },
   fetchMyPlaylists: () => {
-    let promise: Promise<Omit<PlaylistsResponse, "meta">> = getApiClient().get<Omit<PlaylistsResponse, "meta">>(`${playlistsEndpoint}/my`)
-    return promise
+    return getApiClient().get<Omit<PlaylistsResponse, "meta">>(`${playlistsEndpoint}/my`)
   },
   createPlaylist: (args: CreatePlaylistArgs) => {
     return getApiClient().post<{ data: Playlist }>(playlistsEndpoint, args)
