@@ -1,12 +1,29 @@
-# Как запустить проект?
+# Информация
 
-1.  В корне проекта запустить (установятся зависимости для всех приложений и пакетов)
+## 🔗 Ссылки
+
+### 💅 Design
+
+- [spotifun](https://www.figma.com/design/AxTPd4AS8oAgdEF4dDgLis/SpotiFun?node-id=9-353&p=f&t=1ALRBVorkExUf8ed-0)
+
+### 📗 Swagger
+
+- [spotifun](https://spotifun.it-incubator.app/api)
+- [trelly](https://trelly.it-incubator.app/api)
+
+## 🚀 Запуск проекта
+
+### 1. Установка зависимостей
+
+В корне проекта запустить (установятся зависимости для всех приложений и пакетов)
 
 ```bash
 pnpm i
 ```
 
-2. Затем сбилдить spotifun-api-sdk
+### 2. SDK build
+
+Затем сбилдить `spotifun-api-sdk`
 
 ```bash
 pnpm build:sdk
@@ -14,46 +31,47 @@ pnpm build:sdk
 
 ️🔔 Возможно данные скрипты не являются кросc-платформенными
 
-```json
+```json 
  "scripts": {
-    "clean": "rm -rf dist",
-    "build": "pnpm run clean && tsc"
-  }
+"clean": "rm -rf dist",
+"build": "pnpm run clean && tsc"
+}
 ```
-тогда попробуй альтернативную команду попроще 
+
+тогда попробуй альтернативную команду попроще
 
 ```bash
 pnpm build:sdk:simple
 ```
 
-3. Запусти проект 
+### 3. Старт проекта
 
-   1. spotifun на tanstack
+1. spotifun на **tanstack**
 
-    ```bash
-     pnpm start:spotifun-tanstack
-    ```
+```bash
+   pnpm start:spotifun-tanstack
+```
 
-   2. spotifun на rtk-query
+2. spotifun на **rtk-query**
 
-    ```bash
-     pnpm start:spotifun-rtk
-    ```
+```bash
+    pnpm start:spotifun-rtk
+```
 
-   3. spotifun на nextjs
+3. spotifun на **nextjs**
 
-    ```bash
-      pnpm start:spotifun-nextjs
-    ```
+```bash
+     pnpm start:spotifun-nextjs
+```
 
-# Spotifun and trelly apps
+Happy hacking 🚀
 
-## Spotifun
+## 🔗 Настройки
 
-Для того, чтобы запустить `Spotifun` перейдите в директорию `spotifun` и далее смотрите [Readme.md](https://github.com/it-incubator/apihub-front/blob/main/spotifun/README.md)
+### 🕎 Переменные окружения
 
-## Trelly
+В файле `.env` замените `VITE_API_KEY` который нужно взять из [Api hub](https://apihub.it-incubator.io/en)
 
-Для того, чтобы запустить `Trelly` перейдите в директорию `trelly` и далее смотрите [Readme.md](https://github.com/it-incubator/apihub-front/blob/main/trelly/README.md)
+### 🅿️ Prettier
 
-
+❗Обязательно включите в настройках Webstorm `prettier`
