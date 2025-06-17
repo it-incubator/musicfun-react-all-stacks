@@ -10,7 +10,8 @@
     "build:sdk:simple": "pnpm --filter @it-incubator/spotifun-api-sdk run build",
     "start:spotifun-tanstack": "pnpm --filter spotifun run dev",
     "start:spotifun-rtk": "pnpm --filter spotifun-rtk-query run dev",
-    "start:spotifun-nextjs": "pnpm --filter spotifun-nextjs run dev"
+    "start:spotifun-nextjs": "pnpm --filter spotifun-nextjs run dev",
+    "start:trelly-rtk": "pnpm --filter trelly-rtk run dev"
   },
   "keywords": [],
   "author": "",

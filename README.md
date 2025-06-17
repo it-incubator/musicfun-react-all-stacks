@@ -31,8 +31,8 @@ pnpm build:sdk
 
 ️🔔 Возможно данные скрипты не являются кросc-платформенными
 
-```json 
- "scripts": {
+```json
+"scripts": {
 "clean": "rm -rf dist",
 "build": "pnpm run clean && tsc"
 }
@@ -46,22 +46,28 @@ pnpm build:sdk:simple
 
 ### 3. Старт проекта
 
-1. spotifun на **tanstack**
+- 🎶spotifun на **tanstack**
 
 ```bash
    pnpm start:spotifun-tanstack
 ```
 
-2. spotifun на **rtk-query**
+- 🎶spotifun на **rtk-query**
 
 ```bash
     pnpm start:spotifun-rtk
 ```
 
-3. spotifun на **nextjs**
+- 🎶spotifun на **nextjs**
 
 ```bash
      pnpm start:spotifun-nextjs
+```
+
+- 📊 trelly на **rtk-query**
+
+```bash
+     pnpm start:start:trelly-rtk
 ```
 
 Happy hacking 🚀
