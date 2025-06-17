@@ -11,11 +11,12 @@ import { joinUrl } from "../../common/utils/urlHelper"
 import { playlistsEndpoint, tracksEndpoint } from "../../common/apiEntities/apiEntities.js"
 import { Cover } from "../../common/types/playlists-tracks.types.js"
 import { Nullable } from "../../common/types/common.types"
-import { getApiClient } from "../../v2/request"
+import { getApiClient, RequestOptions } from "../../v2/request"
 
 export const tracksApi = {
-  fetchTracks: ({ pageSize = 3, pageNumber, search = "" }: FetchTracksArgs) => {
+  fetchTracks: ({ pageSize = 3, pageNumber, search = "" }: FetchTracksArgs, opts?: RequestOptions) => {
     return getApiClient().get<FetchTracksResponse>(joinUrl(playlistsEndpoint, tracksEndpoint), {
+      ...opts,
       params: {
         pageSize,
         pageNumber,

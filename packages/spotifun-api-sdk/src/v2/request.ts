@@ -120,9 +120,15 @@ export class ApiClient {
     opts: RequestOptions = {}
   ): Promise<Response> {
     const baseInput: RequestInfo = this.buildUrl(path, opts.params)
+
+    const headers: Record<string, string> = {}
+    if (!(opts.body instanceof FormData)) {
+      headers["Content-Type"] = "application/json"
+    }
+
     const baseInit: RequestInit = {
       method,
-      headers: { "Content-Type": "application/json" },
+      headers: headers,
       body:
         opts.body instanceof FormData
           ? opts.body

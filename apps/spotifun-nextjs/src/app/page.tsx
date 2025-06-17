@@ -13,11 +13,15 @@ export default async function Home() {
     },
   });
 
-  const tracks = await tracksApi.fetchTracks({ pageNumber: 1, pageSize: 5 });
+  const tracks = await tracksApi.fetchTracks({ pageNumber: 1, pageSize: 5 }, {
+    nextOptions: {
+      tags: ['track'],
+    }
+  });
 
   return (
     <div className={styles.page}>
-      {tracks.data.map((track) => (
+      {tracks.data.data.map((track) => (
         <li key={track.id}>{track.attributes.title}</li>
       ))}
     </div>

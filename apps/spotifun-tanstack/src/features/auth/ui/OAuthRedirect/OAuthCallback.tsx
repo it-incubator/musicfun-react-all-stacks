@@ -7,8 +7,9 @@ export const OAuthCallback = () => {
 
     if (code && window.opener) {
       window.opener.postMessage({ code }, "*") // Лучше заменить "*" на точный origin
-      window.close()
     }
+
+    window.close()
   }, [])
 
   return <p>Logging you in...</p>
