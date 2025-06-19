@@ -1,6 +1,7 @@
 import { tracksKey } from "@/common/apiEntities"
 import { Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
+import type { TrackDetailAttributes } from "../../api/tracksApi.types.ts"
 import { tracksApi } from "../../api/tracksApi.ts"
 import { useAddToPlaylist } from "../../lib/hooks/useAddToPlaylist.ts"
 import { useEditTrack } from "../../lib/hooks/useEditTrack.ts"
