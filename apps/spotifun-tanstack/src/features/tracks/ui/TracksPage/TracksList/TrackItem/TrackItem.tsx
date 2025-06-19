@@ -1,11 +1,11 @@
 import { Path } from "@/common/routing"
+import type { BaseAttributes, TrackDetails } from "../../../../api/tracksApi.types.ts"
 import type { ReactNode } from "react"
 import { Link } from "react-router"
 import { TrackPlayer } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackPlayer/TrackPlayer.tsx"
 import { TrackCover } from "./TrackCover/TrackCover.tsx"
 import { TrackDescription } from "./TrackDescription/TrackDescription.tsx"
 import s from "./TrackItem.module.css"
-import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
 
 type Props<T extends BaseAttributes> = {
   track: TrackDetails<T>

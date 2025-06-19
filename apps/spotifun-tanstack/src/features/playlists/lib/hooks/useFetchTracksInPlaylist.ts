@@ -1,5 +1,5 @@
 import { tracksKey } from "@/common/apiEntities"
-import { tracksApi } from "@it-incubator/spotifun-api-sdk"
+import { tracksApi } from "../../../tracks/api/tracksApi.ts"
 import { useQuery } from "@tanstack/react-query"
 
 export const useFetchTracksInPlaylist = (playlistId?: string) => {

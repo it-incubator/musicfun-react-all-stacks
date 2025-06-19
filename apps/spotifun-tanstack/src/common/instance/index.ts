@@ -1,1 +1,1 @@
-export { getInstance } from "./instance.ts"
+export { getInstance, setInstanceConfig } from "./instance.ts"

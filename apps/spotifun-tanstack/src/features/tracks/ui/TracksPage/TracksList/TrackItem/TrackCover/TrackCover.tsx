@@ -1,11 +1,12 @@
 import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
 import { tracksKey } from "@/common/apiEntities"
 import { uploadCover } from "@/common/utils/uploadCover.ts"
+import { tracksApi } from "@/features/tracks/api/tracksApi.ts"
+import type { BaseAttributes, TrackDetails } from "@/features/tracks/api/tracksApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import type { ChangeEvent, MouseEvent } from "react"
 import s from "./TrackCover.module.css"
-import { tracksApi, type BaseAttributes, type TrackDetails } from "@it-incubator/spotifun-api-sdk"
 
 type Props<T extends BaseAttributes> = {
   track: TrackDetails<T>

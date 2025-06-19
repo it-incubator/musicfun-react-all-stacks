@@ -1,5 +1,5 @@
-import { PlayerDescription } from "@/features/player/ui/Players/Player/PlayerDescription/PlayerDescription.tsx"
-import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
+import type { BaseAttributes, TrackDetails } from "../../../../tracks/api/tracksApi.types.ts"
+import { PlayerDescription } from "../Player/PlayerDescription/PlayerDescription.tsx"
 import { PlayerLogic } from "../../../model/PlayerLogic.ts"
 import { PlayerControls } from "../Player/PlayerControls/PlayerControls.tsx"
 import { ProgressBar } from "../Player/ProgressBar/ProgressBar.tsx"

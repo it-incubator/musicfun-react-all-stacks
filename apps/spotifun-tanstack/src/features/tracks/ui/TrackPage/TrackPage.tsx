@@ -1,23 +1,23 @@
 import { tracksKey } from "@/common/apiEntities"
 import { Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
-import { useAddToPlaylist } from "@/features/tracks/lib/hooks/useAddToPlaylist.ts"
-import { useEditTrack } from "@/features/tracks/lib/hooks/useEditTrack.ts"
-import { useRemoveTrack } from "@/features/tracks/lib/hooks/useRemoveTrack.ts"
-import { EditTrackForm } from "@/features/tracks/ui/TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
-import { Reactions } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/Reactions/Reactions.tsx"
+import { tracksApi } from "../../api/tracksApi.ts"
+import { useAddToPlaylist } from "../../lib/hooks/useAddToPlaylist.ts"
+import { useEditTrack } from "../../lib/hooks/useEditTrack.ts"
+import { useRemoveTrack } from "../../lib/hooks/useRemoveTrack.ts"
+import { EditTrackForm } from "../TracksPage/TracksList/EditTrackForm/EditTrackForm.tsx"
+import { Reactions } from "../TracksPage/TracksList/TrackItem/Reactions/Reactions.tsx"
 import { useQuery } from "@tanstack/react-query"
 import { Link, Navigate, useNavigate, useParams } from "react-router"
 import { AddTrackToPlaylistModal } from "../TracksPage/AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
-import { tracksApi, type TrackDetailAttributes } from "@it-incubator/spotifun-api-sdk"
 
 export const TrackPage = () => {
   const navigate = useNavigate()
 
   const { trackId: id } = useParams<{ trackId?: string }>()
 
-  const { data, isPending,  } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: [tracksKey, id],
     queryFn: () => tracksApi.fetchTrackById(id as string),
   })

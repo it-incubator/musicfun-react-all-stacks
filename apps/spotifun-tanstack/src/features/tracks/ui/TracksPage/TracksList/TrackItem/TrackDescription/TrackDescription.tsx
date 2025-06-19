@@ -3,7 +3,7 @@ import type {
   FetchTracksAttributes,
   PlaylistItemAttributes,
   TrackDetailAttributes,
-} from "@it-incubator/spotifun-api-sdk"
+} from "../../../../../api/tracksApi.types.ts"
 import { DescriptionArtists } from "./DescriptionArtists/DescriptionArtists.tsx"
 import { DescriptionTags } from "./DescriptionTags/DescriptionTags.tsx"
 

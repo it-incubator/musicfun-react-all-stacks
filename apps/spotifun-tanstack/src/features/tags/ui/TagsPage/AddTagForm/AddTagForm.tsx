@@ -1,8 +1,8 @@
 import { tagsKey } from "@/common/apiEntities"
+import { tagsApi } from "../../../api/tagsApi.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { tagsApi } from "@it-incubator/spotifun-api-sdk"
 
 type Inputs = {
   value: string

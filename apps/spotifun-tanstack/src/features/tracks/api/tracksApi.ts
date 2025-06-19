@@ -1,7 +1,6 @@
 import { playlistsEndpoint, tracksEndpoint } from "@/common/apiEntities"
 import { getInstance } from "@/common/instance"
 import type { Cover, Nullable } from "@/common/types"
-import { getApiClient } from "@it-incubator/spotifun-api-sdk"
 import type {
   FetchPlaylistsTracksResponse,
   FetchTracksArgs,
@@ -70,14 +69,14 @@ export const tracksApi = {
     playlistId: string
     putAfterItemId: Nullable<string>
   }) => {
-    return getApiClient().put<void>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId, "reorder"), {
+    return getInstance().put<void>(joinUrl(playlistsEndpoint, playlistId, tracksEndpoint, trackId, "reorder"), {
       putAfterItemId,
     })
   },
   like: (trackId: string) => {
-    return getApiClient().post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "like"), {})
+    return getInstance().post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "like"), {})
   },
   dislike: (trackId: string) => {
-    return getApiClient().post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "dislike"), {})
+    return getInstance().post<ReactionResponse>(joinUrl(playlistsEndpoint, tracksEndpoint, trackId, "dislike"), {})
   },
 }

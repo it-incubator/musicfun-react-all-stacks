@@ -1,12 +1,13 @@
 import { playlistsKey } from "@/common/apiEntities"
 import { showErrorToast } from "@/common/utils"
 import { uploadCover } from "@/common/utils/uploadCover.ts"
+import { playlistsApi } from "../../../../../api/playlistsApi.ts"
+import type { Playlist } from "../../../../../api/playlistsApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import noCover from "@/assets/img/no-cover.png"
 import type { ChangeEvent } from "react"
 import s from "./PlaylistCover.module.css"
-import { playlistsApi, type Playlist } from "@it-incubator/spotifun-api-sdk"
 
 type Props = {
   playlist: Playlist

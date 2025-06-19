@@ -1,8 +1,8 @@
 import { tracksKey } from "@/common/apiEntities"
 import type { Nullable } from "@/common/types"
 import { showErrorToast, showSuccessToast } from "@/common/utils"
+import { tracksApi } from "../../api/tracksApi.ts"
 import { queryClient } from "@/main.tsx"
-import { tracksApi } from "@it-incubator/spotifun-api-sdk"
 import { useMutation } from "@tanstack/react-query"
 import { type MouseEvent, useState } from "react"
 

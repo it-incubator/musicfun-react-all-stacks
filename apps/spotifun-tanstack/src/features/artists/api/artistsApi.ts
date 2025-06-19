@@ -4,9 +4,7 @@ import type { Artist } from "./artistsApi.types.ts"
 
 export const artistsApi = {
   findArtists: (name: string) => {
-    const a = getInstance().get<Artist[]>(`${artistsEndpoint}/search?term=${name}`)
-    debugger
-    return a
+    return getInstance().get<Artist[]>(`${artistsEndpoint}/search?term=${name}`)
   },
   createArtist: (name: string) => {
     return getInstance().post<Artist>(artistsEndpoint, { name })

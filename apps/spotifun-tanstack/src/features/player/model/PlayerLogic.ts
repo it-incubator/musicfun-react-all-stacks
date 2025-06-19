@@ -1,5 +1,5 @@
 import type { Nullable } from "@/common/types"
-import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
+import type { BaseAttributes, TrackDetails } from "../../tracks/api/tracksApi.types.ts"
 import { PlayStatus } from "../lib/enums/enums.ts"
 import { PlayerCore } from "./PlayerCore"
 import { type SubscriberType, SubscribingObject } from "./SubscribingObject"

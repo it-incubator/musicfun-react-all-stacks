@@ -1,8 +1,9 @@
 import { tagsKey } from "@/common/apiEntities"
+import { tagsApi } from "../../../../api/tagsApi.ts"
+import type { Tag } from "../../../../api/tagsApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import s from "./TagItem.module.css"
-import { type Tag, tagsApi } from "@it-incubator/spotifun-api-sdk"
 
 type Props = {
   tag: Tag

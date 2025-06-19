@@ -1,11 +1,11 @@
 import { tracksKey } from "@/common/apiEntities"
 import { ReactionIcon } from "@/common/icons"
 import { showErrorToast } from "@/common/utils"
+import { tracksApi } from "../../../../../api/tracksApi.ts"
 import { CurrentUserReaction } from "../../../../../lib/enums/enums.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import s from "./Reactions.module.css"
-import { tracksApi } from "@it-incubator/spotifun-api-sdk"
 
 type Props = {
   currentUserReaction: CurrentUserReaction

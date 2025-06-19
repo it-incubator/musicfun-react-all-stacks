@@ -1,6 +1,6 @@
 import { IconButton } from "@/common/components"
 import { NextTrackIcon, PauseIcon, PlayIcon } from "@/common/icons"
-import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
+import type { BaseAttributes, TrackDetails } from "@/features/tracks/api/tracksApi.types.ts"
 import type { PlayerLogic } from "../../../../model/PlayerLogic.ts"
 
 type Props<T extends BaseAttributes> = {

@@ -1,5 +1,6 @@
 import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
-import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
+import type { BaseAttributes, TrackDetails } from "@/features/tracks/api/tracksApi.types.ts"
+
 import s from "./PlayerDescription.module.scss"
 
 type Props<T extends BaseAttributes> = {

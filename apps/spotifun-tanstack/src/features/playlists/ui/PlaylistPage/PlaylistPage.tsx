@@ -1,12 +1,12 @@
 import { playlistsKey } from "@/common/apiEntities"
 import { Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
+import { playlistsApi } from "../../api/playlistsApi.ts"
 import { useQuery } from "@tanstack/react-query"
 import { Link, Navigate, useParams } from "react-router"
 import { PlaylistCover } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistCover/PlaylistCover.tsx"
 import { PlaylistDescription } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx"
 import { PlaylistTracks } from "./PlaylistTracks/PlaylistTracks.tsx"
-import { playlistsApi } from "@it-incubator/spotifun-api-sdk"
 
 export const PlaylistPage = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()

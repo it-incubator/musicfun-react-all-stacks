@@ -1,7 +1,7 @@
 import { playlistsKey } from "@/common/apiEntities"
 import { showErrorToast } from "@/common/utils"
+import { playlistsApi } from "../../api/playlistsApi.ts"
 import { queryClient } from "@/main.tsx"
-import { playlistsApi } from "@it-incubator/spotifun-api-sdk"
 import { useMutation } from "@tanstack/react-query"
 
 export const useRemovePlaylist = () => {
