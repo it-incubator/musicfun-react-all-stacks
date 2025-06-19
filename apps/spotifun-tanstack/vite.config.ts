@@ -11,11 +11,12 @@ export default defineConfig({
     },
   },
   server: {
-    host: true,   // ← or '0.0.0.0'
+    host: true, // ← or '0.0.0.0'
     port: 5174,
+    strictPort: true,
     allowedHosts: [
-      'domain.prod',      // <-- your custom host
-      'localhost',        // (optional) keep localhost too
+      "domain.prod", // <-- your custom host
+      "localhost", // (optional) keep localhost too
     ],
   },
 })

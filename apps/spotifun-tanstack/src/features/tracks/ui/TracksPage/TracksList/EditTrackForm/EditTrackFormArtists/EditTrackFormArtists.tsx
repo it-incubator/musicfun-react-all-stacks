@@ -1,8 +1,8 @@
 import { artistsKey } from "@/common/apiEntities"
+import { artistsApi } from "@/features/artists/api/artistsApi.ts"
 import { useQuery } from "@tanstack/react-query"
 import type { Dispatch, SetStateAction } from "react"
 import s from "../EditTrackForm.module.css"
-import { artistsApi } from "@it-incubator/spotifun-api-sdk"
 
 type Props = {
   artistsIds: string[]

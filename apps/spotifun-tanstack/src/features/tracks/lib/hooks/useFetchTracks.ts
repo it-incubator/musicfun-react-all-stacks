@@ -1,5 +1,5 @@
 import { tracksKey } from "@/common/apiEntities"
-import { tracksApi } from "@it-incubator/spotifun-api-sdk"
+import { tracksApi } from "../../api/tracksApi.ts"
 import { useInfiniteQuery } from "@tanstack/react-query"
 
 export const useFetchTracks = () => {

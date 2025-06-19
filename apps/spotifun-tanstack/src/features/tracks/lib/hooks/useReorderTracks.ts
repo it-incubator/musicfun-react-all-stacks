@@ -1,8 +1,9 @@
 import { tracksKey } from "@/common/apiEntities"
 import { dragEndUtilsHandler, showErrorToast, showSuccessToast } from "@/common/utils"
+import { tracksApi } from "../../api/tracksApi.ts"
+import type { PlaylistItemAttributes, TrackDetails } from "../../api/tracksApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import type { DragEndEvent } from "@dnd-kit/core"
-import { tracksApi, type PlaylistItemAttributes, type TrackDetails } from "@it-incubator/spotifun-api-sdk"
 import { useMutation } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 

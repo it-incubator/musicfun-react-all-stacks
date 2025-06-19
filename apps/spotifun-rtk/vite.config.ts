@@ -1,6 +1,6 @@
-import { defineConfig } from "vite"
-import react from "@vitejs/plugin-react"
 import path from "path"
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react-swc"
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -9,5 +9,14 @@ export default defineConfig({
     alias: {
       "@/": `${path.resolve(__dirname, "src")}/`,
     },
+  },
+  server: {
+    host: true, // ← or '0.0.0.0'
+    port: 5174,
+    strictPort: true,
+    allowedHosts: [
+      "domain.prod", // <-- your custom host
+      "localhost", // (optional) keep localhost too
+    ],
   },
 })

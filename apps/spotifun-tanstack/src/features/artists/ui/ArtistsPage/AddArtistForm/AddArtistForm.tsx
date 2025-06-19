@@ -1,8 +1,8 @@
 import { artistsKey } from "@/common/apiEntities"
+import { artistsApi } from "../../../api/artistsApi.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { artistsApi } from "@it-incubator/spotifun-api-sdk"
 
 type Inputs = {
   name: string

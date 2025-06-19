@@ -1,3 +1,4 @@
+import { setInstanceConfig } from "@/common/instance"
 import { getSharedSocket } from "@/socket.ts"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
@@ -9,8 +10,6 @@ import { App } from "./app/App.tsx"
 import { PlayerProvider } from "./features/player/lib/context/PlayerProvider.tsx"
 import { PlayerCore } from "./features/player/model/PlayerCore.ts"
 import { PlayerLogic } from "./features/player/model/PlayerLogic.ts"
-import { localStorageKeys } from "@it-incubator/spotifun-api-sdk"
-import { configureApi } from "@it-incubator/spotifun-api-sdk/dist/v2/request"
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,15 +26,9 @@ export const queryClient = new QueryClient({
   },
 })
 
-configureApi({
-  baseURL: import.meta.env.VITE_BASE_URL!,
+setInstanceConfig({
+  baseURL: import.meta.env.VITE_BASE_URL,
   apiKey: import.meta.env.VITE_API_KEY,
-  getAccessToken: () => localStorage.getItem(localStorageKeys.accessToken),
-  getRefreshToken: () => localStorage.getItem(localStorageKeys.refreshToken),
-  setTokens: (access, refresh) => {
-    localStorage.setItem(localStorageKeys.accessToken, access)
-    localStorage.setItem(localStorageKeys.refreshToken, refresh)
-  },
 })
 
 export const playerCore = new PlayerCore()

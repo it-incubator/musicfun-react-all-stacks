@@ -1,11 +1,12 @@
 import { tracksKey } from "@/common/apiEntities"
 import type { Nullable } from "@/common/types"
 import { showErrorToast, showSuccessToast } from "@/common/utils"
+import { tracksApi } from "../../api/tracksApi.ts"
+import type { UpdateTrackArgs } from "../../api/tracksApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { type MouseEvent, useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { tracksApi, type UpdateTrackArgs } from "@it-incubator/spotifun-api-sdk"
 
 export const useEditTrack = () => {
   const [trackId, setTrackId] = useState<Nullable<string>>(null)

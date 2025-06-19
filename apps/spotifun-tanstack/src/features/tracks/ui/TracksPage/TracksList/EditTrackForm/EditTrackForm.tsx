@@ -1,9 +1,9 @@
+import type { UpdateTrackArgs } from "../../../../api/tracksApi.types.ts"
 import { type Dispatch, type MouseEvent, type SetStateAction } from "react"
 import { type SubmitHandler, type UseFormHandleSubmit, type UseFormRegister } from "react-hook-form"
 import { EditTrackFormArtists } from "./EditTrackFormArtists/EditTrackFormArtists.tsx"
 import { EditTrackFormTags } from "./EditTrackFormTags/EditTrackFormTags.tsx"
 import s from "./EditTrackForm.module.css"
-import type { UpdateTrackArgs } from "@it-incubator/spotifun-api-sdk"
 
 type Props = {
   editTrack: (e: MouseEvent) => void

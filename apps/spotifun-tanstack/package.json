@@ -13,7 +13,6 @@
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "10.0.0",
     "@dnd-kit/utilities": "3.2.2",
-    "@it-incubator/spotifun-api-sdk": "workspace:*",
     "@tanstack/react-query": "5.80.6",
     "@tanstack/react-query-devtools": "5.80.6",
     "axios": "^1.9.0",

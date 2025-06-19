@@ -1,5 +1,6 @@
 import { authKey } from "@/common/apiEntities"
-import { authApi, localStorageKeys } from "@it-incubator/spotifun-api-sdk"
+import { authApi } from "./authApi.ts"
+import { localStorageKeys } from "./authApi.types.ts"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const useLogoutMutation = () => {

@@ -1,5 +1,5 @@
 import type { Nullable } from "@/common/types"
-import type { BaseAttributes, TrackDetails } from "@it-incubator/spotifun-api-sdk"
+import type { BaseAttributes, TrackDetails } from "../../../tracks/api/tracksApi.types.ts"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import type { PlayerLogic } from "../../model/PlayerLogic.ts"
 import { PlayerContext } from "../context/PlayerContext.ts"

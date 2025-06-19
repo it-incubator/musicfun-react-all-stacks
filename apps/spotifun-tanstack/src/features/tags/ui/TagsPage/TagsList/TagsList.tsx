@@ -1,10 +1,10 @@
 import { tagsKey } from "@/common/apiEntities"
 import { SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
+import { tagsApi } from "../../../api/tagsApi.ts"
 import { TagItem } from "./TagItem/TagItem.tsx"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
-import { tagsApi } from "@it-incubator/spotifun-api-sdk"
 
 export const TagsList = () => {
   const [search, setSearch] = useState("")

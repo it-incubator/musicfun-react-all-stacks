@@ -1,5 +1,5 @@
 import { playlistsKey } from "@/common/apiEntities"
-import { playlistsApi } from "@it-incubator/spotifun-api-sdk"
+import { playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
 import { useQuery } from "@tanstack/react-query"
 
 type Props = {

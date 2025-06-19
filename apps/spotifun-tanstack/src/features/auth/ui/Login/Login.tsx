@@ -1,4 +1,5 @@
-import { authApi, localStorageKeys } from "@it-incubator/spotifun-api-sdk"
+import { localStorageKeys } from "../../api/authApi.types.ts"
+import { authApi } from "../../api/authApi.ts"
 import { useMe } from "../../api/useMe.ts"
 
 export const Login = () => {

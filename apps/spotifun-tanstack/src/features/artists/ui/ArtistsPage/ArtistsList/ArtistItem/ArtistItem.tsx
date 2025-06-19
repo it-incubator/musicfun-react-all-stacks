@@ -1,8 +1,9 @@
 import { artistsKey } from "@/common/apiEntities"
+import { artistsApi } from "../../../../api/artistsApi.ts"
+import type { Artist } from "../../../../api/artistsApi.types.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import s from "./ArtistItem.module.css"
-import { type Artist, artistsApi } from "@it-incubator/spotifun-api-sdk"
 
 type Props = {
   artist: Artist

@@ -1,9 +1,10 @@
 import { playlistsKey } from "@/common/apiEntities"
 import { showErrorToast } from "@/common/utils"
+import { playlistsApi } from "../../../api/playlistsApi.ts"
+import type { CreatePlaylistArgs } from "../../../api/playlistsApi.types.ts"
 import { useMutation } from "@tanstack/react-query"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { queryClient } from "@/main.tsx"
-import { playlistsApi, type CreatePlaylistArgs } from "@it-incubator/spotifun-api-sdk"
 
 export const AddPlaylistForm = () => {
   const { register, handleSubmit, reset } = useForm<CreatePlaylistArgs>()

@@ -1,8 +1,8 @@
 import { tagsKey } from "@/common/apiEntities"
+import { tagsApi } from "@/features/tags/api/tagsApi.ts"
 import { useQuery } from "@tanstack/react-query"
 import type { Dispatch, SetStateAction } from "react"
 import s from "../EditTrackForm.module.css"
-import { tagsApi } from "@it-incubator/spotifun-api-sdk"
 
 type Props = {
   tagIds: string[]

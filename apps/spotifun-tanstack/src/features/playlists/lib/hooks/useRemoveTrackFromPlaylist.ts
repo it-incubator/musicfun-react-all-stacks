@@ -1,6 +1,6 @@
 import { tracksKey } from "@/common/apiEntities"
+import { tracksApi } from "../../../tracks/api/tracksApi.ts"
 import { queryClient } from "@/main.tsx"
-import { tracksApi } from "@it-incubator/spotifun-api-sdk"
 import { useMutation } from "@tanstack/react-query"
 import type { MouseEvent } from "react"
 
