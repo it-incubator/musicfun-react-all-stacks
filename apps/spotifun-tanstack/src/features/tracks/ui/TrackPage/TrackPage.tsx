@@ -17,7 +17,7 @@ export const TrackPage = () => {
 
   const { trackId: id } = useParams<{ trackId?: string }>()
 
-  const { data, isPending } = useQuery({
+  const { data, isPending,  } = useQuery({
     queryKey: [tracksKey, id],
     queryFn: () => tracksApi.fetchTrackById(id as string),
   })

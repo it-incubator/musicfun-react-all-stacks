@@ -1,10 +1,10 @@
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 import { artistsKey } from "@/common/apiEntities"
 import { SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
-import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { artistsApi } from "../../../api/artistsApi.ts"
 import { ArtistItem } from "./ArtistItem/ArtistItem.tsx"
-import { artistsApi } from "@it-incubator/spotifun-api-sdk"
 
 export const ArtistsList = () => {
   const [search, setSearch] = useState("")

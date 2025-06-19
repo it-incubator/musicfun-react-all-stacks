@@ -1,13 +1,13 @@
 import { playlistsKey } from "@/common/apiEntities"
 import { PageTitle, Pagination, SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
+import { playlistsApi } from "../../api/playlistsApi.ts"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { AddPlaylistForm } from "./AddPlaylistForm/AddPlaylistForm.tsx"
 import { PlaylistsList } from "./PlaylistsList/PlaylistsList.tsx"
 import s from "./PlaylistsPage.module.css"
 import { PlaylistTypeSwitcher } from "./PlaylistTypeSwitcher/PlaylistTypeSwitcher.tsx"
-import { playlistsApi } from "@it-incubator/spotifun-api-sdk"
 
 export type PlaylistType = "all" | "my"
 
