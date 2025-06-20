@@ -16,6 +16,8 @@ export const baseApi = createApi({
     // Todo: реализовать handleError для обработки ошибок
     // handleError(api, result)
 
+    
+
     return result
   },
   endpoints: () => ({}),
