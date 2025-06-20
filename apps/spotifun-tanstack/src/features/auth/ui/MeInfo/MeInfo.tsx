@@ -8,7 +8,7 @@ export const MeInfo = () => {
 
   return (
     <div>
-      userLogin: {data?.login}
+      userLogin: {data?.data.login}
       <Logout />
     </div>
   )
