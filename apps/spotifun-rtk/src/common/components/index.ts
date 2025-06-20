@@ -1,2 +1,7 @@
 export { Header } from "./Header/Header.tsx"
+export { Layout } from "./Layout/Layout.tsx"
+export { LinearProgress } from "./LinearProgress/LinearProgress.tsx"
+export { Loader } from "./Loader/Loader.tsx"
 export { PageNotFound } from "./PageNotFound/PageNotFound.tsx"
+export { PageTitle } from "./PageTitle/PageTitle.tsx"
+export { SearchInput } from "./SearchInput/SearchInput.tsx"
