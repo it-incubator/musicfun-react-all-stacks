@@ -1,7 +1,7 @@
 import { playlistsKey } from "@/common/apiEntities"
 import { playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
 import { AddPlaylistForm } from "@/features/playlists/ui/PlaylistsPage/AddPlaylistForm/AddPlaylistForm.tsx"
-import { PlaylistsList } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx"
+import { PlaylistsWithDnd } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsListWithDnd.tsx"
 import { useQuery } from "@tanstack/react-query"
 
 export const UserPlaylists = () => {
@@ -15,7 +15,7 @@ export const UserPlaylists = () => {
   return (
     <>
       <AddPlaylistForm />
-      <PlaylistsList playlists={playlists} />
+      <PlaylistsWithDnd playlists={playlists} />
     </>
   )
 }
