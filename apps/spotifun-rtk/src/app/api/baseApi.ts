@@ -21,13 +21,3 @@ export const baseApi = createApi({
   },
   endpoints: () => ({}),
 })
-
-// instance.interceptors.request.use((config) => {
-//   const accessToken = localStorage.getItem("accessToken") || import.meta.env.VITE_AUTH_TOKEN
-//
-//   if (accessToken) {
-//     config.headers.Authorization = `Bearer ${accessToken}`
-//   }
-//
-//   return config
-// })
