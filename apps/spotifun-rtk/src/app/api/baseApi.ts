@@ -11,7 +11,6 @@ export const baseApi = createApi({
         const accessToken = localStorage.getItem("accessToken") || import.meta.env.VITE_AUTH_TOKEN
         headers.set("Authorization", `Bearer ${accessToken}`)
       },
-      headers: { "API-KEY": import.meta.env.VITE_API_KEY! },
     })(args, api, extraOptions)
 
     // Todo: реализовать handleError для обработки ошибок
