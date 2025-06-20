@@ -17,13 +17,7 @@ export const TagsList = () => {
 
   return (
     <>
-      <SearchInput
-        search={search}
-        setSearch={setSearch}
-        isPending={isPending}
-        title="Поиск по тегу"
-        placeholder="Введите тег"
-      />
+      <SearchInput search={search} setSearch={setSearch} isPending={isPending} placeholder="Введите тег" />
       {Array.isArray(data?.data) && data.data.length ? (
         <div>
           <h2>Список тегов</h2>

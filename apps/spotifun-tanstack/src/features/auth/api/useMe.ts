@@ -5,10 +5,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 export const useMe = () => {
   const qc = useQueryClient()
 
-  const query = useQuery({ queryKey: [authKey], queryFn: authApi.getMe })
+  const { data } = useQuery({ queryKey: [authKey], queryFn: authApi.getMe })
 
   /** хелпер — вручную заставить /me обновиться */
   const invalidate = () => qc.invalidateQueries({ queryKey: [authKey] })
 
-  return { query: query, invalidate }
+  // return { query: query, invalidate }
+  return { data, invalidate }
 }

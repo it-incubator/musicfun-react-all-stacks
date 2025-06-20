@@ -17,13 +17,7 @@ export const ArtistsList = () => {
 
   return (
     <>
-      <SearchInput
-        search={search}
-        setSearch={setSearch}
-        isPending={isPending}
-        title="Поиск по имени артиста"
-        placeholder="Введите имя"
-      />
+      <SearchInput search={search} setSearch={setSearch} isPending={isPending} placeholder="Введите имя" />
       {Array.isArray(data?.data) && data.data.length ? (
         <div>
           <h2>Список артистов</h2>
