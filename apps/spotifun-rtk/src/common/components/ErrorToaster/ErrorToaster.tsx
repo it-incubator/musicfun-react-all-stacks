@@ -12,7 +12,5 @@ export const ErrorToaster = () => {
     }
   }, [selectedError])
 
-  return (
-    <ToastContainer newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss pauseOnHover theme="light" />
-  )
+  return <ToastContainer newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss pauseOnHover />
 }
