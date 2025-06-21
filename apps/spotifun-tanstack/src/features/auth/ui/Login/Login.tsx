@@ -1,8 +1,9 @@
-import { localStorageKeys } from "../../api/authApi.types.ts"
 import { authApi } from "../../api/authApi.ts"
-import { useMe } from "../../api/useMe.ts"
+import { useLoginMutation } from "@/features/auth/api/useLoginMutation.ts"
 
 export const Login = () => {
+  const { mutate } = useLoginMutation()
+
   const loginHandler = () => {
     const redirectUri = "http://localhost:5174/oauth/callback" // todo: to config
     const url = authApi.oauthUrl(redirectUri)
@@ -21,17 +22,12 @@ export const Login = () => {
         // тут можно вызвать setToken(accessToken) или dispatch(login)
         //popup?.close()
         window.removeEventListener("message", receiveMessage)
-        const tokens = await authApi.login({ code, accessTokenTTL: "3m", redirectUri, rememberMe: true })
-        localStorage.setItem(localStorageKeys.refreshToken, tokens.data.refreshToken)
-        localStorage.setItem(localStorageKeys.accessToken, tokens.data.accessToken)
-        invalidate()
+        mutate({ code, accessTokenTTL: "3m", redirectUri, rememberMe: true })
       }
     }
 
     window.addEventListener("message", receiveMessage)
   }
-
-  const { invalidate } = useMe()
 
   return <button onClick={loginHandler}>Login with apihub</button>
 }
