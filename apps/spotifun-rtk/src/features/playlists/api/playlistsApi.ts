@@ -21,7 +21,7 @@ export const playlistsAPI = baseApi.injectEndpoints({
     }),
     fetchPlaylistById: build.query<{ data: Playlist }, string>({
       query: (playlistId) => ({ url: `playlists/${playlistId}` }),
-      providesTags: (result, error, playlistId) => [{ type: "Playlist", id: playlistId }],
+      providesTags: (_result, _error, playlistId) => [{ type: "Playlist", id: playlistId }],
     }),
     createPlaylist: build.mutation<{ data: Playlist }, CreatePlaylistArgs>({
       query: (body) => ({
@@ -37,7 +37,7 @@ export const playlistsAPI = baseApi.injectEndpoints({
         method: "PUT",
         body: payload,
       }),
-      invalidatesTags: (result, error, { playlistId }) => [{ type: "Playlist", id: playlistId }],
+      invalidatesTags: (_result, _error, { playlistId }) => [{ type: "Playlist", id: playlistId }],
     }),
     removePlaylist: build.mutation<void, string>({
       query: (playlistId) => ({
@@ -56,7 +56,7 @@ export const playlistsAPI = baseApi.injectEndpoints({
           body: formData,
         }
       },
-      invalidatesTags: (result, error, { playlistId }) => [{ type: "Playlist", id: playlistId }],
+      invalidatesTags: (_result, _error, { playlistId }) => [{ type: "Playlist", id: playlistId }],
     }),
     reorderPlaylist: build.mutation<void, { playlistId: string; putAfterItemId: Nullable<string> }>({
       query: ({ playlistId, putAfterItemId }) => ({
