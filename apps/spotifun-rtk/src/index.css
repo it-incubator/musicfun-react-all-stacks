@@ -7,9 +7,9 @@
     --highlight: #007bff;
     --main-text: #fff;
     --main-bg: #000;
-    --player-play-icon: url('./features/player/lib/img/play_blue.svg');
-    --player-pause-icon: url('./features/player/lib/img/pause_blue.svg');
-    --player-current-position: url('./features/player/lib/img/current-position_blue.svg')
+    --player-play-icon: url('features/player/lib/img/play_blue.svg');
+    --player-pause-icon: url('features/player/lib/img/pause_blue.svg');
+    --player-current-position: url('features/player/lib/img/current-position_blue.svg')
 }
 
 

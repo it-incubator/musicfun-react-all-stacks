@@ -1,6 +1,7 @@
 import { NavLink } from "react-router"
 import s from "./Header.module.css"
 import { Path } from "@/common/routing/Routing"
+import { UserBlock } from "@/features/auth/ui/UserBlock.tsx"
 // import { UserBlock } from "@/features/auth/ui/UserBlock.tsx"
 
 const navItems = [
@@ -25,7 +26,7 @@ export const Header = () => {
           ))}
         </ul>
         {/* добавить после реализации  login & me */}
-        {/* <UserBlock /> */}
+         <UserBlock />
       </nav>
     </header>
   )
