@@ -1,4 +1,9 @@
-import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
+import {
+  type BaseQueryFn,
+  type FetchArgs,
+  fetchBaseQuery,
+  type FetchBaseQueryError
+} from "@reduxjs/toolkit/query/react"
 import { Mutex } from "async-mutex"
 
 export const localStorageKeys = {
