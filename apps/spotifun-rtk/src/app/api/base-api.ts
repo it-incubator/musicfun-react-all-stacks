@@ -6,5 +6,8 @@ export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithReauth,
   tagTypes: ["Playlist", "Track", "Artist", "Tag", "User"],
-  endpoints: () => ({})
+  endpoints: () => ({}),
+}).injectEndpoints({
+  endpoints: () => ({}),
+  overrideExisting: false,
 })
