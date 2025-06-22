@@ -20,5 +20,5 @@ export const handleError = (
     }
     api.dispatch(setError(error))
   }
-  console.log(result.error)
+
 }
