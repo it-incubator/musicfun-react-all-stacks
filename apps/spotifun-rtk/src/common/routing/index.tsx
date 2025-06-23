@@ -1,1 +1,1 @@
-export { Routing } from "./Routing.tsx"
+export { Routing, Path } from "./Routing.tsx"
