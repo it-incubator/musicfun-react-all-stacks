@@ -1,4 +1,5 @@
 import { type Nullable } from "@/common/types"
+import { PlaylistReactions } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistReactions/PlaylistReactions.tsx"
 import { PlaylistActions } from "./PlaylistActions/PlaylistActions.tsx"
 import type { Playlist } from "../../../../api/playlistsApi.types.ts"
 import { PlaylistCover } from "./PlaylistCover/PlaylistCover.tsx"
@@ -17,6 +18,7 @@ export const PlaylistItem = ({ playlist, editPlaylist, removePlaylist }: Props) 
       <PlaylistDescription attributes={playlist.attributes} />
       <hr />
       <PlaylistActions playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
+      <PlaylistReactions id={playlist.id} currentUserReaction={playlist.attributes.currentUserReaction} />
     </div>
   )
 }

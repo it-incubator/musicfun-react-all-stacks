@@ -90,3 +90,15 @@
     background-color: #333;
     color: white;
 }
+
+/* btn for like/dislike; tracks/playlists */
+.btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  gap: 6px;
+  color: #333;
+}

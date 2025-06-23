@@ -1,5 +1,5 @@
+import { useLoginMutation } from "../../api/useLoginMutation.ts"
 import { authApi } from "../../api/authApi.ts"
-import { useLoginMutation } from "@/features/auth/api/useLoginMutation.ts"
 
 export const Login = () => {
   const { mutate } = useLoginMutation()
@@ -13,7 +13,6 @@ export const Login = () => {
       if (event.origin !== "http://localhost:5174") {
         // todo: to config
         return
-        // throw new Error("incorrect origin parameter")
       }
 
       const { code } = event.data

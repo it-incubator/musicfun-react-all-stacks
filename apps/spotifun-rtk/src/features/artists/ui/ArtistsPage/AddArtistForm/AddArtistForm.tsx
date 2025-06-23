@@ -1,6 +1,7 @@
-// import { artistsKey } from "@/common/apiEntities"
-// import { artistsApi } from "../../../api/artistsApi.ts"
 import { type SubmitHandler, useForm } from "react-hook-form"
+import { useCreateArtistMutation } from "../../../api/artistsApi.ts"
+import { useAppDispatch } from "@/common/hooks"
+import { setError } from "@/app/model/errorSlice.ts"
 
 type Inputs = {
   name: string
@@ -8,17 +9,16 @@ type Inputs = {
 
 export const AddArtistForm = () => {
   const { register, handleSubmit, reset } = useForm<Inputs>()
-
-  // const { mutate, isPending } = useMutation({
-  //   mutationFn: artistsApi.createArtist,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: [artistsKey] })
-  //     reset()
-  //   },
-  // })
+  const dispatch = useAppDispatch()
+  const [createArtist, { isLoading }] = useCreateArtistMutation()
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // mutate(data.name)
+    createArtist(data.name)
+      .unwrap()
+      .then(() => reset())
+      .catch((error) => {
+        dispatch(setError(error.data.message))
+      })
   }
 
   return (
@@ -27,7 +27,7 @@ export const AddArtistForm = () => {
       <div>
         <input {...register("name")} placeholder="Введите имя артиста" />
       </div>
-      {/*<button disabled={isPending}>Создать исполнителя</button>*/}
+      <button disabled={isLoading}>Создать исполнителя</button>
     </form>
   )
 }

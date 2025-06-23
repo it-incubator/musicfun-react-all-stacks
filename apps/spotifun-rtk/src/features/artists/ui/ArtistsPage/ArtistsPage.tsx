@@ -1,6 +1,6 @@
+import { ArtistsList } from "@/features/artists/ui/ArtistsPage/ArtistsList/ArtistsList.tsx"
+import { AddArtistForm } from "@/features/artists/ui/ArtistsPage/AddArtistForm/AddArtistForm.tsx"
 import { PageTitle } from "@/common/components"
-import { AddArtistForm } from "./AddArtistForm/AddArtistForm.tsx"
-import { ArtistsList } from "./ArtistsList/ArtistsList.tsx"
 
 export const ArtistsPage = () => {
   return (

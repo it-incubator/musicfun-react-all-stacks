@@ -13,7 +13,7 @@ const navItems = [
 
 export const Header = () => {
   return (
-    <header className={s.wrapper}>
+    <header className={`flex-container ${s.wrapper}`}>
       <nav>
         <ul className={s.list}>
           {navItems.map((item) => (
@@ -24,8 +24,8 @@ export const Header = () => {
             </li>
           ))}
         </ul>
-        <UserBlock />
       </nav>
+      <UserBlock />
     </header>
   )
 }

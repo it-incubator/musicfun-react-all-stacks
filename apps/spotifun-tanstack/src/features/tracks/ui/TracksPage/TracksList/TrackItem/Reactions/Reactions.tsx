@@ -2,7 +2,7 @@ import { tracksKey } from "@/common/apiEntities"
 import { ReactionIcon } from "@/common/icons"
 import { showErrorToast } from "@/common/utils"
 import { tracksApi } from "../../../../../api/tracksApi.ts"
-import { CurrentUserReaction } from "../../../../../lib/enums/enums.ts"
+import { CurrentUserReaction } from "@/common/enums/enums.ts"
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
 import s from "./Reactions.module.css"
@@ -27,10 +27,10 @@ export const Reactions = ({ currentUserReaction, likesCount, dislikesCount, trac
 
   return (
     <div className={s.container}>
-      <button className={`${s.btn} ${isLiked ? s.active : ""}`} onClick={() => mutate("like")}>
+      <button className={`btn ${isLiked ? s.active : ""}`} onClick={() => mutate("like")}>
         <ReactionIcon active={isLiked} activeColor={"green"} type={"like"} /> {likesCount}
       </button>
-      <button className={`${s.btn} ${isDisliked ? s.active : ""}`} onClick={() => mutate("dislike")}>
+      <button className={`btn ${isDisliked ? s.active : ""}`} onClick={() => mutate("dislike")}>
         <ReactionIcon active={isDisliked} activeColor={"red"} type={"dislike"} /> {dislikesCount}
       </button>
     </div>
