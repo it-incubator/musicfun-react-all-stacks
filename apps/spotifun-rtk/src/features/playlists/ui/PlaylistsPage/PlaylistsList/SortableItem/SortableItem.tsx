@@ -4,11 +4,10 @@ import type { ReactNode } from "react"
 
 type Props = {
   id: string
-  title: string
   children: ReactNode
 }
 
-export const SortableItem = ({ id, children, title }: Props) => {
+export const SortableItem = ({ id, children }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id })
 
   const style = {
@@ -20,10 +19,7 @@ export const SortableItem = ({ id, children, title }: Props) => {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
-      <div className={"flex-container"} {...listeners} style={{ cursor: "grab", marginBottom: "16px" }}>
-        <div>
-          <b>title:</b> <span>{title}</span>
-        </div>
+      <div className={"flex-container"} {...listeners} style={{ cursor: "grab", marginBottom: "16px", display: "flex", justifyContent: "flex-end" }}>
         <div>☰</div>
       </div>
       <div>{children}</div>
