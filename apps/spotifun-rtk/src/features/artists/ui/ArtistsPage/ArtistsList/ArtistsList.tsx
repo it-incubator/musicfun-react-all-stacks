@@ -2,19 +2,20 @@ import { SearchInput } from "@/common/components/SearchInput/SearchInput.tsx"
 import { useState } from "react"
 import { ArtistItem } from "@/features/artists/ui/ArtistsPage/ArtistsList/ArtistItem/ArtistItem.tsx"
 import { useFindArtistsQuery } from "@/features/artists/api/artistsApi.ts"
-// import type { Artist } from "@it-incubator/spotifun-api-sdk"
+import { useDebounceValue } from "@/common/hooks"
 
 export const ArtistsList = () => {
   const [search, setSearch] = useState("")
-
-  const { data } = useFindArtistsQuery(search)
+  const [debouncedSearch] = useDebounceValue(search)
+  const { data, isLoading } = useFindArtistsQuery(debouncedSearch)
+  const isPending = isLoading || search !== debouncedSearch
 
   return (
     <>
       <SearchInput
         search={search}
         setSearch={setSearch}
-        isPending={false}
+        isPending={isPending}
         title="Поиск по имени артиста"
         placeholder="Введите имя"
       />
