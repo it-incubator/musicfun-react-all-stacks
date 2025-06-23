@@ -9,7 +9,7 @@ export const usePlayer = <T extends BaseAttributes>(needProgress: boolean, track
 
   const unsubscribersRef = useRef<Array<() => void>>([])
 
-  const [, setCounter] = useState(1)
+  const [, setCounter] = useState(0)
   const [isPlayingMe, setIsPlayingMe] = useState(false)
 
   const playStatusChanged = useCallback(() => {

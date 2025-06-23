@@ -13,7 +13,8 @@ export const useLogoutMutation = () => {
     onSuccess: async () => {
       localStorage.removeItem(localStorageKeys.accessToken)
       localStorage.removeItem(localStorageKeys.refreshToken)
-      await qc.invalidateQueries({ queryKey: [authKey] })
+      qc.resetQueries({ queryKey: [authKey] }) // resetQueries переводит query в изначальное состояние и уведомляет подписчиков — компонент получит data = undefined.
+      //qc.invalidateQueries({ queryKey: [authKey] }) // invalidateQueries заставит его немедленно перефетчиться без токена ⇒ получите 401 ⇒ data станет undefined / error.
     },
   })
 }

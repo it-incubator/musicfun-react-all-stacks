@@ -1,6 +1,7 @@
-import { baseApi } from "@/app/api/baseApi.ts"
 import { artistsEndpoint } from "@/common/apiEntities"
 import type { Artist } from "./artistsApi.types.ts"
+
+import { baseApi } from "@/app/api/base-api.ts"
 
 export const artistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -13,14 +14,3 @@ export const artistsApi = baseApi.injectEndpoints({
 
 export const { useFindArtistsQuery } = artistsApi
 
-// export const artistsApi = {
-//   findArtists: (name: string) => {
-//     return getInstance().get<Artist[]>(`${artistsEndpoint}/search?term=${name}`)
-//   },
-//   createArtist: (name: string) => {
-//     return getInstance().post<Artist>(artistsEndpoint, { name })
-//   },
-//   removeArtist: (id: string) => {
-//     return getInstance().delete<void>(`${artistsEndpoint}/${id}`)
-//   },
-// }

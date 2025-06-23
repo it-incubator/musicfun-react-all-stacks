@@ -1,17 +1,16 @@
-import { localStorageKeys } from "../../api/authApi.types.ts"
-import { authApi } from "../../api/authApi.ts"
-import { useLoginMutation } from "@/features/auth/api/useLoginMutation.ts"
+import { getOauthUrl, useLoginMutation } from "@/features/auth/api/auth-api.ts"
+import { Path } from "@/common/routing/Routing.tsx"
 
 export const Login = () => {
-  const { mutate } = useLoginMutation()
+  const [mutate] = useLoginMutation()
 
   const loginHandler = () => {
-    const redirectUri = "http://localhost:5174/oauth/callback" // todo: to config
-    const url = authApi.oauthUrl(redirectUri)
+    const redirectUri = 'http://localhost:5175' + Path.OAuthRedirect // todo: to config
+    const url = getOauthUrl(redirectUri)
     window.open(url, "oauthPopup", "width=500,height=600")
 
     const receiveMessage = async (event: MessageEvent) => {
-      if (event.origin !== "http://localhost:5174") {
+      if (event.origin !== "http://localhost:5175") {
         // todo: to config
         return
         // throw new Error("incorrect origin parameter")

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { setInstanceConfig } from "@it-incubator/spotifun-api-sdk"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

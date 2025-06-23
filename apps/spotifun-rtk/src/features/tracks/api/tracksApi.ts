@@ -1,5 +1,5 @@
-import { baseApi } from "@/app/api/baseApi.ts"
 import type { FetchTracksArgs } from "./tracksApi.types.ts"
+import { baseApi } from "@/app/api/base-api.ts"
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({

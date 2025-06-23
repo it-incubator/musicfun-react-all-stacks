@@ -1,12 +1,12 @@
 import { Logout } from "../Logout/Logout.tsx"
-import { useMe } from "../../api/useMe.ts"
+import { useGetMeQuery } from "@/features/auth/api/auth-api.ts"
 
 export const MeInfo = () => {
-  const query = useMe()
+  const {data} = useGetMeQuery()
 
   return (
     <div>
-      userLogin: {query.data?.data.login}
+      userLogin: {data?.login}
       <Logout />
     </div>
   )
