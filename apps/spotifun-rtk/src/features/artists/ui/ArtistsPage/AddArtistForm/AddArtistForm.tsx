@@ -1,5 +1,7 @@
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useCreateArtistMutation } from "@/features/artists/api/artistsApi.ts"
+import { useAppDispatch } from "@/common/hooks"
+import { setError } from "@/app/model/errorSlice.ts"
 
 type Inputs = {
   name: string
@@ -7,14 +9,16 @@ type Inputs = {
 
 export const AddArtistForm = () => {
   const { register, handleSubmit, reset } = useForm<Inputs>()
-
-  const [createArtist] = useCreateArtistMutation()
+  const dispatch = useAppDispatch()
+  const [createArtist, { isLoading }] = useCreateArtistMutation()
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     createArtist(data.name)
       .unwrap()
       .then(() => reset())
-      .catch((err) => console.log(err))
+      .catch((error) => {
+        dispatch(setError(error.data.message))
+      })
   }
 
   return (
@@ -23,7 +27,7 @@ export const AddArtistForm = () => {
       <div>
         <input {...register("name")} placeholder="Введите имя артиста" />
       </div>
-      <button>Создать исполнителя</button>
+      <button disabled={isLoading}>Создать исполнителя</button>
     </form>
   )
 }
