@@ -1,5 +1,5 @@
-import { Loader } from "../Loader/Loader.tsx"
 import s from "./SearchInput.module.css"
+import { Loader } from "@/common/components"
 
 type Props = {
   search: string

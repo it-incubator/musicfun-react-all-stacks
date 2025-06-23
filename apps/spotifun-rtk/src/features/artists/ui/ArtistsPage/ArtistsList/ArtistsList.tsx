@@ -1,28 +1,28 @@
+import { SearchInput } from "@/common/components/SearchInput/SearchInput.tsx"
 import { useState } from "react"
-import { SearchInput } from "@/common/components"
+import { ArtistItem } from "@/features/artists/ui/ArtistsPage/ArtistsList/ArtistItem/ArtistItem.tsx"
+import { useFindArtistsQuery } from "@/features/artists/api/artistsApi.ts"
 import { useDebounceValue } from "@/common/hooks"
-import { ArtistItem } from "./ArtistItem/ArtistItem.tsx"
-import { useFindArtistsQuery } from "../../../api/artistsApi.ts"
 
 export const ArtistsList = () => {
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounceValue(search)
-
   const { data, isLoading } = useFindArtistsQuery(debouncedSearch)
+  const isPending = isLoading || search !== debouncedSearch
 
   return (
     <>
       <SearchInput
         search={search}
         setSearch={setSearch}
-        isPending={isLoading}
+        isPending={isPending}
         title="Поиск по имени артиста"
         placeholder="Введите имя"
       />
       {Array.isArray(data) && data.length ? (
         <div>
           <h2>Список артистов</h2>
-          {data?.map((artist) => {
+          {data.map((artist) => {
             return <ArtistItem artist={artist} key={artist.id} />
           })}
         </div>

@@ -1,26 +1,32 @@
-import type { Artist } from "../../../../api/artistsApi.types.ts"
 import s from "./ArtistItem.module.css"
+import { useDeleteArtistMutation } from "@/features/artists/api/artistsApi.ts"
+import type { Artist } from "@/features/artists/api/artistsApi.types.ts"
+import { useAppDispatch } from "@/common/hooks"
+import { setError } from "@/app/model/errorSlice.ts"
 
 type Props = {
   artist: Artist
 }
 
 export const ArtistItem = ({ artist }: Props) => {
+  const dispatch = useAppDispatch()
   const { name, id } = artist
-
-  // const { mutate, isPending: isRemoving } = useMutation({
-  //   mutationFn: artistsApi.removeArtist,
-  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: [artistsKey] }),
-  // })
-
+  const [deleteArtist, { isLoading }] = useDeleteArtistMutation()
+  const deleteHandler = () => {
+    deleteArtist(id)
+      .unwrap()
+      .catch((error) => {
+        dispatch(setError(error.data.message))
+      })
+  }
   return (
-    <div className={`item item--fullwidth flex-container ${s.container}`}>
+    <div className={`${s.item} ${s.itemFullwidth} ${s.flexContainer} ${s.container}`}>
       <div>
         <b>Name:</b> <span>{name}</span>
       </div>
-      {/*<button onClick={() => mutate(id)} disabled={isRemoving}>*/}
-      {/*  {isRemoving ? "Удаление..." : "Удалить"}*/}
-      {/*</button>*/}
+      <button onClick={deleteHandler} disabled={isLoading}>
+        {isLoading ? "Удаление..." : "Удалить"}
+      </button>
     </div>
   )
 }
