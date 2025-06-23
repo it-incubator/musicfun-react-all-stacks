@@ -1,11 +1,10 @@
 import { playlistsEndpoint, tracksEndpoint } from "@/common/apiEntities"
 import { getInstance } from "@/common/instance"
-import type { Cover, Nullable } from "@/common/types"
+import type { Cover, Nullable, ReactionResponse } from "@/common/types"
 import type {
   FetchPlaylistsTracksResponse,
   FetchTracksArgs,
   FetchTracksResponse,
-  ReactionResponse,
   TrackDetailAttributes,
   TrackDetails,
   UpdateTrackArgs,

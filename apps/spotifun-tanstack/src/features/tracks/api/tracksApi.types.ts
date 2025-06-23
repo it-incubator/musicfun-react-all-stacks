@@ -1,7 +1,7 @@
+import type { CurrentUserReaction } from "@/common/enums"
 import type { Images, Meta, Nullable, User } from "@/common/types"
 import type { Artist } from "../../artists/api/artistsApi.types.ts"
 import type { Tag } from "../../tags/api/tagsApi.types.ts"
-import type { CurrentUserReaction } from "../lib/enums/enums.ts"
 
 export type TrackDetails<T> = {
   id: string
@@ -63,13 +63,6 @@ export type FetchTracksResponse = {
 export type FetchPlaylistsTracksResponse = {
   data: TrackDetails<PlaylistItemAttributes>[]
   meta: Meta
-}
-
-export type ReactionResponse = {
-  objectId: string
-  value: number
-  likes: number
-  dislikes: number
 }
 
 // Arguments

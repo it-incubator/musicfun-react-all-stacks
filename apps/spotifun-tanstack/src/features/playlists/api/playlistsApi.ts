@@ -1,6 +1,7 @@
 import { playlistsEndpoint } from "@/common/apiEntities"
 import { getInstance } from "@/common/instance"
-import type { Images, Nullable } from "@/common/types"
+import type { Images, Nullable, ReactionResponse } from "@/common/types"
+import { joinUrl } from "@/common/utils"
 import type { CreatePlaylistArgs, Playlist, PlaylistsResponse, UpdatePlaylistArgs } from "./playlistsApi.types.ts"
 
 export const playlistsApi = {
@@ -31,5 +32,11 @@ export const playlistsApi = {
   },
   reorderPlaylist: ({ playlistId, putAfterItemId }: { playlistId: string; putAfterItemId: Nullable<string> }) => {
     return getInstance().put<void>(`${playlistsEndpoint}/${playlistId}/reorder`, { putAfterItemId })
+  },
+  like: (id: string) => {
+    return getInstance().post<ReactionResponse>(joinUrl(playlistsEndpoint, id, "like"))
+  },
+  dislike: (id: string) => {
+    return getInstance().post<ReactionResponse>(joinUrl(playlistsEndpoint, id, "dislike"))
   },
 }
