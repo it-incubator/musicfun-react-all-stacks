@@ -5,9 +5,17 @@ import { Link, Navigate, useParams } from "react-router"
 import { PlaylistCover } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistCover/PlaylistCover"
 import { PlaylistDescription } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistDescription/PlaylistDescription"
 import { PlaylistTracks } from "./PlaylistTracks/PlaylistTracks"
+import { useGetMeQuery } from "@/features/auth/api/auth-api"
+import { PlaylistActions } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistActions/PlaylistActions"
+import { useRemovePlaylist } from "@/features/playlists/lib/hooks/useRemovePlaylist"
+import { useUpdatePlaylist } from "@/features/playlists/lib/hooks/useUpdatePlaylist"
+import { EditPlaylistForm } from "../PlaylistsPage/PlaylistsList/EditPlaylistForm/EditPlaylistForm"
 
 export const PlaylistPage = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()
+  const { data: userData } = useGetMeQuery()
+  const { removePlaylist } = useRemovePlaylist()
+  const { editPlaylist, playlistId: editingId, register, handleSubmit, onSubmit } = useUpdatePlaylist()
 
   const { data, isLoading } = useFetchPlaylistByIdQuery(playlistId as string, {
     skip: !playlistId,
@@ -19,6 +27,8 @@ export const PlaylistPage = () => {
 
   if (!data) return <h1>Плейлист не найден</h1>
 
+  const isMyPlaylist = userData?.userId === data.data.attributes.user.id
+
   return (
     <>
       <Link className={"link"} to={Path.Playlists}>
@@ -26,8 +36,24 @@ export const PlaylistPage = () => {
       </Link>
       <PageTitle>Информация о плейлисте</PageTitle>
       <div>
-        <PlaylistCover playlist={data.data} />
+        <PlaylistCover playlist={data.data} editable={isMyPlaylist} />
         <PlaylistDescription attributes={data.data.attributes} />
+        {isMyPlaylist && (
+          editingId === data.data.id ? (
+            <EditPlaylistForm
+              onSubmit={onSubmit}
+              editPlaylist={editPlaylist}
+              handleSubmit={handleSubmit}
+              register={register}
+            />
+          ) : (
+            <PlaylistActions
+              playlist={data.data}
+              editPlaylist={editPlaylist}
+              removePlaylist={removePlaylist}
+            />
+          )
+        )}
       </div>
       <PlaylistTracks />
     </>

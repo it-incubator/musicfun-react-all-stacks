@@ -5,9 +5,12 @@ type Props = {
 }
 
 export const PlaylistDescription = ({ attributes }: Props) => {
-  const { description, tags, addedAt, order } = attributes
+  const { title, description, tags, addedAt, order } = attributes
   return (
     <>
+      <div>
+        <b>title:</b> <span>{title}</span>
+      </div>
       <div>
         <b>description:</b> <span>{description || "Описание не добавлено"}</span>
       </div>
