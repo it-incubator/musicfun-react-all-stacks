@@ -1,5 +1,5 @@
-import { baseApi } from "@/app/api/baseApi.ts"
-import type { Artist } from "@it-incubator/spotifun-api-sdk"
+import { baseApi } from "@/app/api/base-api.ts"
+import type { Artist } from "@/features/artists/api/artistsApi.types.ts"
 
 export const artistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
