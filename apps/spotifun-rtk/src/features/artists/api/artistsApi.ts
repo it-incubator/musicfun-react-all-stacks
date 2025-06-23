@@ -1,18 +1,19 @@
 import { baseApi } from "@/app/api/base-api.ts"
 import type { Artist } from "@/features/artists/api/artistsApi.types.ts"
+import { artistsEndpoint } from "@/common/apiEntities"
 
 export const artistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     findArtists: build.query<Artist[], string>({
       query: (name) => ({
-        url: `/artists/search?term=${name}`,
+        url: `/${artistsEndpoint}/search?term=${name}`,
         method: "GET",
       }),
       providesTags: ["Artist"],
     }),
     createArtist: build.mutation<Artist[], string>({
       query: (name) => ({
-        url: "/artists",
+        url: `/${artistsEndpoint}`,
         method: "POST",
         body: { name },
       }),
@@ -20,7 +21,7 @@ export const artistsApi = baseApi.injectEndpoints({
     }),
     deleteArtist: build.mutation<void, string>({
       query: (id) => ({
-        url: `/artists/${id}`,
+        url: `/${artistsEndpoint}/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Artist"],
