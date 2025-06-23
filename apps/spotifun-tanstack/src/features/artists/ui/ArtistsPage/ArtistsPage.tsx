@@ -5,6 +5,7 @@ import { ArtistsList } from "./ArtistsList/ArtistsList.tsx"
 export const ArtistsPage = () => {
   return (
     <>
+	    <h1>test</h1>
       <PageTitle>Страница артистов</PageTitle>
       <AddArtistForm />
       <ArtistsList />
