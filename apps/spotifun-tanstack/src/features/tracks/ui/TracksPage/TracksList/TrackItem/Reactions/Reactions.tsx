@@ -27,10 +27,10 @@ export const Reactions = ({ currentUserReaction, likesCount, dislikesCount, trac
 
   return (
     <div className={s.container}>
-      <button className={`${s.btn} ${isLiked ? s.active : ""}`} onClick={() => mutate("like")}>
+      <button className={`btn ${isLiked ? s.active : ""}`} onClick={() => mutate("like")}>
         <ReactionIcon active={isLiked} activeColor={"green"} type={"like"} /> {likesCount}
       </button>
-      <button className={`${s.btn} ${isDisliked ? s.active : ""}`} onClick={() => mutate("dislike")}>
+      <button className={`btn ${isDisliked ? s.active : ""}`} onClick={() => mutate("dislike")}>
         <ReactionIcon active={isDisliked} activeColor={"red"} type={"dislike"} /> {dislikesCount}
       </button>
     </div>
