@@ -1,4 +1,4 @@
-import { selectError } from "@/app/model/errorSlice"
+import { selectError } from '@/app/model/appSlice'
 import { useAppSelector } from "@/common/hooks"
 import { useEffect } from "react"
 import { toast, ToastContainer } from "react-toastify/unstyled"
