@@ -1,13 +1,15 @@
-import { SearchInput } from "@/common/components/SearchInput/SearchInput.tsx"
 import { useState } from "react"
-import { ArtistItem } from "@/features/artists/ui/ArtistsPage/ArtistsList/ArtistItem/ArtistItem.tsx"
-import { useFindArtistsQuery } from "@/features/artists/api/artistsApi.ts"
+import { SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
+import { ArtistItem } from "./ArtistItem/ArtistItem.tsx"
+import { useFindArtistsQuery } from "../../../api/artistsApi.ts"
 
 export const ArtistsList = () => {
   const [search, setSearch] = useState("")
+
   const [debouncedSearch] = useDebounceValue(search)
   const { data, isLoading } = useFindArtistsQuery(debouncedSearch)
+
   const isPending = isLoading || search !== debouncedSearch
 
   return (

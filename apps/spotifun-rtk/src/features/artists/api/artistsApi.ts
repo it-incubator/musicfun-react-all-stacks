@@ -5,10 +5,7 @@ import { artistsEndpoint } from "@/common/apiEntities"
 export const artistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     findArtists: build.query<Artist[], string>({
-      query: (name) => ({
-        url: `/${artistsEndpoint}/search?term=${name}`,
-        method: "GET",
-      }),
+      query: (name) => `/${artistsEndpoint}/search?term=${name}`,
       providesTags: ["Artist"],
     }),
     createArtist: build.mutation<Artist[], string>({

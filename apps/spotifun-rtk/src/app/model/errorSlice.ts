@@ -1,15 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit/react"
 
-type ErrorState = {
-  message: string
-}
-
-const initialState: ErrorState = {
-  message: "",
-}
 export const errorSlice = createSlice({
   name: "error",
-  initialState,
+  initialState: {
+    message: "",
+  },
   reducers: {
     setError: (state, action: PayloadAction<string>) => {
       state.message = action.payload

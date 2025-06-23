@@ -1,5 +1,5 @@
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { useCreateArtistMutation } from "@/features/artists/api/artistsApi.ts"
+import { useCreateArtistMutation } from "../../../api/artistsApi.ts"
 import { useAppDispatch } from "@/common/hooks"
 import { setError } from "@/app/model/errorSlice.ts"
 
