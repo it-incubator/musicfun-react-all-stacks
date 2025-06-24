@@ -1,26 +1,19 @@
-import { tagsKey } from "@/common/apiEntities"
-import { tagsApi } from "../../../api/tagsApi.ts"
-import { queryClient } from "@/main.tsx"
-import { useMutation } from "@tanstack/react-query"
 import { type SubmitHandler, useForm } from "react-hook-form"
+import { useCreateTagMutation } from "../../../api/tagsApi.ts"
 
 type Inputs = {
   value: string
 }
 
 export const AddTagForm = () => {
-  const { register, handleSubmit, reset } = useForm<Inputs>()
+  const { register, handleSubmit, reset } = useForm<Inputs>({ defaultValues: { value: "" } })
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: tagsApi.createTag,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [tagsKey] })
-      reset()
-    },
-  })
+  const [createTag, { isLoading }] = useCreateTagMutation()
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    mutate(data.value)
+    createTag({ name: data.value }).then(() => {
+      reset()
+    })
   }
 
   return (
@@ -29,7 +22,7 @@ export const AddTagForm = () => {
       <div>
         <input {...register("value")} placeholder="Введите название тега" />
       </div>
-      <button disabled={isPending}>Создать тег</button>
+      <button disabled={isLoading}>Создать тег</button>
     </form>
   )
 }

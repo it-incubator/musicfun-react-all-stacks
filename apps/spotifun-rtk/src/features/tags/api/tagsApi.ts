@@ -1,15 +1,22 @@
 import { tagsEndpoint } from "@/common/apiEntities"
-import { getInstance } from "@/common/instance"
 import type { Tag } from "./tagsApi.types.ts"
+import { baseApi } from "@/app/api/base-api.ts"
 
-export const tagsApi = {
-  findTags: (value: string) => {
-    return getInstance().get<Tag[]>(`${tagsEndpoint}/search?search=${value}`)
-  },
-  createTag: (name: string) => {
-    return getInstance().post<Tag>(tagsEndpoint, { name })
-  },
-  removeTag: (id: string) => {
-    return getInstance().delete<void>(`${tagsEndpoint}/${id}`)
-  },
-}
+export const tagsApi = baseApi.injectEndpoints({
+  endpoints: (build) => ({
+    findTags: build.query<Tag[], { value: string }>({
+      query: ({ value }) => `${tagsEndpoint}/search?search=${value}`,
+      providesTags: ["Tag"],
+    }),
+    createTag: build.mutation<void, { name: string }>({
+      query: (body) => ({ url: tagsEndpoint, method: "POST", body }),
+      invalidatesTags: ["Tag"],
+    }),
+    removeTag: build.mutation<Tag, { id: string }>({
+      query: (body) => ({ url: `${tagsEndpoint}/${body.id}`, method: "DELETE", body }),
+      invalidatesTags: ["Tag"],
+    }),
+  }),
+})
+
+export const { useFindTagsQuery, useCreateTagMutation, useRemoveTagMutation } = tagsApi
