@@ -1,3 +1,4 @@
+import { handleError } from "./handleError.ts"
 import {
   type BaseQueryFn,
   type FetchArgs,
@@ -30,9 +31,9 @@ const baseQuery = fetchBaseQuery({
 
 /**Обёртка с логикой рефреша */
 export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
-    args,
-    api,
-    extraOptions,
+  args,
+  api,
+  extraOptions,
 ) => {
   // Если кто-то уже рефрешит — ждём
   await mutex.waitForUnlock()
@@ -51,13 +52,13 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
         }
 
         const refreshResult = await baseQuery(
-            {
-              url: "auth/refresh",
-              method: "POST",
-              body: { refreshToken },
-            },
-            api,
-            extraOptions,
+          {
+            url: "auth/refresh",
+            method: "POST",
+            body: { refreshToken },
+          },
+          api,
+          extraOptions,
         )
 
         if (refreshResult.data) {
@@ -89,5 +90,6 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
     }
   }
 
+  handleError(api, result)
   return result
 }
