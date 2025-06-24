@@ -2,83 +2,92 @@ import {
   type BaseQueryFn,
   type FetchArgs,
   fetchBaseQuery,
-  type FetchBaseQueryError
+  type FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react"
 import { Mutex } from "async-mutex"
+import { baseApi } from "@/app/api/base-api.ts"
 
 export const localStorageKeys = {
   refreshToken: "spotifun-refresh-token",
   accessToken: "spotifun-access-token",
 }
 
-const mutex = new Mutex();
+const mutex = new Mutex()
 
-// 1. Базовый запрос с авторизацией
+/**Базовый запрос с авторизацией */
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL!,
-  prepareHeaders: (headers, { getState }) => {
-    headers.set("API-KEY", import.meta.env.VITE_API_KEY);
-    const token =
-      localStorage.getItem(localStorageKeys.accessToken) ??
-      import.meta.env.VITE_AUTH_TOKEN;
+  prepareHeaders: (headers) => {
+    headers.set("API-KEY", import.meta.env.VITE_API_KEY)
+    const token = localStorage.getItem(localStorageKeys.accessToken) ?? import.meta.env.VITE_AUTH_TOKEN
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+      headers.set("Authorization", `Bearer ${token}`)
     }
-    return headers; // ← обязательно вернуть
+    headers.set("Content-Type", "application/json")
+    return headers
   },
-});
+})
 
-// 2. Обёртка с логикой рефреша
-export const baseQueryWithReauth: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
+/**Обёртка с логикой рефреша */
+export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+    args,
+    api,
+    extraOptions,
+) => {
   // Если кто-то уже рефрешит — ждём
-  await mutex.waitForUnlock();
-
+  await mutex.waitForUnlock()
   // основной запрос
-  let result = await baseQuery(args, api, extraOptions);
+  let result = await baseQuery(args, api, extraOptions)
 
   if (result.error?.status === 401) {
-    // если токен уже обновляется в другом месте — просто повторяем
-    if (mutex.isLocked()) {
-      await mutex.waitForUnlock();
-      return baseQuery(args, api, extraOptions);
-    }
+    if (!mutex.isLocked()) {
+      const release = await mutex.acquire()
 
-    // иначе блокируем mutex и обновляем токен
-    const release = await mutex.acquire();
-    try {
-      const refreshResult = await baseQuery(
-        {
-          url: "auth/refresh",
-          method: "POST",
-          body: {}, // при необходимости { refreshToken: "…" }
-        },
-        api,
-        extraOptions
-      );
+      try {
+        const refreshToken = localStorage.getItem(localStorageKeys.refreshToken)
+        if (!refreshToken) {
+          console.warn("No refresh token available")
+          return result
+        }
 
-      if (refreshResult.data) {
-        // @ts-ignore — привести к вашему типу
-        localStorage.setItem(
-          localStorageKeys.accessToken,
-          (refreshResult.data as any).accessToken
-        );
-        // повторяем исходный запрос
-        result = await baseQuery(args, api, extraOptions);
-      } else {
-        // здесь можно диспачить действия logout
+        const refreshResult = await baseQuery(
+            {
+              url: "auth/refresh",
+              method: "POST",
+              body: { refreshToken },
+            },
+            api,
+            extraOptions,
+        )
+
+        if (refreshResult.data) {
+          const newAccessToken = (refreshResult.data as any).accessToken
+          const newRefreshToken = (refreshResult.data as any).refreshToken
+          localStorage.setItem(localStorageKeys.accessToken, newAccessToken)
+          localStorage.setItem(localStorageKeys.refreshToken, newRefreshToken)
+
+          // Повтор запроса с новым токеном
+          result = await baseQuery(args, api, extraOptions)
+        } else {
+          console.log("Logout: refresh token invalid or expired")
+          // диспатчим logout
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          api.dispatch(baseApi.endpoints.logout.initiate())
+
+          // можно перенаправить пользователся на страницу login/auth
+          // window.location.href = "/login"
+        }
+      } catch (e) {
+        console.error("Token refresh failed:", e)
+      } finally {
+        release()
       }
-    } catch (e) {
-      console.error("Failed to refresh token:", e);
-    } finally {
-      release();
+    } else {
+      await mutex.waitForUnlock()
+      result = await baseQuery(args, api, extraOptions)
     }
   }
 
-  return result;
-};
-
-
+  return result
+}
