@@ -1,7 +1,5 @@
 import { useDeleteArtistMutation } from "../../../../api/artistsApi.ts"
 import type { Artist } from "../../../../api/artistsApi.types.ts"
-import { useAppDispatch } from "@/common/hooks"
-import { setError } from "@/app/model/errorSlice.ts"
 import s from "./ArtistItem.module.css"
 
 type Props = {
@@ -11,14 +9,10 @@ type Props = {
 export const ArtistItem = ({ artist }: Props) => {
   const { name, id } = artist
 
-  const dispatch = useAppDispatch()
-
   const [deleteArtist, { isLoading }] = useDeleteArtistMutation()
 
   const deleteHandler = () => {
     deleteArtist(id)
-      .unwrap()
-      .catch((error) => dispatch(setError(error.data.message)))
   }
 
   return (
