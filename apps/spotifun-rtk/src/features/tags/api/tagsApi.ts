@@ -5,32 +5,18 @@ import { baseApi } from "@/app/api/base-api.ts"
 export const tagsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     findTags: build.query<Tag[], { value: string }>({
-      query: (payload) => ({
-        url: `${tagsEndpoint}/search?search=${payload.value}`,
-        method: "GET",
-      }),
-      providesTags: ['Tag']
+      query: ({ value }) => `${tagsEndpoint}/search?search=${value}`,
+      providesTags: ["Tag"],
     }),
-
     createTag: build.mutation<void, { name: string }>({
-      query: (payload) => ({
-        url: tagsEndpoint,
-        method: "POST",
-        body: payload
-      }),
-      invalidatesTags: ['Tag']
+      query: (body) => ({ url: tagsEndpoint, method: "POST", body }),
+      invalidatesTags: ["Tag"],
     }),
-
     removeTag: build.mutation<Tag, { id: string }>({
-      query: (payload) => ({
-        url: `${tagsEndpoint}/${payload.id}`,
-        method: "DELETE",
-        body: payload
-      }),
-      invalidatesTags: ['Tag']
+      query: (body) => ({ url: `${tagsEndpoint}/${body.id}`, method: "DELETE", body }),
+      invalidatesTags: ["Tag"],
     }),
   }),
 })
 
-export const { useFindTagsQuery, useCreateTagMutation, useRemoveTagMutation } = tagsApi;
-
+export const { useFindTagsQuery, useCreateTagMutation, useRemoveTagMutation } = tagsApi

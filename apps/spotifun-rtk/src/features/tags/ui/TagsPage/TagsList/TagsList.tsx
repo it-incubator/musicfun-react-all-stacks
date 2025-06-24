@@ -1,21 +1,21 @@
+import { useState } from "react"
 import { SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
 import { useFindTagsQuery } from "../../../api/tagsApi.ts"
 import { TagItem } from "./TagItem/TagItem.tsx"
-import { useState } from "react"
 
 export const TagsList = () => {
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounceValue(search)
 
-  const { data, isLoading: isPending } = useFindTagsQuery({value: debouncedSearch })
+  const { data, isLoading } = useFindTagsQuery({ value: debouncedSearch })
 
   return (
     <>
       <SearchInput
         search={search}
         setSearch={setSearch}
-        isPending={isPending}
+        isPending={isLoading}
         title="Поиск по тегу"
         placeholder="Введите тег"
       />

@@ -9,15 +9,15 @@ type Props = {
 export const TagItem = ({ tag }: Props) => {
   const { name, id } = tag
 
-  const [removeTag, { isLoading: isRemoving }] = useRemoveTagMutation()
+  const [removeTag, { isLoading }] = useRemoveTagMutation()
 
   return (
     <div className={`item item--fullwidth flex-container ${s.container}`}>
       <div>
         <b>Tag:</b> <span>{name}</span>
       </div>
-      <button onClick={() => removeTag({ id })} disabled={isRemoving}>
-        {isRemoving ? "Удаление..." : "Удалить"}
+      <button onClick={() => removeTag({ id })} disabled={isLoading}>
+        {isLoading ? "Удаление..." : "Удалить"}
       </button>
     </div>
   )
