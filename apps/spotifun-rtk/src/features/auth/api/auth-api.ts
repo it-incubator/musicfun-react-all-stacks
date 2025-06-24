@@ -1,37 +1,27 @@
-// src/app/api/authApi.ts
-import { baseApi } from "@/app/api/base-api";
-import { authEndpoint } from "@/common/apiEntities";
-import type {
-  OAuthLoginArgs,
-  RefreshTokensArgs,
-  AuthTokensResponse,
-  MeResponseResponse,
-} from "./authApi.types";
+import { baseApi } from "@/app/api/base-api"
+import { authEndpoint } from "@/common/apiEntities"
 import { localStorageKeys } from "@/app/api/base-query-with-refresh-token-flow-api.ts"
 
-// RTK Query–разметка для всех auth-эндпоинтов
+import type { OAuthLoginArgs, RefreshTokensArgs, AuthTokensResponse, MeResponseResponse } from "./authApi.types"
+
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // 1) Логин
     login: build.mutation<AuthTokensResponse, OAuthLoginArgs>({
       query: (payload) => ({
         url: `${authEndpoint}/login`,
         method: "POST",
         body: payload,
       }),
-      // После успешного логина сохраняем токены и инвалидируем getMe
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
-          localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken);
-          localStorage.setItem(localStorageKeys.accessToken, data.accessToken);
-          dispatch(authApi.util.invalidateTags(["User"]));
+          const { data } = await queryFulfilled
+          localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
+          localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
+          dispatch(authApi.util.invalidateTags(["User"]))
         } catch {}
       },
-      invalidatesTags: ["User"],
     }),
 
-    // 2) Логаут
     logout: build.mutation<void, void>({
       query: () => ({
         url: `${authEndpoint}/logout`,
@@ -42,22 +32,20 @@ export const authApi = baseApi.injectEndpoints({
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          await queryFulfilled;
-          localStorage.removeItem(localStorageKeys.accessToken);
-          localStorage.removeItem(localStorageKeys.refreshToken);
-          await dispatch(authApi.util.resetApiState());
+          await queryFulfilled
+          localStorage.removeItem(localStorageKeys.accessToken)
+          localStorage.removeItem(localStorageKeys.refreshToken)
+          await dispatch(authApi.util.resetApiState())
         } catch {}
       },
       invalidatesTags: ["User"],
     }),
 
-    // 3) Проверить «кто я»
     getMe: build.query<MeResponseResponse, void>({
       query: () => ({ url: `${authEndpoint}/me` }),
       providesTags: ["User"],
     }),
 
-    // 4) Рефреш токена (если вдруг понадобится вызвать вручную)
     refreshToken: build.mutation<AuthTokensResponse, RefreshTokensArgs>({
       query: (payload) => ({
         url: `${authEndpoint}/refresh`,
@@ -66,27 +54,18 @@ export const authApi = baseApi.injectEndpoints({
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
-          localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken);
-          localStorage.setItem(localStorageKeys.accessToken, data.accessToken);
+          const { data } = await queryFulfilled
+          localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
+          localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
         } catch {}
       },
     }),
   }),
   overrideExisting: false,
-});
+})
 
-// Экспортируем готовые React-хуки
-export const {
-  useLoginMutation,
-  useLogoutMutation,
-  useGetMeQuery,
-  useLazyGetMeQuery,
-  useRefreshTokenMutation,
-} = authApi;
+export const { useLoginMutation, useLogoutMutation, useGetMeQuery, useLazyGetMeQuery, useRefreshTokenMutation } =
+  authApi
 
-// Если вам всё ещё нужен урл для OAuth-редиректа, ниже — чистая утилита, без network-слоя:
 export const getOauthUrl = (redirectUrl: string) =>
-  `${import.meta.env.VITE_BASE_URL}/${authEndpoint}/oauth-redirect?callbackUrl=${encodeURIComponent(
-    redirectUrl
-  )}`;
+  `${import.meta.env.VITE_BASE_URL}/${authEndpoint}/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`
