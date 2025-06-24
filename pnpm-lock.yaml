@@ -6,6 +6,12 @@ settings:
 
 importers:
 
+  .:
+    dependencies:
+      prettier:
+        specifier: 3.5.3
+        version: 3.5.3
+
   apps/spotifun-nextjs:
     dependencies:
       '@it-incubator/spotifun-api-sdk':
@@ -188,9 +194,6 @@ importers:
       globals:
         specifier: 16.2.0
         version: 16.2.0
-      prettier:
-        specifier: 3.5.3
-        version: 3.5.3
       sass:
         specifier: 1.89.2
         version: 1.89.2
@@ -252,9 +255,6 @@ importers:
       globals:
         specifier: 16.1.0
         version: 16.1.0
-      prettier:
-        specifier: 3.5.3
-        version: 3.5.3
       typescript:
         specifier: 5.8.3
         version: 5.8.3
