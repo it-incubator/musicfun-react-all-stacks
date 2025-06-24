@@ -1,9 +1,9 @@
 import type { BaseQueryApi, FetchBaseQueryError, FetchBaseQueryMeta, QueryReturnValue } from "@reduxjs/toolkit/query"
-import { setError } from '../model/appSlice'
+import { setError } from "../model/appSlice"
 
 export const handleError = (
   api: BaseQueryApi,
-  result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>
+  result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>,
 ) => {
   let error = "Some error occurred"
 
