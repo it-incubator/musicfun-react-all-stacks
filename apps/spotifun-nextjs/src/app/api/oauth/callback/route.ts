@@ -2,6 +2,7 @@ import {authApi} from "@/shared/api/auth-api";
 import {redirectAfterOauthUri} from "@/shared/api/base";
 import {cookies} from "next/headers";
 import {NextResponse} from "next/server";
+import {createAccessTokenCookie, createRefreshTokenCookie} from "@/shared/utils/cookieHelpers";
 
 export async function GET(request: Request) {
 
@@ -17,20 +18,8 @@ export async function GET(request: Request) {
 
   const cookieStore = await cookies()
 
-  cookieStore.set({
-    name: "refresh-token",
-    value: tokens.refreshToken,
-    httpOnly: true,
-    maxAge: 60 * 60 * 24 * 30, // 1 day in seconds
-    path: "/",
-  })
-  cookieStore.set({
-    name: "access-token",
-    value: tokens.accessToken,
-    httpOnly: true,
-    maxAge: 60 * 60 * 24, // 1 day in seconds
-    path: "/",
-  })
+  cookieStore.set(createRefreshTokenCookie(tokens.refreshToken))
+  cookieStore.set(createAccessTokenCookie(tokens.accessToken))
 
-  return NextResponse.redirect(new URL('/profile', request.url), 307);
+  return NextResponse.redirect(new URL('/', request.url), 307);
 }
