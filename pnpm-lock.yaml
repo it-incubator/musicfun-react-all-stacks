@@ -6,8 +6,6 @@ settings:
 
 importers:
 
-  .: {}
-
   apps/spotifun-nextjs:
     dependencies:
       '@it-incubator/spotifun-api-sdk':

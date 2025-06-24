@@ -6,8 +6,8 @@ export const TagsPage = () => {
   return (
     <>
       <PageTitle>Страница тегов</PageTitle>
-      {/*<AddTagForm />*/}
-      {/*<TagsList />*/}
+      <AddTagForm />
+      <TagsList />
     </>
   )
 }
