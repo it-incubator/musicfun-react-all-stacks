@@ -14,10 +14,16 @@ type Props = {
   editable?: boolean
 }
 
-export const PlaylistItem = ({ playlist, editPlaylist, removePlaylist, withActions = false, editable = false }: Props) => {
+export const PlaylistItem = ({
+  playlist,
+  editPlaylist,
+  removePlaylist,
+  withActions = false,
+  editable = false,
+}: Props) => {
   return (
     <div>
-      <Link className={"link"} to={`${Path.Playlists}/${playlist.id}`}>
+      <Link className={"link"} to={`${Path.Playlists}/${playlist.id}`} state={{ from: location.pathname }}>
         <PlaylistCover playlist={playlist} editable={editable} />
       </Link>
       <PlaylistDescription attributes={playlist.attributes} />

@@ -1,7 +1,7 @@
 import { Loader, PageTitle } from "@/common/components"
 import { Path } from "@/common/routing"
 import { useFetchPlaylistByIdQuery } from "../../api/playlistsApi"
-import { Link, Navigate, useParams } from "react-router"
+import { Link, Navigate, useLocation, useParams } from "react-router"
 import { PlaylistCover } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistCover/PlaylistCover"
 import { PlaylistDescription } from "../PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistDescription/PlaylistDescription"
 import { PlaylistTracks } from "./PlaylistTracks/PlaylistTracks"
@@ -16,6 +16,8 @@ export const PlaylistPage = () => {
   const { data: userData } = useGetMeQuery()
   const { removePlaylist } = useRemovePlaylist()
   const { editPlaylist, playlistId: editingId, register, handleSubmit, onSubmit } = useUpdatePlaylist()
+  const location = useLocation()
+  const from = location.state?.from || Path.Playlists
 
   const { data, isLoading } = useFetchPlaylistByIdQuery(playlistId as string, {
     skip: !playlistId,
@@ -31,15 +33,15 @@ export const PlaylistPage = () => {
 
   return (
     <>
-      <Link className={"link"} to={Path.Playlists}>
+      <Link className={"link"} to={from}>
         Вернуться назад
       </Link>
       <PageTitle>Информация о плейлисте</PageTitle>
       <div>
         <PlaylistCover playlist={data.data} editable={isMyPlaylist} />
         <PlaylistDescription attributes={data.data.attributes} />
-        {isMyPlaylist && (
-          editingId === data.data.id ? (
+        {isMyPlaylist &&
+          (editingId === data.data.id ? (
             <EditPlaylistForm
               onSubmit={onSubmit}
               editPlaylist={editPlaylist}
@@ -47,13 +49,8 @@ export const PlaylistPage = () => {
               register={register}
             />
           ) : (
-            <PlaylistActions
-              playlist={data.data}
-              editPlaylist={editPlaylist}
-              removePlaylist={removePlaylist}
-            />
-          )
-        )}
+            <PlaylistActions playlist={data.data} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
+          ))}
       </div>
       <PlaylistTracks />
     </>
