@@ -1,21 +1,36 @@
+import { useEffect, useState } from "react"
+
 import { Pagination, SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
+
+import { useGetMeQuery } from "@/features/auth/api/auth-api"
 import { useFetchPlaylistsQuery } from "../../api/playlistsApi"
-import { useState } from "react"
 import { PlaylistsList } from "./PlaylistsList/PlaylistsList"
 
 export const PlaylistsPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize, setPageSize] = useState(4)
-
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounceValue(search)
 
-  const { data, isLoading } = useFetchPlaylistsQuery({
-    search: debouncedSearch,
-    pageNumber,
-    pageSize,
-  })
+  const { data: userData, isLoading: isAuthLoading } = useGetMeQuery()
+  const { data, isLoading, refetch } = useFetchPlaylistsQuery(
+    {
+      search: debouncedSearch,
+      pageNumber,
+      pageSize,
+    },
+    {
+      skip: isAuthLoading,
+    },
+  )
+
+  const userLoggedIn = Boolean(userData)
+  useEffect(() => {
+    if (!isAuthLoading && data) {
+      refetch()
+    }
+  }, [userLoggedIn])
 
   const changePageSize = (size: number) => {
     setPageSize(size)
