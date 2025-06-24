@@ -1,4 +1,4 @@
-import { showErrorToast, uploadCover } from "@/common/utils"
+import { uploadCover } from "@/common/utils"
 import { useUploadPlaylistCoverMutation } from "../../../../../api/playlistsApi"
 import type { Playlist } from "../../../../../api/playlistsApi.types"
 import noCover from "@/assets/img/no-cover.png"
@@ -20,10 +20,12 @@ export const PlaylistCover = ({ playlist, editable = false }: Props) => {
       onSuccess: (file) => {
         uploadPlaylistCover({ playlistId: playlist.id, file })
           .unwrap()
-          .catch((err) => showErrorToast("Ошибка при загрузке изображения", err))
+          .catch((err) => console.log("Ошибка при загрузке изображения", err))
       },
     })
   }
+
+  // TODO: Заменил обработчик ошибок на консольлог. Добавить новый обработчик.
 
   const originalCover = playlist.attributes.images.main?.find((img) => img.type === "original")
 
