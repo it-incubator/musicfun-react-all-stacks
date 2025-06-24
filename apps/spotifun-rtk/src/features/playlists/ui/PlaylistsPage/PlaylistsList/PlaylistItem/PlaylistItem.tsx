@@ -1,15 +1,12 @@
-import { Link, useLocation } from "react-router"
-
-import { Path } from "@/common/routing"
 import type { Nullable } from "@/common/types/common.types"
-
-import { useGetMeQuery } from "@/features/auth/api/auth-api"
-import type { Playlist } from "../../../../api/playlistsApi.types"
-
 import { PlaylistActions } from "./PlaylistActions/PlaylistActions"
+import type { Playlist } from "../../../../api/playlistsApi.types"
 import { PlaylistCover } from "./PlaylistCover/PlaylistCover"
 import { PlaylistDescription } from "./PlaylistDescription/PlaylistDescription"
+import { Path } from "@/common/routing"
+import { Link, useLocation } from "react-router"
 import { PlaylistReactions } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistReactions/PlaylistReactions.tsx"
+import { useGetMeQuery } from "@/features/auth/api/auth-api"
 
 type Props = {
   playlist: Playlist

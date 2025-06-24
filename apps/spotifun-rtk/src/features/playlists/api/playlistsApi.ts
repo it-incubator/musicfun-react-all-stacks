@@ -1,7 +1,4 @@
 import { baseApi } from "@/app/api/base-api.ts"
-
-import type { Images } from "@/common/types"
-import type { Nullable } from "@/common/types/common.types"
 import type {
   CreatePlaylistArgs,
   FetchPlaylistsArgs,
@@ -9,6 +6,8 @@ import type {
   PlaylistsResponse,
   UpdatePlaylistArgs,
 } from "./playlistsApi.types.ts"
+import type { Images } from "@/common/types"
+import type { Nullable } from "@/common/types/common.types"
 
 export const playlistsAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({

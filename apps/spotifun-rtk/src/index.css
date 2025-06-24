@@ -3,14 +3,17 @@
   line-height: 1.5;
   font-weight: 400;
 
+  /* Variables */
   --highlight: #007bff;
   --main-text: #fff;
   --main-bg: #000;
-  --player-play-icon: url("features/player/lib/img/play_blue.svg");
-  --player-pause-icon: url("features/player/lib/img/pause_blue.svg");
-  --player-current-position: url("features/player/lib/img/current-position_blue.svg");
+  --player-play-icon: url('features/player/lib/img/play_blue.svg');
+  --player-pause-icon: url('features/player/lib/img/pause_blue.svg');
+  --player-current-position: url('features/player/lib/img/current-position_blue.svg')
 }
 
+
+/* Link  */
 .link {
   color: #007bff;
   text-decoration: none;
@@ -25,6 +28,8 @@
   font-weight: bold;
 }
 
+
+/* Item: PlaylistItem, TrackItem  */
 .item {
   padding: 16px;
   border: 1px solid #ddd;
@@ -51,6 +56,8 @@
   gap: 10px;
 }
 
+
+/* Flex container */
 .flex-container {
   display: flex;
   align-items: center;
@@ -63,6 +70,7 @@
   flex-direction: column;
 }
 
+/* Tags, artists */
 .artistList,
 .tagsList {
   display: flex;
@@ -83,6 +91,7 @@
   color: white;
 }
 
+/* btn for like/dislike; tracks/playlists */
 .btn {
   display: flex;
   align-items: center;

@@ -1,18 +1,15 @@
-import { useEffect, useState } from "react"
-
 import { Pagination, SearchInput } from "@/common/components"
 import { useDebounceValue } from "@/common/hooks"
-
-import { useGetMeQuery } from "@/features/auth/api/auth-api"
 import { useFetchPlaylistsQuery } from "../../api/playlistsApi"
+import { useEffect, useState } from "react"
 import { PlaylistsList } from "./PlaylistsList/PlaylistsList"
+import { useGetMeQuery } from "@/features/auth/api/auth-api"
 
 export const PlaylistsPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize, setPageSize] = useState(4)
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounceValue(search)
-
   const { data: userData, isLoading: isAuthLoading } = useGetMeQuery()
   const { data, isLoading, refetch } = useFetchPlaylistsQuery(
     {

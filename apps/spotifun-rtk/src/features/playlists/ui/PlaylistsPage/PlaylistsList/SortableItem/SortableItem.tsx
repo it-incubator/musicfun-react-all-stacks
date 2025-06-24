@@ -19,7 +19,11 @@ export const SortableItem = ({ id, children }: Props) => {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
-      <div className={"flex-container"} {...listeners} style={{ cursor: "grab", marginBottom: "16px", display: "flex", justifyContent: "flex-end" }}>
+      <div
+        className={"flex-container"}
+        {...listeners}
+        style={{ cursor: "grab", marginBottom: "16px", display: "flex", justifyContent: "flex-end" }}
+      >
         <div>☰</div>
       </div>
       <div>{children}</div>
