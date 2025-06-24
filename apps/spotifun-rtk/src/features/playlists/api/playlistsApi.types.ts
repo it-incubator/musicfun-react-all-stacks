@@ -1,4 +1,5 @@
 import type { Images, Meta, User } from "@/common/types"
+import type { CurrentUserReaction } from "@/common/enums"
 
 export type Playlist = {
   id: string
@@ -15,6 +16,10 @@ export type PlaylistAttributes = {
   tags: string[]
   images: Images
   user: User
+  // likes
+  currentUserReaction: CurrentUserReaction
+  dislikesCount: number
+  likesCount: number
 }
 
 // Response

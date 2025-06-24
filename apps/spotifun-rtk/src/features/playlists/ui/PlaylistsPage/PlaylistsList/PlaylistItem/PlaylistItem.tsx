@@ -1,10 +1,15 @@
+import { Link, useLocation } from "react-router"
+
+import { Path } from "@/common/routing"
 import type { Nullable } from "@/common/types/common.types"
-import { PlaylistActions } from "./PlaylistActions/PlaylistActions"
+
+import { useGetMeQuery } from "@/features/auth/api/auth-api"
 import type { Playlist } from "../../../../api/playlistsApi.types"
+
+import { PlaylistActions } from "./PlaylistActions/PlaylistActions"
 import { PlaylistCover } from "./PlaylistCover/PlaylistCover"
 import { PlaylistDescription } from "./PlaylistDescription/PlaylistDescription"
-import { Path } from "@/common/routing"
-import { Link } from "react-router"
+import { PlaylistReactions } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistReactions/PlaylistReactions.tsx"
 
 type Props = {
   playlist: Playlist
@@ -21,6 +26,10 @@ export const PlaylistItem = ({
   withActions = false,
   editable = false,
 }: Props) => {
+  const location = useLocation()
+
+  const { data: userData } = useGetMeQuery()
+
   return (
     <div>
       <Link className={"link"} to={`${Path.Playlists}/${playlist.id}`} state={{ from: location.pathname }}>
@@ -30,6 +39,7 @@ export const PlaylistItem = ({
       {withActions && (
         <PlaylistActions playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />
       )}
+      {userData && <PlaylistReactions id={playlist.id} currentUserReaction={playlist.attributes.currentUserReaction} />}
     </div>
   )
 }
