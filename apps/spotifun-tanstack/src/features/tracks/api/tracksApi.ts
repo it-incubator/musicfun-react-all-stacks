@@ -33,6 +33,7 @@ export const tracksApi = {
     const formData = new FormData()
     formData.append("title", title)
     formData.append("file", file)
+
     return getInstance().post<{ data: TrackDetails<TrackDetailAttributes> }>(
       joinUrl(playlistsEndpoint, tracksEndpoint, "upload"),
       formData,

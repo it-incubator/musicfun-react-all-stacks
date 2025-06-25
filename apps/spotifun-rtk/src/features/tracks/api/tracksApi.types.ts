@@ -60,6 +60,10 @@ export type FetchTracksResponse = {
   meta: Meta
 }
 
+export type FetchTrackByIdResponse = {
+  data: TrackDetails<TrackDetailAttributes>
+}
+
 export type FetchPlaylistsTracksResponse = {
   data: TrackDetails<PlaylistItemAttributes>[]
   meta: Meta

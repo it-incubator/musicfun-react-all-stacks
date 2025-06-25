@@ -24,7 +24,8 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set("Authorization", `Bearer ${token}`)
     }
-    headers.set("Content-Type", "application/json")
+    // headers.set("Content-Type", "application/json")
+    // TODO: Мешает этот параметр для отправки файлов, RTK Query сам правильно определяет Content-Type в зависимости от типа данных.
     return headers
   },
 })
