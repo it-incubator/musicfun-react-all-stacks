@@ -102,3 +102,8 @@
   gap: 6px;
   color: #333;
 }
+
+.error {
+  display: block;
+  color: red;
+}
