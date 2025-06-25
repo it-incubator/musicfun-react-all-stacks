@@ -5,7 +5,7 @@ export const Login = () => {
   const [mutate] = useLoginMutation()
 
   const loginHandler = () => {
-    const redirectUri = 'http://localhost:5175' + Path.OAuthRedirect // todo: to config
+    const redirectUri = "http://localhost:5175" + Path.OAuthRedirect // todo: to config
     const url = getOauthUrl(redirectUri)
     window.open(url, "oauthPopup", "width=500,height=600")
 

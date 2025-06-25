@@ -37,14 +37,14 @@ export const playlistsAPI = baseApi.injectEndpoints({
         method: "PUT",
         body: payload,
       }),
-      invalidatesTags: (_result, _error, { playlistId }) => [{ type: "Playlist", id: playlistId }],
+      invalidatesTags: (_result, _error, { playlistId }) => [{ type: "Playlist", id: playlistId }, "Playlist"],
     }),
     removePlaylist: build.mutation<void, string>({
       query: (playlistId) => ({
         url: `playlists/${playlistId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Playlist"],
+      invalidatesTags: (_result, _error, playlistId) => [{ type: "Playlist", id: playlistId }, "Playlist"],
     }),
     uploadPlaylistCover: build.mutation<Images, { playlistId: string; file: File }>({
       query: ({ playlistId, file }) => {
@@ -56,7 +56,7 @@ export const playlistsAPI = baseApi.injectEndpoints({
           body: formData,
         }
       },
-      invalidatesTags: (_result, _error, { playlistId }) => [{ type: "Playlist", id: playlistId }],
+      invalidatesTags: (_result, _error, { playlistId }) => [{ type: "Playlist", id: playlistId }, "Playlist"],
     }),
     reorderPlaylist: build.mutation<void, { playlistId: string; putAfterItemId: Nullable<string> }>({
       query: ({ playlistId, putAfterItemId }) => ({
@@ -64,7 +64,21 @@ export const playlistsAPI = baseApi.injectEndpoints({
         method: "PUT",
         body: { putAfterItemId },
       }),
-      invalidatesTags: ["Playlist"],
+      invalidatesTags: (_result, _error, { playlistId }) => [{ type: "Playlist", id: playlistId }, "Playlist"],
+    }),
+    likePlaylist: build.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `playlists/${id}/like`,
+        method: "POST",
+      }),
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Playlist", id }, "Playlist"],
+    }),
+    dislikePlaylist: build.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `playlists/${id}/dislike`,
+        method: "POST",
+      }),
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Playlist", id }, "Playlist"],
     }),
   }),
 })
@@ -78,4 +92,6 @@ export const {
   useRemovePlaylistMutation,
   useUploadPlaylistCoverMutation,
   useReorderPlaylistMutation,
+  useLikePlaylistMutation,
+  useDislikePlaylistMutation,
 } = playlistsAPI

@@ -18,5 +18,3 @@ export type OAuthLoginArgs = {
   accessTokenTTL: string // e.g. "3m"
   rememberMe: boolean
 }
-
-

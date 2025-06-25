@@ -1,4 +1,4 @@
-import { showErrorToast, uploadCover } from "@/common/utils"
+import { uploadCover } from "@/common/utils"
 import { useUploadPlaylistCoverMutation } from "../../../../../api/playlistsApi"
 import type { Playlist } from "../../../../../api/playlistsApi.types"
 import noCover from "@/assets/img/no-cover.png"
@@ -7,9 +7,10 @@ import s from "./PlaylistCover.module.css"
 
 type Props = {
   playlist: Playlist
+  editable?: boolean
 }
 
-export const PlaylistCover = ({ playlist }: Props) => {
+export const PlaylistCover = ({ playlist, editable = false }: Props) => {
   const [uploadPlaylistCover] = useUploadPlaylistCoverMutation()
 
   const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -19,19 +20,23 @@ export const PlaylistCover = ({ playlist }: Props) => {
       onSuccess: (file) => {
         uploadPlaylistCover({ playlistId: playlist.id, file })
           .unwrap()
-          .catch((err) => showErrorToast("Ошибка при загрузке изображения", err))
+          .catch((err) => console.log("Ошибка при загрузке изображения", err))
       },
     })
   }
+
+  // TODO: Заменил обработчик ошибок на консольлог. Добавить новый обработчик.
 
   const originalCover = playlist.attributes.images.main?.find((img) => img.type === "original")
 
   return (
     <div className={s.container}>
       <img src={originalCover ? originalCover.url : noCover} alt={"no cover image"} className={s.cover} />
-      <div>
-        <input type="file" accept="image/jpeg,image/png,image/gif" onChange={uploadCoverHandler} />
-      </div>
+      {editable && (
+        <div>
+          <input type="file" accept="image/jpeg,image/png,image/gif" onChange={uploadCoverHandler} />
+        </div>
+      )}
     </div>
   )
 }

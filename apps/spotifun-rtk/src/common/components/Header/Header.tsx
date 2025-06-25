@@ -2,7 +2,6 @@ import { NavLink } from "react-router"
 import s from "./Header.module.css"
 import { Path } from "@/common/routing/Routing"
 import { UserBlock } from "@/features/auth/ui/UserBlock.tsx"
-// import { UserBlock } from "@/features/auth/ui/UserBlock.tsx"
 
 const navItems = [
   { to: Path.Main, label: "Main" },
@@ -14,7 +13,7 @@ const navItems = [
 
 export const Header = () => {
   return (
-    <header className={s.wrapper}>
+    <header className={`flex-container ${s.wrapper}`}>
       <nav>
         <ul className={s.list}>
           {navItems.map((item) => (
@@ -25,9 +24,8 @@ export const Header = () => {
             </li>
           ))}
         </ul>
-        {/* добавить после реализации  login & me */}
-         <UserBlock />
       </nav>
+      <UserBlock />
     </header>
   )
 }
