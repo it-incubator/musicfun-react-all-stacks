@@ -5,9 +5,12 @@ type Props = {
 }
 
 export const PlaylistDescription = ({ attributes }: Props) => {
-  const { description, tags, addedAt, order } = attributes
+  const { title, description, tags, addedAt, order, user } = attributes
   return (
     <>
+      <div>
+        <b>title:</b> <span>{title}</span>
+      </div>
       <div>
         <b>description:</b> <span>{description || "Описание не добавлено"}</span>
       </div>
@@ -19,6 +22,12 @@ export const PlaylistDescription = ({ attributes }: Props) => {
       </div>
       <div>
         <b>added date:</b> <span>{new Date(addedAt).toLocaleDateString()}</span>
+      </div>
+      <div>
+        <b>author:</b>{" "}
+        <span>
+          name:{user.name} : id- {user.id}
+        </span>
       </div>
     </>
   )

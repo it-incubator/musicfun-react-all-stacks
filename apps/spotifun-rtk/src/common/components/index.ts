@@ -6,3 +6,5 @@ export { PageNotFound } from "./PageNotFound/PageNotFound.tsx"
 export { PageTitle } from "./PageTitle/PageTitle.tsx"
 export { Pagination } from "./Pagination/Pagination.tsx"
 export { SearchInput } from "./SearchInput/SearchInput.tsx"
+export { Modal } from './Modal/Modal.tsx'
+export { IconButton } from './IconButton/IconButton.tsx'

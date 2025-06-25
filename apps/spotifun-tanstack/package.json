@@ -33,7 +33,6 @@
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-react-refresh": "0.4.20",
     "globals": "16.2.0",
-    "prettier": "3.5.3",
     "sass": "1.89.2",
     "typescript": "5.8.3",
     "typescript-eslint": "8.34.0",
