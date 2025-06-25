@@ -11,8 +11,10 @@ export const errorHandler = <T extends FieldValues>(
 	setError: UseFormSetError<T>
 ) => {
 	const error = e as ErrorWithKey
+	
 	const key = error?.data?.extensions?.[0]?.key
 	const message = error?.data?.extensions?.[0]?.message
+
 	if (key) {
 		setError(key as Path<T>, {
 			type: "manual",

@@ -28,6 +28,7 @@ export const EditTrackForm = ({
   artistsIds,
   setArtistsIds,
 }: Props) => {
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`item item--fullwidth`}>
       <h2>Редактировать трек</h2>

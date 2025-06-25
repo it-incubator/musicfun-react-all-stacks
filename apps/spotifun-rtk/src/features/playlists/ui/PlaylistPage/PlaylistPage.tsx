@@ -15,7 +15,7 @@ export const PlaylistPage = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()
   const { data: userData } = useGetMeQuery()
   const { removePlaylist } = useRemovePlaylist()
-  const { editPlaylist, playlistId: editingId, register, handleSubmit, onSubmit } = useUpdatePlaylist()
+  const { editPlaylist, playlistId: editingId, register, handleSubmit, onSubmit, errors } = useUpdatePlaylist()
   const location = useLocation()
   const from = location.state?.from || Path.Playlists
 
@@ -43,6 +43,7 @@ export const PlaylistPage = () => {
         {isMyPlaylist &&
           (editingId === data.data.id ? (
             <EditPlaylistForm
+              errors={errors}
               onSubmit={onSubmit}
               editPlaylist={editPlaylist}
               handleSubmit={handleSubmit}

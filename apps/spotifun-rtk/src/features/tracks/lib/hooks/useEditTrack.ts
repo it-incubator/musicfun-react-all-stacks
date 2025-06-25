@@ -14,7 +14,7 @@ export const useEditTrack = () => {
 
   const { register, handleSubmit, reset, setError, formState } = useForm<UpdateTrackArgs>()
   const { errors } = formState
-
+  
   const [mutate] = useUpdateTrackMutation()
 
   const { data: trackResponse } = useFetchTrackByIdQuery(
