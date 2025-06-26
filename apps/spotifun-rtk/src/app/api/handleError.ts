@@ -1,5 +1,4 @@
 import {type FetchBaseQueryError, type FetchBaseQueryMeta, type QueryReturnValue} from '@reduxjs/toolkit/query'
-
 import {showErrorToast} from '@/common/utils'
 import type {ExtensionsError} from '@/common/types'
 
