@@ -12,7 +12,7 @@ import { useInfiniteScrollTrigger } from "@/common/hooks"
 import { useState } from "react"
 
 export const TracksList = () => {
-  const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState(1)
 
   const { tracks, isFetching, isLoading, hasNextPage } = useFetchTracks({
     page,
@@ -26,16 +26,9 @@ export const TracksList = () => {
     hasNextPage: !!hasNextPage,
     isFetchingNextPage: isFetching,
     callback: () => {
-      console.log("setPage", page)
       setPage((prev) => prev + 1)
     },
   })
-
-  if (isLoading) {
-    return <Loader />
-  }
-
-  console.log(isFetching, hasNextPage)
 
   return (
     <div className={s.container}>
