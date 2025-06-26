@@ -1,21 +1,16 @@
-import type {FieldValues, UseFormSetError, Path} from 'react-hook-form';
-
-type ErrorWithKey = {
-  data?: {
-    extensions?: {key?: string; message?: string}[];
-  };
-};
+import type {FieldValues, UseFormSetError, Path} from 'react-hook-form'
+import type {ExtensionsError} from '../types'
 
 export const errorHandler = <T extends FieldValues>(e: unknown, setError: UseFormSetError<T>) => {
-  const error = e as ErrorWithKey;
+  const error = e as ExtensionsError
 
-  const key = error?.data?.extensions?.[0]?.key;
+  const key = error?.data?.extensions?.[0]?.key
 
-  const message = error?.data?.extensions?.[0]?.message;
+  const message = error?.data?.extensions?.[0]?.message
   if (key) {
     setError(key as Path<T>, {
       type: 'manual',
       message,
-    });
+    })
   }
-};
+}
