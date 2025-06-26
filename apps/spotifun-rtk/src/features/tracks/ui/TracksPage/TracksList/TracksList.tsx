@@ -19,7 +19,7 @@ export const TracksList = () => {
   })
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
+  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds, errors } =
     useEditTrack()
 
   const { triggerRef } = useInfiniteScrollTrigger({
@@ -50,6 +50,7 @@ export const TracksList = () => {
           <div key={track.id}>
             {isEditing ? (
               <EditTrackForm
+                errors={errors}
                 register={register}
                 onSubmit={onSubmit}
                 handleSubmit={handleSubmit}
