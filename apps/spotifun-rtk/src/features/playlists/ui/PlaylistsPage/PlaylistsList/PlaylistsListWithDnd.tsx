@@ -15,7 +15,7 @@ type Props = {
 
 export const PlaylistsWithDnd = ({ playlists: initialPlaylists }: Props) => {
   const { removePlaylist } = useRemovePlaylist()
-  const { playlistId, editPlaylist, register, onSubmit, handleSubmit } = useUpdatePlaylist()
+  const { playlistId, editPlaylist, register, onSubmit, handleSubmit, errors } = useUpdatePlaylist()
   const { handleDragEnd, playlists } = useReorderPlaylist(initialPlaylists)
 
   return (
@@ -30,6 +30,7 @@ export const PlaylistsWithDnd = ({ playlists: initialPlaylists }: Props) => {
                 <div key={playlist.id} className={"item"}>
                   {isEditing ? (
                     <EditPlaylistForm
+                      errors={errors}
                       onSubmit={onSubmit}
                       editPlaylist={editPlaylist}
                       handleSubmit={handleSubmit}

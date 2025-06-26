@@ -6,3 +6,9 @@ export type Meta = {
   totalCount: number
   pagesCount: number
 }
+
+export type ExtensionsError = {
+  data: {
+    extensions?: {key?: string; message?: string}[]
+  }
+}

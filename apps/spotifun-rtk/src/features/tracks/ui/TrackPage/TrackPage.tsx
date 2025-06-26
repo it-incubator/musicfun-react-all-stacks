@@ -10,7 +10,7 @@ import { Reactions } from "../TracksPage/TracksList/TrackItem/Reactions/Reaction
 import { Link, Navigate, useNavigate, useParams } from "react-router"
 import { AddTrackToPlaylistModal } from "../TracksPage/AddTrackToPlaylistModal/AddTrackToPlaylistModal.tsx"
 import { TrackItem } from "../TracksPage/TracksList/TrackItem/TrackItem.tsx"
-import {useFetchTrackByIdQuery} from "@/features/tracks/api/tracksApi.ts";
+import { useFetchTrackByIdQuery } from "@/features/tracks/api/tracksApi.ts"
 
 export const TrackPage = () => {
   const navigate = useNavigate()
@@ -21,8 +21,9 @@ export const TrackPage = () => {
 
   const { removingTrackId, removeTrack } = useRemoveTrack(() => navigate(Path.Tracks))
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
+  const { register, errors, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
     useEditTrack()
+
 
   if (!id) return <Navigate to={Path.NotFound} />
 
@@ -47,6 +48,7 @@ export const TrackPage = () => {
 
         {trackId ? (
           <EditTrackForm
+            errors={errors}
             register={register}
             onSubmit={onSubmit}
             handleSubmit={handleSubmit}
