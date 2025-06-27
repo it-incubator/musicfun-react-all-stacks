@@ -8,6 +8,7 @@ type Props = {
 
 export const ArtistItem = ({ artist }: Props) => {
   const { name, id } = artist
+  console.log("123")
 
   const [deleteArtist, { isLoading }] = useDeleteArtistMutation()
 
