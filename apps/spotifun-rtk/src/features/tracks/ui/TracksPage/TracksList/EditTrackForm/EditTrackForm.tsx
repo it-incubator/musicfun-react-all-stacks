@@ -14,7 +14,7 @@ type Props = {
   setTagIds: Dispatch<SetStateAction<string[]>>
   artistsIds: string[]
   setArtistsIds: Dispatch<SetStateAction<string[]>>
-  errors?:FieldErrors<UpdateTrackArgs>
+  errors?: FieldErrors<UpdateTrackArgs>
 }
 
 export const EditTrackForm = ({
@@ -28,7 +28,6 @@ export const EditTrackForm = ({
   artistsIds,
   setArtistsIds,
 }: Props) => {
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`item item--fullwidth`}>
       <h2>Редактировать трек</h2>
@@ -36,12 +35,12 @@ export const EditTrackForm = ({
         <div>
           <h4 className={s.subTitle}>Описание трека</h4>
           <input {...register("title")} placeholder="Title" />
-          <span className={'error'}>{errors?.title?.message}</span>
+          <span className={"error"}>{errors?.title?.message}</span>
         </div>
         <div>
           <h4 className={s.subTitle}>Лирика</h4>
           <input {...register("lyrics")} placeholder="Lyrics" />
-           <span className={'error'}>{errors?.lyrics?.message}</span>
+          <span className={"error"}>{errors?.lyrics?.message}</span>
         </div>
         <EditTrackFormTags tagIds={tagIds} setTagIds={setTagIds} />
         <EditTrackFormArtists artistsIds={artistsIds} setArtistsIds={setArtistsIds} />

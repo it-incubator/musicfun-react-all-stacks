@@ -1,6 +1,6 @@
 import trackDefaultCover from "@/assets/img/track-default-cover.jpg"
 import { uploadCover } from "@/common/utils/uploadCover.ts"
-import { useAddCoverToTrackMutation} from "@/features/tracks/api/tracksApi.ts"
+import { useAddCoverToTrackMutation } from "@/features/tracks/api/tracksApi.ts"
 import type { BaseAttributes, TrackDetails } from "@/features/tracks/api/tracksApi.types.ts"
 import type { ChangeEvent, MouseEvent } from "react"
 import s from "./TrackCover.module.css"
@@ -10,14 +10,13 @@ type Props<T extends BaseAttributes> = {
 }
 
 export const TrackCover = <T extends BaseAttributes>({ track }: Props<T>) => {
-
   const [mutate] = useAddCoverToTrackMutation()
 
   const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {
     uploadCover({
       event,
       maxSize: 100 * 1024,
-      onSuccess: (file) => mutate({ trackId: track.id, cover: file })
+      onSuccess: (file) => mutate({ trackId: track.id, cover: file }),
     })
   }
 

@@ -7,11 +7,9 @@ import type {
   TrackDetails,
   UpdateTrackArgs,
 } from "./tracksApi.types.ts"
-import {Nullable} from "@it-incubator/spotifun-api-sdk/dist/common/types/common.types";
-import {Cover} from "@it-incubator/spotifun-api-sdk/dist/common/types/playlists-tracks.types";
-import {baseUrl, formHeaders, jsonHeaders} from "@/shared/api/base";
-
-
+import { Nullable } from "@it-incubator/spotifun-api-sdk/dist/common/types/common.types"
+import { Cover } from "@it-incubator/spotifun-api-sdk/dist/common/types/playlists-tracks.types"
+import { baseUrl, formHeaders, jsonHeaders } from "@/shared/api/base"
 
 export const tracksApi = {
   async fetchTracks({ pageSize = 3, pageNumber, search = "" }: FetchTracksArgs) {
@@ -93,10 +91,10 @@ export const tracksApi = {
   },
 
   async reorderTracks({
-                        trackId,
-                        playlistId,
-                        putAfterItemId,
-                      }: {
+    trackId,
+    playlistId,
+    putAfterItemId,
+  }: {
     trackId: string
     playlistId: string
     putAfterItemId: Nullable<string>

@@ -1,6 +1,6 @@
-import {type SubmitHandler, useForm} from 'react-hook-form'
-import {useCreateTagMutation} from '../../../api/tagsApi.ts'
-import {errorHandler} from '@/common/utils/errorHandler.ts'
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { useCreateTagMutation } from "../../../api/tagsApi.ts"
+import { errorHandler } from "@/common/utils/errorHandler.ts"
 
 type Inputs = {
   name: string
@@ -12,13 +12,13 @@ export const AddTagForm = () => {
     handleSubmit,
     reset,
     setError,
-    formState: {errors},
-  } = useForm<Inputs>({defaultValues: {name: ''}})
+    formState: { errors },
+  } = useForm<Inputs>({ defaultValues: { name: "" } })
 
-  const [createTag, {isLoading}] = useCreateTagMutation()
+  const [createTag, { isLoading }] = useCreateTagMutation()
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    createTag({name: data.name})
+    createTag({ name: data.name })
       .unwrap()
       .then(() => {
         reset()
@@ -30,8 +30,8 @@ export const AddTagForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Создать нового исполнителя</h2>
       <div>
-        <input {...register('name')} placeholder='Введите название тега' />
-        <span className='error'>{errors.name?.message}</span>
+        <input {...register("name")} placeholder="Введите название тега" />
+        <span className="error">{errors.name?.message}</span>
       </div>
       <button disabled={isLoading}>Создать тег</button>
     </form>

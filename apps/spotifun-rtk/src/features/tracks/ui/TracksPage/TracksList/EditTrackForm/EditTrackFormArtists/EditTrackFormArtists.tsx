@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react"
 import s from "../EditTrackForm.module.css"
-import {useFindArtistsQuery} from "@/features/artists/api/artistsApi.ts";
+import { useFindArtistsQuery } from "@/features/artists/api/artistsApi.ts"
 
 type Props = {
   artistsIds: string[]
@@ -8,8 +8,7 @@ type Props = {
 }
 
 export const EditTrackFormArtists = ({ artistsIds, setArtistsIds }: Props) => {
-
-  const {data: artistsResponse } = useFindArtistsQuery("")
+  const { data: artistsResponse } = useFindArtistsQuery("")
 
   const toggleArtist = (artistId: string) => {
     setArtistsIds((prev) => (prev.includes(artistId) ? prev.filter((id) => id !== artistId) : [...prev, artistId]))
