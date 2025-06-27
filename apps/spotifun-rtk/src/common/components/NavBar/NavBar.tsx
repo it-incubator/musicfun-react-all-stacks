@@ -6,7 +6,6 @@ import { UploadTrackModal } from "@/common/components/NavBar/NavBarModalSections
 import { CreateIcon, HomeIcon, LibraryIcon, NoteIcon, PlaylistIcon, UploadIcon } from "@/common/icons"
 import s from "./NavBar.module.css"
 
-
 type Section = {
   links: Link[]
 }
@@ -22,7 +21,7 @@ const navSections: Section[] = [
   {
     links: [
       { to: Path.Main, label: "Home", icon: <HomeIcon /> },
-      { to: Path.Library, label: "Your Library", icon: <LibraryIcon /> },
+      { to: Path.Profile, label: "Your Library", icon: <LibraryIcon /> },
     ],
   },
   {
