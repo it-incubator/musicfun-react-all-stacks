@@ -1,4 +1,4 @@
-import { Modal } from "../../../../../../../../apihub-front/apps/spotifun-rtk/src/common/components"
+import { Modal } from "@/common/components"
 
 type Props = {
   open: boolean
