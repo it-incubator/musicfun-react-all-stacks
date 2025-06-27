@@ -16,11 +16,11 @@ export const EditPlaylistForm = ({ onSubmit, editPlaylist, handleSubmit, registe
       <h2>Редактировать плейлист</h2>
       <div>
         <input {...register("title")} placeholder="Title" />
-        <span className='error'>{errors?.title?.message}</span>
+        <span className="error">{errors?.title?.message}</span>
       </div>
       <div>
         <input {...register("description")} placeholder={"Description"} />
-        <span className='error'>{errors?.description?.message}</span>
+        <span className="error">{errors?.description?.message}</span>
       </div>
       <button>Сохранить</button>
       <button type={"button"} onClick={() => editPlaylist(null)}>

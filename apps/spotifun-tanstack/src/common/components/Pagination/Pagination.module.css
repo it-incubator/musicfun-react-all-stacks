@@ -1,8 +1,7 @@
 .container {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    margin: 0 auto;
-    gap: 40px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  margin: 0 auto;
+  gap: 40px;
 }
-

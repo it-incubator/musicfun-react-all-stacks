@@ -1,7 +1,7 @@
-import {errorHandler} from '@/common/utils'
-import {useCreatePlaylistMutation} from '../../../api/playlistsApi'
-import type {CreatePlaylistArgs} from '../../../api/playlistsApi.types'
-import {type SubmitHandler, useForm} from 'react-hook-form'
+import { errorHandler } from "@/common/utils"
+import { useCreatePlaylistMutation } from "../../../api/playlistsApi"
+import type { CreatePlaylistArgs } from "../../../api/playlistsApi.types"
+import { type SubmitHandler, useForm } from "react-hook-form"
 
 export const AddPlaylistForm = () => {
   const {
@@ -9,7 +9,7 @@ export const AddPlaylistForm = () => {
     handleSubmit,
     reset,
     setError,
-    formState: {errors},
+    formState: { errors },
   } = useForm<CreatePlaylistArgs>()
 
   const [createPlaylist] = useCreatePlaylistMutation()
@@ -27,12 +27,12 @@ export const AddPlaylistForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Добавить новый плейлист</h2>
       <div>
-        <input {...register('title')} placeholder='Title' />
-        <span className='error'>{errors?.title?.message}</span>
+        <input {...register("title")} placeholder="Title" />
+        <span className="error">{errors?.title?.message}</span>
       </div>
       <div>
-        <input {...register('description')} placeholder={'Description'} />
-        <span className='error'>{errors?.description?.message}</span>
+        <input {...register("description")} placeholder={"Description"} />
+        <span className="error">{errors?.description?.message}</span>
       </div>
       <button>Создать плейлист</button>
     </form>

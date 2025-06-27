@@ -8,7 +8,7 @@
 
   cursor: pointer;
 
-  background: rgba(196, 196, 196, .5);
+  background: rgba(196, 196, 196, 0.5);
 
   .loading {
     position: absolute;
@@ -19,7 +19,7 @@
 
     height: 100%;
 
-    opacity: .3;
+    opacity: 0.3;
     background: var(--highlight);
   }
 
@@ -44,7 +44,7 @@
       width: 24px;
       height: 24px;
 
-      content: '';
+      content: "";
       transform: translateY(-35%);
 
       border-radius: 50%;

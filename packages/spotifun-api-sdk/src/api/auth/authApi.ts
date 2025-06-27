@@ -3,7 +3,6 @@ import { authEndpoint } from "../../common/apiEntities/apiEntities"
 import { getApiClient } from "../../v2/request"
 import { joinUrl } from "../../common/utils/urlHelper"
 
-
 export const authApi = {
   login: (payload: OAuthLoginRequest) => {
     return getApiClient().post<AuthTokensResponse>(`${authEndpoint}/login`, payload)
@@ -12,7 +11,10 @@ export const authApi = {
     return getApiClient().post(`${authEndpoint}/logout`, payload)
   },
   oauthUrl: (redirectUrl: string): string => {
-    const url = joinUrl(getApiClient().getConfig().baseURL, `/auth/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`);
+    const url = joinUrl(
+      getApiClient().getConfig().baseURL,
+      `/auth/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`,
+    )
     return url
   },
   refreshToken: (payload: RefreshTokensRequest) => {

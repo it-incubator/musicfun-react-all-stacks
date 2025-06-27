@@ -1,8 +1,8 @@
 .container {
-    display: flex;
-    gap: 12px;
+  display: flex;
+  gap: 12px;
 }
 
 .btn.active svg {
-    fill: black;
+  fill: black;
 }

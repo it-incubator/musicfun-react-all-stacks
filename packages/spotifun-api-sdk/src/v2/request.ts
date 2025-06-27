@@ -17,15 +17,9 @@ export interface RequestOptions {
   nextOptions?: { revalidate?: number; tags?: string[] }
 }
 
-type RequestInterceptor = (
-  input: RequestInfo,
-  init: RequestInit
-) => Promise<[RequestInfo, RequestInit]>
+type RequestInterceptor = (input: RequestInfo, init: RequestInit) => Promise<[RequestInfo, RequestInit]>
 
-type ResponseInterceptor = (
-  response: Response,
-  retry: () => Promise<Response>
-) => Promise<Response>
+type ResponseInterceptor = (response: Response, retry: () => Promise<Response>) => Promise<Response>
 
 export interface ApiResponse<T> {
   data: T
@@ -58,20 +52,14 @@ export class ApiClient {
     this.responseInterceptors.push(fn)
   }
 
-  private async authRequestInterceptor(
-    input: RequestInfo,
-    init: RequestInit
-  ): Promise<[RequestInfo, RequestInit]> {
+  private async authRequestInterceptor(input: RequestInfo, init: RequestInit): Promise<[RequestInfo, RequestInit]> {
     const token = this.config.getAccessToken()
     if (token) init.headers = { ...(init.headers ?? {}), Authorization: `Bearer ${token}` }
     if (this.config.apiKey) init.headers = { ...(init.headers ?? {}), "API-KEY": this.config.apiKey }
     return [input, init]
   }
 
-  private async tokenRefreshInterceptor(
-    response: Response,
-    retry: () => Promise<Response>
-  ): Promise<Response> {
+  private async tokenRefreshInterceptor(response: Response, retry: () => Promise<Response>): Promise<Response> {
     if (response.status !== 401) return response
     if (!this.refreshPromise) this.refreshPromise = this.handleRefresh()
     await this.refreshPromise
@@ -114,11 +102,7 @@ export class ApiClient {
     return url.toString()
   }
 
-  private async sendRequest(
-    method: string,
-    path: string,
-    opts: RequestOptions = {}
-  ): Promise<Response> {
+  private async sendRequest(method: string, path: string, opts: RequestOptions = {}): Promise<Response> {
     const baseInput: RequestInfo = this.buildUrl(path, opts.params)
 
     const headers: Record<string, string> = {}
@@ -129,12 +113,7 @@ export class ApiClient {
     const baseInit: RequestInit = {
       method,
       headers: headers,
-      body:
-        opts.body instanceof FormData
-          ? opts.body
-          : opts.body
-            ? JSON.stringify(opts.body)
-            : undefined,
+      body: opts.body instanceof FormData ? opts.body : opts.body ? JSON.stringify(opts.body) : undefined,
       signal: opts.signal,
       ...(opts.nextOptions ? { next: opts.nextOptions } : {}),
     }
@@ -144,8 +123,7 @@ export class ApiClient {
       let reqInit: RequestInit = { ...baseInit }
 
       for (const interceptor of this.requestInterceptors) {
-        const [nextInput, nextInit]: [RequestInfo, RequestInit] =
-          await interceptor(reqInput, reqInit)
+        const [nextInput, nextInit]: [RequestInfo, RequestInit] = await interceptor(reqInput, reqInit)
 
         reqInput = nextInput
         reqInit = nextInit
@@ -154,7 +132,6 @@ export class ApiClient {
       return fetch(reqInput, reqInit)
     }
 
-
     let response = await fetchCall()
     for (const interceptor of this.responseInterceptors) {
       response = await interceptor(response, fetchCall)
@@ -162,11 +139,7 @@ export class ApiClient {
     return response
   }
 
-  private async request<T>(
-    method: string,
-    path: string,
-    opts?: RequestOptions
-  ): Promise<ApiResponse<T>> {
+  private async request<T>(method: string, path: string, opts?: RequestOptions): Promise<ApiResponse<T>> {
     const response = await this.sendRequest(method, path, opts)
 
     if (!response.ok) {
@@ -178,13 +151,10 @@ export class ApiClient {
     const clone = response.clone()
     const text = await clone.text()
 
-    const data: T | null = text
-      ? (JSON.parse(text) as T)
-      : null
+    const data: T | null = text ? (JSON.parse(text) as T) : null
 
     return { data: data as T, response }
   }
-
 
   /** GET returning `{ data, response }` (data may be null on 204) */
   get<T>(path: string, opts?: RequestOptions): Promise<ApiResponse<T>> {
@@ -192,28 +162,17 @@ export class ApiClient {
   }
 
   /** POST returning `{ data, response }` */
-  post<T, B = any>(
-    path: string,
-    body: B,
-    opts?: RequestOptions
-  ): Promise<ApiResponse<T>> {
+  post<T, B = any>(path: string, body: B, opts?: RequestOptions): Promise<ApiResponse<T>> {
     return this.request<T>("POST", path, { ...opts, body })
   }
 
   /** PUT returning `{ data, response }` */
-  put<T, B = any>(
-    path: string,
-    body: B,
-    opts?: RequestOptions
-  ): Promise<ApiResponse<T>> {
+  put<T, B = any>(path: string, body: B, opts?: RequestOptions): Promise<ApiResponse<T>> {
     return this.request<T>("PUT", path, { ...opts, body })
   }
 
   /** DELETE returning `{ data, response }` */
-  delete<T>(
-    path: string,
-    opts?: RequestOptions
-  ): Promise<ApiResponse<T>> {
+  delete<T>(path: string, opts?: RequestOptions): Promise<ApiResponse<T>> {
     return this.request<T>("DELETE", path, opts)
   }
 }

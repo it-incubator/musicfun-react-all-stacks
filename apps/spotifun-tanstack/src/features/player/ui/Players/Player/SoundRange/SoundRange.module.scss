@@ -11,13 +11,13 @@
     width: 80px;
     height: 4px;
     cursor: pointer;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
 
     border-radius: 2px;
     outline: none;
 
-    -webkit-appearance: none;;
+    -webkit-appearance: none;
 
     @mixin thumb() {
       width: 10px;

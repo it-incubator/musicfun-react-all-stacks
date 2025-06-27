@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "private": true,
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:sdk": "pnpm --filter @it-incubator/spotifun-api-sdk run build-and-clean",
@@ -11,13 +15,19 @@
     "start:spotifun-tanstack": "pnpm --filter spotifun run dev",
     "start:spotifun-rtk": "pnpm --filter spotifun-rtk-query run dev",
     "start:spotifun-nextjs": "pnpm --filter spotifun-nextjs run dev",
-    "start:trelly-rtk": "pnpm --filter trelly-rtk run dev"
+    "start:trelly-rtk": "pnpm --filter trelly-rtk run dev",
+    "prepare": "husky install",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.12.1",
-  "dependencies": {
-    "prettier": "3.5.3"
+  "devDependencies": {
+    "prettier": "3.5.3",
+    "husky": "9.1.7",
+    "lint-staged": "16.1.2"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   }
 }
