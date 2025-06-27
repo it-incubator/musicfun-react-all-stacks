@@ -25,7 +25,7 @@ type UseOptimisticReactionsReturn<T = unknown> = {
 export const useOptimisticReactions = <T = unknown>({
   currentReaction,
   mutations,
-  entityName = "элемент"
+  entityName = "элемент",
 }: UseOptimisticReactionsProps<T>): UseOptimisticReactionsReturn<T> => {
   const [optimisticReaction, setOptimisticReaction] = useState(currentReaction)
 
@@ -36,41 +36,33 @@ export const useOptimisticReactions = <T = unknown>({
   const isLiked = optimisticReaction === CurrentUserReaction.Like
   const isDisliked = optimisticReaction === CurrentUserReaction.Dislike
 
-  const handleLike = async (): Promise<T | undefined> => {
+  const executeWithRollback = async (
+    newReaction: CurrentUserReaction,
+    mutation: () => Promise<T>,
+  ): Promise<T | undefined> => {
     const previousReaction = optimisticReaction
+    setOptimisticReaction(newReaction)
 
     try {
-      if (isLiked) {
-        setOptimisticReaction(CurrentUserReaction.None)
-        return await mutations.remove()
-      } else {
-        setOptimisticReaction(CurrentUserReaction.Like)
-        return await mutations.like()
-      }
+      return await mutation()
     } catch (error) {
       setOptimisticReaction(previousReaction)
-      showErrorToast(`Ошибка при обновлении лайка для ${entityName}`, error)
+      showErrorToast(`Ошибка при обновлении реакции для ${entityName}`, error)
       return undefined
     }
   }
 
-  const handleDislike = async (): Promise<T | undefined> => {
-    const previousReaction = optimisticReaction
+  const handleLike = () =>
+    executeWithRollback(
+      isLiked ? CurrentUserReaction.None : CurrentUserReaction.Like,
+      isLiked ? mutations.remove : mutations.like,
+    )
 
-    try {
-      if (isDisliked) {
-        setOptimisticReaction(CurrentUserReaction.None)
-        return await mutations.remove()
-      } else {
-        setOptimisticReaction(CurrentUserReaction.Dislike)
-        return await mutations.dislike()
-      }
-    } catch (error) {
-      setOptimisticReaction(previousReaction)
-      showErrorToast(`Ошибка при обновлении дизлайка для ${entityName}`, error)
-      return undefined
-    }
-  }
+  const handleDislike = () =>
+    executeWithRollback(
+      isDisliked ? CurrentUserReaction.None : CurrentUserReaction.Dislike,
+      isDisliked ? mutations.remove : mutations.dislike,
+    )
 
   return {
     optimisticReaction,
@@ -79,4 +71,4 @@ export const useOptimisticReactions = <T = unknown>({
     handleLike,
     handleDislike,
   }
-} 
+}
