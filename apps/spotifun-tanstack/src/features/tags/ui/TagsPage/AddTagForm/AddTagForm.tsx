@@ -8,6 +8,7 @@ type Inputs = {
   value: string
 }
 
+const a = 1 + 12
 export const AddTagForm = () => {
   const { register, handleSubmit, reset } = useForm<Inputs>()
 
