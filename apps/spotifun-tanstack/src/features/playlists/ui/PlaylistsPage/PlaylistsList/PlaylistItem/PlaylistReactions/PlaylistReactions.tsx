@@ -6,6 +6,7 @@ import { playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
 
 import { queryClient } from "@/main.tsx"
 import { useMutation } from "@tanstack/react-query"
+import styles from "./PlaylistReactions.module.scss"
 
 type Props = {
   id: string
@@ -13,15 +14,15 @@ type Props = {
 }
 
 export const PlaylistReactions = ({ id, currentUserReaction }: Props) => {
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (reaction: "like" | "dislike" | "remove") => {
       switch (reaction) {
         case "like":
-          return playlistsApi.like(id);
+          return playlistsApi.like(id)
         case "dislike":
-          return playlistsApi.dislike(id);
+          return playlistsApi.dislike(id)
         case "remove":
-          return playlistsApi.removeReaction(id);
+          return playlistsApi.removeReaction(id)
       }
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
@@ -33,26 +34,26 @@ export const PlaylistReactions = ({ id, currentUserReaction }: Props) => {
 
   const onHandleLike = () => {
     if (isLiked) {
-      mutate("remove");
+      mutate("remove")
     } else {
-      mutate("like");
+      mutate("like")
     }
-  };
+  }
 
   const onHandleDislike = () => {
     if (isDisliked) {
-      mutate("remove");
+      mutate("remove")
     } else {
-      mutate("dislike");
+      mutate("dislike")
     }
-  };
+  }
 
   return (
-    <div style={{display: "flex", flexDirection: "row"}}>
-      <button className={"btn"} onClick={onHandleLike}>
+    <div className={styles.reactions}>
+      <button className={`btn ${isPending ? styles.disabled : ""}`} onClick={onHandleLike} disabled={isPending}>
         <LikeIcon type={isLiked ? "filled" : "outline"} />
       </button>
-      <button className={"btn"} onClick={onHandleDislike}>
+      <button className={`btn ${isPending ? styles.disabled : ""}`} onClick={onHandleDislike} disabled={isPending}>
         <DislikeIcon type={isDisliked ? "filled" : "outline"} />
       </button>
     </div>
