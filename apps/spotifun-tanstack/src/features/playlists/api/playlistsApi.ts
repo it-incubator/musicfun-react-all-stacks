@@ -39,4 +39,7 @@ export const playlistsApi = {
   dislike: (id: string) => {
     return getInstance().post<ReactionResponse>(joinUrl(playlistsEndpoint, id, "dislike"))
   },
+  removeReaction: (id: string) => {
+    return getInstance().delete<ReactionResponse>(joinUrl(playlistsEndpoint, id, "reaction"));
+  },
 }

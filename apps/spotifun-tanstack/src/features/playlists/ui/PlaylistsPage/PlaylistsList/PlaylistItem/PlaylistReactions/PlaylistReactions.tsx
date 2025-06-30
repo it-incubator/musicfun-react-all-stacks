@@ -1,6 +1,6 @@
 import { playlistsKey } from "@/common/apiEntities"
 import { CurrentUserReaction } from "@/common/enums"
-import { LikeIcon } from "@/common/icons"
+import { DislikeIcon, LikeIcon } from "@/common/icons"
 import { showErrorToast } from "@/common/utils"
 import { playlistsApi } from "@/features/playlists/api/playlistsApi.ts"
 
@@ -14,17 +14,43 @@ type Props = {
 
 export const PlaylistReactions = ({ id, currentUserReaction }: Props) => {
   const { mutate } = useMutation({
-    mutationFn: (reaction: "like" | "dislike") =>
-      reaction === "like" ? playlistsApi.like(id) : playlistsApi.dislike(id),
+    mutationFn: (reaction: "like" | "dislike" | "none") =>
+      reaction === "like"
+        ? playlistsApi.like(id)
+        : reaction === "dislike"
+          ? playlistsApi.dislike(id)
+          : playlistsApi.removeReaction(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
     onError: (err: unknown) => showErrorToast("Ошибка", err),
   })
 
   const isLiked = currentUserReaction === CurrentUserReaction.Like
+  const isDisliked = currentUserReaction === CurrentUserReaction.Dislike
+
+  const onHandleLike = () => {
+    if (isLiked) {
+      mutate("none");
+    } else {
+      mutate("like");
+    }
+  };
+
+  const onHandleDislike = () => {
+    if (isDisliked) {
+      mutate("none");
+    } else {
+      mutate("dislike");
+    }
+  };
 
   return (
-    <button className={"btn"} onClick={() => mutate(isLiked ? "dislike" : "like")}>
-      <LikeIcon type={isLiked ? "like" : "dislike"} />
-    </button>
+    <div style={{display: "flex", flexDirection: "row"}}>
+      <button className={"btn"} onClick={onHandleLike}>
+        <LikeIcon type={isLiked ? "filled" : "outline"} />
+      </button>
+      <button className={"btn"} onClick={onHandleDislike}>
+        <DislikeIcon type={isDisliked ? "filled" : "outline"} />
+      </button>
+    </div>
   )
 }
