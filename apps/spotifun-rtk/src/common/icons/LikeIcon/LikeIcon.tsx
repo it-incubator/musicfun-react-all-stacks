@@ -2,10 +2,10 @@ type Props = {
   width?: number
   height?: number
   fillColor?: string
-  type?: "like" | "dislike"
+  type?: "like" | "neutral"
 }
 
-export const LikeIcon = ({ width = 22, height = 21, fillColor = "#FF38B6", type = "dislike" }: Props) => {
+export const LikeIcon = ({ width = 22, height = 21, fillColor = "#FF38B6", type = "neutral" }: Props) => {
   const fill = type === "like" ? fillColor : "white"
   const stroke = type === "like" ? fillColor : "black"
 

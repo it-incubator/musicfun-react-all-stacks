@@ -1,8 +1,10 @@
-import { uploadCover } from "@/common/utils"
-import { useUploadPlaylistCoverMutation } from "../../../../../api/playlistsApi"
-import type { Playlist } from "../../../../../api/playlistsApi.types"
-import noCover from "@/assets/img/no-cover.png"
 import type { ChangeEvent } from "react"
+import { Link, useLocation } from "react-router"
+import noCover from "@/assets/img/no-cover.png"
+import { Path } from "@/common/routing"
+import { uploadCover } from "@/common/utils"
+import type { Playlist } from "../../../../../api/playlistsApi.types"
+import { useUploadPlaylistCoverMutation } from "../../../../../api/playlistsApi"
 import s from "./PlaylistCover.module.css"
 
 type Props = {
@@ -11,27 +13,25 @@ type Props = {
 }
 
 export const PlaylistCover = ({ playlist, editable = false }: Props) => {
+  const location = useLocation()
+
   const [uploadPlaylistCover] = useUploadPlaylistCoverMutation()
 
   const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {
     uploadCover({
       event,
       maxSize: 5 * 1024 * 1024,
-      onSuccess: (file) => {
-        uploadPlaylistCover({ playlistId: playlist.id, file })
-          .unwrap()
-          .catch((err) => console.log("Ошибка при загрузке изображения", err))
-      },
+      onSuccess: (file) => uploadPlaylistCover({ playlistId: playlist.id, file }),
     })
   }
-
-  // TODO: Заменил обработчик ошибок на консольлог. Добавить новый обработчик.
 
   const originalCover = playlist.attributes.images.main?.find((img) => img.type === "original")
 
   return (
     <div className={s.container}>
-      <img src={originalCover ? originalCover.url : noCover} alt={"no cover image"} className={s.cover} />
+      <Link className={"link"} to={`${Path.Playlists}/${playlist.id}`} state={{ from: location.pathname }}>
+        <img src={originalCover ? originalCover.url : noCover} alt={"no cover image"} className={s.cover} />
+      </Link>
       {editable && (
         <div>
           <input type="file" accept="image/jpeg,image/png,image/gif" onChange={uploadCoverHandler} />
