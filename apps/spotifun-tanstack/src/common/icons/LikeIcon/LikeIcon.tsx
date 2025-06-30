@@ -2,12 +2,12 @@ type Props = {
   width?: number
   height?: number
   fillColor?: string
-  type?: "like" | "dislike"
+  type?: "filled" | "outline"
 }
 
-export const LikeIcon = ({ width = 22, height = 21, fillColor = "#FF38B6", type = "dislike" }: Props) => {
-  const fill = type === "like" ? fillColor : "white"
-  const stroke = type === "like" ? fillColor : "black"
+export const LikeIcon = ({ width = 22, height = 21, fillColor = "#FF38B6", type = "outline" }: Props) => {
+  const fill = type === "filled" ? fillColor : "white"
+  const stroke = type === "filled" ? fillColor : "black"
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 -1 24 24" fill="none">
