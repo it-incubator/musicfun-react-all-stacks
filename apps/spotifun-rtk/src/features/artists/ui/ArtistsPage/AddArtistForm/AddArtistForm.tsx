@@ -1,6 +1,6 @@
-import {type SubmitHandler, useForm} from 'react-hook-form'
-import {useCreateArtistMutation} from '../../../api/artistsApi.ts'
-import {errorHandler} from '@/common/utils/errorHandler.ts'
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { useCreateArtistMutation } from "../../../api/artistsApi.ts"
+import { errorHandler } from "@/common/utils/errorHandler.ts"
 
 type Inputs = {
   name: string
@@ -12,10 +12,10 @@ export const AddArtistForm = () => {
     handleSubmit,
     reset,
     setError,
-    formState: {errors},
+    formState: { errors },
   } = useForm<Inputs>()
-  
-  const [createArtist, {isLoading}] = useCreateArtistMutation()
+
+  const [createArtist, { isLoading }] = useCreateArtistMutation()
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     createArtist(data.name)
@@ -30,8 +30,8 @@ export const AddArtistForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Создать нового исполнителя</h2>
       <div>
-        <input {...register('name')} placeholder='Введите имя артиста' />
-        <span className='error'>{errors.name?.message}</span>
+        <input {...register("name")} placeholder="Введите имя артиста" />
+        <span className="error">{errors.name?.message}</span>
       </div>
       <button disabled={isLoading}>Создать исполнителя</button>
     </form>

@@ -6,7 +6,7 @@ import type {
   PlaylistsResponse,
   UpdatePlaylistArgs,
 } from "./playlistsApi.types.ts"
-import type { Images } from "@/common/types"
+import type { Images, ReactionResponse } from "@/common/types"
 import type { Nullable } from "@/common/types/common.types"
 
 export const playlistsAPI = baseApi.injectEndpoints({
@@ -66,17 +66,24 @@ export const playlistsAPI = baseApi.injectEndpoints({
       }),
       invalidatesTags: (_result, _error, { playlistId }) => [{ type: "Playlist", id: playlistId }, "Playlist"],
     }),
-    likePlaylist: build.mutation<void, { id: string }>({
+    likePlaylist: build.mutation<ReactionResponse, { id: string }>({
       query: ({ id }) => ({
         url: `playlists/${id}/like`,
         method: "POST",
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "Playlist", id }, "Playlist"],
     }),
-    dislikePlaylist: build.mutation<void, { id: string }>({
+    dislikePlaylist: build.mutation<ReactionResponse, { id: string }>({
       query: ({ id }) => ({
         url: `playlists/${id}/dislike`,
         method: "POST",
+      }),
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Playlist", id }, "Playlist"],
+    }),
+    unReactionPlaylist: build.mutation<ReactionResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `playlists/${id}/reaction`,
+        method: "DELETE",
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "Playlist", id }, "Playlist"],
     }),
@@ -94,4 +101,5 @@ export const {
   useReorderPlaylistMutation,
   useLikePlaylistMutation,
   useDislikePlaylistMutation,
+  useUnReactionPlaylistMutation,
 } = playlistsAPI

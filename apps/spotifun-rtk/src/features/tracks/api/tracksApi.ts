@@ -3,13 +3,12 @@ import type {
   FetchTrackByIdResponse,
   FetchTracksArgs,
   FetchTracksResponse,
-  ReactionResponse,
   TrackDetailAttributes,
   TrackDetails,
   UpdateTrackArgs,
 } from "./tracksApi.types.ts"
 import { baseApi } from "@/app/api/base-api.ts"
-import type { Nullable } from "@/common/types"
+import type { Nullable, ReactionResponse } from "@/common/types"
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({

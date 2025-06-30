@@ -11,9 +11,7 @@ export const ArtistItem = ({ artist }: Props) => {
 
   const [deleteArtist, { isLoading }] = useDeleteArtistMutation()
 
-  const deleteHandler = () => {
-    deleteArtist(id)
-  }
+  const deleteHandler = () => deleteArtist(id)
 
   return (
     <div className={`${s.item} ${s.itemFullwidth} ${s.flexContainer} ${s.container}`}>

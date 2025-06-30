@@ -17,13 +17,12 @@ export const TrackPage = () => {
 
   const { trackId: id } = useParams<{ trackId?: string }>()
 
-  const { data, isLoading } = useFetchTrackByIdQuery({ trackId: id || '' })
+  const { data, isLoading } = useFetchTrackByIdQuery({ trackId: id || "" })
 
   const { removingTrackId, removeTrack } = useRemoveTrack(() => navigate(Path.Tracks))
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
   const { register, errors, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
     useEditTrack()
-
 
   if (!id) return <Navigate to={Path.NotFound} />
 

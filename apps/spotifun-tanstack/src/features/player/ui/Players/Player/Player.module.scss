@@ -15,7 +15,6 @@
   grid-template-columns: repeat(3, 1fr);
   padding-left: 15px;
   padding-right: 15px;
-
 }
 
 .playerControls {
@@ -32,8 +31,8 @@
     width: 20px;
     height: 15px;
     margin-bottom: 20px;
-    content: '';
-    background: url('../../../lib/img/down-arrow.svg') center no-repeat;
+    content: "";
+    background: url("../../../lib/img/down-arrow.svg") center no-repeat;
     background-size: cover;
   }
 }
@@ -41,7 +40,6 @@
 .btnOpenContainer {
   display: none;
 }
-
 
 @media (max-width: 768px) {
   .btnOpenContainer {
@@ -53,8 +51,8 @@
       cursor: pointer;
       width: 20px;
       height: 15px;
-      content: '';
-      background: url('../../../lib/img/down-arrow.svg') center no-repeat;
+      content: "";
+      background: url("../../../lib/img/down-arrow.svg") center no-repeat;
       background-size: cover;
     }
   }
@@ -62,8 +60,8 @@
   .btnOpen {
     width: 9px;
     height: 30px;
-    content: '';
-    background: url('../../../lib/img/more-info.svg') center no-repeat;
+    content: "";
+    background: url("../../../lib/img/more-info.svg") center no-repeat;
     background-size: cover;
     border: none;
   }
@@ -88,4 +86,3 @@
     margin-left: 20px;
   }
 }
-

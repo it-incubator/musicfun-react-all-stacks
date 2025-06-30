@@ -9,6 +9,6 @@ export type Meta = {
 
 export type ExtensionsError = {
   data: {
-    extensions?: {key?: string; message?: string}[]
+    extensions?: { key?: string; message?: string }[]
   }
 }
