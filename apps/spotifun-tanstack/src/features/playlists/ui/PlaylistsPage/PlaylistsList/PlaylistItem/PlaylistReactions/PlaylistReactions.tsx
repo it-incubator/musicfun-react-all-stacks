@@ -14,12 +14,16 @@ type Props = {
 
 export const PlaylistReactions = ({ id, currentUserReaction }: Props) => {
   const { mutate } = useMutation({
-    mutationFn: (reaction: "like" | "dislike" | "none") =>
-      reaction === "like"
-        ? playlistsApi.like(id)
-        : reaction === "dislike"
-          ? playlistsApi.dislike(id)
-          : playlistsApi.removeReaction(id),
+    mutationFn: (reaction: "like" | "dislike" | "remove") => {
+      switch (reaction) {
+        case "like":
+          return playlistsApi.like(id);
+        case "dislike":
+          return playlistsApi.dislike(id);
+        case "remove":
+          return playlistsApi.removeReaction(id);
+      }
+    },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistsKey] }),
     onError: (err: unknown) => showErrorToast("Ошибка", err),
   })
@@ -29,7 +33,7 @@ export const PlaylistReactions = ({ id, currentUserReaction }: Props) => {
 
   const onHandleLike = () => {
     if (isLiked) {
-      mutate("none");
+      mutate("remove");
     } else {
       mutate("like");
     }
@@ -37,7 +41,7 @@ export const PlaylistReactions = ({ id, currentUserReaction }: Props) => {
 
   const onHandleDislike = () => {
     if (isDisliked) {
-      mutate("none");
+      mutate("remove");
     } else {
       mutate("dislike");
     }
