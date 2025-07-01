@@ -1,5 +1,6 @@
 import { getOauthUrl, useLoginMutation } from "@/features/auth/api/auth-api.ts"
 import { Path } from "@/common/routing/Routing.tsx"
+import s from "./Login.module.scss"
 
 export const Login = () => {
   const [mutate] = useLoginMutation()
@@ -29,5 +30,9 @@ export const Login = () => {
     window.addEventListener("message", receiveMessage)
   }
 
-  return <button onClick={loginHandler}>Login with apihub</button>
+  return (
+    <button className={s.login} onClick={loginHandler}>
+      Login with apihub
+    </button>
+  )
 }
