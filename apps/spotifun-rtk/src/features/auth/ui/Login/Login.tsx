@@ -1,8 +1,12 @@
 import { getOauthUrl, useLoginMutation } from "@/features/auth/api/auth-api.ts"
 import { Path } from "@/common/routing/Routing.tsx"
 import s from "./Login.module.scss"
+import { LoginModal } from "../LoginModal/LoginModal"
+import { useState } from "react"
 
 export const Login = () => {
+  const [openModal, setOpenModal] = useState(false)
+
   const [mutate] = useLoginMutation()
 
   const loginHandler = () => {
@@ -24,6 +28,7 @@ export const Login = () => {
         //popup?.close()
         window.removeEventListener("message", receiveMessage)
         mutate({ code, accessTokenTTL: "3m", redirectUri, rememberMe: true })
+        setOpenModal(false)
       }
     }
 
@@ -31,8 +36,17 @@ export const Login = () => {
   }
 
   return (
-    <button className={s.login} onClick={loginHandler}>
-      Login with apihub
-    </button>
+    <>
+      <LoginModal
+        open={openModal}
+        onClose={() => {
+          setOpenModal(false)
+        }}
+        onClick={loginHandler}
+      />
+      <button className={s.login} onClick={() => setOpenModal(true)}>
+        Login with apihub
+      </button>
+    </>
   )
 }

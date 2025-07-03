@@ -6,7 +6,7 @@ type Props = {
   open: boolean
   onClose?: () => void
   children: ReactNode
-  modalTitle: string
+  modalTitle?: string
 }
 
 export const Modal = ({ onClose, open, children, modalTitle }: Props) => {
