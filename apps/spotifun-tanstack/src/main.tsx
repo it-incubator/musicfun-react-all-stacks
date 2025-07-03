@@ -7,9 +7,10 @@ import { createRoot } from "react-dom/client"
 import "./index.css"
 import { BrowserRouter } from "react-router"
 import { App } from "./app/App.tsx"
-import { PlayerProvider } from "./features/player/lib/context/PlayerProvider.tsx"
-import { PlayerCore } from "./features/player/model/PlayerCore.ts"
-import { PlayerLogic } from "./features/player/model/PlayerLogic.ts"
+import { PlayerProvider } from "@/modules/musicstaff/player/lib/context/PlayerProvider.tsx"
+import { PlayerCore } from "@/modules/musicstaff/player/model/PlayerCore.ts"
+import { PlayerLogic } from "@/modules/musicstaff/player/model/PlayerLogic.ts"
+import {setClientConfig} from "@/common/api/client.ts";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,9 @@ setInstanceConfig({
   baseURL: import.meta.env.VITE_BASE_URL,
   apiKey: import.meta.env.VITE_API_KEY,
 })
+
+setClientConfig({ baseURL: import.meta.env.VITE_BASE_URL, apiKey: import.meta.env.VITE_API_KEY })
+
 
 export const playerCore = new PlayerCore()
 export const playerLogic = new PlayerLogic(playerCore)

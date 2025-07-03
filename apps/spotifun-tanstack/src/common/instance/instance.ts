@@ -1,6 +1,6 @@
 import type { Nullable } from "@/common/types"
-import { authApi } from "@/features/auth/api/authApi.ts"
-import { localStorageKeys } from "@/features/auth/api/authApi.types.ts"
+import { authApi } from "@/modules/auth/api/authApi.ts"
+import { localStorageKeys } from "@/modules/auth/api/authApi.types.ts"
 import axios, { type AxiosError, type AxiosInstance } from "axios"
 
 const config = {

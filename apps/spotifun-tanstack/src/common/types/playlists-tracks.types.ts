@@ -1,6 +1,12 @@
+import type {components} from "@/common/api/schema.ts";
+
+
 export type Images = {
   main: Cover[]
 }
+
+export type Image2 = components['schemas']['GetImagesOutput']
+
 
 export type Cover = {
   type: "original" | "medium" | "thumbnail"
