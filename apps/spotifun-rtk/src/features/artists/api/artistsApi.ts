@@ -8,7 +8,7 @@ export const artistsApi = baseApi.injectEndpoints({
       query: (name) => `/${artistsEndpoint}/search?term=${name}`,
       providesTags: ["Artist"],
     }),
-    createArtist: build.mutation<Artist[], string>({
+    createArtist: build.mutation<Artist, string>({
       query: (name) => ({
         url: `/${artistsEndpoint}`,
         method: "POST",

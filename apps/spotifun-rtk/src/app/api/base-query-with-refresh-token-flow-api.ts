@@ -41,6 +41,8 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   // основной запрос
   let result = await baseQuery(args, api, extraOptions)
 
+  handleError(result)
+
   if (result.error?.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
@@ -91,6 +93,5 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
     }
   }
 
-  handleError(api, result)
   return result
 }

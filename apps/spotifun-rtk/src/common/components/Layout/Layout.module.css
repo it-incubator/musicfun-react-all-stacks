@@ -1,14 +1,13 @@
 .layout {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    max-width: 1200px;
-    margin: 0 auto 200px;
-    box-sizing: border-box;
+  display: flex;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto 200px;
+  box-sizing: border-box;
 }
 
 .layoutContent {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }

@@ -1,12 +1,10 @@
 import type { Nullable } from "@/common/types/common.types"
-import { PlaylistActions } from "./PlaylistActions/PlaylistActions"
 import type { Playlist } from "../../../../api/playlistsApi.types"
+import { useGetMeQuery } from "@/features/auth/api/auth-api"
+import { PlaylistReactions } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistReactions/PlaylistReactions.tsx"
+import { PlaylistActions } from "./PlaylistActions/PlaylistActions"
 import { PlaylistCover } from "./PlaylistCover/PlaylistCover"
 import { PlaylistDescription } from "./PlaylistDescription/PlaylistDescription"
-import { Path } from "@/common/routing"
-import { Link, useLocation } from "react-router"
-import { PlaylistReactions } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistItem/PlaylistReactions/PlaylistReactions.tsx"
-import { useGetMeQuery } from "@/features/auth/api/auth-api"
 
 type Props = {
   playlist: Playlist
@@ -23,15 +21,11 @@ export const PlaylistItem = ({
   withActions = false,
   editable = false,
 }: Props) => {
-  const location = useLocation()
-
   const { data: userData } = useGetMeQuery()
 
   return (
     <div>
-      <Link className={"link"} to={`${Path.Playlists}/${playlist.id}`} state={{ from: location.pathname }}>
-        <PlaylistCover playlist={playlist} editable={editable} />
-      </Link>
+      <PlaylistCover playlist={playlist} editable={editable} />
       <PlaylistDescription attributes={playlist.attributes} />
       {withActions && (
         <PlaylistActions playlist={playlist} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />

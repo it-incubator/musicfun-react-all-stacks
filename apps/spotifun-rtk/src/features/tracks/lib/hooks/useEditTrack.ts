@@ -1,5 +1,5 @@
 import type { Nullable } from "@/common/types"
-import { showSuccessToast } from "@/common/utils"
+import { errorHandler, showSuccessToast } from "@/common/utils"
 import { useFetchTrackByIdQuery, useUpdateTrackMutation } from "../../api/tracksApi.ts"
 import type { UpdateTrackArgs } from "../../api/tracksApi.types.ts"
 import { type MouseEvent, useEffect, useState } from "react"
@@ -12,7 +12,13 @@ export const useEditTrack = () => {
   const [tagIds, setTagIds] = useState<string[]>([])
   const [artistsIds, setArtistsIds] = useState<string[]>([])
 
-  const { register, handleSubmit, reset } = useForm<UpdateTrackArgs>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<UpdateTrackArgs>()
 
   const [mutate] = useUpdateTrackMutation()
 
@@ -49,7 +55,10 @@ export const useEditTrack = () => {
         setTrackId(null)
         showSuccessToast("Трек успешно обновлен")
       })
+      .catch((e) => {
+        errorHandler(e, setError)
+      })
   }
 
-  return { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds }
+  return { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds, errors }
 }

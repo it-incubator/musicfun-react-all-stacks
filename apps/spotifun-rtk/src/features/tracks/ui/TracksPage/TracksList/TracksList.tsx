@@ -12,30 +12,23 @@ import { useInfiniteScrollTrigger } from "@/common/hooks"
 import { useState } from "react"
 
 export const TracksList = () => {
-  const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState(1)
 
   const { tracks, isFetching, isLoading, hasNextPage } = useFetchTracks({
     page,
   })
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds } =
+  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds, errors } =
     useEditTrack()
 
   const { triggerRef } = useInfiniteScrollTrigger({
     hasNextPage: !!hasNextPage,
     isFetchingNextPage: isFetching,
     callback: () => {
-      console.log("setPage", page)
       setPage((prev) => prev + 1)
     },
   })
-
-  if (isLoading) {
-    return <Loader />
-  }
-
-  console.log(isFetching, hasNextPage)
 
   return (
     <div className={s.container}>
@@ -50,6 +43,7 @@ export const TracksList = () => {
           <div key={track.id}>
             {isEditing ? (
               <EditTrackForm
+                errors={errors}
                 register={register}
                 onSubmit={onSubmit}
                 handleSubmit={handleSubmit}

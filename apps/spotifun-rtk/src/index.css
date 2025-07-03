@@ -7,11 +7,10 @@
   --highlight: #007bff;
   --main-text: #fff;
   --main-bg: #000;
-  --player-play-icon: url('features/player/lib/img/play_blue.svg');
-  --player-pause-icon: url('features/player/lib/img/pause_blue.svg');
-  --player-current-position: url('features/player/lib/img/current-position_blue.svg')
+  --player-play-icon: url("features/player/lib/img/play_blue.svg");
+  --player-pause-icon: url("features/player/lib/img/pause_blue.svg");
+  --player-current-position: url("features/player/lib/img/current-position_blue.svg");
 }
-
 
 /* Link  */
 .link {
@@ -27,7 +26,6 @@
 .activeLink {
   font-weight: bold;
 }
-
 
 /* Item: PlaylistItem, TrackItem  */
 .item {
@@ -55,7 +53,6 @@
   flex-direction: column;
   gap: 10px;
 }
-
 
 /* Flex container */
 .flex-container {
@@ -101,4 +98,14 @@
   font-size: 16px;
   gap: 6px;
   color: #333;
+}
+
+.error {
+  width: 100%;
+  max-width: 600px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  color: red;
 }

@@ -1,15 +1,20 @@
-import type { BaseQueryApi, FetchBaseQueryError, FetchBaseQueryMeta, QueryReturnValue } from "@reduxjs/toolkit/query"
-import { setError } from "../model/appSlice"
+import { type FetchBaseQueryError, type FetchBaseQueryMeta, type QueryReturnValue } from "@reduxjs/toolkit/query"
+import { showErrorToast } from "@/common/utils"
+import type { ExtensionsError } from "@/common/types"
 
-export const handleError = (
-  api: BaseQueryApi,
-  result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>,
-) => {
-  let error = "Some error occurred"
+export const handleError = (result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>) => {
+  const error = "Some error occurred"
 
   if (result.error) {
+    const extensionsError = (result.error as ExtensionsError)?.data?.extensions
     const message = (result.error.data as { message: string }).message
-    error = JSON.stringify(message)
-    api.dispatch(setError(error))
+
+    if (result.error.status === 401 || extensionsError?.length) return
+
+    if (result.error.status === 500) {
+      showErrorToast(error)
+    }
+
+    showErrorToast(message)
   }
 }

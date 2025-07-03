@@ -1,7 +1,12 @@
-import { useLikePlaylistMutation, useDislikePlaylistMutation } from "@/features/playlists/api/playlistsApi"
 import { CurrentUserReaction } from "@/common/enums"
-import { showErrorToast } from "@/common/utils"
+import { useOptimisticReactions } from "@/common/hooks"
+import { DislikeIcon } from "@/common/icons/DislikeIcon/DislikeIcon.tsx"
 import { LikeIcon } from "@/common/icons/LikeIcon/LikeIcon.tsx"
+import {
+  useDislikePlaylistMutation,
+  useLikePlaylistMutation,
+  useUnReactionPlaylistMutation,
+} from "@/features/playlists/api/playlistsApi"
 
 type Props = {
   id: string
@@ -9,26 +14,28 @@ type Props = {
 }
 
 export const PlaylistReactions = ({ id, currentUserReaction }: Props) => {
-  const [likePlaylist, { isLoading: isLiking }] = useLikePlaylistMutation()
-  const [dislikePlaylist, { isLoading: isDisliking }] = useDislikePlaylistMutation()
+  const [likePlaylist] = useLikePlaylistMutation()
+  const [unReactionPlaylist] = useUnReactionPlaylistMutation()
+  const [dislikePlaylist] = useDislikePlaylistMutation()
 
-  const isLiked = currentUserReaction === CurrentUserReaction.Like
-
-  const handleClick = async () => {
-    try {
-      if (isLiked) {
-        await dislikePlaylist({ id }).unwrap()
-      } else {
-        await likePlaylist({ id }).unwrap()
-      }
-    } catch (err) {
-      showErrorToast("Ошибка", err)
-    }
-  }
+  const { isLiked, isDisliked, handleLike, handleDislike } = useOptimisticReactions({
+    currentReaction: currentUserReaction,
+    mutations: {
+      like: () => likePlaylist({ id }).unwrap(),
+      dislike: () => dislikePlaylist({ id }).unwrap(),
+      remove: () => unReactionPlaylist({ id }).unwrap(),
+    },
+    entityName: "плейлист",
+  })
 
   return (
-    <button className={"btn"} onClick={handleClick} disabled={isLiking || isDisliking}>
-      <LikeIcon type={isLiked ? "like" : "dislike"} />
-    </button>
+    <div style={{ display: "flex" }}>
+      <button className={"btn"} onClick={handleLike}>
+        <LikeIcon type={isLiked ? "like" : "neutral"} />
+      </button>
+      <button className={"btn"} onClick={handleDislike}>
+        <DislikeIcon type={isDisliked ? "dislike" : "neutral"} />
+      </button>
+    </div>
   )
 }

@@ -1,10 +1,16 @@
-import { showErrorToast } from "@/common/utils"
+import { errorHandler } from "@/common/utils"
 import { useCreatePlaylistMutation } from "../../../api/playlistsApi"
 import type { CreatePlaylistArgs } from "../../../api/playlistsApi.types"
 import { type SubmitHandler, useForm } from "react-hook-form"
 
 export const AddPlaylistForm = () => {
-  const { register, handleSubmit, reset } = useForm<CreatePlaylistArgs>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<CreatePlaylistArgs>()
 
   const [createPlaylist] = useCreatePlaylistMutation()
 
@@ -12,8 +18,8 @@ export const AddPlaylistForm = () => {
     try {
       await createPlaylist(data).unwrap()
       reset()
-    } catch (err) {
-      showErrorToast("Ошибка при создании плейлиста", err)
+    } catch (e) {
+      errorHandler(e, setError)
     }
   }
 
@@ -22,9 +28,11 @@ export const AddPlaylistForm = () => {
       <h2>Добавить новый плейлист</h2>
       <div>
         <input {...register("title")} placeholder="Title" />
+        <span className="error">{errors?.title?.message}</span>
       </div>
       <div>
         <input {...register("description")} placeholder={"Description"} />
+        <span className="error">{errors?.description?.message}</span>
       </div>
       <button>Создать плейлист</button>
     </form>

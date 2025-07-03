@@ -3,7 +3,7 @@ import { PauseIcon, PlayIcon } from "@/common/icons"
 import { usePlayer } from "@/features/player/lib/hooks/usePlayer.ts"
 
 import { type MouseEvent } from "react"
-import type {BaseAttributes, TrackDetails} from "../../../../../api/tracksApi.types.ts";
+import type { BaseAttributes, TrackDetails } from "../../../../../api/tracksApi.types.ts"
 
 type Props<T extends BaseAttributes> = {
   track: TrackDetails<T>

@@ -12,9 +12,14 @@ type Props = {
 }
 
 export const Reactions = ({ currentUserReaction, likesCount, dislikesCount, trackId }: Props) => {
-  const [setDislike] = useDislikeMutation()
-  const [setLike] = useLikeMutation()
-  const [setRemoveReaction] = useRemoveReactionMutation()
+  const [setDislike, { isLoading: isDislikeLoading }] = useDislikeMutation()
+  const [setLike, { isLoading: isLikeLoading }] = useLikeMutation()
+  const [setRemoveReaction, { isLoading: isRemoveLoading }] = useRemoveReactionMutation()
+
+  const isLiked = currentUserReaction === CurrentUserReaction.Like
+  const isDisliked = currentUserReaction === CurrentUserReaction.Dislike
+
+  const isMutating = isLikeLoading || isDislikeLoading || isRemoveLoading
 
   const mutate = (reaction: "like" | "dislike") =>
     reaction === "like" ? setLike({ trackId }) : setDislike({ trackId })
@@ -25,15 +30,14 @@ export const Reactions = ({ currentUserReaction, likesCount, dislikesCount, trac
     } else mutate(reaction)
   }
 
-  const isLiked = currentUserReaction === CurrentUserReaction.Like
-  const isDisliked = currentUserReaction === CurrentUserReaction.Dislike
+
 
   return (
     <div className={s.container}>
-      <button className={`btn ${isLiked ? s.active : ""}`} onClick={() => setReaction("like")}>
+      <button className={`btn ${isLiked ? s.active : ""}`} onClick={() => setReaction("like")} disabled={isMutating}>
         <ReactionIcon active={isLiked} activeColor={"green"} type={"like"} /> {likesCount}
       </button>
-      <button className={`btn ${isDisliked ? s.active : ""}`} onClick={() => setReaction("dislike")}>
+      <button className={`btn ${isDisliked ? s.active : ""}`} onClick={() => setReaction("dislike")} disabled={isMutating}>
         <ReactionIcon active={isDisliked} activeColor={"red"} type={"dislike"} /> {dislikesCount}
       </button>
     </div>
