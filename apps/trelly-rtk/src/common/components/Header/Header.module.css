@@ -1,8 +1,0 @@
-.wrapper {
-  border-bottom: 1px solid black;
-}
-
-.list {
-  display: flex;
-  gap: 40px;
-}

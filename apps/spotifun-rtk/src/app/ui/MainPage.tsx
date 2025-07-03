@@ -2,6 +2,7 @@ import { useFetchTracksQuery } from "@/features/tracks/api/tracksApi.ts"
 import { useFetchPlaylistsQuery } from "@/features/playlists/api/playlistsApi.ts"
 import { TrackItem } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
 import { PlaylistsList } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx"
+import { usePlaylistsPublicControllerGetPlaylistsQuery } from "@/generated/generatedApi.ts"
 import s from "./MainPage.module.css"
 
 export const MainPage = () => {
@@ -9,6 +10,12 @@ export const MainPage = () => {
 
   const { data: playlists } = useFetchPlaylistsQuery(defaultParams)
   const { data: tracks } = useFetchTracksQuery(defaultParams)
+
+  console.log({ playlists })
+
+  // const { data: test } = usePlaylistsPublicControllerGetPlaylistsQuery(defaultParams)
+
+  // console.log({ test })
 
   return (
     <div>
