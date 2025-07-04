@@ -12,7 +12,7 @@ export const LoginModal = ({ open, onClose, onClick }: Props) => {
       <div className={s.wrapper}>
         <p className={s.title}>Millions of Tracks. Free on Spotifun.</p>
         <div>
-          <button className={`${s.btn} ${s.btn_grey}`} onClick={onClick}>
+          <button className={`${s.btn} ${s.btn_grey}`} onClick={onClose}>
             Сontinue without Sign In
           </button>
           <button className={`${s.btn} ${s.btn_pink}`} onClick={onClick}>
