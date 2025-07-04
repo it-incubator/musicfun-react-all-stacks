@@ -1,5 +1,6 @@
 import type { Images, Meta, User } from "@/common/types"
 import type { CurrentUserReaction } from "@/common/enums"
+import type { Tag } from "@/features/tags/api/tagsApi.types.ts"
 
 export type Playlist = {
   id: string
@@ -13,7 +14,7 @@ export type PlaylistAttributes = {
   addedAt: string
   updatedAt: string
   order: number
-  tags: string[]
+  tags: Tag[]
   images: Images
   user: User
   // likes

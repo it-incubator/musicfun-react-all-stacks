@@ -7,6 +7,7 @@ type Props = {
 
 export const PlaylistDescription = ({ attributes }: Props) => {
   const { title, description, tags, addedAt, order, user } = attributes
+
   return (
     <>
       <div className={s.field}>
@@ -28,7 +29,7 @@ export const PlaylistDescription = ({ attributes }: Props) => {
       <div className={s.field}>
         <b>tags:</b>
         <span className={s.truncatedValue} title={tags.length ? tags.join(", ") : "Теги не добавлены"}>
-          {tags.length ? tags.map((t) => t) : "Теги не добавлены"}
+          {tags.length ? tags.map((t) => t.name + " ") : "Теги не добавлены"}
         </span>
       </div>
       <div className={s.field}>
