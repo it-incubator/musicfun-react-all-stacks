@@ -1,7 +1,7 @@
 import { Path } from "@/common/routing"
 import { NavLink } from "react-router"
 import s from "./Header.module.css"
-import { UserBlock } from "@/features/auth/ui/UserBlock.tsx"
+import { UserBlock } from "@/modules/auth/ui/UserBlock.tsx"
 
 const navItems = [
   { to: Path.Main, label: "Main" },
