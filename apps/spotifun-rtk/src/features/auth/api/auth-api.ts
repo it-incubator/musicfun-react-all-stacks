@@ -1,10 +1,8 @@
-// src/app/api/authApi.ts
 import { baseApi } from "@/app/api/base-api"
 import { authEndpoint } from "@/common/apiEntities"
 import type { OAuthLoginArgs, RefreshTokensArgs, AuthTokensResponse, MeResponseResponse } from "./authApi.types"
 import { localStorageKeys } from "@/app/api/base-query-with-refresh-token-flow-api.ts"
 
-// RTK Query–разметка для всех auth-эндпоинтов
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     // 1) Логин
@@ -15,7 +13,7 @@ export const authApi = baseApi.injectEndpoints({
         body: payload,
       }),
       // После успешного логина сохраняем токены и инвалидируем
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
           localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
@@ -35,7 +33,7 @@ export const authApi = baseApi.injectEndpoints({
           refreshToken: localStorage.getItem(localStorageKeys.refreshToken)!,
         },
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled
           localStorage.removeItem(localStorageKeys.accessToken)
@@ -59,7 +57,7 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
           localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
@@ -71,10 +69,4 @@ export const authApi = baseApi.injectEndpoints({
   overrideExisting: false,
 })
 
-// Экспортируем готовые React-хуки
-export const { useLoginMutation, useLogoutMutation, useGetMeQuery, useLazyGetMeQuery, useRefreshTokenMutation } =
-  authApi
-
-// Если вам всё ещё нужен урл для OAuth-редиректа, ниже — чистая утилита, без network-слоя:
-export const getOauthUrl = (redirectUrl: string) =>
-  `${import.meta.env.VITE_BASE_URL}/${authEndpoint}/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`
+export const { useLoginMutation, useLogoutMutation, useGetMeQuery } = authApi
