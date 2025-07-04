@@ -1,13 +1,12 @@
-import { useEffect } from "react"
+import { useEffect } from 'react'
 
 export const OAuthCallback = () => {
   useEffect(() => {
-    debugger;
     const url = new URL(window.location.href)
-    const code = url.searchParams.get("code") // или code/state, если flow другой
+    const code = url.searchParams.get('code') // или code/state, если flow другой
 
     if (code && window.opener) {
-      window.opener.postMessage({ code }, "*") // Лучше заменить "*" на точный origin
+      window.opener.postMessage({ code }, '*') // Лучше заменить "*" на точный origin
     }
 
     window.close()
