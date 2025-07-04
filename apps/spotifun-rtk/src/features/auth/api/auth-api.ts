@@ -1,27 +1,25 @@
-// src/app/api/authApi.ts
-import { baseApi } from "@/app/api/base-api"
-import { authEndpoint } from "@/common/apiEntities"
-import type { OAuthLoginArgs, RefreshTokensArgs, AuthTokensResponse, MeResponseResponse } from "./authApi.types"
-import { localStorageKeys } from "@/app/api/base-query-with-refresh-token-flow-api.ts"
+import { baseApi } from '@/app/api/base-api'
+import { authEndpoint } from '@/common/apiEntities'
+import type { OAuthLoginArgs, RefreshTokensArgs, AuthTokensResponse, MeResponseResponse } from './authApi.types'
+import { localStorageKeys } from '@/app/api/base-query-with-refresh-token-flow-api.ts'
 
-// RTK Query–разметка для всех auth-эндпоинтов
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     // 1) Логин
     login: build.mutation<AuthTokensResponse, OAuthLoginArgs>({
       query: (payload) => ({
         url: `${authEndpoint}/login`,
-        method: "POST",
+        method: 'POST',
         body: payload,
       }),
       // После успешного логина сохраняем токены и инвалидируем
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
           localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
           localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
           // Инвалидируем ПОСЛЕ сохранения токенов
-          dispatch(authApi.util.invalidateTags(["User"]))
+          dispatch(authApi.util.invalidateTags(['User']))
         } catch {}
       },
     }),
@@ -30,12 +28,12 @@ export const authApi = baseApi.injectEndpoints({
     logout: build.mutation<void, void>({
       query: () => ({
         url: `${authEndpoint}/logout`,
-        method: "POST",
+        method: 'POST',
         body: {
           refreshToken: localStorage.getItem(localStorageKeys.refreshToken)!,
         },
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled
           localStorage.removeItem(localStorageKeys.accessToken)
@@ -43,23 +41,23 @@ export const authApi = baseApi.injectEndpoints({
           await dispatch(authApi.util.resetApiState())
         } catch {}
       },
-      invalidatesTags: ["User"],
+      invalidatesTags: ['User'],
     }),
 
     // 3) Проверить «кто я»
     getMe: build.query<MeResponseResponse, void>({
       query: () => ({ url: `${authEndpoint}/me` }),
-      providesTags: ["User"],
+      providesTags: ['User'],
     }),
 
     // 4) Рефреш токена (если вдруг понадобится вызвать вручную)
     refreshToken: build.mutation<AuthTokensResponse, RefreshTokensArgs>({
       query: (payload) => ({
         url: `${authEndpoint}/refresh`,
-        method: "POST",
+        method: 'POST',
         body: payload,
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
           localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
@@ -71,10 +69,4 @@ export const authApi = baseApi.injectEndpoints({
   overrideExisting: false,
 })
 
-// Экспортируем готовые React-хуки
-export const { useLoginMutation, useLogoutMutation, useGetMeQuery, useLazyGetMeQuery, useRefreshTokenMutation } =
-  authApi
-
-// Если вам всё ещё нужен урл для OAuth-редиректа, ниже — чистая утилита, без network-слоя:
-export const getOauthUrl = (redirectUrl: string) =>
-  `${import.meta.env.VITE_BASE_URL}/${authEndpoint}/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`
+export const { useLoginMutation, useLogoutMutation, useGetMeQuery } = authApi

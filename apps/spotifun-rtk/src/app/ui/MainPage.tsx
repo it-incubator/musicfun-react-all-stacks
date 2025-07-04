@@ -1,11 +1,11 @@
-import { useFetchTracksQuery } from "@/features/tracks/api/tracksApi.ts"
-import { useFetchPlaylistsQuery } from "@/features/playlists/api/playlistsApi.ts"
-import { TrackItem } from "@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx"
-import { PlaylistsList } from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx"
-import s from "./MainPage.module.css"
+import { useFetchPlaylistsQuery } from '@/features/playlists/api/playlistsApi.ts'
+import { PlaylistsList } from '@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx'
+import { useFetchTracksQuery } from '@/features/tracks/api/tracksApi.ts'
+import { TrackItem } from '@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx'
+import s from './MainPage.module.css'
 
 export const MainPage = () => {
-  const defaultParams = { search: "", pageSize: 10, pageNumber: 1 }
+  const defaultParams = { search: '', pageSize: 10, pageNumber: 1 }
 
   const { data: playlists } = useFetchPlaylistsQuery(defaultParams)
   const { data: tracks } = useFetchTracksQuery(defaultParams)

@@ -1,7 +1,7 @@
-import type { Nullable } from "@/common/types"
-import { authApi } from "@/features/auth/api/authApi.ts"
-import { localStorageKeys } from "@/features/auth/api/authApi.types.ts"
-import axios, { type AxiosError, type AxiosInstance } from "axios"
+import type { Nullable } from '@/common/types'
+import { authApi } from '@/modules/auth/api/authApi.ts'
+import { localStorageKeys } from '@/modules/auth/api/authApi.types.ts'
+import axios, { type AxiosError, type AxiosInstance } from 'axios'
 
 const config = {
   baseURL: null as string | null,
@@ -17,12 +17,12 @@ export const setInstanceConfig = (newConfig: Partial<typeof config>) => {
 
 function createInstance() {
   if (!config.baseURL || !config.apiKey) {
-    throw new Error("call setInstanceConfig to setup api")
+    throw new Error('call setInstanceConfig to setup api')
   }
   const instance = axios.create({
     baseURL: config.baseURL!,
     headers: {
-      "API-KEY": config.apiKey,
+      'API-KEY': config.apiKey,
     },
   })
 
@@ -46,15 +46,15 @@ function createInstance() {
 
   // 👉 REQUEST INTERCEPTOR — добавляем accessToken
   instance.interceptors.request.use((config) => {
-    if (typeof localStorage !== "undefined") {
+    if (typeof localStorage !== 'undefined') {
       const token = localStorage.getItem(localStorageKeys.accessToken)
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
     }
 
-    if (typeof window === "undefined") {
-      config.headers.Origin = "http://localhost:3000" // hack for nextjs server request
+    if (typeof window === 'undefined') {
+      config.headers.Origin = 'http://localhost:3000' // hack for nextjs server request
     }
 
     return config
@@ -67,7 +67,7 @@ function createInstance() {
       const originalRequest = error.config as any
 
       if (error.response?.status === 401 && !originalRequest._retry) {
-        if (typeof localStorage === "undefined") {
+        if (typeof localStorage === 'undefined') {
           return Promise.reject(error)
         }
 

@@ -1,0 +1,33 @@
+.title {
+  font-size: 30px;
+  margin: 0 0 32px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.wrapper {
+  padding: 24px 0 0 0;
+  max-width: 328px;
+  width: 100%;
+}
+
+.btn {
+  display: block;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 45px;
+  padding: 16px;
+  font-weight: 800;
+  font-size: 16px;
+  border: none;
+  color: #fff;
+
+  &_grey {
+    background: #555555;
+    margin-bottom: 32px;
+  }
+
+  &_pink {
+    background: #ff38b6;
+  }
+}

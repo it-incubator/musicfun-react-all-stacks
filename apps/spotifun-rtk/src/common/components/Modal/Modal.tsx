@@ -1,12 +1,12 @@
-import type { ReactNode } from "react"
-import { createPortal } from "react-dom"
-import s from "./Modal.module.css"
+import type { ReactNode } from 'react'
+import { createPortal } from 'react-dom'
+import s from './Modal.module.css'
 
 type Props = {
   open: boolean
   onClose?: () => void
   children: ReactNode
-  modalTitle: string
+  modalTitle?: string
 }
 
 export const Modal = ({ onClose, open, children, modalTitle }: Props) => {

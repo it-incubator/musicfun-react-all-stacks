@@ -1,0 +1,40 @@
+.sound {
+  display: flex;
+  align-items: center;
+
+  .soundIcon {
+    width: 16px;
+    margin-right: 8px;
+  }
+
+  .soundRange {
+    width: 80px;
+    height: 4px;
+    cursor: pointer;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+
+    border-radius: 2px;
+    outline: none;
+
+    -webkit-appearance: none;
+
+    @mixin thumb() {
+      width: 10px;
+      height: 10px;
+
+      border-radius: 50%;
+      background-color: var(--highlight);
+    }
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      @include thumb;
+    }
+
+    &::-moz-range-thumb {
+      @include thumb;
+    }
+  }
+}
