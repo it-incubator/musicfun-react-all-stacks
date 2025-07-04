@@ -1,0 +1,8 @@
+ul {
+  list-style-type: none;
+}
+
+.listItems {
+  display: flex;
+  gap: 50px;
+}
