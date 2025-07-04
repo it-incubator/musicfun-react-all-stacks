@@ -5,20 +5,18 @@ import { useState } from "react"
 import { LoginModal } from "../LoginModal/LoginModal"
 import s from "./Login.module.scss"
 
-const domainAddress = "http://localhost:5175" // todo: to config
-
 export const Login = () => {
   const [openModal, setOpenModal] = useState(false)
 
   const [mutate] = useLoginMutation()
 
   const loginHandler = () => {
-    const redirectUri = domainAddress + Path.OAuthRedirect
+    const redirectUri = import.meta.env.VITE_DOMAIN_ADDRESS + Path.OAuthRedirect
     const url = `${import.meta.env.VITE_BASE_URL}/${authEndpoint}/oauth-redirect?callbackUrl=${redirectUri}`
     window.open(url, "oauthPopup", "width=500,height=600")
 
     const receiveMessage = async (event: MessageEvent) => {
-      if (event.origin !== domainAddress) return
+      if (event.origin !== import.meta.env.VITE_DOMAIN_ADDRESS) return
 
       const { code } = event.data
       if (code) {
