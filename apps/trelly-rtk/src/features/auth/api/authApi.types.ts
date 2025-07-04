@@ -1,5 +1,5 @@
 // Response
-export type LoginResponse = {
+export type OAuthResponse = {
   refreshToken: string
   accessToken: string
 }
