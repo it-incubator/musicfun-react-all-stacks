@@ -19,7 +19,7 @@ export const Login = () => {
       if (!code) return
 
       window.removeEventListener("message", receiveMessage)
-      mutate({ code, accessTokenTTL: "3m", redirectUri, rememberMe: true })
+      mutate({ code, accessTokenTTL: "3m", redirectUri, rememberMe: false })
     }
 
     window.addEventListener("message", receiveMessage)

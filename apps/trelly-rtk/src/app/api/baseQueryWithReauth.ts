@@ -1,7 +1,9 @@
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
-import { Mutex } from "async-mutex"
+import { baseApi } from "@/app/api/baseApi.ts"
 import { LOCALSTORAGE_KEYS } from "@/common/constants"
 import { handleError } from "@/common/utils"
+import { isTokens } from "@/common/utils/isTokens.ts"
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
+import { Mutex } from "async-mutex"
 import { baseQuery } from "./baseQuery.ts"
 
 const mutex = new Mutex()
@@ -25,31 +27,32 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
       try {
         const refreshToken = localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken)
 
-        if (!refreshToken) return result
+        if (!refreshToken) {
+          // @ts-expect-error
+          api.dispatch(baseApi.endpoints.logout().initiate())
+          return result
+        }
 
-        const refreshResult = await baseQuery(
-          {
-            url: "auth/refresh",
-            method: "post",
-            body: { refreshToken },
-          },
+        const { data } = await baseQuery(
+          { url: "auth/refresh", method: "post", body: { refreshToken } as { refreshToken: string } },
           api,
           extraOptions,
         )
 
-        if (refreshResult.data) {
-          const newAccessToken = (refreshResult.data as any).accessToken
-          const newRefreshToken = (refreshResult.data as any).refreshToken
-          localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, newAccessToken)
-          localStorage.setItem(LOCALSTORAGE_KEYS.refreshToken, newRefreshToken)
+        if (data && isTokens(data)) {
+          localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.accessToken)
+          localStorage.setItem(LOCALSTORAGE_KEYS.refreshToken, data.refreshToken)
 
           result = await baseQuery(args, api, extraOptions) // Повтор запроса с новым токеном
         } else {
-          // TODO: Точно нужно ?
-          // api.dispatch(baseApi.endpoints.logout.initiate())
+          console.error("Failed to refresh tokens: invalid response or expired refresh token")
+          // @ts-expect-error
+          api.dispatch(baseApi.endpoints.logout().initiate())
         }
       } catch (err) {
         console.error("Token refresh failed:", err)
+        // @ts-expect-error
+        api.dispatch(baseApi.endpoints.logout().initiate())
       } finally {
         // release must be called once the mutex should be released again.
         release()

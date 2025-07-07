@@ -30,12 +30,9 @@ export const authApi = baseApi.injectEndpoints({
         dispatch(baseApi.util.resetApiState())
       },
       query: () => {
-        const refreshToken = localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)
+        const refreshToken = localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken)
         return { url: "auth/logout", method: "post", body: { refreshToken } }
       },
-    }),
-    refresh: build.mutation<OAuthResponse, string>({
-      query: (refreshToken) => ({ url: "auth/refresh", method: "post", body: { refreshToken } }),
     }),
   }),
 })

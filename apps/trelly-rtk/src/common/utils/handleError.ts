@@ -29,7 +29,6 @@ export const handleError = (
         }
         break
       default:
-        debugger
         error = JSON.stringify(result.error)
         break
     }
