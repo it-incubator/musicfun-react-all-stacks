@@ -1,3 +1,4 @@
+import { baseApi } from "@/app/api/baseApi.ts"
 import { isTokens } from "@/common/utils/isTokens.ts"
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
 import { Mutex } from "async-mutex"
@@ -40,8 +41,8 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
 
           result = await baseQuery(args, api, extraOptions) // Повтор запроса с новым токеном
         } else {
-          // TODO: Не работает
-          // api.dispatch(baseApi.endpoints.logout.initiate())
+          // @ts-expect-error
+          api.dispatch(baseApi.endpoints.logout.initiate())
         }
       } catch (err) {
         console.error("Token refresh failed:", err)
