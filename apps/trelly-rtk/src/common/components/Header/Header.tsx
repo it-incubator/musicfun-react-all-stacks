@@ -1,15 +1,7 @@
-import {
-  changeThemeModeAC,
-  selectAppStatus,
-  selectIsLoggedIn,
-  selectThemeMode,
-  setIsLoggedInAC,
-} from "@/app/app-slice.ts"
-import { baseApi } from "@/app/baseApi"
+import { changeThemeModeAC, selectAppStatus, selectThemeMode } from "@/app/app-slice.ts"
 import { NavButton } from "@/common/components/NavButton/NavButton"
-import { AUTH_TOKEN } from "@/common/constants"
-import { ResultCode } from "@/common/enums"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
+import { Path } from "@/common/routing"
 import { containerSx } from "@/common/styles"
 import { getTheme } from "@/common/theme"
 import { useLogoutMutation } from "@/features/auth/api/authApi"
@@ -20,11 +12,13 @@ import IconButton from "@mui/material/IconButton"
 import LinearProgress from "@mui/material/LinearProgress"
 import Switch from "@mui/material/Switch"
 import Toolbar from "@mui/material/Toolbar"
+import { useNavigate } from "react-router"
 
 export const Header = () => {
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const themeMode = useAppSelector(selectThemeMode)
   const status = useAppSelector(selectAppStatus)
+
+  const navigate = useNavigate()
 
   const [logout] = useLogoutMutation()
 
@@ -37,16 +31,7 @@ export const Header = () => {
   }
 
   const logoutHandler = () => {
-    logout()
-      .then((res) => {
-        if (res.data?.resultCode === ResultCode.Success) {
-          dispatch(setIsLoggedInAC({ isLoggedIn: false }))
-          localStorage.removeItem(AUTH_TOKEN)
-        }
-      })
-      .then(() => {
-        dispatch(baseApi.util.invalidateTags(["Board", "Task"]))
-      })
+    logout().then(() => navigate(Path.Login))
   }
 
   return (
@@ -57,7 +42,7 @@ export const Header = () => {
             <MenuIcon />
           </IconButton>
           <div>
-            {isLoggedIn && <NavButton onClick={logoutHandler}>Sign out</NavButton>}
+            {<NavButton onClick={logoutHandler}>Sign out</NavButton>}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={"default"} onChange={changeMode} />
           </div>

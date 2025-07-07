@@ -1,11 +1,10 @@
 import { baseApi } from "@/app/baseApi"
 import { LOCALSTORAGE_KEYS } from "@/common/constants"
-import type { BaseResponse } from "@/common/types"
-import type { LoginArgs, LoginResponse } from "./authApi.types.ts"
+import type { LoginArgs, OAuthResponse } from "./authApi.types.ts"
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    login: build.mutation<LoginResponse, LoginArgs>({
+    login: build.mutation<OAuthResponse, LoginArgs>({
       async onQueryStarted(_args, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
@@ -16,13 +15,25 @@ export const authApi = baseApi.injectEndpoints({
           console.log(err)
         }
       },
-      query: (body) => ({ url: "auth/login", method: "POST", body }),
+      query: (body) => ({ url: "auth/login", method: "post", body }),
     }),
-    logout: build.mutation<BaseResponse, void>({
-      query: () => ({
-        url: "auth/login",
-        method: "DELETE",
-      }),
+    refresh: build.mutation<OAuthResponse, string>({
+      query: (refreshToken) => ({ url: "auth/refresh", method: "post", body: { refreshToken } }),
+    }),
+    logout: build.mutation<void, void>({
+      query: () => {
+        const refreshToken = localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)
+        return { url: "auth/logout", method: "post", body: { refreshToken } }
+      },
+      async onQueryStarted(_args, { queryFulfilled, dispatch }) {
+        await queryFulfilled
+        localStorage.removeItem(LOCALSTORAGE_KEYS.accessToken)
+        localStorage.removeItem(LOCALSTORAGE_KEYS.refreshToken)
+        dispatch(baseApi.util.resetApiState()) // TODO: Точно ли надо
+      },
+    }),
+    me: build.mutation<{ userId: string; login: string }, void>({
+      query: () => "auth/me",
     }),
   }),
 })
