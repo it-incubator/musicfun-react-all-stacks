@@ -1,9 +1,8 @@
-import { baseApi } from "@/app/api/baseApi.ts"
-import { LOCALSTORAGE_KEYS } from "@/common/constants"
-import { handleError } from "@/common/utils"
 import { isTokens } from "@/common/utils/isTokens.ts"
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
 import { Mutex } from "async-mutex"
+import { LOCALSTORAGE_KEYS } from "@/common/constants"
+import { handleError } from "@/common/utils"
 import { baseQuery } from "./baseQuery.ts"
 
 const mutex = new Mutex()
@@ -27,11 +26,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
       try {
         const refreshToken = localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken)
 
-        if (!refreshToken) {
-          // @ts-expect-error
-          api.dispatch(baseApi.endpoints.logout().initiate())
-          return result
-        }
+        if (!refreshToken) return result
 
         const { data } = await baseQuery(
           { url: "auth/refresh", method: "post", body: { refreshToken } as { refreshToken: string } },
@@ -45,14 +40,11 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
 
           result = await baseQuery(args, api, extraOptions) // Повтор запроса с новым токеном
         } else {
-          console.error("Failed to refresh tokens: invalid response or expired refresh token")
-          // @ts-expect-error
-          api.dispatch(baseApi.endpoints.logout().initiate())
+          // TODO: Не работает
+          // api.dispatch(baseApi.endpoints.logout.initiate())
         }
       } catch (err) {
         console.error("Token refresh failed:", err)
-        // @ts-expect-error
-        api.dispatch(baseApi.endpoints.logout().initiate())
       } finally {
         // release must be called once the mutex should be released again.
         release()
