@@ -1,23 +1,31 @@
-# IT-INCUBATOR Todolist Project
+# Информация
 
-## React + TypeScript + Vite
+## 🔗 Ссылки
 
-This template provides a minimal setup to get React working in Vite.
+### 📗 Swagger
 
-## Getting Started
+- [trelly](https://trelly.it-incubator.app/api)
 
-### 1. Install dependencies:
+## 🚀 Запуск проекта
+
+### 1. Установка зависимостей
 
 ```bash
 pnpm i
 ```
 
-### 2. Start app:
+### 2. Старт проекта
 
 ```bash
-pnpm dev
+   pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔗 Настройки
 
-Happy hacking 🚀
+### 🕎 Переменные окружения
+
+В файле `.env` замените `VITE_API_KEY` который нужно взять из [Api hub](https://apihub.it-incubator.io/en)
+
+### 🅿️ Prettier
+
+❗Обязательно включите в настройках Webstorm `prettier`

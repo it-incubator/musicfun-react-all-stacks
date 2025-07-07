@@ -1,17 +1,8 @@
-# Информация
+# 🚀 Запуск проекта
 
-## 🔗 Ссылки
+Информация по запуску проектов находиться в `README.md` каждого отдельного репозитория
 
-### 💅 Design
-
-- [spotifun](https://www.figma.com/design/AxTPd4AS8oAgdEF4dDgLis/SpotiFun?node-id=9-353&p=f&t=1ALRBVorkExUf8ed-0)
-
-### 📗 Swagger
-
-- [spotifun](https://spotifun.it-incubator.app/api)
-- [trelly](https://trelly.it-incubator.app/api)
-
-## 🚀 Запуск проекта
+## ❌ Запуск проекта с SDK (в данный момент не поддерживается)
 
 ### 1. Установка зависимостей
 
@@ -23,7 +14,7 @@ pnpm i
 
 ### 2. SDK build
 
-Затем сбилдить `spotifun-api-sdk`
+Затем сбилдить `musicfun-api-sdk`
 
 ```bash
 pnpm build:sdk
@@ -46,38 +37,22 @@ pnpm build:sdk:simple
 
 ### 3. Старт проекта
 
-- 🎶spotifun на **tanstack**
+- 🎶musicfun на **tanstack**
 
 ```bash
-   pnpm start:spotifun-tanstack
+   pnpm start:musicfun-tanstack
 ```
 
-- 🎶spotifun на **rtk-query**
+- 🎶musicfun на **rtk-query**
 
 ```bash
-    pnpm start:spotifun-rtk
+    pnpm start:musicfun-rtk
 ```
 
-- 🎶spotifun на **nextjs**
+- 🎶musicfun на **nextjs**
 
 ```bash
-     pnpm start:spotifun-nextjs
-```
-
-- 📊 trelly на **rtk-query**
-
-```bash
-     pnpm start:start:trelly-rtk
+     pnpm start:musicfun-nextjs
 ```
 
 Happy hacking 🚀
-
-## 🔗 Настройки
-
-### 🕎 Переменные окружения
-
-В файле `.env` замените `VITE_API_KEY` который нужно взять из [Api hub](https://apihub.it-incubator.io/en)
-
-### 🅿️ Prettier
-
-❗Обязательно включите в настройках Webstorm `prettier`

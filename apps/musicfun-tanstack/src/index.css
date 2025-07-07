@@ -1,0 +1,101 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Variables */
+  --highlight: #007bff;
+  --main-text: #fff;
+  --main-bg: #000;
+  --player-play-icon: url('./features/player/lib/img/play_blue.svg');
+  --player-pause-icon: url('./features/player/lib/img/pause_blue.svg');
+  --player-current-position: url('./features/player/lib/img/current-position_blue.svg');
+}
+
+/* Link  */
+.link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.activeLink {
+  font-weight: bold;
+}
+
+/* Item: PlaylistItem, TrackItem  */
+.item {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+  width: 240px;
+}
+
+.item--fullwidth {
+  width: auto;
+}
+
+.item:hover {
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #f5f5f5;
+}
+
+.trackActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Flex container */
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-container-column {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+/* Tags, artists */
+.artistList,
+.tagsList {
+  display: flex;
+  gap: 15px;
+}
+
+.tagItem,
+.artistItem {
+  background-color: #ecebeb;
+  padding: 5px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.selectedArtist,
+.selectedTag {
+  background-color: #333;
+  color: white;
+}
+
+/* btn for like/dislike; tracks/playlists */
+.btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  gap: 6px;
+  color: #333;
+}
