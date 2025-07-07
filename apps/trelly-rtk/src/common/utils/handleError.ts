@@ -15,6 +15,8 @@ export const handleError = (
       case "CUSTOM_ERROR":
         error = result.error.error
         break
+      case 401:
+        return // Не показываем на фронте 401 ошибку
       case 403:
         error = "403 Forbidden Error. Check API-KEY"
         break
@@ -27,15 +29,10 @@ export const handleError = (
         }
         break
       default:
+        debugger
         error = JSON.stringify(result.error)
         break
     }
     api.dispatch(setAppErrorAC({ error }))
   }
-
-  // if ((result.data as { resultCode: ResultCode }).resultCode === ResultCode.Error) {
-  //   const messages = (result.data as { messages: string[] }).messages
-  //   error = messages.length ? messages[0] : error
-  //   api.dispatch(setAppErrorAC({ error }))
-  // }
 }
