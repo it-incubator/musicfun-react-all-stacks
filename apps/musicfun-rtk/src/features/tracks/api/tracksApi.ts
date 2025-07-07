@@ -12,7 +12,7 @@ import type { Nullable, ReactionResponse } from '@/common/types'
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
+    fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
       query: (params) => ({
         url: 'playlists/tracks',
         params,
@@ -54,6 +54,18 @@ export const tracksAPI = baseApi.injectEndpoints({
       ],
 
       keepUnusedDataFor: 60,
+    }),
+    fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
+      query: (params) => ({
+        url: 'playlists/tracks',
+        params,
+      }),
+      providesTags: (result) => [
+        ...(result?.data.map((track) => {
+          return { type: 'Track' as const, id: track.id }
+        }) || []),
+        'Track',
+      ],
     }),
     fetchTracksInPlaylist: build.query<FetchPlaylistsTracksResponse, FetchTracksArgs & { playlistId: string }>({
       query: ({ playlistId, ...params }) => ({
@@ -246,6 +258,7 @@ export const tracksAPI = baseApi.injectEndpoints({
 })
 
 export const {
+  useFetchTracksInfinityQuery,
   useFetchTracksQuery,
   useFetchTrackByIdQuery,
   useAddCoverToTrackMutation,
