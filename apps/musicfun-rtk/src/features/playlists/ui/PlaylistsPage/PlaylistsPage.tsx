@@ -1,9 +1,9 @@
-import { Pagination, SearchInput } from '@/common/components'
-import { useDebounceValue } from '@/common/hooks'
-import { useFetchPlaylistsQuery } from '../../api/playlistsApi'
 import { useEffect, useState } from 'react'
-import { PlaylistsList } from './PlaylistsList/PlaylistsList'
+import { useDebounceValue } from '@/common/hooks'
 import { useGetMeQuery } from '@/features/auth/api/auth-api'
+import { useFetchPlaylistsQuery } from '@/features/playlists/api/playlistsApi.ts'
+import { Pagination, SearchInput, Sort, TagsSearch } from '@/common/components'
+import { PlaylistsList } from './PlaylistsList/PlaylistsList'
 
 export const PlaylistsPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
@@ -44,12 +44,7 @@ export const PlaylistsPage = () => {
     setPageNumber(1)
   }
 
-  const changePageNumberHandler = (pageNumber: number) => {
-    setPageNumber(pageNumber)
-  }
-
   const playlists = data?.data || []
-  // .slice().sort((a, b) => a.attributes.order - b.attributes.order)
 
   return (
     <>
@@ -60,7 +55,7 @@ export const PlaylistsPage = () => {
         title="Поиск по названию плейлиста"
         placeholder="Введите название плейлиста"
       />
-      <TagsSearch setValues={setTags} />
+      <TagsSearch setValues={setTags} selectedIds={tags} />
       <Sort setSortDirection={setSortDirection} setSortBy={setSortBy} sortDirection={sortDirection} sortBy={sortBy} />
       <PlaylistsList playlists={playlists} />
       <Pagination

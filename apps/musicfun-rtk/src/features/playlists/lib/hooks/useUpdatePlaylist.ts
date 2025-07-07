@@ -11,13 +11,12 @@ export const useUpdatePlaylist = () => {
     handleSubmit,
     reset,
     setError,
+    control,
     formState: { errors },
   } = useForm<UpdatePlaylistArgs>()
 
   const [playlistId, setPlaylistId] = useState<Nullable<string>>(null)
   const [updatePlaylistMutation] = useUpdatePlaylistMutation()
-
-  const [tagIds, setTagIds] = useState<string[]>([])
 
   const editPlaylist = (playlist: Nullable<Playlist>) => {
     setPlaylistId(playlist?.id || null)
@@ -25,20 +24,19 @@ export const useUpdatePlaylist = () => {
       const { attributes } = playlist
       const { title, description, tags } = attributes
       reset({ title, description, tagIds: tags.map((tag) => tag.id) })
-      setTagIds(tags?.map((tag) => tag.id) ?? [])
     }
   }
 
   const onSubmit: SubmitHandler<UpdatePlaylistArgs> = async (data) => {
     if (!playlistId) return
-    console.log(`data:${data.tagIds}`)
     try {
-      await updatePlaylistMutation({ playlistId, payload: { ...data, tagIds } }).unwrap()
+      console.log('playlistId:', playlistId, 'data:', data)
+      await updatePlaylistMutation({ playlistId, payload: data }).unwrap()
       setPlaylistId(null)
     } catch (e) {
       errorHandler(e, setError)
     }
   }
 
-  return { register, handleSubmit, onSubmit, editPlaylist, playlistId, errors, tagIds, setTagIds }
+  return { register, handleSubmit, onSubmit, editPlaylist, playlistId, errors, control }
 }

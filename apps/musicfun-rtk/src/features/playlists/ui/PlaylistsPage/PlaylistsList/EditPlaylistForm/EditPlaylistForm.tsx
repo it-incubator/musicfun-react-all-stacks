@@ -1,8 +1,14 @@
-import { type FieldErrors, type SubmitHandler, type UseFormHandleSubmit, type UseFormRegister } from 'react-hook-form'
+import {
+  type Control,
+  Controller,
+  type FieldErrors,
+  type SubmitHandler,
+  type UseFormHandleSubmit,
+  type UseFormRegister,
+} from 'react-hook-form'
 import type { Nullable } from '@/common/types/common.types'
 import type { Playlist, UpdatePlaylistArgs } from '../../../../api/playlistsApi.types'
-import { useFindTagsQuery } from '@/features/tags/api/tagsApi.ts'
-import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
+import { TagsSearch } from '@/common/components'
 
 type Props = {
   editPlaylist: (playlist: Nullable<Playlist>) => void
@@ -10,15 +16,10 @@ type Props = {
   handleSubmit: UseFormHandleSubmit<UpdatePlaylistArgs>
   onSubmit: SubmitHandler<UpdatePlaylistArgs>
   errors?: FieldErrors<UpdatePlaylistArgs>
-  setTagIds: Dispatch<SetStateAction<string[]>>
+  control: Control<UpdatePlaylistArgs>
 }
 
-export const EditPlaylistForm = ({ onSubmit, editPlaylist, handleSubmit, register, errors, setTagIds }: Props) => {
-  const { data: tags } = useFindTagsQuery({ value: '' })
-  const onChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value
-    setTagIds((prev) => (prev.includes(value) ? prev.filter((id) => id !== value) : [...prev, value]))
-  }
+export const EditPlaylistForm = ({ onSubmit, editPlaylist, handleSubmit, register, errors, control }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Редактировать плейлист</h2>
@@ -31,14 +32,16 @@ export const EditPlaylistForm = ({ onSubmit, editPlaylist, handleSubmit, registe
         <span className="error">{errors?.description?.message}</span>
       </div>
       <div>
-        <select multiple {...register('tagIds')} onChange={onChangeHandler}>
-          {tags?.map((tag) => (
-            <option value={tag.id} key={tag.id}>
-              {tag.name}
-            </option>
-          ))}
-        </select>
-        <span className="error">{errors?.description?.message}</span>
+        <Controller
+          name={'tagIds'}
+          control={control}
+          render={({ field }) => (
+            <>
+              <TagsSearch setValues={field.onChange} selectedIds={field.value || []} />
+              <span className="error">{errors?.tagIds?.message}</span>
+            </>
+          )}
+        />
       </div>
       <button>Сохранить</button>
       <button type={'button'} onClick={() => editPlaylist(null)}>
