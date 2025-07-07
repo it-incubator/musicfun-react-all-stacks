@@ -1,4 +1,4 @@
-import { Main } from "@/app/Main"
+import { Main } from "@/app/ui/Main.tsx"
 import { PageNotFound, ProtectedRoute } from "@/common/components"
 import { useMeQuery } from "@/features/auth/api/authApi.ts"
 import { Login } from "@/features/auth/ui/Login/Login"

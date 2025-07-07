@@ -1,4 +1,4 @@
-import type { ThemeMode } from "@/app/app-slice.ts"
+import type { ThemeMode } from "@/app/model/app-slice.ts"
 import { createTheme } from "@mui/material/styles"
 
 export const getTheme = (themeMode: ThemeMode) => {

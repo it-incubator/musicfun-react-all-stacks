@@ -1,4 +1,4 @@
-import { baseApi } from "@/app/baseApi"
+import { baseApi } from "@/app/api/baseApi.ts"
 import { LOCALSTORAGE_KEYS } from "@/common/constants"
 import type { LoginArgs, OAuthResponse } from "./authApi.types.ts"
 

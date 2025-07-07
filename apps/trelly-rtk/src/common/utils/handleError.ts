@@ -1,4 +1,4 @@
-import { setAppErrorAC } from "@/app/app-slice"
+import { setAppErrorAC } from "@/app/model/app-slice.ts"
 import { BaseQueryApi, FetchBaseQueryError, FetchBaseQueryMeta, QueryReturnValue } from "@reduxjs/toolkit/query/react"
 import { isErrorWithMessage } from "./isErrorWithMessage"
 

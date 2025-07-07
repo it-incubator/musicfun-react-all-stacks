@@ -1,4 +1,4 @@
-import { baseApi } from "@/app/baseApi"
+import { baseApi } from "@/app/api/baseApi.ts"
 import { configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
 import { appReducer, appSlice } from "./app-slice.ts"

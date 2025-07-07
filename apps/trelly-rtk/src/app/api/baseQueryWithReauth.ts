@@ -1,35 +1,12 @@
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
+import { Mutex } from "async-mutex"
 import { LOCALSTORAGE_KEYS } from "@/common/constants"
 import { handleError } from "@/common/utils"
-import {
-  type BaseQueryFn,
-  createApi,
-  type FetchArgs,
-  fetchBaseQuery,
-  type FetchBaseQueryError,
-} from "@reduxjs/toolkit/query/react"
-import { Mutex } from "async-mutex"
+import { baseQuery } from "./baseQuery.ts"
 
 const mutex = new Mutex()
 
-// 3
-const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_BASE_URL,
-  headers: {
-    "API-KEY": import.meta.env.VITE_API_KEY,
-  },
-  prepareHeaders: (headers) => {
-    try {
-      const accessToken = localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)
-      if (accessToken) headers.set("Authorization", `Bearer ${accessToken}`)
-    } catch (error) {
-      console.warn("Failed to get token from localStorage:", error)
-    }
-    return headers
-  },
-})
-
-// 2
-const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
   extraOptions,
@@ -86,11 +63,3 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
   return result
 }
-
-// 1
-export const baseApi = createApi({
-  reducerPath: "baseApi",
-  tagTypes: ["Board", "Task", "Auth"],
-  endpoints: () => ({}),
-  baseQuery: baseQueryWithReauth,
-})

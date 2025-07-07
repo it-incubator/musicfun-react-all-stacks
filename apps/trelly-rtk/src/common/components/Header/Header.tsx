@@ -1,4 +1,4 @@
-import { changeThemeModeAC, selectAppStatus, selectThemeMode } from "@/app/app-slice.ts"
+import { changeThemeModeAC, selectAppStatus, selectThemeMode } from "@/app/model/app-slice.ts"
 import { NavButton } from "@/common/components/NavButton/NavButton"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { containerSx } from "@/common/styles"

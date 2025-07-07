@@ -1,4 +1,4 @@
-import { selectThemeMode } from "@/app/app-slice"
+import { selectThemeMode } from "@/app/model/app-slice.ts"
 import { ErrorSnackbar, Header } from "@/common/components"
 import { useAppSelector } from "@/common/hooks"
 import { Routing } from "@/common/routing"
