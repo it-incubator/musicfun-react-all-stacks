@@ -190,7 +190,7 @@ export const tracksAPI = baseApi.injectEndpoints({
     }),
     like: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
-        url: `playlists/tracks/${trackId}/like`,
+        url: `playlists/tracks/${trackId}/likes`,
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
@@ -205,7 +205,7 @@ export const tracksAPI = baseApi.injectEndpoints({
     }),
     dislike: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
-        url: `playlists/tracks/${trackId}/dislike`,
+        url: `playlists/tracks/${trackId}/dislikes`,
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
@@ -220,7 +220,7 @@ export const tracksAPI = baseApi.injectEndpoints({
     }),
     removeReaction: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
-        url: `playlists/tracks/${trackId}/reaction`,
+        url: `playlists/tracks/${trackId}/reactions`,
         method: 'DELETE',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
