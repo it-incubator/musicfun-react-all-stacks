@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate:api": "pnpm dlx openapi-typescript https://spotifun.it-incubator.app/api-json -o ./src/shared/api/schema.ts",
+    "generate:api": "pnpm dlx openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/shared/api/schema.ts",
     "api-gen:dimych": "pnpm dlx openapi-typescript http://localhost:9001/api-json -o ./src/shared/api/schema.ts"
   },
   "dependencies": {

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import {
-  CurrentUserReaction,
+  type CurrentUserReaction,
   Table,
   TableBody,
   TableHead,

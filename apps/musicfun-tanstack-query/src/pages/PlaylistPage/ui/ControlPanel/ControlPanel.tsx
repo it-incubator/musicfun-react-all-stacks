@@ -1,5 +1,4 @@
 import {
-  CurrentUserReaction,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -18,12 +17,7 @@ export const ControlPanel = () => {
         <PlayIcon />
       </IconButton>
 
-      <ReactionButtons
-        reaction={CurrentUserReaction.None}
-        onLike={() => {}}
-        onDislike={() => {}}
-        size="large"
-      />
+      <ReactionButtons reaction={0} onLike={() => {}} onDislike={() => {}} size="large" />
 
       <DropdownMenu>
         <DropdownMenuTrigger>
