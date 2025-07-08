@@ -132,74 +132,89 @@ importers:
         version: 8.32.1(eslint@9.25.0)(typescript@5.8.3)
       vite:
         specifier: 6.3.5
-        version: 6.3.5(@types/node@24.0.3)(sass@1.89.2)(tsx@4.20.3)(yaml@2.8.0)
+        version: 6.3.5(@types/node@24.0.3)(sass@1.89.2)(yaml@2.8.0)
 
-  apps/musicfun-small-example:
+  apps/musicfun-rtk-query:
     dependencies:
-      '@tanstack/react-query':
-        specifier: ^5.81.5
-        version: 5.81.5(react@19.1.0)
-      '@tanstack/react-query-devtools':
-        specifier: ^5.81.5
-        version: 5.81.5(@tanstack/react-query@5.81.5(react@19.1.0))(react@19.1.0)
-      '@tanstack/react-router':
-        specifier: ^1.124.0
-        version: 1.125.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      openapi-fetch:
-        specifier: ^0.14.0
-        version: 0.14.0
       react:
-        specifier: ^19.1.0
+        specifier: 19.1.0
         version: 19.1.0
       react-dom:
-        specifier: ^19.1.0
+        specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
-      react-hook-form:
-        specifier: ^7.60.0
-        version: 7.60.0(react@19.1.0)
-      react-toastify:
-        specifier: 11.0.5
-        version: 11.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-router:
+        specifier: 7.6.2
+        version: 7.6.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@eslint/js':
-        specifier: ^9.29.0
+        specifier: ^9.25.0
         version: 9.29.0
-      '@tanstack/router-plugin':
-        specifier: ^1.124.0
-        version: 1.125.6(@tanstack/react-router@1.125.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@7.0.3(@types/node@24.0.3)(sass@1.89.2)(tsx@4.20.3)(yaml@2.8.0))
+      '@storybook/react-vite':
+        specifier: 9.0.8
+        version: 9.0.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.44.2)(storybook@9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3))(typescript@5.8.3)(vite@6.3.5(@types/node@24.0.3)(sass@1.89.2)(yaml@2.8.0))
+      '@types/node':
+        specifier: ^24.0.1
+        version: 24.0.3
       '@types/react':
-        specifier: ^19.1.8
+        specifier: ^19.1.2
         version: 19.1.8
       '@types/react-dom':
-        specifier: ^19.1.6
+        specifier: ^19.1.2
         version: 19.1.6(@types/react@19.1.8)
       '@vitejs/plugin-react':
-        specifier: ^4.5.2
-        version: 4.6.0(vite@7.0.3(@types/node@24.0.3)(sass@1.89.2)(tsx@4.20.3)(yaml@2.8.0))
+        specifier: ^4.4.1
+        version: 4.4.1(vite@6.3.5(@types/node@24.0.3)(sass@1.89.2)(yaml@2.8.0))
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       eslint:
-        specifier: ^9.29.0
-        version: 9.30.1
+        specifier: ^9.25.0
+        version: 9.28.0
+      eslint-config-prettier:
+        specifier: ^10.1.5
+        version: 10.1.5(eslint@9.28.0)
+      eslint-plugin-prettier:
+        specifier: ^5.4.1
+        version: 5.5.1(eslint-config-prettier@10.1.5(eslint@9.28.0))(eslint@9.28.0)(prettier@3.5.3)
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
-        version: 5.2.0(eslint@9.30.1)
+        version: 5.2.0(eslint@9.28.0)
       eslint-plugin-react-refresh:
-        specifier: ^0.4.20
-        version: 0.4.20(eslint@9.30.1)
+        specifier: ^0.4.19
+        version: 0.4.20(eslint@9.28.0)
+      eslint-plugin-simple-import-sort:
+        specifier: ^12.1.1
+        version: 12.1.1(eslint@9.28.0)
+      eslint-plugin-storybook:
+        specifier: 9.0.8
+        version: 9.0.8(eslint@9.28.0)(storybook@9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3))(typescript@5.8.3)
       globals:
-        specifier: ^16.2.0
+        specifier: ^16.0.0
         version: 16.2.0
-      openapi-typescript:
-        specifier: ^7.8.0
-        version: 7.8.0(typescript@5.8.3)
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
+      storybook:
+        specifier: 9.0.8
+        version: 9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3)
+      stylelint:
+        specifier: ^16.20.0
+        version: 16.21.1(typescript@5.8.3)
+      stylelint-config-clean-order:
+        specifier: ^7.0.0
+        version: 7.0.0(stylelint@16.21.1(typescript@5.8.3))
+      stylelint-config-standard:
+        specifier: ^38.0.0
+        version: 38.0.0(stylelint@16.21.1(typescript@5.8.3))
       typescript:
         specifier: ~5.8.3
         version: 5.8.3
       typescript-eslint:
-        specifier: ^8.34.1
-        version: 8.36.0(eslint@9.30.1)(typescript@5.8.3)
+        specifier: ^8.30.1
+        version: 8.34.0(eslint@9.28.0)(typescript@5.8.3)
       vite:
-        specifier: ^7.0.0
-        version: 7.0.3(@types/node@24.0.3)(sass@1.89.2)(tsx@4.20.3)(yaml@2.8.0)
+        specifier: ^6.3.5
+        version: 6.3.5(@types/node@24.0.3)(sass@1.89.2)(yaml@2.8.0)
 
   apps/musicfun-tanstack:
     dependencies:

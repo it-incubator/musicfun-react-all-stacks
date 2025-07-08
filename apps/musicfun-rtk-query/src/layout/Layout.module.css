@@ -1,0 +1,16 @@
+.grid {
+  display: grid;
+  grid-template: 'header header' var(--header-height) 'sidebar main' 1fr / 310px 1fr;
+  height: 100vh;
+}
+
+.grid.playerOpen {
+  grid-template:
+    'header header' var(--header-height)
+    'sidebar main' 1fr 'player player' var(--player-height) / 310px 1fr;
+}
+
+.main {
+  overflow-y: auto;
+  grid-area: main;
+}

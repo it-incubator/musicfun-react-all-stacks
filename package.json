@@ -17,6 +17,7 @@
     "start:musicfun-nextjs": "pnpm --filter musicfun-nextjs run dev",
     "start:trelly-rtk": "pnpm --filter trelly-rtk run dev",
     "start:musicfun-ui-vanilla": "pnpm --filter musicfun-ui-vanilla run dev",
+    "start:musicfun-rtk-query": "pnpm --filter musicfun-rtk-query run dev",
     "prepare": "husky install",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

@@ -1,0 +1,245 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.label {
+  font-size: var(--font-size-s);
+  line-height: 1.7;
+  color: var(--color-text-label);
+}
+
+.labelError {
+  color: var(--color-text-error);
+}
+
+.inputWrapper {
+  position: relative;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+
+  min-height: 48px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-border-input-primary);
+  border-radius: 4px;
+
+  background-color: var(--color-bg-primary);
+
+  transition: all 200ms ease;
+}
+
+.inputWrapper:hover:not(.disabled) {
+  background-color: var(--color-bg-input-hover);
+}
+
+.inputWrapper.focused {
+  border-color: var(--color-border-input-active);
+  background-color: var(--color-bg-primary);
+}
+
+.inputWrapper.error {
+  border-color: var(--color-text-error);
+}
+
+.inputWrapper.disabled {
+  cursor: not-allowed;
+  background-color: var(--color-disabled);
+}
+
+.tag {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+
+  padding: 2px 6px;
+  border: 1px solid var(--color-border-base);
+  border-radius: 16px;
+
+  background-color: var(--color-bg-secondary);
+
+  transition: all 200ms ease;
+}
+
+.tag:hover {
+  background-color: var(--color-bg-input-hover);
+}
+
+.tagText {
+  font-size: var(--font-size-s);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.deleteButton {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+
+  font-size: 10px;
+  color: var(--color-text-secondary);
+
+  background: transparent;
+
+  transition: all 200ms ease;
+}
+
+.deleteButton:hover {
+  color: var(--color-text-error);
+  background-color: transparent;
+}
+
+.inputContainer {
+  position: relative;
+
+  display: flex;
+  flex: 1;
+  align-items: center;
+
+  min-width: 120px;
+}
+
+.searchIcon {
+  pointer-events: none;
+
+  position: absolute;
+  z-index: 1;
+  left: 4px;
+
+  width: 16px;
+  height: 16px;
+
+  color: var(--color-text-secondary);
+
+  transition: color 200ms ease;
+}
+
+.input {
+  width: 100%;
+  padding: 4px 8px 4px 24px;
+  border: none;
+
+  font-size: var(--font-size-m);
+  color: var(--color-text-primary);
+
+  background: transparent;
+  outline: none;
+
+  transition: all 200ms ease;
+}
+
+.input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  color: var(--color-disabled);
+}
+
+.dropdownIcon {
+  cursor: pointer;
+
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+
+  color: var(--color-text-secondary);
+
+  transition: transform 200ms ease;
+}
+
+.dropdownIcon:hover {
+  color: var(--color-text-primary);
+}
+
+.dropdownIconOpen {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 50;
+  top: 100%;
+  left: 0;
+
+  overflow-y: auto;
+
+  width: 100%;
+  max-height: 200px;
+  margin-top: 4px;
+  padding: 4px;
+  border: 1px solid var(--color-border-base);
+  border-radius: 4px;
+
+  background-color: var(--color-bg-primary);
+  box-shadow:
+    0 10px 38px -10px rgb(22 23 24 / 35%),
+    0 10px 20px -15px rgb(22 23 24 / 20%);
+
+  animation: dropdown-show 200ms ease-out;
+}
+
+.option {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+
+  padding: 8px 12px;
+  border-radius: 4px;
+
+  transition: all 200ms ease;
+}
+
+.option:hover:not(.optionDisabled) {
+  background-color: var(--color-bg-input-hover);
+}
+
+.optionFocused:not(.optionDisabled) {
+  color: var(--color-bg-primary);
+  background-color: var(--color-accent);
+}
+
+.optionDisabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.noResults {
+  padding: 12px;
+  text-align: center;
+}
+
+.noResultsText {
+  color: var(--color-text-secondary);
+}
+
+.errorMessage {
+  margin-top: 4px;
+  font-size: var(--font-size-s);
+  color: var(--color-text-error);
+}
+
+.counter {
+  margin-top: 4px;
+  color: var(--color-text-secondary);
+}
+
+/* Animations */
+@keyframes dropdown-show {
+  from {
+    transform: translateY(-4px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
