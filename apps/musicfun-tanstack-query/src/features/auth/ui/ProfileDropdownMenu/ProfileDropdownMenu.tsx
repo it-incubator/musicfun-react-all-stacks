@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 
+import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,28 +12,21 @@ import { LogoutIcon, ProfileIcon } from '@/shared/icons'
 
 import s from './ProfileDropdownMenu.module.css'
 
-export const ProfileDropdownMenu = ({
-  avatar,
-  name,
-  id,
-}: {
-  avatar: string
-  name: string
-  id: string
-}) => {
+export const ProfileDropdownMenu = ({ avatar }: { avatar: string }) => {
+  const { data } = useMeQuery()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className={s.trigger}>
         <div className={s.avatar}>
           <img src={avatar} alt={''} />
         </div>
-
         <Typography className={s.name} variant="body2">
-          {name}
+          {data!.login}
         </Typography>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem as={Link} to={`/user/${id}`}>
+        <DropdownMenuItem as={Link} to={`/user/${data!.userId}`}>
           <ProfileIcon />
           <span>My Profile</span>
         </DropdownMenuItem>

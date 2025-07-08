@@ -1,16 +1,13 @@
 import { clsx } from 'clsx'
 
+import type { components } from '@/shared/api/schema.ts'
 import { DislikeIcon, LikeIcon, LikeIconFill } from '@/shared/icons'
 
 import { IconButton } from '../IconButton'
 import s from './ReactionButtons.module.css'
 
 // duplication of the CurrentUserReaction type to decouple the shared layer from the features layer
-export enum CurrentUserReaction {
-  None = 0,
-  Like = 1,
-  Dislike = 2,
-}
+export type CurrentUserReaction = components['schemas']['ReactionValue']
 
 export type ReactionButtonsProps = {
   reaction: CurrentUserReaction
@@ -27,15 +24,15 @@ const SIZE_MAP = {
 }
 
 export const ReactionButtons = ({
-  reaction = CurrentUserReaction.None,
+  reaction = 0,
   onLike,
   onDislike,
   likesCount,
   className,
   size = 'small',
 }: ReactionButtonsProps) => {
-  const isLiked = reaction === CurrentUserReaction.Like
-  const isDisliked = reaction === CurrentUserReaction.Dislike
+  const isLiked = reaction === 1
+  const isDisliked = reaction === -1
 
   const iconSize = SIZE_MAP[size]
 

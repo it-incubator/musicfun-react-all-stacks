@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { Card } from '../Card'
 import { Typography } from '../Typography'
-import { CurrentUserReaction, ReactionButtons } from './ReactionButtons'
+import { type CurrentUserReaction, ReactionButtons } from './ReactionButtons'
 
 const meta = {
   title: 'Components/ReactionButtons',
@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    reaction: CurrentUserReaction.None,
+    reaction: 0,
     onLike: () => console.log('Liked!'),
     onDislike: () => console.log('Disliked!'),
   },
@@ -27,7 +27,7 @@ export const Default: Story = {
 
 export const WithLikesCount: Story = {
   args: {
-    reaction: CurrentUserReaction.None,
+    reaction: 0,
     onLike: () => console.log('Liked!'),
     onDislike: () => console.log('Disliked!'),
     likesCount: 10,
@@ -36,7 +36,7 @@ export const WithLikesCount: Story = {
 
 export const LikedState: Story = {
   args: {
-    reaction: CurrentUserReaction.Like,
+    reaction: 1,
     onLike: () => console.log('Unlike'),
     onDislike: () => console.log('Disliked!'),
   },
@@ -44,7 +44,7 @@ export const LikedState: Story = {
 
 export const DislikedState: Story = {
   args: {
-    reaction: CurrentUserReaction.Dislike,
+    reaction: -1,
     onLike: () => console.log('Liked!'),
     onDislike: () => console.log('Remove dislike'),
   },
@@ -52,20 +52,14 @@ export const DislikedState: Story = {
 
 export const Interactive = {
   render: () => {
-    const [reaction, setReaction] = useState<CurrentUserReaction>(CurrentUserReaction.None)
+    const [reaction, setReaction] = useState<CurrentUserReaction>(0)
 
     const handleLike = () => {
-      setReaction(
-        reaction === CurrentUserReaction.Like ? CurrentUserReaction.None : CurrentUserReaction.Like
-      )
+      setReaction(reaction === 1 ? 0 : 1)
     }
 
     const handleDislike = () => {
-      setReaction(
-        reaction === CurrentUserReaction.Dislike
-          ? CurrentUserReaction.None
-          : CurrentUserReaction.Dislike
-      )
+      setReaction(reaction === -1 ? 0 : -1)
     }
 
     return (
@@ -85,12 +79,7 @@ export const Interactive = {
         <Typography
           variant="caption"
           style={{ marginTop: '16px', textAlign: 'center', display: 'block' }}>
-          Status:{' '}
-          {reaction === CurrentUserReaction.Like
-            ? '👍 Liked'
-            : reaction === CurrentUserReaction.Dislike
-              ? '👎 Disliked'
-              : '😐 Neutral'}
+          Status: {reaction === 1 ? '👍 Liked' : reaction === -1 ? '👎 Disliked' : '😐 Neutral'}
         </Typography>
       </Card>
     )
@@ -104,45 +93,28 @@ export const AllStates = {
         <Typography variant="body2" style={{ marginBottom: '8px' }}>
           Default
         </Typography>
-        <ReactionButtons
-          reaction={CurrentUserReaction.None}
-          onLike={() => {}}
-          onDislike={() => {}}
-        />
+        <ReactionButtons reaction={0} onLike={() => {}} onDislike={() => {}} />
       </div>
 
       <div style={{ textAlign: 'center' }}>
         <Typography variant="body2" style={{ marginBottom: '8px' }}>
           Liked
         </Typography>
-        <ReactionButtons
-          reaction={CurrentUserReaction.Like}
-          onLike={() => {}}
-          onDislike={() => {}}
-        />
+        <ReactionButtons reaction={1} onLike={() => {}} onDislike={() => {}} />
       </div>
 
       <div style={{ textAlign: 'center' }}>
         <Typography variant="body2" style={{ marginBottom: '8px' }}>
           Disliked
         </Typography>
-        <ReactionButtons
-          reaction={CurrentUserReaction.Dislike}
-          onLike={() => {}}
-          onDislike={() => {}}
-        />
+        <ReactionButtons reaction={-1} onLike={() => {}} onDislike={() => {}} />
       </div>
 
       <div style={{ textAlign: 'center' }}>
         <Typography variant="body2" style={{ marginBottom: '8px' }}>
           With likes count
         </Typography>
-        <ReactionButtons
-          reaction={CurrentUserReaction.None}
-          onLike={() => {}}
-          onDislike={() => {}}
-          likesCount={10}
-        />
+        <ReactionButtons reaction={0} onLike={() => {}} onDislike={() => {}} likesCount={10} />
       </div>
     </div>
   ),

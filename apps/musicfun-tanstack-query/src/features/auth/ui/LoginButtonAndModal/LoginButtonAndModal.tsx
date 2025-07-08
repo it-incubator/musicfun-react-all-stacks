@@ -1,17 +1,48 @@
 import clsx from 'clsx'
 import { useState } from 'react'
 
+import { useLoginMutation } from '@/features/auth/api/use-login.mutation.ts'
+import { getOauthRedirectUrl } from '@/features/auth/types/auth-api.types.ts'
 import { Button } from '@/shared/components/Button'
 import { Dialog, DialogContent, DialogHeader } from '@/shared/components/Dialog'
 import { Typography } from '@/shared/components/Typography'
 
 import s from './LoginButtonAndModal.module.css'
 
+const currentDomain = import.meta.env.VITE_CURRENT_DOMAIN
+
 export const LoginButtonAndModal = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpenModal = () => setIsOpen(true)
   const handleCloseModal = () => setIsOpen(false)
+
+  const { mutate } = useLoginMutation()
+
+  const loginHandler = () => {
+    const redirectUri = currentDomain + '/oauth/callback' // todo: to config
+    const url = getOauthRedirectUrl(redirectUri)
+    window.open(url, 'oauthPopup', 'width=500,height=600')
+
+    const receiveMessage = async (event: MessageEvent) => {
+      if (event.origin !== currentDomain) {
+        // todo: to config
+        return
+      }
+
+      const { code } = event.data
+      if (code) {
+        console.log('✅ code received:', code)
+        // тут можно вызвать setToken(accessToken) или dispatch(login)
+        //popup?.close()
+        window.removeEventListener('message', receiveMessage)
+        mutate({ code, accessTokenTTL: '10s', redirectUri, rememberMe: true })
+        handleCloseModal()
+      }
+    }
+
+    window.addEventListener('message', receiveMessage)
+  }
 
   return (
     <>
@@ -33,13 +64,12 @@ export const LoginButtonAndModal = () => {
             Continue without Sign in
           </Button>
           <Button
-            as="a"
-            href="https://apihub.it-incubator.io/en/login"
+            as="button"
             target="_blank"
             className={s.button}
             variant="primary"
             fullWidth
-            onClick={handleCloseModal}>
+            onClick={loginHandler}>
             Sign in with APIHub
           </Button>
         </DialogContent>

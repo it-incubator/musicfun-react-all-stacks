@@ -1,14 +1,16 @@
 import { Link } from 'react-router'
 
+import type { PlaylistImagesOutputDTO } from '@/features/playlists/api/types.ts'
 import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
 
+import stab from '../../../../assets/img/no-cover.png'
 import s from './PlaylistCard.module.css'
 
 type PlaylistCardPropsBase = {
   id: string
   title: string
-  image: string
-  description: string
+  images: PlaylistImagesOutputDTO
+  description: string | null
 }
 
 type PlaylistCardPropsWithReactions = PlaylistCardPropsBase & {
@@ -23,16 +25,22 @@ type PlaylistCardProps = PlaylistCardPropsWithReactions | PlaylistCardPropsWitho
 
 export const PlaylistCard = ({
   title,
-  image,
+  images,
   description,
   id,
   isShowReactionButtons,
   ...props
 }: PlaylistCardProps) => {
+  let imageSrc = images?.main?.length ? images.main[0].url : undefined
+
+  if (!imageSrc) {
+    imageSrc = stab
+  }
+
   return (
     <Card as={Link} to={`/playlists/${id}`} className={s.card}>
       <div className={s.image}>
-        <img src={image} alt="" aria-hidden />
+        <img src={imageSrc} alt="" aria-hidden />
       </div>
       <Typography variant="h3" className={s.title}>
         {title}
