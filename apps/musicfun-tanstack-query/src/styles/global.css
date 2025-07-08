@@ -1,0 +1,22 @@
+:root {
+  font-family: Lato, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 100%;
+  text-rendering: optimizelegibility;
+
+  font-synthesis: none;
+}
+
+/* Scrollbar styles */
+* {
+  scrollbar-color: var(--color-bg-secondary) var(--color-bg-primary);
+  scrollbar-width: thin;
+}
+
+body {
+  margin: 0;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+}
