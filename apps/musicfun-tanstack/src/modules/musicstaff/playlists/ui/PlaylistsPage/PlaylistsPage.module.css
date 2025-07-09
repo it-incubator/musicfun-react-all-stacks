@@ -1,3 +1,10 @@
+.controlsRow {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .typeSwitcherWrapper {
   display: flex;
   justify-content: center;

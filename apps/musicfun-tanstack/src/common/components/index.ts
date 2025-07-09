@@ -9,3 +9,4 @@ export { GlobalLinearProgress } from './GlobalLinearProgress/GlobalLinearProgres
 export { SearchInput } from './SearchInput/SearchInput.tsx'
 export { Pagination } from './Pagination/Pagination.tsx'
 export { IconButton } from '@/common/components/IconButton/IconButton.tsx'
+export { SortSelect } from './SortSelect/SortSelect.tsx'
