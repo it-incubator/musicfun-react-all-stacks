@@ -12,3 +12,7 @@ export type ExtensionsError = {
     extensions?: { key?: string; message?: string }[]
   }
 }
+
+export type SortDirection = 'asc' | 'desc'
+
+export type SortBy = 'addedAt' | 'likesCount'
