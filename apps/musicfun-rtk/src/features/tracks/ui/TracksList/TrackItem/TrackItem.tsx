@@ -28,7 +28,7 @@ export const TrackItem = ({ track, pageSize, page, index, isReactionMutable }: P
   }
 
   const originalCover = track.attributes.images.main.find((img) => img.type === 'thumbnail')
-  const audioUrl = track.attributes.attachments[0]?.url || ''
+  const audioUrl = track.attributes.attachments?.[0]?.url || ''
 
   const [player, isPlayingMe] = usePlayer(true, track)
 
