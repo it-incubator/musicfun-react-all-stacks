@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { NavLink } from 'react-router'
 
+import { Paths } from '@/shared/configs'
 import { HomeIcon, LibraryIcon, PlaylistIcon, TrackIcon, UploadIcon } from '@/shared/icons'
 import { CreateIcon } from '@/shared/icons/CreateIcon'
 
@@ -20,12 +21,12 @@ type MenuButton = {
 
 const mainLinks: MenuLink[] = [
   {
-    to: '/',
+    to: Paths.Main,
     icon: <HomeIcon width={32} height={32} />,
     label: 'Home',
   },
   {
-    to: '/user/1',
+    to: `${Paths.Profile}/1`,
     icon: <LibraryIcon />,
     label: 'Your Library',
   },
@@ -33,12 +34,12 @@ const mainLinks: MenuLink[] = [
 
 const createLinks: MenuLink[] = [
   {
-    to: '/tracks',
+    to: Paths.Tracks,
     icon: <TrackIcon />,
     label: 'All Tracks',
   },
   {
-    to: '/playlists',
+    to: Paths.Playlists,
     icon: <PlaylistIcon />,
     label: 'All Playlists',
   },

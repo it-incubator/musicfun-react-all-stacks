@@ -1,15 +1,18 @@
 import { LoginButtonAndModal, ProfileDropdownMenu } from '@/features/auth'
+import { useMeQuery } from '@/features/auth/api'
 
 import s from './Header.module.css'
 
-const IS_AUTH = true // temporary data
-
 export const Header = () => {
+  const { data: me } = useMeQuery()
+
+  const isAuth = !!me
+
   return (
     <header className={s.header}>
       <div className={s.logo}>Musicfun</div>
 
-      {IS_AUTH ? (
+      {isAuth ? (
         <ProfileDropdownMenu avatar={'//unsplash.it/100/100'} name={'Martin Fowler'} id={'1'} />
       ) : (
         <LoginButtonAndModal />
