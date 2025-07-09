@@ -1,4 +1,4 @@
-import { Loader } from '@/common/components'
+import { ArtistsSearch, Loader, TagsSearch } from '@/common/components'
 import type { FetchTracksAttributes } from '../../../api/tracksApi.types.ts'
 import { useFetchTracks } from '../../../lib/hooks/useFetchTracks.ts'
 import { useAddToPlaylist } from '../../../lib/hooks/useAddToPlaylist.ts'
@@ -14,13 +14,16 @@ import { useState } from 'react'
 export const TracksList = () => {
   const [page, setPage] = useState(1)
 
+  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds, errors } =
+    useEditTrack()
+
   const { tracks, isFetching, isLoading, hasNextPage } = useFetchTracks({
-    page,
+    pageNumber: page,
+    artistsIds,
+    tagsIds: tagIds,
   })
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
-  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds, errors } =
-    useEditTrack()
 
   const { triggerRef } = useInfiniteScrollTrigger({
     hasNextPage: !!hasNextPage,
@@ -32,6 +35,8 @@ export const TracksList = () => {
 
   return (
     <div className={s.container}>
+      <ArtistsSearch setValues={setArtistsIds} selectedIds={artistsIds} />
+      <TagsSearch setValues={setTagIds} selectedIds={tagIds} />
       <AddTrackToPlaylistModal
         open={!!modalTrackId}
         onClose={() => setModalTrackId(null)}
@@ -54,7 +59,6 @@ export const TracksList = () => {
                 editTrack={(e) => editTrack(e, null)}
               />
             ) : (
-              // <div>Tracks</div>
               <TrackItem<FetchTracksAttributes> track={track}>
                 <div className={'trackActions'}>
                   <button onClick={(e) => openModal(e, track.id)}>Добавить трек в плейлист</button>
