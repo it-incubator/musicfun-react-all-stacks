@@ -1,0 +1,13 @@
+.playing {
+  color: var(--color-accent);
+}
+
+.progress {
+  width: 183px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}

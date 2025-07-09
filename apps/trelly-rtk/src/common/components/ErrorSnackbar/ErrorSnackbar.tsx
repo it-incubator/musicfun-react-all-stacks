@@ -1,4 +1,4 @@
-import { selectAppError, setAppErrorAC } from "@/app/app-slice"
+import { selectAppError, setAppErrorAC } from "@/app/model/app-slice.ts"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { SyntheticEvent } from "react"
 import Alert from "@mui/material/Alert"

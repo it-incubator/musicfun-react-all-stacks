@@ -1,0 +1,20 @@
+.dialog {
+  width: 100%;
+  max-width: 745px;
+}
+
+.form {
+  overflow-y: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 16px;
+}
+
+.imageUploader {
+  width: 280px;
+  margin: 0 auto;
+}

@@ -1,0 +1,16 @@
+.title {
+  margin-bottom: 24px;
+}
+
+.controls {
+  margin-bottom: 32px;
+}
+
+.controlsRow {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 32px;
+}

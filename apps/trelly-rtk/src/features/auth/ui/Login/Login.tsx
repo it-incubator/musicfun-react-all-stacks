@@ -1,13 +1,10 @@
 import { Path } from "@/common/routing"
 import { useLoginMutation } from "@/features/auth/api/authApi"
 import Button from "@mui/material/Button"
-import { useNavigate } from "react-router"
 import s from "./Login.module.css"
 
 export const Login = () => {
   const [mutate] = useLoginMutation()
-
-  const navigate = useNavigate()
 
   const loginHandler = () => {
     const redirectUri = import.meta.env.VITE_DOMAIN_ADDRESS + Path.OAuthRedirect
@@ -22,9 +19,7 @@ export const Login = () => {
       if (!code) return
 
       window.removeEventListener("message", receiveMessage)
-      mutate({ code, accessTokenTTL: "3m", redirectUri, rememberMe: true }).then(() => {
-        navigate(Path.Main)
-      })
+      mutate({ code, accessTokenTTL: "3m", redirectUri, rememberMe: false })
     }
 
     window.addEventListener("message", receiveMessage)
@@ -34,7 +29,7 @@ export const Login = () => {
     <div className={s.wrapper}>
       <h1>Trelly</h1>
       <div className={s.container}>
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="secondary" component={"a"} href={Path.Main}>
           Сontinue without Sign In
         </Button>
         <Button variant="contained" color="primary" onClick={loginHandler}>
