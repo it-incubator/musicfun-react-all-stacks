@@ -10,8 +10,6 @@ interface TrackDurationProps {
 export const TrackDuration = ({ url, loadingText = '--:--', errorText = '--:--' }: TrackDurationProps) => {
   const { duration, loading, error } = useAudioDuration(url)
 
-  console.log(duration, loading, error)
-
   if (loading && duration === null) {
     return <span>{loadingText}</span>
   }

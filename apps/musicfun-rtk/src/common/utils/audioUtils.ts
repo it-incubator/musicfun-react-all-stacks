@@ -1,3 +1,5 @@
+import type { Nullable } from '@/common/types'
+
 const durationCache = new Map<string, number>()
 
 export const getAudioDuration = (url: string): Promise<number> => {
@@ -33,7 +35,7 @@ export const getAudioDuration = (url: string): Promise<number> => {
   })
 }
 
-export const formatDuration = (seconds: number | null): string => {
+export const formatDuration = (seconds: Nullable<number>): string => {
   if (seconds === null || seconds === undefined || !Number.isFinite(seconds) || seconds <= 0) {
     return '--:--'
   }
@@ -44,12 +46,10 @@ export const formatDuration = (seconds: number | null): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-// Опциональная функция для очистки кэша
 export const clearDurationCache = (): void => {
   durationCache.clear()
 }
 
-// Функция для проверки наличия в кэше
 export const hasCachedDuration = (url: string): boolean => {
   return durationCache.has(url)
 }
