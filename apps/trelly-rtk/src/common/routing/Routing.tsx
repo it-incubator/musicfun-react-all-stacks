@@ -1,7 +1,6 @@
-import { selectIsLoggedIn } from "@/app/app-slice"
-import { Main } from "@/app/Main"
-import { PageNotFound } from "@/common/components"
-import { useAppSelector } from "@/common/hooks"
+import { Main } from "@/app/ui/Main.tsx"
+import { PageNotFound, ProtectedRoute } from "@/common/components"
+import { useMeQuery } from "@/features/auth/api/authApi.ts"
 import { Login } from "@/features/auth/ui/Login/Login"
 import { Route, Routes } from "react-router"
 import { OAuthCallback } from "../../features/auth/ui/OAuthCallback/OAuthCallback.tsx"
@@ -14,24 +13,16 @@ export const Path = {
 } as const
 
 export const Routing = () => {
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const { data } = useMeQuery()
 
   return (
     <Routes>
       <Route path={Path.Main} element={<Main />} />
-      <Route path={Path.Login} element={<Login />} />
+      <Route element={<ProtectedRoute isAllowed={!data} />}>
+        <Route path={Path.Login} element={<Login />} />
+      </Route>
       <Route path={Path.OAuthRedirect} element={<OAuthCallback />} />
       <Route path={Path.NotFound} element={<PageNotFound />} />
     </Routes>
   )
 }
-
-// <Routes>
-//   <Route element={<ProtectedRoute isAllowed={isLoggedIn} redirectPath={Path.Login} />}>
-//     <Route path={Path.Main} element={<Main />} />
-//   </Route>
-//   <Route element={<ProtectedRoute isAllowed={!isLoggedIn} />}>
-//     <Route path={Path.Login} element={<Login />} />
-//   </Route>
-//   <Route path={Path.NotFound} element={<PageNotFound />} />
-// </Routes>

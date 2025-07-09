@@ -1,0 +1,15 @@
+.trackPage {
+  --page-gradient-color: #9a3426;
+}
+
+.trackOverview {
+  margin-bottom: 46px;
+}
+
+.title {
+  margin-bottom: 18px;
+}
+
+.search {
+  margin-bottom: 24px;
+}

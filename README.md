@@ -2,6 +2,14 @@
 
 Информация по запуску проектов находиться в `README.md` каждого отдельного репозитория
 
+## Actual projects
+
+- musicfun-ui-vanilla - full project html/css/storybook vanilla without ui libraries
+
+- musicfun-tanstack-query - full project with tanstack query
+
+- musicfun-rtk-query - full project with rtk-query
+
 ## ❌ Запуск проекта с SDK (в данный момент не поддерживается)
 
 ### 1. Установка зависимостей

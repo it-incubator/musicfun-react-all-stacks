@@ -8,11 +8,16 @@ import type {
 } from './playlistsApi.types.ts'
 import type { Images, ReactionResponse } from '@/common/types'
 import type { Nullable } from '@/common/types/common.types'
+import { buildQueryString } from '@/common/utils'
 
 export const playlistsAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
     fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
-      query: (params) => ({ url: 'playlists', params }),
+      query: (params) => {
+        const { tagsIds, ...rest } = params
+        const query = buildQueryString({ ...rest, tagsIds })
+        return { url: `playlists/?${query}` }
+      },
       providesTags: ['Playlist'],
     }),
     fetchMyPlaylists: build.query<Omit<PlaylistsResponse, 'meta'>, void>({

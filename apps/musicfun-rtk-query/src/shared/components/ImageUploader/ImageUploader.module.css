@@ -1,0 +1,139 @@
+.container {
+  width: 100%;
+}
+
+.dropZone {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 280px;
+  border: 2px dashed var(--color-border-input-primary);
+  border-radius: 8px;
+
+  background-color: var(--color-bg-secondary);
+
+  transition: all 200ms ease;
+}
+
+.dropZone:hover,
+.dropZone:focus-within {
+  border-color: var(--color-border-input-active);
+  background-color: var(--color-bg-input-hover);
+}
+
+.dropZone.dragOver {
+  border-color: var(--color-accent);
+  background-color: var(--color-bg-input-hover);
+}
+
+.dropZone.hasPreview {
+  border-color: var(--color-border-input-active);
+  border-style: solid;
+}
+
+.dropZone.error {
+  border-color: var(--color-text-error);
+}
+
+.hiddenInput {
+  position: absolute;
+
+  overflow: hidden;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+  clip: rect(0, 0, 0, 0);
+}
+
+.uploadContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+
+  padding: 32px 16px;
+}
+
+.uploadIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  color: var(--color-text-secondary);
+
+  background-color: var(--color-bg-primary);
+
+  transition: all 200ms ease;
+}
+
+.dropZone:hover .uploadIcon,
+.dropZone:focus-within .uploadIcon {
+  color: var(--color-accent);
+  background-color: var(--color-bg-card);
+}
+
+.uploadText {
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: color 200ms ease;
+}
+
+.dropZone:hover .uploadText {
+  color: var(--color-text-primary);
+}
+
+.previewContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  border-radius: 6px;
+
+  object-fit: cover;
+}
+
+.removeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.removeButton:hover {
+  opacity: 1;
+  background-color: var(--color-text-error);
+}
+
+.removeButton:focus-visible {
+  outline: 2px solid var(--color-outline-focus);
+  outline-offset: 2px;
+}
+
+.errorMessage {
+  margin-top: 8px;
+}
+
+/* States for different sizes */
+.dropZone.small {
+  min-height: 120px;
+}
+
+.dropZone.large {
+  min-height: 300px;
+}
