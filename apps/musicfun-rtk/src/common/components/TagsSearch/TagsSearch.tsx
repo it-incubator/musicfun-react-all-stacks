@@ -14,14 +14,12 @@ export const TagsSearch = ({ setValues, selectedIds }: Props) => {
   const [debouncedSearch] = useDebounceValue(search)
   const { data, isLoading } = useFindTagsQuery({ value: debouncedSearch })
 
-  const tags = data || []
-
   return (
     <div className={s.container}>
       <h2>Поиск по тегу</h2>
       <AutoComplete
         placeholder={'Choose tag'}
-        items={tags}
+        items={data || []}
         search={search}
         setSearch={setSearch}
         isPending={isLoading}

@@ -4,6 +4,7 @@ import { useGetMeQuery } from '@/features/auth/api/auth-api'
 import { useFetchPlaylistsQuery } from '@/features/playlists/api/playlistsApi.ts'
 import { Pagination, SearchInput, Sort, TagsSearch } from '@/common/components'
 import { PlaylistsList } from './PlaylistsList/PlaylistsList'
+import type { SortBy, SortDirection } from '@/common/types'
 
 export const PlaylistsPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
@@ -11,8 +12,8 @@ export const PlaylistsPage = () => {
   const [search, setSearch] = useState('')
   const [debouncedSearch] = useDebounceValue(search)
 
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
-  const [sortBy, setSortBy] = useState<'addedAt' | 'likesCount'>('addedAt')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+  const [sortBy, setSortBy] = useState<SortBy>('addedAt')
 
   const [tags, setTags] = useState<string[]>([])
   const [debouncedTags] = useDebounceValue(tags)

@@ -1,17 +1,18 @@
 import type { ChangeEvent } from 'react'
+import type { SortBy, SortDirection } from '@/common/types'
 
 type Props = {
-  sortDirection: 'asc' | 'desc'
-  sortBy: 'addedAt' | 'likesCount'
-  setSortBy: (direction: 'addedAt' | 'likesCount') => void
-  setSortDirection: (direction: 'asc' | 'desc') => void
+  sortDirection: SortDirection
+  sortBy: SortBy
+  setSortBy: (direction: SortBy) => void
+  setSortDirection: (direction: SortDirection) => void
 }
 
 type Option = {
   label: string
   value: string
-  sortBy: 'addedAt' | 'likesCount'
-  sortDirection: 'asc' | 'desc'
+  sortBy: SortBy
+  sortDirection: SortDirection
 }
 
 const options: Option[] = [

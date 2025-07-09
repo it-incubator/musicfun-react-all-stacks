@@ -1,4 +1,4 @@
-import type { Images, Meta, User } from '@/common/types'
+import type { Images, Meta, SortBy, SortDirection, User } from '@/common/types'
 import type { CurrentUserReaction } from '@/common/enums'
 import type { Tag } from '@/features/tags/api/tagsApi.types.ts'
 
@@ -32,14 +32,6 @@ export type PlaylistsResponse = {
 // Arguments
 export type CreatePlaylistArgs = Pick<PlaylistAttributes, 'title' | 'description'>
 
-// export type UpdatePlaylistArgs = Partial<Pick<PlaylistAttributes, 'title' | 'description' | 'tags'>>
-//
-// export type FetchPlaylistsArgs = {
-//   pageSize?: number
-//   pageNumber: number
-//   search: string
-// }
-
 export type UpdatePlaylistArgs = {
   title?: string
   description?: string
@@ -47,8 +39,8 @@ export type UpdatePlaylistArgs = {
 }
 
 export type FetchPlaylistsArgs = {
-  sortBy?: 'addedAt' | 'likesCount'
-  sortDirection?: 'asc' | 'desc'
+  sortBy?: SortBy
+  sortDirection?: SortDirection
   tagsIds?: string[]
   pageSize?: number
   pageNumber: number

@@ -30,7 +30,6 @@ export const useUpdatePlaylist = () => {
   const onSubmit: SubmitHandler<UpdatePlaylistArgs> = async (data) => {
     if (!playlistId) return
     try {
-      console.log('playlistId:', playlistId, 'data:', data)
       await updatePlaylistMutation({ playlistId, payload: data }).unwrap()
       setPlaylistId(null)
     } catch (e) {

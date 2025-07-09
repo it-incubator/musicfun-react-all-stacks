@@ -31,18 +31,16 @@ export const EditPlaylistForm = ({ onSubmit, editPlaylist, handleSubmit, registe
         <input {...register('description')} placeholder={'Description'} />
         <span className="error">{errors?.description?.message}</span>
       </div>
-      <div>
-        <Controller
-          name={'tagIds'}
-          control={control}
-          render={({ field }) => (
-            <>
-              <TagsSearch setValues={field.onChange} selectedIds={field.value || []} />
-              <span className="error">{errors?.tagIds?.message}</span>
-            </>
-          )}
-        />
-      </div>
+      <Controller
+        name={'tagIds'}
+        control={control}
+        render={({ field }) => (
+          <>
+            <TagsSearch setValues={field.onChange} selectedIds={field.value || []} />
+            <span className="error">{errors?.tagIds?.message}</span>
+          </>
+        )}
+      />
       <button>Сохранить</button>
       <button type={'button'} onClick={() => editPlaylist(null)}>
         Отмена
