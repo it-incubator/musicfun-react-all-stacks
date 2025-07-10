@@ -3,8 +3,11 @@ import { Link, useLocation } from 'react-router'
 import noCover from '@/assets/img/no-cover.png'
 import { Path } from '@/common/routing'
 import { uploadCover } from '@/common/utils'
-import type { Playlist } from '../../../../../api/playlistsApi.types'
-import { useDeletePlaylistCoverMutation, useUploadPlaylistCoverMutation } from '../../../../../api/playlistsApi'
+import type { Playlist } from '@/features/playlists/api/playlistsApi.types.ts'
+import {
+  useDeletePlaylistCoverMutation,
+  useUploadPlaylistCoverMutation,
+} from '@/features/playlists/api/playlistsApi.ts'
 import s from './PlaylistCover.module.css'
 
 type Props = {
