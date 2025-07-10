@@ -1,5 +1,1 @@
-export type ExtensionsError = {
-  data: {
-    extensions?: { key?: string; message?: string }[]
-  }
-}
+export type Nullable<T> = T | null

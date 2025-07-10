@@ -1,6 +1,11 @@
 import { Link } from 'react-router'
 
-import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
+import {
+  useDislikePlaylistMutation,
+  useLikePlaylistMutation,
+  useUnReactionPlaylistMutation,
+} from '@/features/playlists'
+import { Card, CurrentUserReaction, ReactionButtons, Typography } from '@/shared/components'
 
 import s from './PlaylistCard.module.css'
 
@@ -13,7 +18,9 @@ type PlaylistCardPropsBase = {
 
 type PlaylistCardPropsWithReactions = PlaylistCardPropsBase & {
   isShowReactionButtons: true
-} & Omit<ReactionButtonsProps, 'className'>
+  reaction: CurrentUserReaction
+  likesCount: number
+}
 
 type PlaylistCardPropsWithoutReactions = PlaylistCardPropsBase & {
   isShowReactionButtons?: false
@@ -29,6 +36,10 @@ export const PlaylistCard = ({
   isShowReactionButtons,
   ...props
 }: PlaylistCardProps) => {
+  const [like] = useLikePlaylistMutation()
+  const [dislike] = useDislikePlaylistMutation()
+  const [unReaction] = useUnReactionPlaylistMutation()
+
   return (
     <Card as={Link} to={`/playlists/${id}`} className={s.card}>
       <div className={s.image}>
@@ -44,9 +55,10 @@ export const PlaylistCard = ({
       {isShowReactionButtons && 'reaction' in props && (
         <ReactionButtons
           reaction={props.reaction}
-          onLike={props.onLike}
-          onDislike={props.onDislike}
+          onLike={() => like({ id })}
+          onDislike={() => dislike({ id })}
           likesCount={props.likesCount}
+          onUnReaction={() => unReaction({ id })}
         />
       )}
     </Card>

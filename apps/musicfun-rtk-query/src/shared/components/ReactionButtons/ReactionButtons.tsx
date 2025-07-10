@@ -9,13 +9,14 @@ import s from './ReactionButtons.module.css'
 export enum CurrentUserReaction {
   None = 0,
   Like = 1,
-  Dislike = 2,
+  Dislike = -1,
 }
 
 export type ReactionButtonsProps = {
   reaction: CurrentUserReaction
   onLike: () => void
   onDislike: () => void
+  onUnReaction: () => void
   likesCount?: number
   className?: string
   size?: keyof typeof SIZE_MAP
@@ -30,6 +31,7 @@ export const ReactionButtons = ({
   reaction = CurrentUserReaction.None,
   onLike,
   onDislike,
+  onUnReaction,
   likesCount,
   className,
   size = 'small',
@@ -45,7 +47,11 @@ export const ReactionButtons = ({
         <IconButton
           onClick={(e) => {
             e.preventDefault()
-            onLike()
+            if (isLiked) {
+              onUnReaction()
+            } else {
+              onLike()
+            }
           }}
           className={clsx(s.button, isLiked && s.liked, size === 'large' && s.large)}
           aria-label={isLiked ? 'Remove like' : 'Like'}
@@ -62,7 +68,11 @@ export const ReactionButtons = ({
       <IconButton
         onClick={(e) => {
           e.preventDefault()
-          onDislike()
+          if (isDisliked) {
+            onUnReaction()
+          } else {
+            onDislike()
+          }
         }}
         className={clsx(s.button, isDisliked && s.disliked, size === 'large' && s.large)}
         aria-label={isDisliked ? 'Remove dislike' : 'Dislike'}
