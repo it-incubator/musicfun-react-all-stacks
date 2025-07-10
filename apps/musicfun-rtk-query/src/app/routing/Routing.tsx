@@ -16,7 +16,7 @@ export const Routing = () => (
       <Route path={Paths.Playlists} element={<PlaylistsPage />} />
       <Route path={`${Paths.Playlists}/:id`} element={<PlaylistPage />} />
 
-      <Route path={`${Paths.Profile}/:id`} element={<UserPage />} />
+      <Route path={`${Paths.Profile}/:userId`} element={<UserPage />} />
 
       <Route path={Paths.OAuthRedirect} element={<OAuthCallback />} />
     </Route>

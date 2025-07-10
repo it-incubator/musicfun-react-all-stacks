@@ -47,4 +47,8 @@ export type FetchPlaylistsArgs = {
   pageSize?: number
   pageNumber?: number
   search?: string
+  sortDirection?: 'asc' | 'desc'
+  tagsIds?: string[]
+  userId?: string
+  trackId?: string
 }

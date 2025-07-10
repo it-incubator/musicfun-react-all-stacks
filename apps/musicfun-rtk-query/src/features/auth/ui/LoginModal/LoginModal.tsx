@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { useState } from 'react'
 
 import { Button } from '@/shared/components/Button'
 import { Dialog, DialogContent, DialogHeader } from '@/shared/components/Dialog'
@@ -7,14 +6,9 @@ import { Typography } from '@/shared/components/Typography'
 import { Paths } from '@/shared/configs'
 
 import { useLoginMutation } from '../../api/auth-api'
-import s from './LoginButtonAndModal.module.css'
+import s from './LoginModal.module.css'
 
-export const LoginButtonAndModal = () => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const handleOpenModal = () => setIsOpen(true)
-  const handleCloseModal = () => setIsOpen(false)
-
+export const LoginModal = ({ onClose }: { onClose: () => void }) => {
   const [mutate] = useLoginMutation()
 
   /**
@@ -34,7 +28,7 @@ export const LoginButtonAndModal = () => {
       if (code) {
         window.removeEventListener('message', receiveMessage)
         mutate({ code, accessTokenTTL: '3m', redirectUri, rememberMe: true })
-        handleCloseModal()
+        onClose()
       }
     }
 
@@ -42,29 +36,23 @@ export const LoginButtonAndModal = () => {
   }
 
   return (
-    <>
-      <Button variant="primary" onClick={handleOpenModal}>
-        Sign in
-      </Button>
+    <Dialog open onClose={onClose} className={s.dialog}>
+      <DialogHeader />
 
-      <Dialog open={isOpen} onClose={handleCloseModal} className={s.dialog}>
-        <DialogHeader />
+      <DialogContent className={s.content}>
+        <Typography variant="h2">
+          Millions of Songs. <br /> Free on Musicfun.
+        </Typography>
 
-        <DialogContent className={s.content}>
-          <Typography variant="h2">
-            Millions of Songs. <br /> Free on Musicfun.
-          </Typography>
+        <div className={s.icon}>😊</div>
 
-          <div className={s.icon}>😊</div>
-
-          <Button className={clsx(s.button, s.secondary)} fullWidth onClick={handleCloseModal}>
-            Continue without Sign in
-          </Button>
-          <Button className={s.button} variant="primary" fullWidth onClick={loginHandler}>
-            Sign in with APIHub
-          </Button>
-        </DialogContent>
-      </Dialog>
-    </>
+        <Button className={clsx(s.button, s.secondary)} fullWidth onClick={onClose}>
+          Continue without Sign in
+        </Button>
+        <Button className={s.button} variant="primary" fullWidth onClick={loginHandler}>
+          Sign in with APIHub
+        </Button>
+      </DialogContent>
+    </Dialog>
   )
 }

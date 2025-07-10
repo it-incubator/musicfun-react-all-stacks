@@ -18,13 +18,12 @@ export const PlaylistsPage = () => {
 
   const handlePageChange = (page: number) => {
     setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev)
       if (page === 1) {
-        newParams.delete('page')
+        prev.delete('page')
       } else {
-        newParams.set('page', page.toString())
+        prev.set('page', page.toString())
       }
-      return newParams
+      return prev
     })
   }
 
@@ -53,17 +52,21 @@ export const PlaylistsPage = () => {
       {playlists?.data && (
         <ContentList
           data={playlists.data}
-          renderItem={(playlist) => (
-            <PlaylistCard
-              id={playlist.id}
-              title={playlist.attributes.title}
-              image={'playlist.attributes.images.main[0].url'}
-              description={playlist.attributes.description}
-              isShowReactionButtons={true}
-              reaction={playlist.attributes.currentUserReaction}
-              likesCount={playlist.attributes.likesCount}
-            />
-          )}
+          renderItem={(playlist) => {
+            const image = playlist.attributes.images.main[1]
+
+            return (
+              <PlaylistCard
+                id={playlist.id}
+                title={playlist.attributes.title}
+                imageSrc={image?.url}
+                description={playlist.attributes.description}
+                isShowReactionButtons={true}
+                reaction={playlist.attributes.currentUserReaction}
+                likesCount={playlist.attributes.likesCount}
+              />
+            )
+          }}
         />
       )}
       <Pagination

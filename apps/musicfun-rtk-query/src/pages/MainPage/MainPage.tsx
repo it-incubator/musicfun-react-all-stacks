@@ -16,7 +16,7 @@ export const MainPage = () => {
           title="New playlists"
           data={playlists?.data}
           renderItem={(playlist) => {
-            const image = playlist.attributes.images.main[0]
+            const image = playlist.attributes.images.main[1]
             return (
               <PlaylistCard
                 id={playlist.id}

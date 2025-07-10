@@ -42,7 +42,7 @@ export const ReactionButtons = ({
   const iconSize = SIZE_MAP[size]
 
   return (
-    <div className={clsx(s.container, className)}>
+    <div className={clsx(s.container, className)} onClick={(e) => e.preventDefault()}>
       <div className={s.likesCountBox}>
         <IconButton
           onClick={(e) => {
