@@ -9,14 +9,15 @@ import type {
 } from './tracksApi.types.ts'
 import { baseApi } from '@/app/api/base-api.ts'
 import type { Nullable, ReactionResponse } from '@/common/types'
+import { buildQueryString } from '@/common/utils'
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
     fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
-      query: (params) => ({
-        url: 'playlists/tracks',
-        params,
-      }),
+      query: (params) => {
+        const query = buildQueryString(params)
+        return `playlists/tracks?${query}`
+      },
 
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -56,10 +57,11 @@ export const tracksAPI = baseApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
     fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
-      query: (params) => ({
-        url: 'playlists/tracks',
-        params,
-      }),
+      query: (params) => {
+        const query = buildQueryString(params)
+
+        return `playlists/tracks?${query}`
+      },
       providesTags: (result) => [
         ...(result?.data.map((track) => {
           return { type: 'Track' as const, id: track.id }

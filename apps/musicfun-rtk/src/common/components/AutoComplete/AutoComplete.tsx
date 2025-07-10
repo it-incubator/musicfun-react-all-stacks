@@ -3,12 +3,13 @@ import { IconButton, SearchInput } from '@/common/components'
 import s from './AutoComplete.module.css'
 import { CloseIcon } from '@/common/icons'
 
-type Item = {
+export type Item = {
   id: string
   name: string
 }
 
 type Props = {
+  allItems: Item[]
   items: Item[]
   setSearch: (search: string) => void
   isPending: boolean
@@ -18,12 +19,21 @@ type Props = {
   selectedIds: string[]
 }
 
-export const AutoComplete = ({ items, setValues, setSearch, isPending, search, placeholder, selectedIds }: Props) => {
+export const AutoComplete = ({
+  allItems,
+  items,
+  setValues,
+  setSearch,
+  isPending,
+  search,
+  placeholder,
+  selectedIds,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const wrapperRef = useRef<HTMLDivElement>(null)
 
-  const selectedOptions = items.filter((item) => selectedIds.includes(item.id))
+  const selectedOptions = allItems.filter((item) => selectedIds.includes(item.id))
   const isSelected = (id: string) => selectedOptions.some((selected) => selected.id === id)
 
   useEffect(() => {
