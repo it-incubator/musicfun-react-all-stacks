@@ -98,7 +98,6 @@ export const CustomFileRestrictions: Story = {
   args: {
     placeholder: 'Upload JPEG/PNG only',
     acceptedFormats: ['image/jpeg', 'image/png'],
-    maxSizeInMB: 2,
     enableCrop: true,
     cropShape: 'rect',
     aspectRatio: 1,
