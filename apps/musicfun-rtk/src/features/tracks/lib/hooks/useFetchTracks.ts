@@ -1,10 +1,10 @@
-import { useFetchTracksQuery } from '../../api/tracksApi.ts'
+import { useFetchTracksInfinityQuery } from '../../api/tracksApi.ts'
 import type { FetchTracksArgs } from '@/features/tracks/api/tracksApi.types.ts'
 
 const PAGE_SIZE = 10
 
 export const useFetchTracks = ({ pageNumber, artistsIds, tagsIds }: FetchTracksArgs) => {
-  const { data, isFetching, isLoading } = useFetchTracksQuery({
+  const { data, isFetching, isLoading } = useFetchTracksInfinityQuery({
     pageNumber,
     pageSize: PAGE_SIZE,
     tagsIds,
