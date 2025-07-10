@@ -1,12 +1,15 @@
-import { Provider } from 'react-redux'
+import { Loader } from '@/shared/components'
 
+import { useIsLoading } from './hooks'
 import { Routing } from './routing'
-import { store } from './store'
 
 export const App = () => {
+  const isLoading = useIsLoading()
+
   return (
-    <Provider store={store}>
+    <>
+      {isLoading && <Loader />}
       <Routing />
-    </Provider>
+    </>
   )
 }
