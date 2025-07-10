@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { getAudioDuration, hasCachedDuration } from '@/common/utils'
+import type { Nullable } from '@/common/types'
 
-interface UseAudioDurationResult {
-  duration: number | null
+type UseAudioDurationResult = {
+  duration: Nullable<number>
   loading: boolean
-  error: string | null
+  error: Nullable<string>
 }
 
 export const useAudioDuration = (url: string): UseAudioDurationResult => {
-  const [duration, setDuration] = useState<number | null>(null)
+  const [duration, setDuration] = useState<Nullable<number>>(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<Nullable<string>>(null)
 
   useEffect(() => {
     if (!url) {

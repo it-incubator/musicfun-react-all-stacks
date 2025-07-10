@@ -1,7 +1,7 @@
 import { useAudioDuration } from '@/features/tracks/lib/hooks/useAudioDuration.ts'
 import { formatDuration } from '@/common/utils'
 
-interface TrackDurationProps {
+type TrackDurationProps = {
   url: string
   loadingText?: string
   errorText?: string
