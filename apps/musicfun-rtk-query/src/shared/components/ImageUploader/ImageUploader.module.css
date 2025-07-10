@@ -137,3 +137,19 @@
 .dropZone.large {
   min-height: 300px;
 }
+
+/* Responsive adjustments */
+@media (width <= 640px) {
+  .cropperContainer {
+    height: 300px;
+  }
+
+  .uploadContent {
+    padding: 24px 12px;
+  }
+
+  .uploadIcon {
+    width: 40px;
+    height: 40px;
+  }
+}

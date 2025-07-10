@@ -384,6 +384,7 @@ export const InDialog = {
                 value={selectedSkills}
                 onChange={setSelectedSkills}
                 maxTags={8}
+                isRenderInPortal
               />
 
               <Autocomplete
@@ -393,6 +394,7 @@ export const InDialog = {
                 value={selectedGenres}
                 onChange={setSelectedGenres}
                 maxTags={5}
+                isRenderInPortal
               />
             </div>
           </DialogContent>

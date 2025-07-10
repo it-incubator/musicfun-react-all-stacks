@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { createPortal } from 'react-dom'
 
 import { useGetId } from '@/shared/hooks'
 import { ArrowDownIcon, DeleteIcon } from '@/shared/icons'
@@ -31,6 +32,7 @@ export type AutocompleteProps = {
   maxTags?: number
   errorMessage?: string
   className?: string
+  isRenderInPortal?: boolean
 } & Omit<ComponentProps<'div'>, 'onChange'>
 
 export const Autocomplete = ({
@@ -43,6 +45,7 @@ export const Autocomplete = ({
   maxTags,
   errorMessage,
   className,
+  isRenderInPortal = false,
   ...props
 }: AutocompleteProps) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -53,6 +56,8 @@ export const Autocomplete = ({
   const containerRef = useRef<HTMLDivElement>(null)
   // For programmatic focus management (Escape key, focus after selection)
   const inputRef = useRef<HTMLInputElement>(null)
+  const inputWrapperRef = useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLDivElement | null>(null)
 
   const id = useGetId(props.id)
 
@@ -64,20 +69,33 @@ export const Autocomplete = ({
   const isMaxTagsReached = maxTags ? value.length >= maxTags : false
   const showError = Boolean(errorMessage)
 
-  // Close dropdown on outside click
+  // Close dropdown on outside click (учитываем портал)
   useEffect(() => {
     if (!isOpen) return
 
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setIsOpen(false)
-        setFocusedIndex(-1)
+      const target = e.target as Node
+      if (containerRef.current && !containerRef.current.contains(target)) {
+        if (isRenderInPortal) {
+          if (
+            inputWrapperRef.current &&
+            !inputWrapperRef.current.contains(target) &&
+            dropdownRef.current &&
+            !dropdownRef.current.contains(target)
+          ) {
+            setIsOpen(false)
+            setFocusedIndex(-1)
+          }
+        } else {
+          setIsOpen(false)
+          setFocusedIndex(-1)
+        }
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isOpen])
+  }, [isOpen, isRenderInPortal])
 
   // Handle keyboard navigation
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -166,7 +184,8 @@ export const Autocomplete = ({
           isOpen && s.focused,
           showError && s.error,
           disabled && s.disabled
-        )}>
+        )}
+        ref={inputWrapperRef}>
         {/* Selected tags */}
         {selectedOptions.map((option) => (
           <div key={option.value} className={s.tag}>
@@ -210,31 +229,63 @@ export const Autocomplete = ({
         />
       </div>
 
-      {/* Dropdown */}
-      {isOpen && !disabled && (
-        <div className={s.dropdown}>
-          {filteredOptions.length > 0 ? (
-            filteredOptions.map((option, index) => (
-              <div
-                key={option.value}
-                className={clsx(
-                  s.option,
-                  index === focusedIndex && s.optionFocused,
-                  option.disabled && s.optionDisabled
-                )}
-                onClick={() => !option.disabled && selectOption(option)}
-                onMouseEnter={() => setFocusedIndex(index)}>
-                <Typography variant="body2">{option.label}</Typography>
+      {/* Dropdown через портал */}
+      {isRenderInPortal ? (
+        <AutocompleteDropdownPortal
+          anchorRef={inputWrapperRef}
+          dropdownRef={dropdownRef}
+          isOpen={isOpen && !disabled}>
+          <div className={s.dropdown}>
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((option, index) => (
+                <div
+                  key={option.value}
+                  className={clsx(
+                    s.option,
+                    index === focusedIndex && s.optionFocused,
+                    option.disabled && s.optionDisabled
+                  )}
+                  onClick={() => !option.disabled && selectOption(option)}
+                  onMouseEnter={() => setFocusedIndex(index)}>
+                  <Typography variant="body2">{option.label}</Typography>
+                </div>
+              ))
+            ) : (
+              <div className={s.noResults}>
+                <Typography variant="body2" className={s.noResultsText}>
+                  {searchTerm ? 'No options found' : 'All options selected'}
+                </Typography>
               </div>
-            ))
-          ) : (
-            <div className={s.noResults}>
-              <Typography variant="body2" className={s.noResultsText}>
-                {searchTerm ? 'No options found' : 'All options selected'}
-              </Typography>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </AutocompleteDropdownPortal>
+      ) : (
+        isOpen &&
+        !disabled && (
+          <div className={s.dropdown}>
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((option, index) => (
+                <div
+                  key={option.value}
+                  className={clsx(
+                    s.option,
+                    index === focusedIndex && s.optionFocused,
+                    option.disabled && s.optionDisabled
+                  )}
+                  onClick={() => !option.disabled && selectOption(option)}
+                  onMouseEnter={() => setFocusedIndex(index)}>
+                  <Typography variant="body2">{option.label}</Typography>
+                </div>
+              ))
+            ) : (
+              <div className={s.noResults}>
+                <Typography variant="body2" className={s.noResultsText}>
+                  {searchTerm ? 'No options found' : 'All options selected'}
+                </Typography>
+              </div>
+            )}
+          </div>
+        )
       )}
 
       {/* Error message */}
@@ -251,5 +302,53 @@ export const Autocomplete = ({
         </Typography>
       )}
     </div>
+  )
+}
+
+// Portal for dropdown
+type AutocompleteDropdownPortalProps = {
+  anchorRef: React.RefObject<HTMLElement | null>
+  dropdownRef: React.RefObject<HTMLDivElement | null>
+  children: ReactNode
+  isOpen: boolean
+}
+
+const AutocompleteDropdownPortal = ({
+  anchorRef,
+  dropdownRef,
+  children,
+  isOpen,
+}: AutocompleteDropdownPortalProps) => {
+  const [styles, setStyles] = useState<{ top: number; left: number; width: number }>({
+    top: 0,
+    left: 0,
+    width: 0,
+  })
+
+  useEffect(() => {
+    if (isOpen && anchorRef.current) {
+      const rect = anchorRef.current.getBoundingClientRect()
+      setStyles({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      })
+    }
+  }, [isOpen, anchorRef])
+
+  if (!isOpen) return null
+
+  return createPortal(
+    <div
+      ref={dropdownRef}
+      style={{
+        position: 'absolute',
+        top: styles.top,
+        left: styles.left,
+        width: styles.width,
+      }}>
+      {children}
+    </div>,
+    document.body
   )
 }

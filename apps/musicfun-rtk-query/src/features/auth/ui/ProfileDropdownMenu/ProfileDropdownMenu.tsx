@@ -7,8 +7,10 @@ import {
   DropdownMenuTrigger,
   Typography,
 } from '@/shared/components'
+import { Paths } from '@/shared/configs'
 import { LogoutIcon, ProfileIcon } from '@/shared/icons'
 
+import { useLogoutMutation } from '../../api'
 import s from './ProfileDropdownMenu.module.css'
 
 export const ProfileDropdownMenu = ({
@@ -20,6 +22,8 @@ export const ProfileDropdownMenu = ({
   name: string
   id: string
 }) => {
+  const [logout] = useLogoutMutation()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className={s.trigger}>
@@ -32,11 +36,11 @@ export const ProfileDropdownMenu = ({
         </Typography>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem as={Link} to={`/user/${id}`}>
+        <DropdownMenuItem as={Link} to={`${Paths.Profile}/${id}`}>
           <ProfileIcon />
           <span>My Profile</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {}}>
+        <DropdownMenuItem onClick={() => logout()}>
           <LogoutIcon />
           <span>Logout</span>
         </DropdownMenuItem>

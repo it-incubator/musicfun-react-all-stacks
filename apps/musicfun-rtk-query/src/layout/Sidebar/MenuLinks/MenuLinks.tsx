@@ -1,6 +1,10 @@
 import clsx from 'clsx'
 import { NavLink } from 'react-router'
 
+import { useMeQuery } from '@/features/auth'
+import { setIsAuthModalOpen } from '@/features/auth/model'
+import { Paths } from '@/shared/configs'
+import { useAppDispatch } from '@/shared/hooks'
 import { HomeIcon, LibraryIcon, PlaylistIcon, TrackIcon, UploadIcon } from '@/shared/icons'
 import { CreateIcon } from '@/shared/icons/CreateIcon'
 
@@ -18,33 +22,27 @@ type MenuButton = {
   label: string
 }
 
-const mainLinks: MenuLink[] = [
-  {
-    to: '/',
-    icon: <HomeIcon width={32} height={32} />,
-    label: 'Home',
-  },
-  {
-    to: '/user/1',
-    icon: <LibraryIcon />,
-    label: 'Your Library',
-  },
-]
-
 const createLinks: MenuLink[] = [
   {
-    to: '/tracks',
+    to: Paths.Tracks,
     icon: <TrackIcon />,
     label: 'All Tracks',
   },
   {
-    to: '/playlists',
+    to: Paths.Playlists,
     icon: <PlaylistIcon />,
     label: 'All Playlists',
   },
 ]
 
 export const MenuLinks = () => {
+  const { data: user } = useMeQuery()
+
+  const dispatch = useAppDispatch()
+  const handleOpenAuthModal = () => {
+    dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))
+  }
+
   const actionButtons: MenuButton[] = [
     {
       onClick: () => {},
@@ -61,11 +59,26 @@ export const MenuLinks = () => {
   return (
     <nav className={s.column} aria-label="Main navigation">
       <ul className={s.list}>
-        {mainLinks.map((props) => (
-          <li key={props.to}>
-            <SidebarLink {...props} />
+        <li>
+          <SidebarLink to={Paths.Main} icon={<HomeIcon width={32} height={32} />} label="Home" />
+        </li>
+        {user ? (
+          <li>
+            <SidebarLink
+              to={`${Paths.Profile}/${user?.userId}`}
+              icon={<LibraryIcon />}
+              label="Your Library"
+            />
           </li>
-        ))}
+        ) : (
+          <li>
+            <SidebarButton
+              onClick={handleOpenAuthModal}
+              icon={<LibraryIcon />}
+              label="Your Library"
+            />
+          </li>
+        )}
       </ul>
       <ul className={s.list}>
         {actionButtons.map((props) => (
