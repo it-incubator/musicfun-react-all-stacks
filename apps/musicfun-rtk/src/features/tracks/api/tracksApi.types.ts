@@ -74,6 +74,8 @@ export type FetchTracksArgs = {
   pageSize?: number
   pageNumber: number
   search?: string
+  artistsIds?: string[]
+  tagsIds?: string[]
 }
 
 export type UpdateTrackArgs = {
