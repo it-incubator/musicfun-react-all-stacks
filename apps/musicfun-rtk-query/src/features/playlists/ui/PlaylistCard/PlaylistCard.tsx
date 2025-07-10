@@ -5,6 +5,7 @@ import {
   useLikePlaylistMutation,
   useUnReactionPlaylistMutation,
 } from '@/features/playlists'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Card, CurrentUserReaction, ReactionButtons, Typography } from '@/shared/components'
 
 import s from './PlaylistCard.module.css'
@@ -12,7 +13,7 @@ import s from './PlaylistCard.module.css'
 type PlaylistCardPropsBase = {
   id: string
   title: string
-  image: string
+  imageSrc?: string
   description: string
 }
 
@@ -30,7 +31,7 @@ type PlaylistCardProps = PlaylistCardPropsWithReactions | PlaylistCardPropsWitho
 
 export const PlaylistCard = ({
   title,
-  image,
+  imageSrc = noCoverPlaceholder,
   description,
   id,
   isShowReactionButtons,
@@ -43,7 +44,7 @@ export const PlaylistCard = ({
   return (
     <Card as={Link} to={`/playlists/${id}`} className={s.card}>
       <div className={s.image}>
-        <img src={image} alt="" aria-hidden />
+        <img src={imageSrc} alt="" aria-hidden />
       </div>
       <Typography variant="h3" className={s.title}>
         {title}

@@ -13,7 +13,7 @@ export default defineConfig({
   },
   server: {
     host: true, // ← or '0.0.0.0'
-    port: 5175,
+    port: 5176,
     strictPort: true,
     allowedHosts: [
       'domain.prod', // <-- your custom host

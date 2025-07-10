@@ -8,7 +8,7 @@ import s from './Layout.module.css'
 import { Sidebar } from './Sidebar'
 
 export const Layout = () => {
-  const IS_PLAYER_OPEN = true
+  const IS_PLAYER_OPEN = false
 
   return (
     <div className={clsx(s.grid, IS_PLAYER_OPEN && s.playerOpen)}>
