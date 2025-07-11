@@ -1,4 +1,9 @@
 import {
+  useDislikePlaylistMutation,
+  useLikePlaylistMutation,
+  useUnReactionPlaylistMutation,
+} from '@/features/playlists'
+import {
   CurrentUserReaction,
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +16,19 @@ import { EditIcon, MoreIcon, PlayIcon } from '@/shared/icons'
 
 import s from './ControlPanel.module.css'
 
-export const ControlPanel = () => {
+export const ControlPanel = ({
+  playlistId,
+  isOwnPlaylist,
+  reaction,
+}: {
+  playlistId: string
+  isOwnPlaylist: boolean
+  reaction: CurrentUserReaction
+}) => {
+  const [like] = useLikePlaylistMutation()
+  const [dislike] = useDislikePlaylistMutation()
+  const [unReaction] = useUnReactionPlaylistMutation()
+
   return (
     <div className={s.box}>
       <IconButton className={s.playButton}>
@@ -19,24 +36,27 @@ export const ControlPanel = () => {
       </IconButton>
 
       <ReactionButtons
-        reaction={CurrentUserReaction.None}
-        onLike={() => {}}
-        onDislike={() => {}}
+        reaction={reaction}
+        onLike={() => like({ id: playlistId })}
+        onDislike={() => dislike({ id: playlistId })}
+        onUnReaction={() => unReaction({ id: playlistId })}
         size="large"
       />
 
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <MoreIcon />
-        </DropdownMenuTrigger>
+      {isOwnPlaylist && (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MoreIcon />
+          </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => {}}>
-            <EditIcon />
-            <span>Edit</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem onClick={() => {}}>
+              <EditIcon />
+              <span>Edit</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   )
 }
