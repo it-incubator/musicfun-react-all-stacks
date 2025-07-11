@@ -35,7 +35,7 @@ export const PlaylistsPage = () => {
   const [search, setSearch] = useState('')
   const [debouncedSearch] = useDebounceValue(search)
 
-  const [sort, setSort] = useState<'newest' | 'oldest' | 'mostLiked' | 'leastLiked'>('newest')
+  const [sort, setSort] = useState<SortOption>('newest')
 
   const { sortBy, sortDirection } = sortConfig[sort]
 
@@ -63,7 +63,7 @@ export const PlaylistsPage = () => {
   }
 
   const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value as 'newest' | 'oldest' | 'mostLiked' | 'leastLiked'
+    const value = event.target.value as SortOption
     setSort(value)
     setPageNumber(1)
   }
