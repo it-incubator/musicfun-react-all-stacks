@@ -4,6 +4,10 @@
   gap: 4px;
 
   width: 264px;
+  min-height: 225px;
+}
+
+.card.withReactionButtons {
   min-height: 267px;
 }
 

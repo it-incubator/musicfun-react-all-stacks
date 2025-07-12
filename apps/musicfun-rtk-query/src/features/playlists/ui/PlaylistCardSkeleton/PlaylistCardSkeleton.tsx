@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react'
 
 import { Card, Skeleton } from '@/shared/components'
 
-import s from './PlaylistCardSkeleton.module.css'
+import s from '../PlaylistCard/PlaylistCard.module.css'
 
 export type PlaylistCardSkeletonProps = {
   showReactionButtons?: boolean
@@ -16,7 +16,9 @@ export const PlaylistCardSkeleton = ({
   ...props
 }: PlaylistCardSkeletonProps) => {
   return (
-    <Card className={clsx(s.card, className)} {...props}>
+    <Card
+      className={clsx(s.card, showReactionButtons && s.withReactionButtons, className)}
+      {...props}>
       <Skeleton width="100%" height={153} className={s.image} />
 
       <Skeleton width="80%" height={16} className={s.title} />
