@@ -1,19 +1,72 @@
+import type { ChangeEvent } from 'react'
+import { useCallback } from 'react'
 import { useState } from 'react'
 
 import { PlaylistCard } from '@/features/playlists'
+import type { IPlaylistsQuery } from '@/features/playlists/api/use-playlist.query.types.ts'
 import { usePlaylists } from '@/features/playlists/api/use-playlists.query.ts'
-import { MOCK_HASHTAGS } from '@/features/tags'
+import { useTags } from '@/features/tags'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
+import { useDebounceValue } from '@/shared/hooks'
 
 import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
 import s from './PlaylistsPage.module.css'
 
+type SortOption = 'mostLiked' | 'leastLiked' | 'newest' | 'oldest'
+
+interface ISortConfig {
+  sortBy: IPlaylistsQuery['sortBy']
+  sortDirection: IPlaylistsQuery['sortDirection']
+}
+
+const sortConfig: Record<SortOption, ISortConfig> = {
+  newest: { sortBy: 'addedAt', sortDirection: 'desc' },
+  oldest: { sortBy: 'addedAt', sortDirection: 'asc' },
+  mostLiked: { sortBy: 'likesCount', sortDirection: 'desc' },
+  leastLiked: { sortBy: 'likesCount', sortDirection: 'asc' },
+} as const
+
 export const PlaylistsPage = () => {
+  const [pageNumber, setPageNumber] = useState(1)
+
+  const [search, setSearch] = useState('')
+  const [debouncedSearch] = useDebounceValue(search)
+
+  const [sort, setSort] = useState<SortOption>('newest')
   const [hashtags, setHashtags] = useState<string[]>([])
 
-  const { data, isPending, isError } = usePlaylists({
-    pageNumber: 1,
-  })
+  const { sortBy, sortDirection } = sortConfig[sort]
+
+  const { data: tagsData, isPending: isTagsLoading } = useTags('')
+
+  const queryParams = {
+    search: debouncedSearch || void 0,
+    pageNumber,
+    pageSize: 10,
+    sortBy,
+    sortDirection,
+    tagsIds: hashtags.length > 0 ? hashtags : void 0,
+  }
+
+  const { data, isPending, isError } = usePlaylists(queryParams)
+
+  const handleSortChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value as SortOption
+
+    setSort(value)
+    setPageNumber(1)
+  }, [])
+  const handleSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value)
+    setPageNumber(1)
+  }, [])
+  const handlePageChange = useCallback((page: IPlaylistsQuery['pageNumber']) => {
+    setPageNumber(page)
+  }, [])
+  const handleHashtagsChange = useCallback((tags: IPlaylistsQuery['tagsIds']) => {
+    setHashtags(tags || [])
+    setPageNumber(1)
+  }, [])
 
   let content
 
@@ -25,7 +78,7 @@ export const PlaylistsPage = () => {
     content = <span>Loading...</span>
   }
 
-  if (!isPending && !isError) {
+  if (!isPending && !isError && data?.data) {
     content = (
       <>
         <ContentList
@@ -44,7 +97,12 @@ export const PlaylistsPage = () => {
             />
           )}
         />
-        <Pagination className={s.pagination} page={1} pagesCount={10} onPageChange={() => {}} />
+        <Pagination
+          className={s.pagination}
+          page={pageNumber}
+          pagesCount={data.data.meta.pagesCount || 1}
+          onPageChange={handlePageChange}
+        />
       </>
     )
   }
@@ -56,18 +114,25 @@ export const PlaylistsPage = () => {
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField placeholder="Search playlists" onChange={() => {}} />
-          <SortSelect onChange={() => {}} />
+          <SearchTextField
+            placeholder="Search playlists"
+            onChange={handleSearchChange}
+            value={search}
+          />
+          <SortSelect onChange={handleSortChange} value={sort} />
         </div>
         <Autocomplete
-          options={MOCK_HASHTAGS.map((hashtag) => ({
-            label: hashtag,
-            value: hashtag,
-          }))}
+          options={
+            tagsData?.data?.map((tag) => ({
+              label: tag.name,
+              value: tag.id,
+            })) || []
+          }
           value={hashtags}
-          onChange={setHashtags}
+          onChange={handleHashtagsChange}
           label="Hashtags"
-          placeholder="Search by hashtags"
+          placeholder={isTagsLoading ? 'Loading tags...' : 'Search by hashtags'}
+          disabled={isTagsLoading}
           className={s.autocomplete}
         />
       </div>
