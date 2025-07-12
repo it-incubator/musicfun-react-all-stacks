@@ -1,20 +1,14 @@
-import { useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
-import {
-  CreatePlaylistModal,
-  MOCK_PLAYLISTS,
-  PlaylistCard,
-  useFetchPlaylistsQuery,
-} from '@/features/playlists'
+import { PlaylistCard, useCreatePlaylistModal, useFetchPlaylistsQuery } from '@/features/playlists'
 import { ContentList } from '@/pages/common'
-import { Button, Pagination, Typography } from '@/shared/components'
+import { Button, Pagination } from '@/shared/components'
 
 import s from './PlaylistsTab.module.css'
 
 export const PlaylistsTab = () => {
   const { userId } = useParams()
-  const [isCreatePlaylistModalOpen, setIsCreatePlaylistModalOpen] = useState(false) // STATE FOR TESTING
+  const { handleOpenCreatePlaylistModal } = useCreatePlaylistModal()
 
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -33,19 +27,12 @@ export const PlaylistsTab = () => {
     })
   }
 
-  const openCreatePlaylistModal = () => {
-    setIsCreatePlaylistModalOpen(true)
-  }
-
   return (
     <>
-      <Button className={s.createPlaylistButton} onClick={openCreatePlaylistModal}>
+      <Button className={s.createPlaylistButton} onClick={handleOpenCreatePlaylistModal}>
         Create Playlist
       </Button>
 
-      {isCreatePlaylistModalOpen && (
-        <CreatePlaylistModal onClose={() => setIsCreatePlaylistModalOpen(false)} />
-      )}
       {playlists?.data && (
         <ContentList
           data={playlists?.data}

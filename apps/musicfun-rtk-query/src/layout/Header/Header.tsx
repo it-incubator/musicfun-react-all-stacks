@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/shared/hooks'
 import s from './Header.module.css'
 
 export const Header = () => {
-  const { data: user } = useMeQuery()
+  const { data: user, isLoading } = useMeQuery()
   const dispatch = useAppDispatch()
   const isAuth = !!user
 
@@ -17,7 +17,7 @@ export const Header = () => {
 
       {isAuth ? (
         <ProfileDropdownMenu avatar={'//unsplash.it/100/100'} name={user.login} id={user.userId} />
-      ) : (
+      ) : isLoading ? null : (
         <Button onClick={() => dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))}>
           Sign in
         </Button>
