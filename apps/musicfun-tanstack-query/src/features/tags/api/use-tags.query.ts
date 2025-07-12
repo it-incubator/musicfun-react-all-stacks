@@ -14,6 +14,6 @@ export const useTags = (search?: string) => {
         },
       })
     },
-    enabled: true, // Всегда загружаем теги
+    enabled: true,
   })
 }

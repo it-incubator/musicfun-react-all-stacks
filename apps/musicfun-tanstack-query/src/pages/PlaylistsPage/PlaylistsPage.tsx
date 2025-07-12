@@ -1,4 +1,4 @@
-import type { ChangeEvent } from 'react'
+import { type ChangeEvent, useMemo } from 'react'
 import { useCallback } from 'react'
 import { useState } from 'react'
 
@@ -10,14 +10,8 @@ import { Autocomplete, Pagination, Typography } from '@/shared/components'
 import { useDebounceValue } from '@/shared/hooks'
 
 import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
+import type { ISortConfig, SortOption } from './PlaylistsPage.types.ts'
 import s from './PlaylistsPage.module.css'
-
-type SortOption = 'mostLiked' | 'leastLiked' | 'newest' | 'oldest'
-
-interface ISortConfig {
-  sortBy: IPlaylistsQuery['sortBy']
-  sortDirection: IPlaylistsQuery['sortDirection']
-}
 
 const sortConfig: Record<SortOption, ISortConfig> = {
   newest: { sortBy: 'addedAt', sortDirection: 'desc' },
@@ -28,57 +22,68 @@ const sortConfig: Record<SortOption, ISortConfig> = {
 
 export const PlaylistsPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
-
   const [search, setSearch] = useState('')
   const [debouncedSearch] = useDebounceValue(search)
-
   const [sort, setSort] = useState<SortOption>('newest')
   const [hashtags, setHashtags] = useState<string[]>([])
 
   const { sortBy, sortDirection } = sortConfig[sort]
 
-  const { data: tagsData, isPending: isTagsLoading } = useTags('')
-
-  const queryParams = {
-    search: debouncedSearch || void 0,
-    pageNumber,
-    pageSize: 10,
-    sortBy,
-    sortDirection,
-    tagsIds: hashtags.length > 0 ? hashtags : void 0,
-  }
+  const queryParams = useMemo(
+    () => ({
+      search: debouncedSearch,
+      pageNumber,
+      pageSize: 10,
+      sortBy,
+      sortDirection,
+      tagsIds: hashtags,
+    }),
+    [debouncedSearch, pageNumber, sortBy, sortDirection, hashtags]
+  )
 
   const { data, isPending, isError } = usePlaylists(queryParams)
+  const { data: tagsData, isPending: isTagsLoading, isError: isTagsError } = useTags('')
 
-  const handleSortChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value as SortOption
-
-    setSort(value)
+  const resetPage = useCallback(() => {
     setPageNumber(1)
   }, [])
-  const handleSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value)
-    setPageNumber(1)
-  }, [])
+
+  const handleSortChange = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      const value = event.target.value as SortOption
+      setSort(value)
+      resetPage()
+    },
+    [resetPage]
+  )
+
+  const handleSearchChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setSearch(event.target.value)
+      resetPage()
+    },
+    [resetPage]
+  )
+
   const handlePageChange = useCallback((page: IPlaylistsQuery['pageNumber']) => {
     setPageNumber(page)
   }, [])
-  const handleHashtagsChange = useCallback((tags: IPlaylistsQuery['tagsIds']) => {
-    setHashtags(tags || [])
-    setPageNumber(1)
-  }, [])
+
+  const handleHashtagsChange = useCallback(
+    (tags: IPlaylistsQuery['tagsIds']) => {
+      setHashtags(tags || [])
+      resetPage()
+    },
+    [resetPage]
+  )
 
   let content
 
   if (isPending) {
     content = <span>Loading...</span>
-  }
-
-  if (isError) {
-    content = <span>Loading...</span>
-  }
-
-  if (!isPending && !isError && data?.data) {
+  } else if (isError) {
+    content = <span>Playlist loading error. Please try again later.</span>
+  } else if (data?.data) {
     content = (
       <>
         <ContentList

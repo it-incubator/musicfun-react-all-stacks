@@ -23,13 +23,13 @@ export const usePlaylists = ({
       return getClient().GET('/playlists', {
         params: {
           query: {
-            search,
+            search: search || void 0,
             pageNumber,
             pageSize,
             userId,
             sortBy,
             sortDirection,
-            tagsIds,
+            tagsIds: tagsIds && tagsIds.length > 0 ? tagsIds : void 0,
             trackId,
           },
         },
