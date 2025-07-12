@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { Link } from 'react-router'
 
 import {
@@ -42,7 +43,10 @@ export const PlaylistCard = ({
   const [unReaction] = useUnReactionPlaylistMutation()
 
   return (
-    <Card as={Link} to={`/playlists/${id}`} className={s.card}>
+    <Card
+      as={Link}
+      to={`/playlists/${id}`}
+      className={clsx(s.card, isShowReactionButtons && s.withReactionButtons)}>
       <div className={s.image}>
         <img src={imageSrc} alt="" aria-hidden />
       </div>
@@ -55,6 +59,7 @@ export const PlaylistCard = ({
       {/*  'reaction' in props — Type guard for correct type checking */}
       {isShowReactionButtons && 'reaction' in props && (
         <ReactionButtons
+          className={s.reactionButtons}
           reaction={props.reaction}
           onLike={() => like({ id })}
           onDislike={() => dislike({ id })}
