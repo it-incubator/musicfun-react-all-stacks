@@ -82,6 +82,8 @@ export const PlaylistsPage = () => {
     content = <span>Loading...</span>
   } else if (isError) {
     content = <span>Playlist loading error. Please try again later.</span>
+  } else if (data?.data?.data.length === 0) {
+    content = <span>No results found for your search.</span>
   } else if (data?.data) {
     content = (
       <>
