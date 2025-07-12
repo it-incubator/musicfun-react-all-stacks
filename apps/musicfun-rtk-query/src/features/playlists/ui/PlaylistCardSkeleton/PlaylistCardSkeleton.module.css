@@ -1,0 +1,29 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  width: 264px;
+  min-height: 267px;
+  padding: 8px;
+}
+
+.image {
+  height: 153px;
+  margin-bottom: 8px;
+}
+
+.title {
+  margin-bottom: 4px;
+}
+
+.description {
+  margin-bottom: 8px;
+}
+
+.reactionButtons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: auto;
+}

@@ -55,6 +55,7 @@ export const PlaylistCard = ({
       {/*  'reaction' in props — Type guard for correct type checking */}
       {isShowReactionButtons && 'reaction' in props && (
         <ReactionButtons
+          className={s.reactionButtons}
           reaction={props.reaction}
           onLike={() => like({ id })}
           onDislike={() => dislike({ id })}

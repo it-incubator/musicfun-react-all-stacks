@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+
   width: 264px;
+  min-height: 267px;
 }
 
 .image {
@@ -34,4 +36,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.reactionButtons {
+  margin-top: auto;
 }
