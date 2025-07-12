@@ -256,6 +256,21 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
+    deleteCoverFromTrack: build.mutation<void, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}/cover`,
+        method: 'DELETE',
+      }),
+      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
+      },
+      invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
+    }),
   }),
 })
 
@@ -264,6 +279,7 @@ export const {
   useFetchTracksQuery,
   useFetchTrackByIdQuery,
   useAddCoverToTrackMutation,
+  useDeleteCoverFromTrackMutation,
   useAddTrackToPlaylistMutation,
   useCreateTrackMutation,
   useDislikeMutation,

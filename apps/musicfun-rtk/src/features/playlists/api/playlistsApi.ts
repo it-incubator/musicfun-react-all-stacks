@@ -63,6 +63,10 @@ export const playlistsAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: (_result, _error, { playlistId }) => [{ type: 'Playlist', id: playlistId }, 'Playlist'],
     }),
+    deletePlaylistCover: build.mutation<void, { playlistId: string }>({
+      query: ({ playlistId }) => ({ url: `playlists/${playlistId}/images/main`, method: 'DELETE' }),
+      invalidatesTags: (_result, _error, { playlistId }) => [{ type: 'Playlist', id: playlistId }, 'Playlist'],
+    }),
     reorderPlaylist: build.mutation<void, { playlistId: string; putAfterItemId: Nullable<string> }>({
       query: ({ playlistId, putAfterItemId }) => ({
         url: `playlists/${playlistId}/reorder`,
@@ -103,6 +107,7 @@ export const {
   useUpdatePlaylistMutation,
   useRemovePlaylistMutation,
   useUploadPlaylistCoverMutation,
+  useDeletePlaylistCoverMutation,
   useReorderPlaylistMutation,
   useLikePlaylistMutation,
   useDislikePlaylistMutation,
