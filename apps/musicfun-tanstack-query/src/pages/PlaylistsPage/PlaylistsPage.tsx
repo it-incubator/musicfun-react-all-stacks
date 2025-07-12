@@ -1,4 +1,5 @@
-import { type ChangeEvent, useMemo } from 'react'
+import { useMemo } from 'react'
+import type { ChangeEvent } from 'react'
 import { useCallback } from 'react'
 import { useState } from 'react'
 
@@ -10,8 +11,8 @@ import { Autocomplete, Pagination, Typography } from '@/shared/components'
 import { useDebounceValue } from '@/shared/hooks'
 
 import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
-import type { ISortConfig, SortOption } from './PlaylistsPage.types.ts'
 import s from './PlaylistsPage.module.css'
+import type { ISortConfig, SortOption } from './PlaylistsPage.types.ts'
 
 const sortConfig: Record<SortOption, ISortConfig> = {
   newest: { sortBy: 'addedAt', sortDirection: 'desc' },
