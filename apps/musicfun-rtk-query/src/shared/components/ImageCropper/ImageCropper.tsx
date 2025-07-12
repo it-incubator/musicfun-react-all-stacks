@@ -1,6 +1,6 @@
 import { clsx } from 'clsx'
-import { useState } from 'react'
-import Cropper, { type Area } from 'react-easy-crop'
+import { useCallback, useState } from 'react'
+import Cropper from 'react-easy-crop'
 
 import { Button } from '../Button'
 import { Dialog, DialogContent, DialogFooter } from '../Dialog'
@@ -9,10 +9,17 @@ import s from './ImageCropper.module.css'
 
 export type CropShape = 'rect' | 'round'
 
+export type CroppedArea = {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 export type ImageCropperProps = {
   isOpen: boolean
   onClose: () => void
-  onCropComplete: (croppedFile: File, croppedArea: Area) => void
+  onCropComplete: (croppedFile: File, croppedArea: CroppedArea) => void
   imageSrc: string
   originalFileName?: string
   cropShape?: CropShape
@@ -30,70 +37,67 @@ export const ImageCropper = ({
 }: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<CroppedArea | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
 
-  const onCropAreaChange = (croppedArea: Area, croppedAreaPixels: Area) => {
+  const onCropAreaChange = useCallback((croppedArea: any, croppedAreaPixels: CroppedArea) => {
     setCroppedAreaPixels(croppedAreaPixels)
-  }
+  }, [])
 
-  const getCroppedImg = async (imageSrc: string, pixelCrop: Area): Promise<File> => {
-    const image = new Image()
-    image.src = imageSrc
+  const getCroppedImg = useCallback(
+    async (imageSrc: string, pixelCrop: CroppedArea): Promise<File> => {
+      const image = new Image()
+      image.src = imageSrc
 
-    return new Promise((resolve, reject) => {
-      image.onload = () => {
-        // Create a canvas element to crop the image
+      return new Promise((resolve, reject) => {
+        image.onload = () => {
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
 
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
+          if (!ctx) {
+            reject(new Error('No 2d context'))
+            return
+          }
 
-        if (!ctx) {
-          reject(new Error('No 2d context'))
-          return
+          canvas.width = pixelCrop.width
+          canvas.height = pixelCrop.height
+
+          ctx.drawImage(
+            image,
+            pixelCrop.x,
+            pixelCrop.y,
+            pixelCrop.width,
+            pixelCrop.height,
+            0,
+            0,
+            pixelCrop.width,
+            pixelCrop.height
+          )
+
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error('Canvas is empty'))
+                return
+              }
+
+              const file = new File([blob], originalFileName, {
+                type: 'image/jpeg',
+              })
+              resolve(file)
+            },
+            'image/jpeg',
+            0.9
+          )
         }
 
-        canvas.width = pixelCrop.width
-        canvas.height = pixelCrop.height
-
-        // draw the cropped image on the canvas
-        ctx.drawImage(
-          image,
-          pixelCrop.x,
-          pixelCrop.y,
-          pixelCrop.width,
-          pixelCrop.height,
-          0,
-          0,
-          pixelCrop.width,
-          pixelCrop.height
-        )
-
-        // convert the canvas to a blob
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) {
-              reject(new Error('Canvas is empty'))
-              return
-            }
-
-            // create a file from the blob
-            const file = new File([blob], originalFileName, {
-              type: 'image/jpeg',
-            })
-
-            resolve(file)
-          },
-          'image/jpeg',
-          0.9
-        )
-      }
-
-      image.onerror = () => {
-        reject(new Error('Failed to load image'))
-      }
-    })
-  }
+        image.onerror = () => {
+          reject(new Error('Failed to load image'))
+        }
+      })
+    },
+    [originalFileName]
+  )
 
   const handleCropConfirm = async () => {
     if (!croppedAreaPixels) return

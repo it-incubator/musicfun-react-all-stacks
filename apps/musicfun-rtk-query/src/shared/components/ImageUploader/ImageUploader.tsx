@@ -4,12 +4,12 @@ import { type ChangeEvent, type DragEvent, useRef, useState } from 'react'
 import { ImageUploadIcon } from '@/shared/icons'
 
 import { IconButton } from '../IconButton'
-import { type CropShape, ImageCropper } from '../ImageCropper'
+import { type CroppedArea, type CropShape, ImageCropper } from '../ImageCropper'
 import { Typography } from '../Typography'
 import s from './ImageUploader.module.css'
 
 export type ImageUploaderProps = {
-  onImageSelect: (file: File) => void
+  onImageSelect: (file: File, croppedArea?: CroppedArea) => void
   className?: string
   acceptedFormats?: string[]
   placeholder?: string
@@ -18,7 +18,6 @@ export type ImageUploaderProps = {
   enableCrop?: boolean
   cropTitle?: string
   cropDescription?: string
-  initialImageUrl?: string
 }
 
 const MAX_SIZE_IN_MB = 5
@@ -30,10 +29,9 @@ export const ImageUploader = ({
   placeholder = 'Upload Cover Image',
   cropShape = 'rect',
   enableCrop = true,
-  initialImageUrl,
 }: ImageUploaderProps) => {
   const [isDragOver, setIsDragOver] = useState(false)
-  const [preview, setPreview] = useState<string | null>(initialImageUrl || null)
+  const [preview, setPreview] = useState<string | null>(null)
   const [originalFile, setOriginalFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [showCropModal, setShowCropModal] = useState(false)
@@ -79,7 +77,7 @@ export const ImageUploader = ({
     reader.readAsDataURL(file)
   }
 
-  const handleCropComplete = (croppedFile: File) => {
+  const handleCropComplete = (croppedFile: File, croppedArea: CroppedArea) => {
     // Create preview for cropped image
     const reader = new FileReader()
     reader.onload = (e) => {
@@ -88,7 +86,7 @@ export const ImageUploader = ({
     reader.readAsDataURL(croppedFile)
 
     setShowCropModal(false)
-    onImageSelect(croppedFile)
+    onImageSelect(croppedFile, croppedArea)
   }
 
   const handleCropCancel = () => {

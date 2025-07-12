@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
 
-import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
+import { PlaylistCard, useFetchPlaylistsQuery } from '@/features/playlists'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
 
@@ -13,7 +13,7 @@ export const PlaylistsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const pageNumber = Number(searchParams.get('page')) || 1
-  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({ pageNumber })
+  const { data: playlists } = useFetchPlaylistsQuery({ pageNumber })
   const pagesCount = playlists?.meta.pagesCount || 1
 
   const handlePageChange = (page: number) => {
@@ -49,28 +49,26 @@ export const PlaylistsPage = () => {
           className={s.autocomplete}
         />
       </div>
+      {playlists?.data && (
+        <ContentList
+          data={playlists.data}
+          renderItem={(playlist) => {
+            const image = playlist.attributes.images.main[1]
 
-      <ContentList
-        data={playlists?.data}
-        isLoading={isPlaylistsLoading}
-        skeleton={<PlaylistCardSkeleton showReactionButtons />}
-        renderItem={(playlist) => {
-          const image = playlist.attributes.images.main[1]
-
-          return (
-            <PlaylistCard
-              id={playlist.id}
-              title={playlist.attributes.title}
-              imageSrc={image?.url}
-              description={playlist.attributes.description}
-              isShowReactionButtons={true}
-              reaction={playlist.attributes.currentUserReaction}
-              likesCount={playlist.attributes.likesCount}
-            />
-          )
-        }}
-      />
-
+            return (
+              <PlaylistCard
+                id={playlist.id}
+                title={playlist.attributes.title}
+                imageSrc={image?.url}
+                description={playlist.attributes.description}
+                isShowReactionButtons={true}
+                reaction={playlist.attributes.currentUserReaction}
+                likesCount={playlist.attributes.likesCount}
+              />
+            )
+          }}
+        />
+      )}
       <Pagination
         className={s.pagination}
         page={pageNumber}
