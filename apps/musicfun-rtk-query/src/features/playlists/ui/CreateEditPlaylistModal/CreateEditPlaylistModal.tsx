@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { PlaylistTagAutocomplete } from '@/features/tags/ui'
 import {
   Button,
   Dialog,
@@ -8,7 +9,6 @@ import {
   DialogFooter,
   DialogHeader,
   ImageUploader,
-  TagEditor,
   Textarea,
   TextField,
   Typography,
@@ -101,7 +101,7 @@ export const CreateEditPlaylistModal = () => {
           payload: {
             title: data.title,
             description: data.description,
-            // TODO: add update tags
+            tagIds: data.tags,
           },
         }).unwrap()
 
@@ -115,6 +115,7 @@ export const CreateEditPlaylistModal = () => {
         const createResult = await createPlaylist({
           title: data.title,
           description: data.description,
+          // tagIds: data.tags,
         }).unwrap()
 
         const playlistId = createResult.data.id
@@ -178,12 +179,7 @@ export const CreateEditPlaylistModal = () => {
             errorMessage={errors.description?.message}
           />
 
-          <TagEditor
-            label="Hashtags"
-            value={tagsValue}
-            onTagsChange={handleTagsChange}
-            maxTags={5}
-          />
+          <PlaylistTagAutocomplete value={tagsValue} onChange={handleTagsChange} />
         </DialogContent>
 
         <DialogFooter>

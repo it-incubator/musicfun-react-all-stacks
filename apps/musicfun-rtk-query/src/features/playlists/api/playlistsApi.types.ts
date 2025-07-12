@@ -41,7 +41,9 @@ export type PlaylistsResponse = {
 // Arguments
 export type CreatePlaylistArgs = Pick<PlaylistAttributes, 'title' | 'description'>
 
-export type UpdatePlaylistArgs = Partial<Pick<PlaylistAttributes, 'title' | 'description' | 'tags'>>
+export type UpdatePlaylistArgs = Partial<Pick<PlaylistAttributes, 'title' | 'description'>> & {
+  tagIds: string[]
+}
 
 export type FetchPlaylistsArgs = {
   pageSize?: number

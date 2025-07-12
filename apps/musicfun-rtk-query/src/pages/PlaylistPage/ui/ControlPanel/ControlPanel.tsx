@@ -32,7 +32,7 @@ export const ControlPanel = ({
   const [dislike] = useDislikePlaylistMutation()
   const [unReaction] = useUnReactionPlaylistMutation()
 
-  const { handleOpenEditPlaylistModal } = useEditPlaylistModal(playlistId)
+  const { handleOpenEditPlaylistModal } = useEditPlaylistModal()
 
   return (
     <div className={s.box}>
@@ -56,7 +56,10 @@ export const ControlPanel = ({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="start">
-            <DropdownMenuItem onClick={handleOpenEditPlaylistModal}>
+            <DropdownMenuItem
+              onClick={() => {
+                handleOpenEditPlaylistModal(playlistId)
+              }}>
               <EditIcon />
               <span>Edit</span>
             </DropdownMenuItem>

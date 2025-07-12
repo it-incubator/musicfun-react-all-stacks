@@ -27,6 +27,8 @@ export type AutocompleteProps = {
   placeholder?: string
   options: AutocompleteOption[]
   value: string[]
+  searchTerm: string
+  setSearchTerm: (value: string) => void
   onChange: (value: string[]) => void
   disabled?: boolean
   maxTags?: number
@@ -40,6 +42,8 @@ export const Autocomplete = ({
   placeholder = 'Search and select...',
   options,
   value,
+  searchTerm,
+  setSearchTerm,
   onChange,
   disabled = false,
   maxTags,
@@ -49,7 +53,6 @@ export const Autocomplete = ({
   ...props
 }: AutocompleteProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
   const [focusedIndex, setFocusedIndex] = useState(-1)
 
   // For detecting clicks outside component to close dropdown

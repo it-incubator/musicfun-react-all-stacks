@@ -127,7 +127,10 @@ export const DropdownMenuTrigger = ({
     <button
       ref={triggerRef as React.RefObject<HTMLButtonElement>}
       type="button"
-      onClick={onToggle}
+      onClick={(e) => {
+        e.preventDefault()
+        onToggle()
+      }}
       className={clsx(s.trigger, className)}>
       {children}
     </button>
@@ -244,7 +247,8 @@ export const DropdownMenuItem = <T extends ElementType = 'button'>({
 }: DropdownMenuItemProps<T>) => {
   const { onClose } = useDropdownMenuContext()
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
     if (disabled) return
     onClick?.()
     onClose()

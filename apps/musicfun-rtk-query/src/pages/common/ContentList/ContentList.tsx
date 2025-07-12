@@ -9,8 +9,8 @@ type ContentListProps<T> = {
   data: T[] | undefined
   renderItem: (item: T) => React.ReactNode
   listClassName?: string
-  isLoading: boolean
-  skeleton: React.ReactNode
+  isLoading?: boolean
+  skeleton?: React.ReactNode
 }
 
 export const ContentList = <T,>({
