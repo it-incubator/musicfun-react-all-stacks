@@ -33,7 +33,7 @@ export const PlaylistsPage = () => {
     () => ({
       search: debouncedSearch,
       pageNumber,
-      pageSize: 10,
+      pageSize: 5,
       sortBy,
       sortDirection,
       tagsIds: hashtags,
@@ -42,7 +42,7 @@ export const PlaylistsPage = () => {
   )
 
   const { data, isPending, isError } = usePlaylists(queryParams)
-  const { data: tagsData, isPending: isTagsLoading, isError: isTagsError } = useTags('')
+  const { data: tagsData, isPending: isTagsLoading } = useTags('')
 
   const resetPage = useCallback(() => {
     setPageNumber(1)
