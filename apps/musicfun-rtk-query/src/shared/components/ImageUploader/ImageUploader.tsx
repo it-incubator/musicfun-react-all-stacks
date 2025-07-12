@@ -1,6 +1,5 @@
 import { clsx } from 'clsx'
 import { type ChangeEvent, type DragEvent, useRef, useState } from 'react'
-import { type Area } from 'react-easy-crop'
 
 import { ImageUploadIcon } from '@/shared/icons'
 
@@ -19,6 +18,7 @@ export type ImageUploaderProps = {
   enableCrop?: boolean
   cropTitle?: string
   cropDescription?: string
+  initialImageUrl?: string
 }
 
 const MAX_SIZE_IN_MB = 5
@@ -30,9 +30,10 @@ export const ImageUploader = ({
   placeholder = 'Upload Cover Image',
   cropShape = 'rect',
   enableCrop = true,
+  initialImageUrl,
 }: ImageUploaderProps) => {
   const [isDragOver, setIsDragOver] = useState(false)
-  const [preview, setPreview] = useState<string | null>(null)
+  const [preview, setPreview] = useState<string | null>(initialImageUrl || null)
   const [originalFile, setOriginalFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [showCropModal, setShowCropModal] = useState(false)
@@ -78,7 +79,7 @@ export const ImageUploader = ({
     reader.readAsDataURL(file)
   }
 
-  const handleCropComplete = (croppedFile: File, croppedArea: Area) => {
+  const handleCropComplete = (croppedFile: File) => {
     // Create preview for cropped image
     const reader = new FileReader()
     reader.onload = (e) => {

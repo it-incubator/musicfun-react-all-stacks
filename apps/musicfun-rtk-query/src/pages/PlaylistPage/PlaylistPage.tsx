@@ -38,6 +38,7 @@ export const PlaylistPage = () => {
         playlistId={playlist.data.id}
         isOwnPlaylist={isOwnPlaylist}
         reaction={playlist.data.attributes.currentUserReaction}
+        likesCount={playlist.data.attributes.likesCount}
       />
       <TracksTable
         trackRows={MOCK_TRACKS.map((track, index) => ({

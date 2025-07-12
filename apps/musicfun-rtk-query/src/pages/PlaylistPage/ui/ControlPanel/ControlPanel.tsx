@@ -1,5 +1,6 @@
 import {
   useDislikePlaylistMutation,
+  useEditPlaylistModal,
   useLikePlaylistMutation,
   useUnReactionPlaylistMutation,
 } from '@/features/playlists'
@@ -20,14 +21,18 @@ export const ControlPanel = ({
   playlistId,
   isOwnPlaylist,
   reaction,
+  likesCount,
 }: {
   playlistId: string
   isOwnPlaylist: boolean
   reaction: CurrentUserReaction
+  likesCount: number
 }) => {
   const [like] = useLikePlaylistMutation()
   const [dislike] = useDislikePlaylistMutation()
   const [unReaction] = useUnReactionPlaylistMutation()
+
+  const { handleOpenEditPlaylistModal } = useEditPlaylistModal(playlistId)
 
   return (
     <div className={s.box}>
@@ -40,6 +45,7 @@ export const ControlPanel = ({
         onLike={() => like({ id: playlistId })}
         onDislike={() => dislike({ id: playlistId })}
         onUnReaction={() => unReaction({ id: playlistId })}
+        likesCount={likesCount}
         size="large"
       />
 
@@ -50,7 +56,7 @@ export const ControlPanel = ({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="start">
-            <DropdownMenuItem onClick={() => {}}>
+            <DropdownMenuItem onClick={handleOpenEditPlaylistModal}>
               <EditIcon />
               <span>Edit</span>
             </DropdownMenuItem>
