@@ -7,7 +7,7 @@ import type { IPlaylistsQuery } from './use-playlist.query.types.ts'
 export const usePlaylists = ({
   search,
   pageNumber,
-  pageSize = 10,
+  pageSize = 5,
   userId,
   sortBy,
   sortDirection,
