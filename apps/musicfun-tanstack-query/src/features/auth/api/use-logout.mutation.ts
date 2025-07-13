@@ -1,23 +1,28 @@
-import { authKey } from '@/common/apiEntities'
-import { localStorageKeys } from './authApi.types.ts'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getClient } from '@/common/api/client.ts'
+
+import { getClient } from '@/shared/api/client.ts'
+import { requestWrapper } from '@/shared/api/utils/request-wrapper.ts'
+
+import { localStorageKeys } from '../types/auth-api.types'
 
 export const useLogoutMutation = () => {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: () => {
-      return getClient().POST('/auth/logout', {
-        body: {
-          refreshToken: localStorage.getItem(localStorageKeys.refreshToken)!,
-        },
-      })
+      return requestWrapper(
+        getClient().POST('/auth/logout', {
+          body: {
+            refreshToken: localStorage.getItem(localStorageKeys.refreshToken) || '',
+          },
+        })
+      )
     },
     onSuccess: async () => {
-      localStorage.removeItem(localStorageKeys.accessToken)
+      // Согласно API документации, access-токен остается валидным после logout
+      // Удаляем только refresh token, который был деактивирован на сервере
       localStorage.removeItem(localStorageKeys.refreshToken)
-      qc.resetQueries({ queryKey: [authKey] }) // resetQueries переводит query в изначальное состояние и уведомляет подписчиков — компонент получит data = undefined.
-      //qc.invalidateQueries({ queryKey: [authKey] }) // invalidateQueries заставит его немедленно перефетчиться без токена ⇒ получите 401 ⇒ data станет undefined / error.
+      await qc.resetQueries({ queryKey: ['auth', 'me'] }) // resetQueries переводит query в изначальное состояние и уведомляет подписчиков — компонент получит data = undefined.
+      //await qc.invalidateQueries({ queryKey: ['auth', 'me'] }) // invalidateQueries заставит его немедленно перефетчиться без токена ⇒ получите 401 ⇒ data станет undefined / error.
     },
   })
 }
