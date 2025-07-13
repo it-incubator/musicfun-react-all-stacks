@@ -2,9 +2,9 @@ import type { ChangeEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
 import { PlaylistCard } from '@/features/playlists'
-import type { IPlaylistsQuery } from '@/features/playlists/api/use-playlist.query.types.ts'
 import { usePlaylists } from '@/features/playlists/api/use-playlists.query.ts'
 import { useTags } from '@/features/tags'
+import type { SchemaGetPlaylistsRequestPayload } from '@/shared/api/schema.ts'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
 import { useDebounceValue } from '@/shared/hooks'
 
@@ -64,12 +64,12 @@ export const PlaylistsPage = () => {
     [resetPage]
   )
 
-  const handlePageChange = useCallback((page: IPlaylistsQuery['pageNumber']) => {
+  const handlePageChange = useCallback((page: SchemaGetPlaylistsRequestPayload['pageNumber']) => {
     setPageNumber(page)
   }, [])
 
   const handleHashtagsChange = useCallback(
-    (tags: IPlaylistsQuery['tagsIds']) => {
+    (tags: SchemaGetPlaylistsRequestPayload['tagsIds']) => {
       setHashtags(tags || [])
       resetPage()
     },

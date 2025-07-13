@@ -14,8 +14,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate:api": "pnpm openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/shared/api/schema.ts",
-    "generate:api:dimych": "pnpm openapi-typescript http://localhost:9001/api-json -o ./src/shared/api/schema.ts"
+    "generate:api": "pnpm openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/shared/api/schema.ts --root-types",
+    "generate:api:dimych": "pnpm openapi-typescript http://localhost:9001/api-json -o ./src/shared/api/schema.ts --root-types"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.81.5",

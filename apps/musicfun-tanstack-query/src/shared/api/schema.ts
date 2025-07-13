@@ -12,7 +12,7 @@ export interface paths {
       cookie?: never
     }
     /**
-     * Получить список моих плейлистов
+     * Get my playlists
      * @deprecated
      */
     get: operations['PlaylistsController_getMyPlaylists']
@@ -31,10 +31,13 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Получить список всех плейлистов */
+    /**
+     * Retrieve all playlists
+     * @description Query parameters must conform to the **GetPlaylistsRequestPayload** schema.
+     */
     get: operations['PlaylistsPublicController_getPlaylists']
     put?: never
-    /** Создать новый плейлист */
+    /** Create a new playlist */
     post: operations['PlaylistsController_createPlaylist']
     delete?: never
     options?: never
@@ -49,12 +52,12 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Получить один плейлист по ID */
+    /** Get a single playlist by ID */
     get: operations['PlaylistsPublicController_getPlaylistById']
-    /** Обновить плейлист */
+    /** Update a playlist */
     put: operations['PlaylistsController_updatePlaylist']
     post?: never
-    /** Удалить плейлист */
+    /** Delete a playlist */
     delete: operations['PlaylistsController_deletePlaylist']
     options?: never
     head?: never
@@ -69,7 +72,7 @@ export interface paths {
       cookie?: never
     }
     get?: never
-    /** Переупорядочить плейлисты */
+    /** Reorder playlists */
     put: operations['PlaylistsController_reorderPlaylist']
     post?: never
     delete?: never
@@ -88,11 +91,11 @@ export interface paths {
     get?: never
     put?: never
     /**
-     * Загрузить обложку для плейлиста
-     * @description Минимальная высота — 500px, квадратное изображение
+     * Upload playlist cover
+     * @description Minimum height — 500px; image must be square
      */
     post: operations['PlaylistsController_uploadMainImage']
-    /** Удалить обложку плейлиста */
+    /** Delete playlist cover */
     delete: operations['PlaylistsController_deleteTrackCover']
     options?: never
     head?: never
@@ -106,7 +109,7 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Получить список всех треков во всех плейлистах */
+    /** Get list of all tracks in all playlists */
     get: operations['TracksPublicController_getAllTracks']
     put?: never
     post?: never
@@ -123,7 +126,7 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Получить список треков внутри плейлиста */
+    /** Get list of tracks in a playlist */
     get: operations['TracksPublicController_getPlaylistTracks']
     put?: never
     post?: never
@@ -140,12 +143,12 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Получить детали трека по ID */
+    /** Get track details by ID */
     get: operations['TracksPublicController_getTrackDetails']
-    /** Обновить информацию о треке */
+    /** Update track information */
     put: operations['TracksController_updateTrack']
     post?: never
-    /** Полностью удалить трек */
+    /** Permanently delete a track */
     delete: operations['TracksController_deleteTrackCompletely']
     options?: never
     head?: never
@@ -161,7 +164,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Поставить лайк треку или снять его (toggle) */
+    /** Like or toggle like on a track */
     post: operations['TracksPublicController_likeTrack']
     delete?: never
     options?: never
@@ -178,7 +181,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Поставить дизлайк треку или снять его (toggle) */
+    /** Dislike or toggle dislike on a track */
     post: operations['TracksPublicController_dislikeTrack']
     delete?: never
     options?: never
@@ -196,7 +199,7 @@ export interface paths {
     get?: never
     put?: never
     post?: never
-    /** Удалить реакцию пользователя на трек */
+    /** Remove user reaction from a track */
     delete: operations['TracksPublicController_removeTrackReaction']
     options?: never
     head?: never
@@ -212,7 +215,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Поставить лайк плейлисту */
+    /** Like a playlist */
     post: operations['PlaylistsPublicController_likePlaylist']
     delete?: never
     options?: never
@@ -229,7 +232,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Поставить дизлайк плейлисту */
+    /** Dislike a playlist */
     post: operations['PlaylistsPublicController_dislikePlaylist']
     delete?: never
     options?: never
@@ -247,7 +250,7 @@ export interface paths {
     get?: never
     put?: never
     post?: never
-    /** Удалить реакцию пользователя на плейлист */
+    /** Remove user reaction from a playlist */
     delete: operations['PlaylistsPublicController_removePlaylistReaction']
     options?: never
     head?: never
@@ -262,7 +265,7 @@ export interface paths {
       cookie?: never
     }
     get?: never
-    /** Изменить порядок треков в плейлисте */
+    /** Reorder tracks in a playlist */
     put: operations['TracksController_reorderTrack']
     post?: never
     delete?: never
@@ -280,7 +283,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Добавить трек в свой плейлист */
+    /** Add a track to your playlist */
     post: operations['TracksController_addTrackToPlaylist']
     delete?: never
     options?: never
@@ -298,7 +301,7 @@ export interface paths {
     get?: never
     put?: never
     post?: never
-    /** Удалить трек из своего плейлиста */
+    /** Remove a track from your playlist */
     delete: operations['TracksController_unbindTrackFromPlaylist']
     options?: never
     head?: never
@@ -314,7 +317,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Публикация трека (сделать доступным для всех) */
+    /** Publish a track (make it publicly available) */
     post: operations['TracksController_publishTrack']
     delete?: never
     options?: never
@@ -331,9 +334,9 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Загрузить обложку трека */
+    /** Upload track cover */
     post: operations['TracksController_uploadTrackCover']
-    /** Удалить обложку трека */
+    /** Delete track cover */
     delete: operations['TracksController_deleteTrackCover']
     options?: never
     head?: never
@@ -349,7 +352,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Создать трек с загрузкой mp3 файла */
+    /** Create a track with MP3 file upload */
     post: operations['TracksController_uploadTrackMp3']
     delete?: never
     options?: never
@@ -366,7 +369,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Создать нового исполнителя */
+    /** Create a new artist */
     post: operations['ArtistsController_createArtist']
     delete?: never
     options?: never
@@ -381,7 +384,7 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Поиск исполнителей по подстроке */
+    /** Search artists by substring */
     get: operations['ArtistsController_searchArtist']
     put?: never
     post?: never
@@ -401,7 +404,7 @@ export interface paths {
     get?: never
     put?: never
     post?: never
-    /** Удалить исполнителя по ID */
+    /** Delete an artist by ID */
     delete: operations['ArtistsController_deleteArtist']
     options?: never
     head?: never
@@ -506,7 +509,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Создать новый тег */
+    /** Create a new tag */
     post: operations['TagsController_createTag']
     delete?: never
     options?: never
@@ -521,7 +524,7 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Поиск тегов по подстроке */
+    /** Search tags by substring */
     get: operations['TagsController_searchTags']
     put?: never
     post?: never
@@ -541,7 +544,7 @@ export interface paths {
     get?: never
     put?: never
     post?: never
-    /** Удалить тег по ID */
+    /** Delete a tag by ID */
     delete: operations['TagsController_deleteTag']
     options?: never
     head?: never
@@ -553,142 +556,221 @@ export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     UserOutputDTO: {
+      /** @description Unique identifier of the user */
       id: string
+      /** @description Name of the user */
       name: string
     }
+    /**
+     * @description Type of the image size (e.g., original, thumbnail variants)
+     * @enum {string}
+     */
+    ImageSizeType: 'original' | 'thumbnail' | 'medium'
     ImageDto: {
-      /** @enum {string} */
-      type: 'original' | 'thumbnail' | 'medium'
+      /** @description Type of the image size (e.g., original, thumbnail variants) */
+      type: components['schemas']['ImageSizeType']
+      /** @description Image width in pixels */
       width: number
+      /** @description Image height in pixels */
       height: number
+      /** @description Image file size in bytes */
       fileSize: number
+      /** @description Full public URL of the image */
       url: string
     }
     PlaylistImagesOutputDTO: {
-      /** @description Оригинальное изображение и превьюшки */
+      /** @description Original images and thumbnail previews */
       main?: components['schemas']['ImageDto'][]
     }
+    GetTagOutput: {
+      /** @description Unique identifier of the tag */
+      id: string
+      /** @description Original name of the tag */
+      name: string
+    }
     /**
-     * @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк
+     * @description User reaction: 0 – guest or no reaction; 1 – like; -1 – dislike
      * @enum {number}
      */
     ReactionValue: 0 | 1 | -1
     PlaylistAttributesDto: {
+      /** @description Title of the playlist */
       title: string
+      /** @description Description of the playlist */
       description: string | null
+      /**
+       * Format: date-time
+       * @description Date and time when the playlist was added (ISO 8601)
+       */
       addedAt: string
+      /**
+       * Format: date-time
+       * @description Date and time when the playlist was last updated (ISO 8601)
+       */
       updatedAt: string
+      /** @description Order index of the playlist */
       order: number
+      /** @description User who created the playlist */
       user: components['schemas']['UserOutputDTO']
+      /** @description Images associated with the playlist */
       images: components['schemas']['PlaylistImagesOutputDTO']
-      tags: string[]
+      /** @description Tags linked to the playlist */
+      tags: components['schemas']['GetTagOutput'][]
+      /** @description Total number of likes for this playlist */
       likesCount: number
+      /** @description Total number of dislikes for this playlist */
       dislikesCount: number
-      /** @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк */
+      /** @description User reaction: 0 – guest or no reaction; 1 – like; -1 – dislike */
       currentUserReaction: components['schemas']['ReactionValue']
     }
     PlaylistListItemJsonApiData: {
+      /** @description Unique identifier of the playlist */
       id: string
-      /** @example playlists */
+      /**
+       * @description Resource type (should be "playlists")
+       * @example playlists
+       */
       type: string
+      /** @description Attributes of the playlist resource */
       attributes: components['schemas']['PlaylistAttributesDto']
     }
     GetMyPlaylistsOutput: {
+      /** @description Array of playlist resource objects owned by the current user */
       data: components['schemas']['PlaylistListItemJsonApiData'][]
     }
     CreatePlaylistRequestPayload: {
+      /** @description Playlist title (1 to 100 characters) */
       title: string
-      description?: string
+      /** @description Playlist description (up to 1000 characters) */
+      description?: string | null
     }
     PlaylistOutputAttributes: {
+      /** @description Title of the playlist */
       title: string
+      /** @description Description of the playlist */
       description: string | null
+      /**
+       * Format: date-time
+       * @description Date and time when the playlist was added (ISO 8601)
+       */
       addedAt: string
+      /**
+       * Format: date-time
+       * @description Date and time when the playlist was last updated (ISO 8601)
+       */
       updatedAt: string
+      /** @description Order index of the playlist */
       order: number
+      /** @description User who created the playlist */
       user: components['schemas']['UserOutputDTO']
+      /** @description Images associated with the playlist */
       images: components['schemas']['PlaylistImagesOutputDTO']
-      tags: string[]
+      /** @description Tags linked to the playlist */
+      tags: components['schemas']['GetTagOutput'][]
+      /** @description Total number of likes for this playlist */
       likesCount: number
+      /** @description Total number of dislikes for this playlist */
       dislikesCount: number
-      /** @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк */
+      /** @description User reaction: 0 – guest or no reaction; 1 – like; -1 – dislike */
       currentUserReaction: components['schemas']['ReactionValue']
     }
     PlaylistOutput: {
+      /** @description Unique identifier of the playlist */
       id: string
-      /** @example playlists */
+      /**
+       * @description Resource type (should be "playlists")
+       * @example playlists
+       */
       type: string
+      /** @description Playlist attributes object */
       attributes: components['schemas']['PlaylistOutputAttributes']
     }
     GetPlaylistOutput: {
+      /** @description JSON:API single-resource response wrapper */
       data: components['schemas']['PlaylistOutput']
     }
     UpdatePlaylistRequestPayload: {
+      /** @description Playlist title (1 to 100 characters) */
       title: string
-      /** @example Cool playlist */
+      /**
+       * @description Playlist description (up to 1000 characters)
+       * @example Cool playlist
+       */
       description?: string | null
+      /** @description Array of tag IDs to associate with the playlist (up to 5) */
       tagIds?: string[]
     }
     ReorderPlaylistsRequestPayload: {
       /**
        * Format: uuid
-       * @description ID плейлиста, после которого нужно вставить текущий. null - разместить плейлист в начало списка.
+       * @description ID of the playlist after which the current playlist should be inserted. Use null to place the playlist at the beginning of the list.
        * @example a1b2c3d4-e5f6-7890-abcd-1234567890ef
        */
       putAfterItemId?: string | null
     }
     GetImagesOutput: {
-      /** @description Должен содержать оригинальный размер изображения и миниатюры, например: original, 320x180 и т.п. */
+      /** @description List of original images and thumbnail versions (e.g., original, 320x180, etc.) */
       main?: components['schemas']['ImageDto'][]
     }
     GetTracksRequestPayload: {
       /**
-       * @description Номер страницы для пагинации (начиная с 1)
+       * @description Page number for pagination (starting from 1)
        * @default 1
        */
       pageNumber: number
       /**
-       * @description Размер страницы для пагинации (от 1 до 20)
+       * @description Page size for pagination (between 1 and 20)
        * @default 10
        */
       pageSize: number
-      /** @description Строка для поиска по названию плейлиста */
+      /**
+       * @description Search term for filtering playlists by name
+       * @example My Playlist
+       */
       search?: string
       /**
-       * @description Поле, по которому сортируются треки
+       * @description Field by which to sort tracks
        * @default publishedAt
        * @enum {string}
        */
       sortBy: 'publishedAt' | 'likesCount'
       /**
-       * @description Направление сортировки (по возрастанию или убыванию)
+       * @description Sort direction (ascending or descending)
        * @default desc
        * @enum {string}
        */
       sortDirection: 'asc' | 'desc'
-      /** @description Фильтрация по ID тегов (можно передавать несколько) */
+      /** @description Filter by tag IDs (multiple values allowed) */
       tagsIds?: string[]
-      /** @description Фильтрация по ID артистов (можно передавать несколько) */
+      /** @description Filter by artist IDs (multiple values allowed) */
       artistsIds?: string[]
-      /** @description Фильтрация по ID пользователя (создателя трека) */
+      /** @description Filter by user ID (track creator's ID) */
       userId?: string
-      /** @description Если true — включать в выдачу также ваши неопубликованные треки (drafts) */
+      /** @description If true, include your unpublished tracks (drafts) */
       includeOwnUnpublished?: boolean
       /**
-       * @description Тип пагинации: `offset` — по номеру страницы; `cursor` — keyset/seek.
+       * @description Pagination type: "offset" for page-number pagination; "cursor" for keyset/seek-based pagination.
        * @default offset
        * @enum {string}
        */
       paginationType: 'offset' | 'cursor'
-      /** @description Base64-закодированный курсор для keyset-пагинации. Используется только если paginationType=cursor. */
-      cursor?: string
+      /** @description Base64-encoded cursor for keyset pagination. Used only if paginationType is "cursor". */
+      cursor?: string | null
     }
     AttachmentDto: {
+      /** @description Unique identifier of the entity */
       id: string
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @description Date and time when the entity was added
+       */
       addedAt: string
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @description Date and time when the entity was last updated
+       */
       updatedAt: string
+      /** @description Version number of the entity (for concurrency control) */
       version: number
       /**
        * @description Public URL to access the uploaded file
@@ -745,11 +827,15 @@ export interface components {
     JsonApiMetaWithPagingAndCursor: {
       page: number
       pageSize: number
+      /** @description Total count may be absent when using keyset pagination */
       totalCount: number | null
+      /** @description Total number of pages */
       pagesCount: number | null
+      /** @description Cursor for the next page */
       nextCursor: string | null
     }
     OmitTypeClass: {
+      /** @description Name of the artist */
       name: string
     }
     IncludedArtistOutput: {
@@ -763,17 +849,29 @@ export interface components {
       included: components['schemas']['IncludedArtistOutput'][]
     }
     PlaylistTrackAttributes: {
+      /** @description Title of the track */
       title: string
+      /** @description Order index of the track in the playlist */
       order: number
+      /**
+       * Format: date-time
+       * @description Date and time when the track was added to the playlist (ISO 8601)
+       */
       addedAt: string
+      /**
+       * Format: date-time
+       * @description Date and time when the track was last updated in the playlist (ISO 8601)
+       */
       updatedAt: string
-      attachments: unknown[][]
+      /** @description Attachments related to the track */
+      attachments: components['schemas']['AttachmentDto'][]
+      /** @description Images associated with the track */
       images: components['schemas']['GetImagesOutput']
       /**
-       * @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк
-       * @enum {number}
+       * @description User reaction: 0 – guest or no reaction; 1 – liked; -1 – disliked
+       * @enum {number|null}
        */
-      currentUserReaction: 0 | 1 | -1
+      currentUserReaction: 0 | 1 | -1 | null
     }
     GetPlaylistTrackListOutputData: {
       id: string
@@ -790,43 +888,72 @@ export interface components {
       meta: components['schemas']['JsonApiMeta']
       included: components['schemas']['IncludedArtistOutput'][]
     }
-    GetTagOutput: {
-      id: string
-      name: string
-    }
     GetArtistOutput: {
+      /** @description Unique identifier of the artist */
       id: string
+      /** @description Name of the artist */
       name: string
     }
     TrackDetailsAttributes: {
+      /** @description Track title */
       title: string
-      lyrics?: string
-      releaseDate?: string
-      addedAt: string
-      /** Format: iso8601 */
-      updatedAt: string
-      duration: number
-      likesCount: number
-      dislikesCount: number
-      attachments: components['schemas']['AttachmentDto'][]
-      images: components['schemas']['GetImagesOutput']
-      tags: components['schemas']['GetTagOutput'][]
-      artists: components['schemas']['GetArtistOutput'][]
-      isPublished: boolean
-      publishedAt?: string
+      /** @description Track lyrics text */
+      lyrics?: string | null
       /**
-       * @description 0 – гость или не реагировал, 1 – пользователь лайкнул, -1 – пользователь дизлайкнул
+       * Format: date-time
+       * @description Release date in ISO 8601 format
+       */
+      releaseDate?: string | null
+      /**
+       * Format: date-time
+       * @description Date and time when the track was added (ISO 8601)
+       */
+      addedAt: string
+      /**
+       * Format: date-time
+       * @description Date and time when the track was last updated (ISO 8601)
+       */
+      updatedAt: string
+      /** @description Duration of the track in seconds */
+      duration: number
+      /** @description Total number of likes for this track */
+      likesCount: number
+      /** @description Total number of dislikes for this track */
+      dislikesCount: number
+      /** @description List of attachments related to the track */
+      attachments: components['schemas']['AttachmentDto'][]
+      /** @description Images associated with the track */
+      images: components['schemas']['GetImagesOutput']
+      /** @description Tags associated with the track */
+      tags: components['schemas']['GetTagOutput'][]
+      /** @description Artists associated with the track */
+      artists: components['schemas']['GetArtistOutput'][]
+      /** @description Publication status of the track */
+      isPublished: boolean
+      /**
+       * Format: date-time
+       * @description Publication date in ISO 8601 format
+       */
+      publishedAt?: string | null
+      /**
+       * @description User reaction: 0 – guest or no reaction; 1 – user liked; -1 – user disliked
        * @enum {number}
        */
       currentUserReaction: 0 | 1 | -1
     }
     TrackDetailsData: {
+      /** @description Unique identifier of the track */
       id: string
-      /** @example tracks */
+      /**
+       * @description Resource type (should be "tracks")
+       * @example tracks
+       */
       type: string
+      /** @description Detailed attributes of the track resource */
       attributes: components['schemas']['TrackDetailsAttributes']
     }
     GetTrackDetailsOutput: {
+      /** @description JSON:API single-track details response wrapper */
       data: components['schemas']['TrackDetailsData']
     }
     ReactionOutput: {
@@ -838,34 +965,37 @@ export interface components {
     }
     GetPlaylistsRequestPayload: {
       /**
-       * @description Номер страницы для пагинации (начиная с 1)
+       * @description Page number for pagination (starting from 1)
        * @default 1
        */
       pageNumber: number
       /**
-       * @description Размер страницы для пагинации (от 1 до 20)
+       * @description Page size for pagination (between 1 and 20)
        * @default 10
        */
       pageSize: number
-      /** @description Строка для поиска по названию плейлиста */
+      /**
+       * @description Search term for filtering playlists by name
+       * @example My Playlist
+       */
       search?: string
       /**
-       * @description Поле, по которому выполняется сортировка
+       * @description Field by which to sort playlists
        * @default addedAt
        * @enum {string}
        */
       sortBy: 'addedAt' | 'likesCount'
       /**
-       * @description Направление сортировки (по возрастанию или убыванию)
+       * @description Sort direction (ascending or descending)
        * @default desc
        * @enum {string}
        */
       sortDirection: 'asc' | 'desc'
-      /** @description Фильтрация по ID тегов. Может быть передано несколько значений: tagsIds=tag1&tagsIds=tag2 */
+      /** @description Filter by tag IDs. Multiple values allowed, e.g.: tagsIds=tag1&tagsIds=tag2 */
       tagsIds?: string[]
-      /** @description Фильтрация по ID пользователя (создателя плейлиста) */
+      /** @description Filter by user ID (playlist creator’s ID) */
       userId?: string
-      /** @description Фильтрация по ID трека — только те плейлисты, в которых он содержится */
+      /** @description Filter by track ID – only playlists containing this track will be returned */
       trackId?: string
     }
     JsonApiMetaWithPaging: {
@@ -875,55 +1005,94 @@ export interface components {
       pagesCount: number
     }
     GetPlaylistsOutput: {
+      /** @description Array of playlist resource objects */
       data: components['schemas']['PlaylistListItemJsonApiData'][]
+      /** @description Pagination metadata for the playlists list */
       meta: components['schemas']['JsonApiMetaWithPaging']
     }
     ReorderTracksRequestPayload: {
       /**
        * Format: uuid
-       * @description ID трека, после которого нужно вставить текущий. null - разместить трек в начало списка.
+       * @description ID of the track after which the current track should be inserted. Use null to place the track at the beginning of the list.
        * @example a1b2c3d4-e5f6-7890-abcd-1234567890ef
        */
       putAfterItemId?: string | null
     }
     UpdateTrackRequestPayload: {
+      /** @description Track title (1 to 100 characters) */
       title: string
-      /** @description Текст песни (lyrics) */
-      lyrics?: string
-      /** Format: iso8601 */
-      releaseDate?: string
+      /** @description Track lyrics (up to 5000 characters) */
+      lyrics?: string | null
+      /**
+       * Format: date-time
+       * @description Release date in ISO 8601 format
+       */
+      releaseDate?: string | null
+      /** @description Array of tag IDs to associate with the track (up to 5) */
       tagIds?: string[]
+      /** @description Array of artist IDs to associate with the track (up to 5) */
       artistsIds?: string[]
     }
     TrackOutputAttributes: {
+      /** @description Track title */
       title: string
-      lyrics?: string
-      releaseDate?: string
-      addedAt: string
-      /** Format: iso8601 */
-      updatedAt: string
-      duration: number
-      likesCount: number
-      dislikesCount: number
-      attachments: components['schemas']['AttachmentDto'][]
-      images: components['schemas']['GetImagesOutput']
-      tags: components['schemas']['GetTagOutput'][]
-      artists: components['schemas']['GetArtistOutput'][]
-      isPublished: boolean
-      publishedAt?: string
+      /** @description Track lyrics text */
+      lyrics?: string | null
       /**
-       * @description 0 – гость или не реагировал, 1 – пользователь лайкнул, -1 – пользователь дизлайкнул
+       * Format: date-time
+       * @description Release date in ISO 8601 format
+       */
+      releaseDate?: string | null
+      /**
+       * Format: date-time
+       * @description Date and time when the track was added (ISO 8601)
+       */
+      addedAt: string
+      /**
+       * Format: date-time
+       * @description Date and time when the track was last updated (ISO 8601)
+       */
+      updatedAt: string
+      /** @description Duration of the track in seconds */
+      duration: number
+      /** @description Total number of likes for this track */
+      likesCount: number
+      /** @description Total number of dislikes for this track */
+      dislikesCount: number
+      /** @description List of attachments related to the track */
+      attachments: components['schemas']['AttachmentDto'][]
+      /** @description Images associated with the track */
+      images: components['schemas']['GetImagesOutput']
+      /** @description Tags associated with the track */
+      tags: components['schemas']['GetTagOutput'][]
+      /** @description Artists associated with the track */
+      artists: components['schemas']['GetArtistOutput'][]
+      /** @description Publication status of the track */
+      isPublished: boolean
+      /**
+       * Format: date-time
+       * @description Publication date in ISO 8601 format
+       */
+      publishedAt?: string | null
+      /**
+       * @description User reaction: 0 – guest or no reaction; 1 – user liked; -1 – user disliked
        * @enum {number}
        */
       currentUserReaction: 0 | 1 | -1
     }
     TrackOutput: {
+      /** @description Unique identifier of the track */
       id: string
-      /** @example tracks */
+      /**
+       * @description Resource type (should be "tracks")
+       * @example tracks
+       */
       type: string
+      /** @description Attributes of the track resource */
       attributes: components['schemas']['TrackOutputAttributes']
     }
     GetTrackOutput: {
+      /** @description JSON:API single-track response wrapper */
       data: components['schemas']['TrackOutput']
     }
     AddTrackToPlaylistRequestPayload: {
@@ -931,6 +1100,7 @@ export interface components {
       trackId: string
     }
     CreateArtistRequestPayload: {
+      /** @description Artist name (must be between 2 and 30 characters) */
       name: string
     }
     LoginRequestPayload: {
@@ -966,6 +1136,7 @@ export interface components {
       login: string
     }
     CreateTagRequestPayload: {
+      /** @description Tag name (2 to 30 characters) */
       name: string
     }
     /**
@@ -980,6 +1151,68 @@ export interface components {
   headers: never
   pathItems: never
 }
+export type SchemaUserOutputDto = components['schemas']['UserOutputDTO']
+export type SchemaImageSizeType = components['schemas']['ImageSizeType']
+export type SchemaImageDto = components['schemas']['ImageDto']
+export type SchemaPlaylistImagesOutputDto = components['schemas']['PlaylistImagesOutputDTO']
+export type SchemaGetTagOutput = components['schemas']['GetTagOutput']
+export type SchemaReactionValue = components['schemas']['ReactionValue']
+export type SchemaPlaylistAttributesDto = components['schemas']['PlaylistAttributesDto']
+export type SchemaPlaylistListItemJsonApiData = components['schemas']['PlaylistListItemJsonApiData']
+export type SchemaGetMyPlaylistsOutput = components['schemas']['GetMyPlaylistsOutput']
+export type SchemaCreatePlaylistRequestPayload =
+  components['schemas']['CreatePlaylistRequestPayload']
+export type SchemaPlaylistOutputAttributes = components['schemas']['PlaylistOutputAttributes']
+export type SchemaPlaylistOutput = components['schemas']['PlaylistOutput']
+export type SchemaGetPlaylistOutput = components['schemas']['GetPlaylistOutput']
+export type SchemaUpdatePlaylistRequestPayload =
+  components['schemas']['UpdatePlaylistRequestPayload']
+export type SchemaReorderPlaylistsRequestPayload =
+  components['schemas']['ReorderPlaylistsRequestPayload']
+export type SchemaGetImagesOutput = components['schemas']['GetImagesOutput']
+export type SchemaGetTracksRequestPayload = components['schemas']['GetTracksRequestPayload']
+export type SchemaAttachmentDto = components['schemas']['AttachmentDto']
+export type SchemaTrackListItemOutputAttributes =
+  components['schemas']['TrackListItemOutputAttributes']
+export type SchemaArtistRelationship = components['schemas']['ArtistRelationship']
+export type SchemaArtistsRelationship = components['schemas']['ArtistsRelationship']
+export type SchemaTrackRelationships = components['schemas']['TrackRelationships']
+export type SchemaTrackListItemOutput = components['schemas']['TrackListItemOutput']
+export type SchemaJsonApiMetaWithPagingAndCursor =
+  components['schemas']['JsonApiMetaWithPagingAndCursor']
+export type SchemaOmitTypeClass = components['schemas']['OmitTypeClass']
+export type SchemaIncludedArtistOutput = components['schemas']['IncludedArtistOutput']
+export type SchemaGetTrackListOutput = components['schemas']['GetTrackListOutput']
+export type SchemaPlaylistTrackAttributes = components['schemas']['PlaylistTrackAttributes']
+export type SchemaGetPlaylistTrackListOutputData =
+  components['schemas']['GetPlaylistTrackListOutputData']
+export type SchemaJsonApiMeta = components['schemas']['JsonApiMeta']
+export type SchemaGetPlaylistTrackListOutput = components['schemas']['GetPlaylistTrackListOutput']
+export type SchemaGetArtistOutput = components['schemas']['GetArtistOutput']
+export type SchemaTrackDetailsAttributes = components['schemas']['TrackDetailsAttributes']
+export type SchemaTrackDetailsData = components['schemas']['TrackDetailsData']
+export type SchemaGetTrackDetailsOutput = components['schemas']['GetTrackDetailsOutput']
+export type SchemaReactionOutput = components['schemas']['ReactionOutput']
+export type SchemaGetPlaylistsRequestPayload = components['schemas']['GetPlaylistsRequestPayload']
+export type SchemaJsonApiMetaWithPaging = components['schemas']['JsonApiMetaWithPaging']
+export type SchemaGetPlaylistsOutput = components['schemas']['GetPlaylistsOutput']
+export type SchemaReorderTracksRequestPayload = components['schemas']['ReorderTracksRequestPayload']
+export type SchemaUpdateTrackRequestPayload = components['schemas']['UpdateTrackRequestPayload']
+export type SchemaTrackOutputAttributes = components['schemas']['TrackOutputAttributes']
+export type SchemaTrackOutput = components['schemas']['TrackOutput']
+export type SchemaGetTrackOutput = components['schemas']['GetTrackOutput']
+export type SchemaAddTrackToPlaylistRequestPayload =
+  components['schemas']['AddTrackToPlaylistRequestPayload']
+export type SchemaCreateArtistRequestPayload = components['schemas']['CreateArtistRequestPayload']
+export type SchemaLoginRequestPayload = components['schemas']['LoginRequestPayload']
+export type SchemaRefreshOutput = components['schemas']['RefreshOutput']
+export type SchemaBadRequestException = components['schemas']['BadRequestException']
+export type SchemaUnauthorizedException = components['schemas']['UnauthorizedException']
+export type SchemaRefreshRequestPayload = components['schemas']['RefreshRequestPayload']
+export type SchemaLogoutRequestPayload = components['schemas']['LogoutRequestPayload']
+export type SchemaGetMeOutput = components['schemas']['GetMeOutput']
+export type SchemaCreateTagRequestPayload = components['schemas']['CreateTagRequestPayload']
+export type SchemaBinaryFile = components['schemas']['BinaryFile']
 export type $defs = Record<string, never>
 export interface operations {
   PlaylistsController_getMyPlaylists: {
@@ -991,7 +1224,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK: Список плейлистов успешно получен */
+      /** @description OK: List of playlists retrieved successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1000,7 +1233,7 @@ export interface operations {
           'application/json': components['schemas']['GetMyPlaylistsOutput']
         }
       }
-      /** @description Unauthorized: Пользователь не авторизован */
+      /** @description Unauthorized: User not authenticated */
       401: {
         headers: {
           [name: string]: unknown
@@ -1012,21 +1245,21 @@ export interface operations {
   PlaylistsPublicController_getPlaylists: {
     parameters: {
       query?: {
-        /** @description Номер страницы для пагинации (начиная с 1) */
+        /** @description Page number for pagination (starting from 1) */
         pageNumber?: number
-        /** @description Размер страницы для пагинации (от 1 до 20) */
+        /** @description Page size for pagination (between 1 and 20) */
         pageSize?: number
-        /** @description Строка для поиска по названию плейлиста */
+        /** @description Search term for filtering playlists by name */
         search?: string
-        /** @description Поле, по которому выполняется сортировка */
+        /** @description Field by which to sort playlists */
         sortBy?: 'addedAt' | 'likesCount'
-        /** @description Направление сортировки (по возрастанию или убыванию) */
+        /** @description Sort direction (ascending or descending) */
         sortDirection?: 'asc' | 'desc'
-        /** @description Фильтрация по ID тегов. Может быть передано несколько значений: tagsIds=tag1&tagsIds=tag2 */
+        /** @description Filter by tag IDs. Multiple values allowed, e.g.: tagsIds=tag1&tagsIds=tag2 */
         tagsIds?: string[]
-        /** @description Фильтрация по ID пользователя (создателя плейлиста) */
+        /** @description Filter by user ID (playlist creator’s ID) */
         userId?: string
-        /** @description Фильтрация по ID трека — только те плейлисты, в которых он содержится */
+        /** @description Filter by track ID – only playlists containing this track will be returned */
         trackId?: string
       }
       header?: never
@@ -1035,7 +1268,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK: JSON:API список плейлистов с пагинацией */
+      /** @description OK: JSON:API list of playlists with pagination */
       200: {
         headers: {
           [name: string]: unknown
@@ -1059,7 +1292,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description Created: Плейлист успешно создан */
+      /** @description Created: Playlist created successfully */
       201: {
         headers: {
           [name: string]: unknown
@@ -1068,7 +1301,7 @@ export interface operations {
           'application/json': components['schemas']['GetPlaylistOutput']
         }
       }
-      /** @description Forbidden: Превышен лимит создания плейлистов */
+      /** @description Forbidden: Playlist creation limit exceeded */
       403: {
         headers: {
           [name: string]: unknown
@@ -1082,14 +1315,14 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        /** @description ID плейлиста */
+        /** @description ID of the playlist */
         playlistId: string
       }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description OK: Плейлист успешно найден */
+      /** @description OK: Playlist retrieved successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1098,7 +1331,7 @@ export interface operations {
           'application/json': components['schemas']['GetPlaylistOutput']
         }
       }
-      /** @description NotFound: Плейлист с таким ID не найден */
+      /** @description Not Found: Playlist with the given ID not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1122,21 +1355,21 @@ export interface operations {
       }
     }
     responses: {
-      /** @description NoContent: Плейлист успешно обновлён */
+      /** @description No Content: Playlist updated successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description BadRequest: Ошибка валидации, например, превышено количество тегов (более 5) */
+      /** @description Bad Request: Validation error (e.g., tag limit exceeded) */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Пользователь не имеет прав для обновления данного плейлиста */
+      /** @description Forbidden: You do not have permission to update this playlist */
       403: {
         headers: {
           [name: string]: unknown
@@ -1156,21 +1389,21 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description NoContent: Плейлист успешно удалён */
+      /** @description No Content: Playlist deleted successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Недостаточно прав для удаления плейлиста */
+      /** @description Forbidden: Insufficient permissions to delete this playlist */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Плейлист не найден */
+      /** @description Not Found: Playlist not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1194,14 +1427,14 @@ export interface operations {
       }
     }
     responses: {
-      /** @description NoContent: Порядок плейлистов успешно изменён */
+      /** @description No Content: Playlist order updated successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Playlist not found или putAfterItemId not found */
+      /** @description Not Found: Playlist or putAfterItemId not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1222,13 +1455,13 @@ export interface operations {
     requestBody: {
       content: {
         'multipart/form-data': {
-          /** @description Максимальный размер 1 MB, Минимальная высота — 500px, квадратное изображение */
+          /** @description Maximum size 1 MB; minimum height 500px; image must be square */
           file: components['schemas']['BinaryFile']
         }
       }
     }
     responses: {
-      /** @description OK: Обложка успешно загружена */
+      /** @description OK: Cover uploaded successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1237,14 +1470,14 @@ export interface operations {
           'application/json': components['schemas']['GetImagesOutput']
         }
       }
-      /** @description BadRequest: Ошибка формата или размеров изображения */
+      /** @description Bad Request: Invalid image format or dimensions */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Нет прав на загрузку изображения в плейлист */
+      /** @description Forbidden: No permission to upload cover for this playlist */
       403: {
         headers: {
           [name: string]: unknown
@@ -1264,21 +1497,21 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description NoContent: Обложка удалена */
+      /** @description No Content: Cover deleted successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Удаление обложки плейлиста другого пользователя запрещена */
+      /** @description Forbidden: Removing another user’s playlist cover is not allowed */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Плейлист не найден */
+      /** @description Not Found: Playlist not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1290,28 +1523,28 @@ export interface operations {
   TracksPublicController_getAllTracks: {
     parameters: {
       query?: {
-        /** @description Номер страницы для пагинации (начиная с 1) */
+        /** @description Page number for pagination (starting from 1) */
         pageNumber?: number
-        /** @description Размер страницы для пагинации (от 1 до 20) */
+        /** @description Page size for pagination (between 1 and 20) */
         pageSize?: number
-        /** @description Строка для поиска по названию плейлиста */
+        /** @description Search term for filtering playlists by name */
         search?: string
-        /** @description Поле, по которому сортируются треки */
+        /** @description Field by which to sort tracks */
         sortBy?: 'publishedAt' | 'likesCount'
-        /** @description Направление сортировки (по возрастанию или убыванию) */
+        /** @description Sort direction (ascending or descending) */
         sortDirection?: 'asc' | 'desc'
-        /** @description Фильтрация по ID тегов (можно передавать несколько) */
+        /** @description Filter by tag IDs (multiple values allowed) */
         tagsIds?: string[]
-        /** @description Фильтрация по ID артистов (можно передавать несколько) */
+        /** @description Filter by artist IDs (multiple values allowed) */
         artistsIds?: string[]
-        /** @description Фильтрация по ID пользователя (создателя трека) */
+        /** @description Filter by user ID (track creator's ID) */
         userId?: string
-        /** @description Если true — включать в выдачу также ваши неопубликованные треки (drafts) */
+        /** @description If true, include your unpublished tracks (drafts) */
         includeOwnUnpublished?: boolean
-        /** @description Тип пагинации: `offset` — по номеру страницы; `cursor` — keyset/seek. */
+        /** @description Pagination type: "offset" for page-number pagination; "cursor" for keyset/seek-based pagination. */
         paginationType?: 'offset' | 'cursor'
-        /** @description Base64-закодированный курсор для keyset-пагинации. Используется только если paginationType=cursor. */
-        cursor?: string
+        /** @description Base64-encoded cursor for keyset pagination. Used only if paginationType is "cursor". */
+        cursor?: string | null
       }
       header?: never
       path?: never
@@ -1319,7 +1552,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK: Пагинированный список треков */
+      /** @description OK: Paginated list of tracks */
       200: {
         headers: {
           [name: string]: unknown
@@ -1335,14 +1568,14 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        /** @description ID плейлиста, для которого необходимо получить треки */
+        /** @description ID of the playlist to retrieve tracks for */
         playlistId: string
       }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description OK: Список треков в плейлисте */
+      /** @description OK: List of tracks in the playlist */
       200: {
         headers: {
           [name: string]: unknown
@@ -1351,7 +1584,7 @@ export interface operations {
           'application/json': components['schemas']['GetPlaylistTrackListOutput']
         }
       }
-      /** @description NotFound: Плейлист с указанным ID не найден */
+      /** @description Not Found: Playlist with the specified ID not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1365,14 +1598,14 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        /** @description ID трека, для которого необходимо получить детали */
+        /** @description ID of the track to retrieve details for */
         trackId: string
       }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description OK: Детали трека с вложениями */
+      /** @description OK: Track details with attachments */
       200: {
         headers: {
           [name: string]: unknown
@@ -1381,7 +1614,7 @@ export interface operations {
           'application/json': components['schemas']['GetTrackDetailsOutput']
         }
       }
-      /** @description NotFound: Трек с таким ID не найден */
+      /** @description Not Found: Track with the specified ID not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1405,7 +1638,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description OK: Трек успешно обновлён */
+      /** @description OK: Track updated successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1414,21 +1647,21 @@ export interface operations {
           'application/json': components['schemas']['GetTrackOutput']
         }
       }
-      /** @description BadRequest: Превышено количество тегов или артистов */
+      /** @description Bad Request: Tag or artist limit exceeded */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Нельзя редактировать чужой трек */
+      /** @description Forbidden: Editing another user’s track is not allowed */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Трек или плейлист не найден */
+      /** @description Not Found: Track or playlist not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1448,21 +1681,21 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description NoContent: Трек полностью удалён */
+      /** @description No Content: Track permanently deleted */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Удаление чужого трека запрещено */
+      /** @description Forbidden: Deleting another user’s track is not allowed */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Трек не найден */
+      /** @description Not Found: Track not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1482,7 +1715,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK: Текущая реакция пользователя + суммарные счётчики */
+      /** @description Created: User reaction recorded and counters updated */
       201: {
         headers: {
           [name: string]: unknown
@@ -1491,21 +1724,21 @@ export interface operations {
           'application/json': components['schemas']['ReactionOutput']
         }
       }
-      /** @description BadRequest: Некорректный идентификатор */
+      /** @description Bad Request: Invalid track ID */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Unauthorized: Пользователь не авторизован */
+      /** @description Unauthorized: User not authenticated */
       401: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Трек не найден */
+      /** @description Not Found: Track not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1525,7 +1758,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK */
+      /** @description Created: User reaction recorded and counters updated */
       201: {
         headers: {
           [name: string]: unknown
@@ -1534,21 +1767,21 @@ export interface operations {
           'application/json': components['schemas']['ReactionOutput']
         }
       }
-      /** @description BadRequest: Некорректный ID */
+      /** @description Bad Request: Invalid track ID */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Unauthorized */
+      /** @description Unauthorized: User not authenticated */
       401: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Трек не найден */
+      /** @description Not Found: Track not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1568,7 +1801,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK */
+      /** @description OK: Reaction removed successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1577,7 +1810,7 @@ export interface operations {
           'application/json': components['schemas']['ReactionOutput']
         }
       }
-      /** @description Unauthorized */
+      /** @description Unauthorized: User not authenticated */
       401: {
         headers: {
           [name: string]: unknown
@@ -1597,7 +1830,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK */
+      /** @description Created: Like recorded successfully */
       201: {
         headers: {
           [name: string]: unknown
@@ -1606,7 +1839,7 @@ export interface operations {
           'application/json': components['schemas']['ReactionOutput']
         }
       }
-      /** @description BadRequest: Некорректный ID */
+      /** @description Bad Request: Invalid playlist ID */
       400: {
         headers: {
           [name: string]: unknown
@@ -1620,7 +1853,7 @@ export interface operations {
         }
         content?: never
       }
-      /** @description NotFound: Плейлист не найден */
+      /** @description Not Found: Playlist not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1640,7 +1873,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK */
+      /** @description Created: Dislike recorded successfully */
       201: {
         headers: {
           [name: string]: unknown
@@ -1649,7 +1882,7 @@ export interface operations {
           'application/json': components['schemas']['ReactionOutput']
         }
       }
-      /** @description BadRequest: Некорректный ID */
+      /** @description Bad Request: Invalid playlist ID */
       400: {
         headers: {
           [name: string]: unknown
@@ -1663,7 +1896,7 @@ export interface operations {
         }
         content?: never
       }
-      /** @description NotFound: Плейлист не найден */
+      /** @description Not Found: Playlist not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1683,6 +1916,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
+      /** @description OK: Reaction removed successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1698,7 +1932,7 @@ export interface operations {
         }
         content?: never
       }
-      /** @description NotFound: Плейлист не найден */
+      /** @description Not Found: Playlist not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1723,28 +1957,28 @@ export interface operations {
       }
     }
     responses: {
-      /** @description OK: Порядок трека обновлён */
+      /** @description OK: Track order updated successfully */
       200: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description BadRequest: Нельзя поставить после самого себя */
+      /** @description Bad Request: Cannot place a track after itself */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Нет доступа к плейлисту */
+      /** @description Forbidden: No access to the playlist */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Трек или putAfterItemId не найден */
+      /** @description Not Found: Track or putAfterItemId not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1768,21 +2002,21 @@ export interface operations {
       }
     }
     responses: {
-      /** @description NoContent: Трек успешно добавлен в плейлист */
+      /** @description No Content: Track added to the playlist successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Нет доступа к плейлисту или превышен лимит треков в плейлисте: максимум 10 треков */
+      /** @description Forbidden: No access to the playlist or track limit exceeded (max 10 tracks) */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Плейлист не найден */
+      /** @description Not Found: Playlist not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1803,21 +2037,21 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description NoContent: Трек удалён из плейлиста */
+      /** @description No Content: Track removed from the playlist */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Нет доступа к плейлисту */
+      /** @description Forbidden: No access to the playlist */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Плейлист не найден */
+      /** @description Not Found: Playlist not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1837,28 +2071,28 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description No Content: Трек успешно опубликован */
+      /** @description No Content: Track published successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Нельзя публиковать чужие треки */
+      /** @description Forbidden: Publishing another user’s track is not allowed */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Not Found: Трек с указанным ID не найден */
+      /** @description Not Found: Track with the specified ID not found */
       404: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Conflict: Трек уже опубликован */
+      /** @description Conflict: Track is already published */
       409: {
         headers: {
           [name: string]: unknown
@@ -1872,15 +2106,15 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        /** @description ID трека, которому загружается обложка */
+        /** @description ID of the track for which the cover is being uploaded */
         trackId: string
       }
       cookie?: never
     }
-    /** @description Файл изображения.<br/>
-     *                       • Имя поля — <code>cover</code><br/>
-     *                       • Допустимые MIME-типы — <code>image/jpeg</code>, <code>image/png</code>, <code>image/gif</code><br/>
-     *                       • Максимальный размер — <code>100 KB</code> */
+    /** @description Image file:<br/>
+     *             • Field name — <code>cover</code><br/>
+     *             • Allowed MIME types — <code>image/jpeg</code>, <code>image/png</code>, <code>image/gif</code><br/>
+     *             • Maximum size — <code>100 KB</code> */
     requestBody: {
       content: {
         'multipart/form-data': {
@@ -1890,7 +2124,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description OK: Успешная загрузка обложки */
+      /** @description OK: Cover uploaded successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1899,21 +2133,21 @@ export interface operations {
           'application/json': components['schemas']['GetImagesOutput']
         }
       }
-      /** @description BadRequest: Неверный файл или превышен размер */
+      /** @description Bad Request: Invalid file or size exceeded */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Нельзя загружать обложку к чужому треку */
+      /** @description Forbidden: Cannot upload a cover for another user’s track */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Трек не найден */
+      /** @description Not Found: Track not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1933,21 +2167,21 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description NoContent: Обложка удалена */
+      /** @description No Content: Cover deleted successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Удаление обложки трека другого пользователя запрещена */
+      /** @description Forbidden: Removing another user's track cover is not allowed */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Трек не найден */
+      /** @description Not Found: Track not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -1974,7 +2208,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description OK: Трек успешно создан */
+      /** @description OK: Track created successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1983,14 +2217,14 @@ export interface operations {
           'application/json': components['schemas']['GetTrackOutput']
         }
       }
-      /** @description BadRequest: Неверный формат файла или превышен размер */
+      /** @description Bad Request: Invalid file format or file size exceeded */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description InternalServerError: Ошибка при сохранении файла или трека */
+      /** @description Internal Server Error: Error saving file or track */
       500: {
         headers: {
           [name: string]: unknown
@@ -2012,7 +2246,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description Created: Исполнитель успешно создан */
+      /** @description Created: Artist created successfully */
       201: {
         headers: {
           [name: string]: unknown
@@ -2021,28 +2255,28 @@ export interface operations {
           'application/json': components['schemas']['GetArtistOutput']
         }
       }
-      /** @description BadRequest: Ошибка валидации или неверный ввод */
+      /** @description Bad Request: Validation error or invalid input */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Unauthorized: Пользователь не авторизован */
+      /** @description Unauthorized: User not authenticated */
       401: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Лимит в 100 артистов на пользователя исчерпан */
+      /** @description Forbidden: Limit of 100 artists per user reached */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Conflict: Исполнитель с таким именем уже существует */
+      /** @description Conflict: Artist with the given name already exists */
       409: {
         headers: {
           [name: string]: unknown
@@ -2062,7 +2296,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK: Список исполнителей найден по подстроке */
+      /** @description OK: List of artists matching the search */
       200: {
         headers: {
           [name: string]: unknown
@@ -2084,21 +2318,21 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description NoContent: Исполнитель успешно удалён */
+      /** @description No Content: Artist deleted successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Другой юзер создал данного артиста или данный артист прикреплён к трекам */
+      /** @description Forbidden: Artist is attached to tracks or was created by another user */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Исполнитель с таким ID не найден */
+      /** @description Not Found: Artist with the specified ID not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -2266,7 +2500,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description Created: Тег успешно создан */
+      /** @description Created: Tag created successfully */
       201: {
         headers: {
           [name: string]: unknown
@@ -2275,28 +2509,28 @@ export interface operations {
           'application/json': components['schemas']['GetTagOutput']
         }
       }
-      /** @description BadRequest: Ошибка валидации */
+      /** @description Bad Request: Validation error */
       400: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Unauthorized: Пользователь не авторизован */
+      /** @description Unauthorized: User not authenticated */
       401: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Лимит в 100 тегов на пользователя исчерпан */
+      /** @description Forbidden: Limit of 100 tags per user reached */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Conflict: Тег с таким именем уже существует */
+      /** @description Conflict: Tag with the given name already exists */
       409: {
         headers: {
           [name: string]: unknown
@@ -2308,7 +2542,7 @@ export interface operations {
   TagsController_searchTags: {
     parameters: {
       query: {
-        /** @description Подстрока для поиска тегов (по нормализованному имени) */
+        /** @description Substring to search tags by (using normalized name) */
         search: string
       }
       header?: never
@@ -2317,7 +2551,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK: Список подходящих тегов */
+      /** @description OK: List of matching tags */
       200: {
         headers: {
           [name: string]: unknown
@@ -2326,7 +2560,7 @@ export interface operations {
           'application/json': components['schemas']['GetTagOutput'][]
         }
       }
-      /** @description BadRequest: Некорректный поисковый запрос */
+      /** @description Bad Request: Invalid search query */
       400: {
         headers: {
           [name: string]: unknown
@@ -2340,35 +2574,35 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        /** @description ID удаляемого тега */
+        /** @description ID of the tag to delete */
         id: string
       }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description NoContent: Тег успешно удалён */
+      /** @description No Content: Tag deleted successfully */
       204: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Unauthorized: Пользователь не авторизован */
+      /** @description Unauthorized: User not authenticated */
       401: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description Forbidden: Другой юзер создал данный тег или данй тег прикреплён к трекам и плейлистам */
+      /** @description Forbidden: Tag was created by another user or is attached to tracks or playlists */
       403: {
         headers: {
           [name: string]: unknown
         }
         content?: never
       }
-      /** @description NotFound: Тег с указанным ID не найден */
+      /** @description Not Found: Tag with the specified ID not found */
       404: {
         headers: {
           [name: string]: unknown
