@@ -1,1 +1,1 @@
-export { UserBlock } from './ui/user-block.component.tsx'
+export { AccountBar } from './ui/account-bar.tsx'

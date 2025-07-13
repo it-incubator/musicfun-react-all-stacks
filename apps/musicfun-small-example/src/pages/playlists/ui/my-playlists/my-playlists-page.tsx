@@ -4,7 +4,7 @@ import { Navigate } from '@tanstack/react-router'
 import { AddPlaylistForm } from '@/features/playlists/add-playlist-form/add-playlist-form.tsx'
 import { EditPlaylistForm } from '@/features/playlists/edit-playlist-form/edit-playlist-form.tsx'
 import { PaginatedPlaylists } from '@/features/playlists/list/paginated-playlists.tsx'
-import styles from './my-playlists.module.css'
+import styles from './my-playlists-page.module.css'
 
 export function MyPlaylistsPage() {
   const { data, isLoading } = useMeQuery()

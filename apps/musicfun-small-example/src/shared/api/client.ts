@@ -83,9 +83,7 @@ const authMiddleware: Middleware = {
       retry.headers.set('Authorization', `Bearer ${newToken}`)
       return await fetch(retry)
     } catch (error) {
-      debugger
       console.log(error)
-      // refresh не удался → чистим хранилище, отдаём 401
       await config.saveAccessToken!(null)
       await config.saveRefreshToken!(null)
       return response
