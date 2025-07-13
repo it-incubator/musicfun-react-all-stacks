@@ -851,10 +851,10 @@ export interface components {
       search?: string
       /**
        * @description Поле, по которому выполняется сортировка
-       * @default publishedAt
+       * @default addedAt
        * @enum {string}
        */
-      sortBy: 'publishedAt' | 'likesCount'
+      sortBy: 'addedAt' | 'likesCount'
       /**
        * @description Направление сортировки (по возрастанию или убыванию)
        * @default desc
@@ -1019,7 +1019,7 @@ export interface operations {
         /** @description Строка для поиска по названию плейлиста */
         search?: string
         /** @description Поле, по которому выполняется сортировка */
-        sortBy?: 'publishedAt' | 'likesCount'
+        sortBy?: 'addedAt' | 'likesCount'
         /** @description Направление сортировки (по возрастанию или убыванию) */
         sortDirection?: 'asc' | 'desc'
         /** @description Фильтрация по ID тегов. Может быть передано несколько значений: tagsIds=tag1&tagsIds=tag2 */
