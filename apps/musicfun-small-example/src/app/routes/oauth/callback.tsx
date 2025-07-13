@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { OAuthCallbackPage } from '@/pages/oauth-callback'
+import { OauthCallbackPage } from '@/pages/auth'
 
 export const Route = createFileRoute('/oauth/callback')({
-  component: OAuthCallbackPage,
+  component: OauthCallbackPage,
 })

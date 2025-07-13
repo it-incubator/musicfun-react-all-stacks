@@ -1,14 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { PaginatedPlaylists } from '../../features/playlists/list/paginated-playlists.tsx'
+import { PlaylistsWithFiltersPage } from '@/pages/playlists/ui/playlists-with-filters-page.tsx'
 
 export const Route = createFileRoute('/playlists-with-filters')({
-  component: RouteComponent,
+  component: PlaylistsWithFiltersPage,
 })
-
-function RouteComponent() {
-  return (
-    <div>
-      <PaginatedPlaylists />
-    </div>
-  )
-}

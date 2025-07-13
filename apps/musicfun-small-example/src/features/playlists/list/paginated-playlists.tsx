@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getClient } from '../../../shared/api/client.ts'
 import { useEffect, useState } from 'react'
-import { Pagination } from '../../../shared/ui/Pagination/Pagination.tsx'
+import { Pagination } from '@/shared/ui/pagination/pagination.tsx'
 import { useMeQuery } from '../../auth/api/use-me.query.ts'
 import { PlaylistCover } from '../playlist-cover/playlist-cover.tsx'
 import { playlistListKey, usePlaylistsQuery } from '../api/use-playlists-query.tsx'
@@ -10,7 +10,7 @@ import { getSharedSocket } from '../../../shared/api/socket.ts'
 import styles from './paginated-playlists.module.css'
 
 type Props = {
-  classNames: string
+  classNames?: string
   userId?: string
   onPlaylistSelected?: (playlistId: string) => void
 }
@@ -99,9 +99,9 @@ export const PaginatedPlaylists = ({ userId, onPlaylistSelected, classNames }: P
               <PlaylistCover
                 images={playlist.attributes.images}
                 playlistId={playlist.id}
-                editable={playlist.attributes.user.id === meData?.data?.userId}
+                editable={playlist.attributes.user.id === meData?.userId}
               />
-              {meData?.data?.userId === playlist.attributes.user.id && (
+              {meData?.userId === playlist.attributes.user.id && (
                 <button
                   className={styles.deletePlaylistButton}
                   onClick={() => deletePlaylist(playlist.id)}

@@ -1,24 +1,24 @@
 import { Link } from '@tanstack/react-router'
-import { UserBlock } from '@/features/auth'
 import styles from './header.module.css'
+import type { ReactNode } from 'react'
 
-type Props = {}
+type Props = {
+  renderAccountBar: () => ReactNode
+}
 
-export const Header = ({}: Props) => (
+export const Header = ({ renderAccountBar }: Props) => (
   <header className={styles.header}>
     <div className={styles.container}>
       <div className={styles.linksBlock}>
         <Link to="/" className="[&.active]:font-bold">
-          Playlists
+          Main
         </Link>
         <Link to="/playlists-with-filters" className="[&.active]:font-bold">
-          Playlists with Filter
+          Playlists
         </Link>
       </div>
 
-      <div>
-        <UserBlock />
-      </div>
+      <div>{renderAccountBar()}</div>
     </div>
   </header>
 )

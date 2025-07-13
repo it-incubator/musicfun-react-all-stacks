@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { LoginRequestPayload } from './authApi.types.ts'
+import type { LoginRequestPayload } from './auth-api.types.ts'
 import { getClient } from '../../../shared/api/client.ts'
 import { localStorageKeys } from '../../../shared/db/localstorage-keys.ts'
 
