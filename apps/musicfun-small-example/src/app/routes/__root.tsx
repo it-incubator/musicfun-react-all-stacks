@@ -1,10 +1,12 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { UserBlock } from '../features/auth/ui/UserBlock.tsx'
-import { mutationGlobalErrorHandler } from '../shared/api/query-error-handler-for-rhf-factory.ts'
+import { mutationGlobalErrorHandler } from '@/shared/api/query-error-handler-for-rhf-factory.ts'
+import { type ReactNode } from 'react'
+import styles from './__root.module.css'
+import { Header } from '@/shared/ui/header/header.component.tsx'
 
 export type MutationMeta = {
   /**
@@ -37,32 +39,22 @@ const queryClient = new QueryClient({
   },
 })
 
+function WebSocketProvider({ children }: { children: ReactNode }) {
+  return <>{children}</>
+}
+
 export const Route = createRootRoute({
   component: () => (
     <>
       <QueryClientProvider client={queryClient}>
-        <div className="p-2 flex gap-2">
-          <Link to="/" className="[&.active]:font-bold">
-            Playlists
-          </Link>
-          {' | '}
-          <Link to="/playlists-with-filters" className="[&.active]:font-bold">
-            Playlists with Filter
-          </Link>
-          {' | '}
-          <Link to="/about" className="[&.active]:font-bold">
-            About
-          </Link>
-        </div>
-        <hr />
-        <div>
-          <UserBlock />
-        </div>
-        <hr />
-
-        <Outlet />
-        <ReactQueryDevtools initialIsOpen={false} buttonPosition={'bottom-left'} />
-        <ToastContainer />
+        <WebSocketProvider>
+          <Header />
+          <div className={styles.container}>
+            <Outlet />
+          </div>
+          <ReactQueryDevtools initialIsOpen={false} buttonPosition={'bottom-left'} />
+          <ToastContainer />
+        </WebSocketProvider>
       </QueryClientProvider>
     </>
   ),

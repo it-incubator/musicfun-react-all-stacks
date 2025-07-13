@@ -21,7 +21,11 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".", // allow non-relative imports
+    "paths": {
+      "@/*": ["src/*"] // map “@/foo” → “src/foo”
+    }
   },
   "include": ["src"]
 }

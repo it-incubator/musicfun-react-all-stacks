@@ -1,7 +1,7 @@
 import type { FieldValues, Path, UseFormSetError } from 'react-hook-form'
 import { isJsonApiErrorDocument, type JsonApiErrorDocument, parseJsonApiErrors } from './json-api-error.ts'
 import { toast } from 'react-toastify'
-import type { MutationMeta } from '../../routes/__root.tsx'
+import type { MutationMeta } from '../../app/routes/__root.tsx'
 
 export const queryErrorHandlerForRHFFactory = <T extends FieldValues>({
   setError,

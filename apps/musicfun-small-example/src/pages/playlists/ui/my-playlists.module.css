@@ -1,0 +1,12 @@
+.playlistsBox {
+  display: flex;
+  gap: 50px;
+}
+
+.playlistColumn {
+  width: 600px;
+  flex-shrink: 0;
+}
+
+.editFormColumn {
+}

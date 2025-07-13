@@ -51,16 +51,19 @@ export const AddPlaylistForm = () => {
     <form onSubmit={handleSubmit}>
       <h2>Добавить новый плейлист</h2>
 
-      <div>
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="Title"
-          required
-          disabled={isPending}
-        />
-      </div>
+      <p>
+        <label>
+          <input
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="Title"
+            required
+            disabled={isPending}
+          />
+          {}
+        </label>
+      </p>
 
       <div>
         <input

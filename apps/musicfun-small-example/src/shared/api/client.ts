@@ -22,7 +22,7 @@ export const getClientConfig = () => ({ ...config })
 /* ------------------------------------------------------------------ */
 let refreshPromise: Promise<string> | null = null
 
-export function makeRefreshToken(): Promise<string> {
+function makeRefreshToken(): Promise<string> {
   if (!refreshPromise) {
     // 1) создаём «замок» сразу
     refreshPromise = (async (): Promise<string> => {
@@ -83,6 +83,7 @@ const authMiddleware: Middleware = {
       retry.headers.set('Authorization', `Bearer ${newToken}`)
       return await fetch(retry)
     } catch (error) {
+      debugger
       console.log(error)
       // refresh не удался → чистим хранилище, отдаём 401
       await config.saveAccessToken!(null)

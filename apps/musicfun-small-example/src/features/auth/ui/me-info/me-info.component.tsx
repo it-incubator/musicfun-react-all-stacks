@@ -1,14 +1,15 @@
-import { Logout } from '../Logout/Logout.tsx'
+import { Logout } from '@/features/auth/ui/logout/logout.component.tsx'
 import { useMeQuery } from '../../api/use-me.query.ts'
 import { Link } from '@tanstack/react-router'
+import styles from '../user-block.module.css'
 
-export const MeInfo = () => {
+export const MeInfoComponent = () => {
   const query = useMeQuery()
 
   return (
-    <div>
+    <div className={styles.meInfoContainer}>
       <Link to="/my-playlists-with-filters" activeOptions={{ exact: true }}>
-        Login: {query.data!.data!.login}
+        {query.data!.login}
       </Link>
 
       <Logout />

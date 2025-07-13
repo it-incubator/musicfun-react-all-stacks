@@ -8,8 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate:api": "pnpm dlx openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/shared/api/schema.ts",
-    "api-gen:dimych": "pnpm dlx openapi-typescript http://localhost:9001/api-json -o ./src/shared/api/schema.ts"
+    "generate:api": "pnpm dlx openapi-typescript https://musicfun.it-incubator.app/api-json --root-types -o ./src/shared/api/schema.ts",
+    "generate:async-api": "pnpm asyncapi generate models typescript https://musicfun.it-incubator.app/async-api-json  -o ./src/shared/async-api/schema.ts --tsEnumType union --tsModelType interface",
+    "generate:async-api:dimych": "pnpm asyncapi generate models typescript http://localhost:9001/async-api-json -o ./src/shared/async-api --tsModelType interface --tsEnumType union --tsRawPropertyNames",
+    "generate:api:dimych": "pnpm dlx openapi-typescript http://localhost:9001/api-json -o ./src/shared/api/schema.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.81.5",
@@ -19,9 +21,11 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",
-    "react-toastify": "11.0.5"
+    "react-toastify": "11.0.5",
+    "socket.io-client": "4.8.1"
   },
   "devDependencies": {
+    "@asyncapi/cli": "^3.2.0",
     "@eslint/js": "^9.29.0",
     "@tanstack/router-plugin": "^1.124.0",
     "@types/react": "^19.1.8",
@@ -32,6 +36,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
     "openapi-typescript": "^7.8.0",
+    "path": "^0.12.7",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0"

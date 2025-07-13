@@ -568,9 +568,14 @@ export interface components {
       /** @description Оригинальное изображение и превьюшки */
       main?: components['schemas']['ImageDto'][]
     }
+    /**
+     * @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк
+     * @enum {number}
+     */
+    ReactionValue: 0 | 1 | -1
     PlaylistAttributesDto: {
       title: string
-      description?: string
+      description: string | null
       addedAt: string
       updatedAt: string
       order: number
@@ -579,11 +584,8 @@ export interface components {
       tags: string[]
       likesCount: number
       dislikesCount: number
-      /**
-       * @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк
-       * @enum {number}
-       */
-      currentUserReaction: 0 | 1 | -1
+      /** @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк */
+      currentUserReaction: components['schemas']['ReactionValue']
     }
     PlaylistListItemJsonApiData: {
       id: string
@@ -600,7 +602,7 @@ export interface components {
     }
     PlaylistOutputAttributes: {
       title: string
-      description?: string
+      description: string | null
       addedAt: string
       updatedAt: string
       order: number
@@ -609,11 +611,8 @@ export interface components {
       tags: string[]
       likesCount: number
       dislikesCount: number
-      /**
-       * @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк
-       * @enum {number}
-       */
-      currentUserReaction: 0 | 1 | -1
+      /** @description 0 (не залогинен или не реагировал), 1 — лайк, -1 — дизлайк */
+      currentUserReaction: components['schemas']['ReactionValue']
     }
     PlaylistOutput: {
       id: string
@@ -981,6 +980,60 @@ export interface components {
   headers: never
   pathItems: never
 }
+export type SchemaUserOutputDto = components['schemas']['UserOutputDTO']
+export type SchemaImageDto = components['schemas']['ImageDto']
+export type SchemaPlaylistImagesOutputDto = components['schemas']['PlaylistImagesOutputDTO']
+export type SchemaReactionValue = components['schemas']['ReactionValue']
+export type SchemaPlaylistAttributesDto = components['schemas']['PlaylistAttributesDto']
+export type SchemaPlaylistListItemJsonApiData = components['schemas']['PlaylistListItemJsonApiData']
+export type SchemaGetMyPlaylistsOutput = components['schemas']['GetMyPlaylistsOutput']
+export type SchemaCreatePlaylistRequestPayload = components['schemas']['CreatePlaylistRequestPayload']
+export type SchemaPlaylistOutputAttributes = components['schemas']['PlaylistOutputAttributes']
+export type SchemaPlaylistOutput = components['schemas']['PlaylistOutput']
+export type SchemaGetPlaylistOutput = components['schemas']['GetPlaylistOutput']
+export type SchemaUpdatePlaylistRequestPayload = components['schemas']['UpdatePlaylistRequestPayload']
+export type SchemaReorderPlaylistsRequestPayload = components['schemas']['ReorderPlaylistsRequestPayload']
+export type SchemaGetImagesOutput = components['schemas']['GetImagesOutput']
+export type SchemaGetTracksRequestPayload = components['schemas']['GetTracksRequestPayload']
+export type SchemaAttachmentDto = components['schemas']['AttachmentDto']
+export type SchemaTrackListItemOutputAttributes = components['schemas']['TrackListItemOutputAttributes']
+export type SchemaArtistRelationship = components['schemas']['ArtistRelationship']
+export type SchemaArtistsRelationship = components['schemas']['ArtistsRelationship']
+export type SchemaTrackRelationships = components['schemas']['TrackRelationships']
+export type SchemaTrackListItemOutput = components['schemas']['TrackListItemOutput']
+export type SchemaJsonApiMetaWithPagingAndCursor = components['schemas']['JsonApiMetaWithPagingAndCursor']
+export type SchemaOmitTypeClass = components['schemas']['OmitTypeClass']
+export type SchemaIncludedArtistOutput = components['schemas']['IncludedArtistOutput']
+export type SchemaGetTrackListOutput = components['schemas']['GetTrackListOutput']
+export type SchemaPlaylistTrackAttributes = components['schemas']['PlaylistTrackAttributes']
+export type SchemaGetPlaylistTrackListOutputData = components['schemas']['GetPlaylistTrackListOutputData']
+export type SchemaJsonApiMeta = components['schemas']['JsonApiMeta']
+export type SchemaGetPlaylistTrackListOutput = components['schemas']['GetPlaylistTrackListOutput']
+export type SchemaGetTagOutput = components['schemas']['GetTagOutput']
+export type SchemaGetArtistOutput = components['schemas']['GetArtistOutput']
+export type SchemaTrackDetailsAttributes = components['schemas']['TrackDetailsAttributes']
+export type SchemaTrackDetailsData = components['schemas']['TrackDetailsData']
+export type SchemaGetTrackDetailsOutput = components['schemas']['GetTrackDetailsOutput']
+export type SchemaReactionOutput = components['schemas']['ReactionOutput']
+export type SchemaGetPlaylistsRequestPayload = components['schemas']['GetPlaylistsRequestPayload']
+export type SchemaJsonApiMetaWithPaging = components['schemas']['JsonApiMetaWithPaging']
+export type SchemaGetPlaylistsOutput = components['schemas']['GetPlaylistsOutput']
+export type SchemaReorderTracksRequestPayload = components['schemas']['ReorderTracksRequestPayload']
+export type SchemaUpdateTrackRequestPayload = components['schemas']['UpdateTrackRequestPayload']
+export type SchemaTrackOutputAttributes = components['schemas']['TrackOutputAttributes']
+export type SchemaTrackOutput = components['schemas']['TrackOutput']
+export type SchemaGetTrackOutput = components['schemas']['GetTrackOutput']
+export type SchemaAddTrackToPlaylistRequestPayload = components['schemas']['AddTrackToPlaylistRequestPayload']
+export type SchemaCreateArtistRequestPayload = components['schemas']['CreateArtistRequestPayload']
+export type SchemaLoginRequestPayload = components['schemas']['LoginRequestPayload']
+export type SchemaRefreshOutput = components['schemas']['RefreshOutput']
+export type SchemaBadRequestException = components['schemas']['BadRequestException']
+export type SchemaUnauthorizedException = components['schemas']['UnauthorizedException']
+export type SchemaRefreshRequestPayload = components['schemas']['RefreshRequestPayload']
+export type SchemaLogoutRequestPayload = components['schemas']['LogoutRequestPayload']
+export type SchemaGetMeOutput = components['schemas']['GetMeOutput']
+export type SchemaCreateTagRequestPayload = components['schemas']['CreateTagRequestPayload']
+export type SchemaBinaryFile = components['schemas']['BinaryFile']
 export type $defs = Record<string, never>
 export interface operations {
   PlaylistsController_getMyPlaylists: {
