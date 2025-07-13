@@ -11,6 +11,7 @@ export const useUpdatePlaylist = () => {
     handleSubmit,
     reset,
     setError,
+    control,
     formState: { errors },
   } = useForm<UpdatePlaylistArgs>()
 
@@ -22,7 +23,7 @@ export const useUpdatePlaylist = () => {
     if (playlist) {
       const { attributes } = playlist
       const { title, description, tags } = attributes
-      reset({ title, description, tags })
+      reset({ title, description, tagIds: tags.map((tag) => tag.id) })
     }
   }
 
@@ -36,5 +37,5 @@ export const useUpdatePlaylist = () => {
     }
   }
 
-  return { register, handleSubmit, onSubmit, editPlaylist, playlistId, errors }
+  return { register, handleSubmit, onSubmit, editPlaylist, playlistId, errors, control }
 }

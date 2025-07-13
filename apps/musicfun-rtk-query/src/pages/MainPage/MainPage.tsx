@@ -1,4 +1,4 @@
-import { MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
+import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { MOCK_HASHTAGS, TagsList } from '@/features/tags'
 import { MOCK_TRACKS, TrackCard } from '@/features/tracks'
 
@@ -6,26 +6,35 @@ import { ContentList, PageWrapper } from '../common'
 import s from './MainPage.module.css'
 
 export const MainPage = () => {
+  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
+    pageSize: 10,
+  })
+
   return (
     <PageWrapper className={s.mainPage}>
       <TagsList tags={MOCK_HASHTAGS} />
+
       <ContentList
+        isLoading={isPlaylistsLoading}
+        skeleton={<PlaylistCardSkeleton showReactionButtons />}
         title="New playlists"
-        data={MOCK_PLAYLISTS}
-        renderItem={(playlist) => (
-          <PlaylistCard
-            id={playlist.data.id}
-            title={playlist.data.attributes.title}
-            image={playlist.data.attributes.images.main[0].url}
-            description={playlist.data.attributes.description.text}
-            isShowReactionButtons={true}
-            reaction={playlist.data.attributes.currentUserReaction}
-            onLike={() => {}}
-            onDislike={() => {}}
-            likesCount={playlist.data.attributes.likesCount}
-          />
-        )}
+        data={playlists?.data}
+        renderItem={(playlist) => {
+          const image = playlist.attributes.images.main[1]
+          return (
+            <PlaylistCard
+              id={playlist.id}
+              title={playlist.attributes.title}
+              imageSrc={image?.url}
+              description={playlist.attributes.description}
+              isShowReactionButtons={true}
+              reaction={playlist.attributes.currentUserReaction}
+              likesCount={playlist.attributes.likesCount}
+            />
+          )
+        }}
       />
+
       <ContentList
         title="New tracks"
         data={MOCK_TRACKS}

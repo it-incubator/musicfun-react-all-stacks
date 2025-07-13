@@ -7,14 +7,14 @@ type Props = {
   pagesCount: number
   pageSize: number
   changePageNumber: (page: number) => void
-  changePageSize: (size: number) => void
+  changePageSize?: (size: number) => void
 }
 
 export const Pagination = ({ current, pagesCount, pageSize, changePageNumber, changePageSize }: Props) => {
   return (
     <div className={s.container}>
       <PaginationNav current={current} pagesCount={pagesCount} onChange={changePageNumber} />
-      <PageSizeSelect pageSize={pageSize} onChange={changePageSize} />
+      {changePageSize && <PageSizeSelect pageSize={pageSize} onChange={changePageSize} />}
     </div>
   )
 }

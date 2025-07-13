@@ -9,14 +9,15 @@ import type {
 } from './tracksApi.types.ts'
 import { baseApi } from '@/app/api/base-api.ts'
 import type { Nullable, ReactionResponse } from '@/common/types'
+import { buildQueryString } from '@/common/utils'
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
-      query: (params) => ({
-        url: 'playlists/tracks',
-        params,
-      }),
+    fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
+      query: (params) => {
+        const query = buildQueryString(params)
+        return `playlists/tracks?${query}`
+      },
 
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -54,6 +55,19 @@ export const tracksAPI = baseApi.injectEndpoints({
       ],
 
       keepUnusedDataFor: 60,
+    }),
+    fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
+      query: (params) => {
+        const query = buildQueryString(params)
+
+        return `playlists/tracks?${query}`
+      },
+      providesTags: (result) => [
+        ...(result?.data.map((track) => {
+          return { type: 'Track' as const, id: track.id }
+        }) || []),
+        'Track',
+      ],
     }),
     fetchTracksInPlaylist: build.query<FetchPlaylistsTracksResponse, FetchTracksArgs & { playlistId: string }>({
       query: ({ playlistId, ...params }) => ({
@@ -178,7 +192,7 @@ export const tracksAPI = baseApi.injectEndpoints({
     }),
     like: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
-        url: `playlists/tracks/${trackId}/like`,
+        url: `playlists/tracks/${trackId}/likes`,
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
@@ -193,7 +207,7 @@ export const tracksAPI = baseApi.injectEndpoints({
     }),
     dislike: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
-        url: `playlists/tracks/${trackId}/dislike`,
+        url: `playlists/tracks/${trackId}/dislikes`,
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
@@ -208,7 +222,7 @@ export const tracksAPI = baseApi.injectEndpoints({
     }),
     removeReaction: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
-        url: `playlists/tracks/${trackId}/reaction`,
+        url: `playlists/tracks/${trackId}/reactions`,
         method: 'DELETE',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
@@ -242,13 +256,30 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
+    deleteCoverFromTrack: build.mutation<void, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}/cover`,
+        method: 'DELETE',
+      }),
+      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
+      },
+      invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
+    }),
   }),
 })
 
 export const {
+  useFetchTracksInfinityQuery,
   useFetchTracksQuery,
   useFetchTrackByIdQuery,
   useAddCoverToTrackMutation,
+  useDeleteCoverFromTrackMutation,
   useAddTrackToPlaylistMutation,
   useCreateTrackMutation,
   useDislikeMutation,

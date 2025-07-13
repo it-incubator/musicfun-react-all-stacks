@@ -32,7 +32,7 @@ export const TrackPage = () => {
           <PlaylistCard
             id={playlist.data.id}
             title={playlist.data.attributes.title}
-            image={playlist.data.attributes.images.main[0].url}
+            imageSrc={playlist.data.attributes.images.main[0].url}
             description={playlist.data.attributes.description.text}
           />
         )}

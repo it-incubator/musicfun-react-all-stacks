@@ -6,16 +6,20 @@ import s from './ContentList.module.css'
 
 type ContentListProps<T> = {
   title?: string
-  data: T[]
+  data: T[] | undefined
   renderItem: (item: T) => React.ReactNode
   listClassName?: string
+  isLoading: boolean
+  skeleton: React.ReactNode
 }
 
 export const ContentList = <T,>({
   title,
-  data,
+  data = [],
   renderItem,
   listClassName,
+  isLoading,
+  skeleton,
 }: ContentListProps<T>) => {
   return (
     <section>
@@ -25,9 +29,9 @@ export const ContentList = <T,>({
         </Typography>
       )}
       <ul className={clsx(s.list, listClassName)}>
-        {data.map((item, index) => (
-          <li key={index}>{renderItem(item)}</li>
-        ))}
+        {isLoading
+          ? Array.from({ length: 10 }).map((_, i) => <li key={i}>{skeleton}</li>)
+          : data.map((item, index) => <li key={index}>{renderItem(item)}</li>)}
       </ul>
     </section>
   )

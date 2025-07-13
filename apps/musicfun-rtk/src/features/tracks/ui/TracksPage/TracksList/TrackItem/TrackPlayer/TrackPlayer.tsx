@@ -1,17 +1,17 @@
 import { IconButton } from '@/common/components'
 import { PauseIcon, PlayIcon } from '@/common/icons'
-import { usePlayer } from '@/features/player/lib/hooks/usePlayer.ts'
 
 import { type MouseEvent } from 'react'
 import type { BaseAttributes, TrackDetails } from '../../../../../api/tracksApi.types.ts'
+import type { PlayerLogic } from '@/features/player/model/PlayerLogic.ts'
 
 type Props<T extends BaseAttributes> = {
   track: TrackDetails<T>
+  isPlayingMe: boolean
+  player: PlayerLogic
 }
 
-export const TrackPlayer = <T extends BaseAttributes>({ track }: Props<T>) => {
-  const [player, isPlayingMe] = usePlayer(false, track)
-
+export const TrackPlayer = <T extends BaseAttributes>({ track, player, isPlayingMe }: Props<T>) => {
   const playHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (isPlayingMe) {

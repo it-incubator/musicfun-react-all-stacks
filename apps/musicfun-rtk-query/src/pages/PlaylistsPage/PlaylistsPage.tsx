@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router'
 
-import { MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
+import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
 
@@ -9,6 +10,22 @@ import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {
   const [hashtags, setHashtags] = useState<string[]>([])
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const pageNumber = Number(searchParams.get('page')) || 1
+  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({ pageNumber })
+  const pagesCount = playlists?.meta.pagesCount || 1
+
+  const handlePageChange = (page: number) => {
+    setSearchParams((prev) => {
+      if (page === 1) {
+        prev.delete('page')
+      } else {
+        prev.set('page', page.toString())
+      }
+      return prev
+    })
+  }
 
   return (
     <PageWrapper>
@@ -32,23 +49,34 @@ export const PlaylistsPage = () => {
           className={s.autocomplete}
         />
       </div>
+
       <ContentList
-        data={[...MOCK_PLAYLISTS, ...MOCK_PLAYLISTS, ...MOCK_PLAYLISTS]}
-        renderItem={(playlist) => (
-          <PlaylistCard
-            id={playlist.data.id}
-            title={playlist.data.attributes.title}
-            image={playlist.data.attributes.images.main[0].url}
-            description={playlist.data.attributes.description.text}
-            isShowReactionButtons={true}
-            reaction={playlist.data.attributes.currentUserReaction}
-            onLike={() => {}}
-            onDislike={() => {}}
-            likesCount={playlist.data.attributes.likesCount}
-          />
-        )}
+        data={playlists?.data}
+        isLoading={isPlaylistsLoading}
+        skeleton={<PlaylistCardSkeleton showReactionButtons />}
+        renderItem={(playlist) => {
+          const image = playlist.attributes.images.main[1]
+
+          return (
+            <PlaylistCard
+              id={playlist.id}
+              title={playlist.attributes.title}
+              imageSrc={image?.url}
+              description={playlist.attributes.description}
+              isShowReactionButtons={true}
+              reaction={playlist.attributes.currentUserReaction}
+              likesCount={playlist.attributes.likesCount}
+            />
+          )
+        }}
       />
-      <Pagination className={s.pagination} page={1} pagesCount={10} onPageChange={() => {}} />
+
+      <Pagination
+        className={s.pagination}
+        page={pageNumber}
+        pagesCount={pagesCount}
+        onPageChange={handlePageChange}
+      />
     </PageWrapper>
   )
 }

@@ -8,11 +8,16 @@ import type {
 } from './playlistsApi.types.ts'
 import type { Images, ReactionResponse } from '@/common/types'
 import type { Nullable } from '@/common/types/common.types'
+import { buildQueryString } from '@/common/utils'
 
 export const playlistsAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
     fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
-      query: (params) => ({ url: 'playlists', params }),
+      query: (params) => {
+        const { tagsIds, ...rest } = params
+        const query = buildQueryString({ ...rest, tagsIds })
+        return { url: `playlists/?${query}` }
+      },
       providesTags: ['Playlist'],
     }),
     fetchMyPlaylists: build.query<Omit<PlaylistsResponse, 'meta'>, void>({
@@ -58,6 +63,10 @@ export const playlistsAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: (_result, _error, { playlistId }) => [{ type: 'Playlist', id: playlistId }, 'Playlist'],
     }),
+    deletePlaylistCover: build.mutation<void, { playlistId: string }>({
+      query: ({ playlistId }) => ({ url: `playlists/${playlistId}/images/main`, method: 'DELETE' }),
+      invalidatesTags: (_result, _error, { playlistId }) => [{ type: 'Playlist', id: playlistId }, 'Playlist'],
+    }),
     reorderPlaylist: build.mutation<void, { playlistId: string; putAfterItemId: Nullable<string> }>({
       query: ({ playlistId, putAfterItemId }) => ({
         url: `playlists/${playlistId}/reorder`,
@@ -98,6 +107,7 @@ export const {
   useUpdatePlaylistMutation,
   useRemovePlaylistMutation,
   useUploadPlaylistCoverMutation,
+  useDeletePlaylistCoverMutation,
   useReorderPlaylistMutation,
   useLikePlaylistMutation,
   useDislikePlaylistMutation,

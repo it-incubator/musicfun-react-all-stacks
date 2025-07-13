@@ -15,6 +15,7 @@ export type BaseAttributes = {
   addedAt: string
   attachments: TrackAttachment[]
   images: Images
+  currentUserReaction: CurrentUserReaction
 }
 
 export type FetchTracksAttributes = BaseAttributes & {
@@ -31,7 +32,6 @@ export type TrackDetailAttributes = BaseAttributes & {
   tags: Tag[]
   artists: Artist[]
   // likes
-  currentUserReaction: CurrentUserReaction
   dislikesCount: number
   likesCount: number
 }
@@ -74,6 +74,11 @@ export type FetchTracksArgs = {
   pageSize?: number
   pageNumber: number
   search?: string
+  sortBy?: 'addedAt' | 'likesCount'
+  sortDirection?: 'asc' | 'desc'
+  tagsIds?: string[]
+  artistsIds?: string[]
+  userId?: string
 }
 
 export type UpdateTrackArgs = {
