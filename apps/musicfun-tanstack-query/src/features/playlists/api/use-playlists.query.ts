@@ -1,8 +1,8 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
+import { playlistsKeys } from '@/features/playlists/api/query-key-factory.ts'
 import { getClient } from '@/shared/api/client.ts'
-
-import type { IPlaylistsQuery } from './use-playlist.query.types.ts'
+import type { SchemaGetPlaylistsRequestPayload } from '@/shared/api/schema.ts'
 
 export const usePlaylists = ({
   search,
@@ -13,12 +13,18 @@ export const usePlaylists = ({
   sortDirection,
   tagsIds,
   trackId,
-}: IPlaylistsQuery) => {
+}: SchemaGetPlaylistsRequestPayload) => {
   const query = useQuery({
-    queryKey: [
-      'playlists',
-      { search, pageNumber, pageSize, userId, sortBy, sortDirection, tagsIds, trackId },
-    ],
+    queryKey: playlistsKeys.list({
+      search,
+      pageNumber,
+      pageSize,
+      userId,
+      sortBy,
+      sortDirection,
+      tagsIds,
+      trackId,
+    }),
     queryFn: () => {
       return getClient().GET('/playlists', {
         params: {

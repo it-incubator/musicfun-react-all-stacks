@@ -1,8 +1,8 @@
-import type { IPlaylistsQuery } from '@/features/playlists/api/use-playlist.query.types.ts'
+import type { SchemaGetPlaylistsRequestPayload } from '@/shared/api/schema.ts'
 
 export type SortOption = 'mostLiked' | 'leastLiked' | 'newest' | 'oldest'
 
 export interface ISortConfig {
-  sortBy: IPlaylistsQuery['sortBy']
-  sortDirection: IPlaylistsQuery['sortDirection']
+  sortBy: SchemaGetPlaylistsRequestPayload['sortBy']
+  sortDirection: SchemaGetPlaylistsRequestPayload['sortDirection']
 }
