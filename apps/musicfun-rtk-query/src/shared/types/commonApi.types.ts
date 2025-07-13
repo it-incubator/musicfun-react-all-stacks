@@ -16,11 +16,17 @@ export type Meta = {
 }
 
 export type Cover = {
-  type: 'original' | 'medium' | 'thumbnail'
+  type: ImageType
   width: number
   height: number
   fileSize: number
   url: string
+}
+
+export enum ImageType {
+  ORIGINAL = 'original',
+  MEDIUM = 'medium',
+  THUMBNAIL = 'thumbnail',
 }
 
 export type User = {

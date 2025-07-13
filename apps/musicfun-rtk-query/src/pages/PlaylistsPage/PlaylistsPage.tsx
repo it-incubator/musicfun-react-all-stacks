@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router'
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
 import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
 import s from './PlaylistsPage.module.css'
@@ -11,9 +13,17 @@ import s from './PlaylistsPage.module.css'
 export const PlaylistsPage = () => {
   const [hashtags, setHashtags] = useState<string[]>([])
   const [searchParams, setSearchParams] = useSearchParams()
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const sortBy = searchParams.get('sortBy') as 'addedAt' | 'likesCount'
+  const sortDirection = searchParams.get('sortDirection') as 'asc' | 'desc'
 
   const pageNumber = Number(searchParams.get('page')) || 1
-  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({ pageNumber })
+  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
+    pageNumber,
+    sortBy: sortBy || 'addedAt',
+    sortDirection: sortDirection || 'desc',
+  })
   const pagesCount = playlists?.meta.pagesCount || 1
 
   const handlePageChange = (page: number) => {
@@ -47,6 +57,8 @@ export const PlaylistsPage = () => {
           label="Hashtags"
           placeholder="Search by hashtags"
           className={s.autocomplete}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
         />
       </div>
 
@@ -55,7 +67,7 @@ export const PlaylistsPage = () => {
         isLoading={isPlaylistsLoading}
         skeleton={<PlaylistCardSkeleton showReactionButtons />}
         renderItem={(playlist) => {
-          const image = playlist.attributes.images.main[1]
+          const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
 
           return (
             <PlaylistCard

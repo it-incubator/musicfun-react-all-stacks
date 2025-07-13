@@ -15,7 +15,7 @@ type Story = StoryObj<typeof PlaylistOverview>
 
 export const Default: Story = {
   args: {
-    title: 'Chill Mix',
+    title: 'Chill Mixg',
     image: 'https://unsplash.it/297/297',
     description: 'Julia Wolf, ayokay, Khalid and more',
     tags: MOCK_5_HASHTAGS,

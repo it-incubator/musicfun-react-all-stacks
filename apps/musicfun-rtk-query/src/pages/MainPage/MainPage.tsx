@@ -1,6 +1,8 @@
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { MOCK_HASHTAGS, TagsList } from '@/features/tags'
 import { MOCK_TRACKS, TrackCard } from '@/features/tracks'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
 import { ContentList, PageWrapper } from '../common'
 import s from './MainPage.module.css'
@@ -20,7 +22,7 @@ export const MainPage = () => {
         title="New playlists"
         data={playlists?.data}
         renderItem={(playlist) => {
-          const image = playlist.attributes.images.main[0]
+          const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
           return (
             <PlaylistCard
               id={playlist.id}

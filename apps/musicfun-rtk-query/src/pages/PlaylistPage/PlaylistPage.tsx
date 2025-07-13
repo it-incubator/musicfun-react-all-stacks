@@ -5,6 +5,8 @@ import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlist
 import { MOCK_TRACKS, TracksTable } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { ReactionButtons } from '@/shared/components'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
 import { PageWrapper } from '../common'
 import s from './PlaylistPage.module.css'
@@ -17,13 +19,10 @@ export const PlaylistPage = () => {
 
   const isOwnPlaylist = me?.userId === playlist?.data.attributes.user.id
 
-  const playlistCover = playlist?.data.attributes.images.main.find(
-    (image) => image.type === 'original'
-  )
-
   if (!playlist) {
     return <div>Playlist not found</div>
   }
+  const playlistCover = getImageByType(playlist?.data.attributes.images, ImageType.ORIGINAL)
 
   return (
     <PageWrapper className={s.playlistPage}>

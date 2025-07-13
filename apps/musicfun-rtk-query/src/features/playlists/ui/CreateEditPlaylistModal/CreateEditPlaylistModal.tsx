@@ -106,29 +106,42 @@ export const CreateEditPlaylistModal = () => {
         }).unwrap()
 
         if (selectedImage) {
-          uploadPlaylistCover({
+          await uploadPlaylistCover({
             playlistId: editingPlaylistId,
             file: selectedImage,
           })
+
+          handleClose()
+        } else {
+          handleClose()
         }
       } else {
         const createResult = await createPlaylist({
           title: data.title,
           description: data.description,
-          // tagIds: data.tags,
         }).unwrap()
 
         const playlistId = createResult.data.id
 
-        if (selectedImage) {
-          uploadPlaylistCover({
-            playlistId,
-            file: selectedImage,
-          })
-        }
-      }
+        const updatePromise = updatePlaylist({
+          playlistId: createResult.data.id,
+          payload: {
+            ...createResult.data.attributes,
+            tagIds: data.tags,
+          },
+        }).unwrap()
 
-      handleClose()
+        const uploadImagePromise = selectedImage
+          ? uploadPlaylistCover({
+              playlistId,
+              file: selectedImage,
+            }).unwrap()
+          : Promise.resolve()
+
+        await Promise.all([updatePromise, uploadImagePromise])
+
+        handleClose()
+      }
     } catch (error) {
       console.error(`Failed to ${isEditMode ? 'update' : 'create'} playlist:`, error)
       showErrorToast(`Failed to ${isEditMode ? 'update' : 'create'} playlist`)
