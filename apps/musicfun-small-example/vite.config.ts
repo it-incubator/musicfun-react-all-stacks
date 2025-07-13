@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tanstackRouter from '@tanstack/router-plugin/vite'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -11,6 +12,12 @@ export default defineConfig({
     }),
     react(),
   ],
+  resolve: {
+    alias: {
+      // “@” will map to the /src directory
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
   server: {
     host: true, // ← or '0.0.0.0'
     port: 5174,

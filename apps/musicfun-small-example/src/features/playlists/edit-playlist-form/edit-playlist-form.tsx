@@ -8,13 +8,14 @@ import { requestWrapper } from '../../../shared/api/request-wrapper.ts'
 import { queryErrorHandlerForRHFFactory } from '../../../shared/api/query-error-handler-for-rhf-factory.ts'
 
 type Props = {
+  classNames: string
   playlistId: string | null
   onCancelEditing: () => void
 }
 
 type UpdatePlaylistRequestPayload = components['schemas']['UpdatePlaylistRequestPayload']
 
-export const EditPlaylistForm = ({ playlistId, onCancelEditing }: Props) => {
+export const EditPlaylistForm = ({ playlistId, onCancelEditing, classNames }: Props) => {
   const queryClient = useQueryClient()
 
   /* 1. Загружаем детали плейлиста */
@@ -74,19 +75,26 @@ export const EditPlaylistForm = ({ playlistId, onCancelEditing }: Props) => {
   if (!playlistId) return null
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className={classNames}>
       <h2>Редактировать плейлист</h2>
 
-      <input {...register('title')} placeholder="Title" disabled={isPending || isPlaylistPending || isSubmitting} />
-      {errors.title && <span>{errors.title.message}</span>}
+      <p>
+        <label>
+          <input {...register('title')} placeholder="Title" disabled={isPending || isPlaylistPending || isSubmitting} />
+        </label>
+      </p>
+      {errors.title && <p>{errors.title.message}</p>}
+      <p>
+        <label>
+          <textarea
+            {...register('description')}
+            placeholder="Description"
+            disabled={isPending || isPlaylistPending || isSubmitting}
+          />
+        </label>
+      </p>
+      {errors.description && <p>{errors.description.message}</p>}
 
-      <hr />
-      <textarea
-        {...register('description')}
-        placeholder="Description"
-        disabled={isPending || isPlaylistPending || isSubmitting}
-      />
-      <hr />
       <button type="submit" disabled={isPending || isPlaylistPending || isSubmitting}>
         {isPending ? 'Сохраняем…' : 'Сохранить'}
       </button>

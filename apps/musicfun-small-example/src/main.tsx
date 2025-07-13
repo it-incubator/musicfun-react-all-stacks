@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './styles/reset.css'
+import './styles/index.css'
 import { setClientConfig } from './shared/api/client.ts'
 import { localStorageKeys } from './shared/db/localstorage-keys.ts'
 import { routeTree } from './routeTree.gen'

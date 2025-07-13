@@ -1,15 +1,15 @@
 import { useMeQuery } from '../api/use-me.query.ts'
-import { Login } from './Login/Login.tsx'
-import { MeInfo } from './MeInfo/MeInfo.tsx'
+import { Login } from '@/features/auth/ui/login/login.component.tsx'
+import { MeInfoComponent } from '@/features/auth/ui/me-info/me-info.component.tsx'
 
 export const UserBlock = () => {
   const query = useMeQuery()
 
   return (
-    <>
-      {!query.data?.data && <Login />}
-      {query.data?.data && <MeInfo />}
-    </>
+    <div>
+      {!query.data && <Login />}
+      {query.data && <MeInfoComponent />}
+    </div>
   )
 }
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-export const OAuthCallback = () => {
+export function OAuthCallbackPage() {
   useEffect(() => {
     const url = new URL(window.location.href)
     const code = url.searchParams.get('code') // или code/state, если flow другой

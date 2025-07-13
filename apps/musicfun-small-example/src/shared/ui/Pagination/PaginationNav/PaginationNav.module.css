@@ -14,16 +14,17 @@
   transition:
     background 0.2s,
     color 0.2s;
+  color: white;
 }
 
 .pageButtonActive {
   background: #ececec;
   font-weight: bold;
   cursor: default;
+  color: black;
 }
 
 .ellipsis {
   padding: 4px 10px;
-  color: #888;
   user-select: none;
 }
