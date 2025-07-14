@@ -34,7 +34,6 @@
 }
 
 .content {
-  position: fixed;
   z-index: 50;
 
   min-width: 160px;
@@ -42,39 +41,39 @@
   border-radius: 8px;
 
   background-color: var(--color-bg-primary);
+  outline: none;
   box-shadow:
     0 10px 38px -10px rgb(22 23 24 / 35%),
     0 10px 20px -15px rgb(22 23 24 / 20%);
+
+  /* HeadlessUI transition classes */
 }
 
+.content[data-closed] {
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+.content[data-open] {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Alignment styles for HeadlessUI positioning */
 .content.align-start {
   transform-origin: top left;
 }
 
 .content.align-center {
   transform-origin: top center;
-  transform: translateX(-50%);
 }
 
 .content.align-end {
   transform-origin: top right;
-  transform: translateX(-100%);
 }
 
 .content.side-top {
   transform-origin: bottom;
-}
-
-.content.side-top.align-center {
-  transform: translateX(-50%) translateY(-100%);
-}
-
-.content.side-top.align-end {
-  transform: translateX(-100%) translateY(-100%);
-}
-
-.content.side-top.align-start {
-  transform: translateY(-100%);
 }
 
 .item {
@@ -98,7 +97,8 @@
   transition: all 200ms ease;
 }
 
-.item:focus-visible {
+.item:focus,
+.item[data-focus] {
   background-color: var(--color-accent);
   outline: none;
 }
@@ -121,17 +121,4 @@
   height: 1px;
   margin: 4px 0;
   background-color: var(--color-border-base);
-}
-
-/* Animations */
-@keyframes dropdown-menu-show {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
