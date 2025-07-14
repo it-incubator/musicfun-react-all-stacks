@@ -1,6 +1,6 @@
-import { useAppSelector } from '@/shared/hooks/useAppSelector'
+import { useAppSelector } from './useAppSelector'
 
-export const useIsLoading = () => {
+export const useIsGlobalLoading = () => {
   return useAppSelector((state) => {
     const queries = state.baseApi.queries
     const mutations = state.baseApi.mutations
