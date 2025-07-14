@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router'
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
+import { useDebounce } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -15,6 +16,9 @@ export const PlaylistsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [searchTerm, setSearchTerm] = useState('')
 
+  const search = searchParams.get('search') || ''
+  const debouncedSearch = useDebounce(search, 500)
+
   const sortBy = searchParams.get('sortBy') as 'addedAt' | 'likesCount'
   const sortDirection = searchParams.get('sortDirection') as 'asc' | 'desc'
 
@@ -23,6 +27,7 @@ export const PlaylistsPage = () => {
     pageNumber,
     sortBy: sortBy || 'addedAt',
     sortDirection: sortDirection || 'desc',
+    search: debouncedSearch,
   })
   const pagesCount = playlists?.meta.pagesCount || 1
 
@@ -44,8 +49,8 @@ export const PlaylistsPage = () => {
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField placeholder="Search playlists" onChange={() => {}} />
-          <SortSelect onChange={() => {}} />
+          <SearchTextField placeholder="Search playlists" />
+          <SortSelect />
         </div>
         <Autocomplete
           options={MOCK_HASHTAGS.map((hashtag) => ({
