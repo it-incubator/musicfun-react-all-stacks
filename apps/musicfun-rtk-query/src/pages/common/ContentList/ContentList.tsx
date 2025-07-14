@@ -13,6 +13,8 @@ type ContentListProps<T> = {
   skeleton?: React.ReactNode
 }
 
+const SKELETON_ITEM_COUNT = 10
+
 export const ContentList = <T,>({
   title,
   data = [],
@@ -30,7 +32,7 @@ export const ContentList = <T,>({
       )}
       <ul className={clsx(s.list, listClassName)}>
         {isLoading
-          ? Array.from({ length: 10 }).map((_, i) => <li key={i}>{skeleton}</li>)
+          ? Array.from({ length: SKELETON_ITEM_COUNT }).map((_, i) => <li key={i}>{skeleton}</li>)
           : data.map((item, index) => <li key={index}>{renderItem(item)}</li>)}
       </ul>
     </section>
