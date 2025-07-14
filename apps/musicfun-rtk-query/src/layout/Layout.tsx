@@ -2,10 +2,10 @@ import clsx from 'clsx'
 import { Outlet } from 'react-router'
 
 import { LoginModal } from '@/features/auth'
-import { selectIsAuthModalOpen, setIsAuthModalOpen } from '@/features/auth/model'
+import { selectIsAuthModalOpen } from '@/features/auth/model'
 import { CreateEditPlaylistModal, selectIsCreateEditModalOpen } from '@/features/playlists'
 import { AppLoader } from '@/layout/AppLoader'
-import { useAppDispatch, useAppSelector } from '@/shared/hooks'
+import { useAppSelector } from '@/shared/hooks'
 import { Player } from '@/widgets/Player'
 
 import { Header } from './Header'
@@ -16,11 +16,6 @@ export const Layout = () => {
   const IS_PLAYER_OPEN = false
   const isCreatePlaylistModalOpen = useAppSelector(selectIsCreateEditModalOpen)
   const isAuthModalOpen = useAppSelector(selectIsAuthModalOpen)
-  const dispatch = useAppDispatch()
-
-  const handleCloseAuthModal = () => {
-    dispatch(setIsAuthModalOpen({ isAuthModalOpen: false }))
-  }
 
   return (
     <>
@@ -33,7 +28,7 @@ export const Layout = () => {
           <Outlet />
         </main>
         {IS_PLAYER_OPEN && <Player />}
-        {isAuthModalOpen && <LoginModal onClose={handleCloseAuthModal} />}
+        {isAuthModalOpen && <LoginModal />}
         {isCreatePlaylistModalOpen && <CreateEditPlaylistModal />}
       </div>
     </>
