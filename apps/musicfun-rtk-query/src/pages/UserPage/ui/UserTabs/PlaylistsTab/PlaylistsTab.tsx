@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from 'react-router'
+import { useParams } from 'react-router'
 
 import {
   PlaylistCard,
@@ -14,9 +14,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Pagination,
 } from '@/shared/components'
 import { MoreIcon } from '@/shared/icons'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
 import s from './PlaylistsTab.module.css'
 
@@ -27,22 +28,7 @@ export const PlaylistsTab = () => {
   const { handleOpenEditPlaylistModal } = useEditPlaylistModal()
   const [removePlaylist] = useRemovePlaylistMutation()
 
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const pageNumber = Number(searchParams.get('page')) || 1
-  const { data: playlists } = useFetchPlaylistsQuery({ pageNumber, userId: userId! })
-  const pagesCount = playlists?.meta.pagesCount || 1
-
-  const handlePageChange = (page: number) => {
-    setSearchParams((prev) => {
-      if (page === 1) {
-        prev.delete('page')
-      } else {
-        prev.set('page', page.toString())
-      }
-      return prev
-    })
-  }
+  const { data: playlists } = useFetchPlaylistsQuery({ userId: userId! })
 
   return (
     <>
@@ -54,7 +40,7 @@ export const PlaylistsTab = () => {
         <ContentList
           data={playlists?.data}
           renderItem={(playlist) => {
-            const image = playlist.attributes.images.main[0]
+            const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
             return (
               <PlaylistCard
                 id={playlist.id}
@@ -87,7 +73,6 @@ export const PlaylistsTab = () => {
           }}
         />
       )}
-      <Pagination page={pageNumber} pagesCount={pagesCount} onPageChange={handlePageChange} />
     </>
   )
 }

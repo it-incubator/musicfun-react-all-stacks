@@ -31,7 +31,7 @@ export const PlaylistPage = () => {
         title={playlist.data.attributes.title}
         image={playlistCover?.url}
         description={playlist.data.attributes.description}
-        tags={playlist.data.attributes.tags.map((tag) => tag.name)}
+        tags={playlist.data.attributes.tags}
       />
       <ControlPanel
         playlistId={playlist.data.id}

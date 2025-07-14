@@ -1,26 +1,23 @@
-import { useState } from 'react'
 import { useSearchParams } from 'react-router'
 
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
-import { MOCK_HASHTAGS } from '@/features/tags'
-import { Autocomplete, Pagination, Typography } from '@/shared/components'
+import { Pagination, Typography } from '@/shared/components'
 import { useDebounce } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
+import { ContentList, PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
 import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {
-  const [hashtags, setHashtags] = useState<string[]>([])
   const [searchParams, setSearchParams] = useSearchParams()
-  const [searchTerm, setSearchTerm] = useState('')
 
   const search = searchParams.get('search') || ''
   const debouncedSearch = useDebounce(search, 500)
 
   const sortBy = searchParams.get('sortBy') as 'addedAt' | 'likesCount'
   const sortDirection = searchParams.get('sortDirection') as 'asc' | 'desc'
+  const tagsIds = searchParams.get('tags')?.split(',').filter(Boolean) || []
 
   const pageNumber = Number(searchParams.get('page')) || 1
   const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
@@ -28,6 +25,7 @@ export const PlaylistsPage = () => {
     sortBy: sortBy || 'addedAt',
     sortDirection: sortDirection || 'desc',
     search: debouncedSearch,
+    ...(tagsIds.length > 0 && { tagsIds }),
   })
   const pagesCount = playlists?.meta.pagesCount || 1
 
@@ -52,19 +50,7 @@ export const PlaylistsPage = () => {
           <SearchTextField placeholder="Search playlists" />
           <SortSelect />
         </div>
-        <Autocomplete
-          options={MOCK_HASHTAGS.map((hashtag) => ({
-            label: hashtag,
-            value: hashtag,
-          }))}
-          value={hashtags}
-          onChange={setHashtags}
-          label="Hashtags"
-          placeholder="Search by hashtags"
-          className={s.autocomplete}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-        />
+        <SearchTags className={s.searchTags} />
       </div>
 
       <ContentList

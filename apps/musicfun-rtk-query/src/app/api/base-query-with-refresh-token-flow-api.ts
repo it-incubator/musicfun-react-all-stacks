@@ -31,6 +31,21 @@ const baseQuery = fetchBaseQuery({
     // TODO: Мешает этот параметр для отправки файлов, RTK Query сам правильно определяет Content-Type в зависимости от типа данных.
     return headers
   },
+  paramsSerializer: (params) => {
+    const searchParams = new URLSearchParams()
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          searchParams.append(key, String(item))
+        })
+      } else if (value !== undefined && value !== null) {
+        searchParams.set(key, String(value))
+      }
+    })
+
+    return searchParams.toString()
+  },
 })
 
 /**Обёртка с логикой рефреша */

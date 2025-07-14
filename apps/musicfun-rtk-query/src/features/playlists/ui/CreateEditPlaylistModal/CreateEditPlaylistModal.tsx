@@ -76,7 +76,7 @@ export const CreateEditPlaylistModal = () => {
       reset({
         title: playlist.title,
         description: playlist.description,
-        tags: playlist.tags.map((tag) => tag.name),
+        tags: playlist.tags.map((tag) => tag.id),
       })
     }
   }, [isEditMode, playlistData, reset])

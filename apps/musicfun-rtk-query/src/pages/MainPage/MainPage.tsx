@@ -1,5 +1,5 @@
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
-import { MOCK_HASHTAGS, TagsList } from '@/features/tags'
+import { TagsList, useFindTagsQuery } from '@/features/tags'
 import { MOCK_TRACKS, TrackCard } from '@/features/tracks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
@@ -12,9 +12,11 @@ export const MainPage = () => {
     pageSize: 10,
   })
 
+  const { data: tags } = useFindTagsQuery({ value: '' })
+
   return (
     <PageWrapper className={s.mainPage}>
-      <TagsList tags={MOCK_HASHTAGS} />
+      <TagsList tags={tags || []} />
 
       <ContentList
         isLoading={isPlaylistsLoading}

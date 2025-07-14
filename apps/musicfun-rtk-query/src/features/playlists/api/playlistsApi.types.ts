@@ -51,7 +51,7 @@ export type FetchPlaylistsArgs = {
   search?: string
   sortBy?: 'addedAt' | 'likesCount'
   sortDirection?: 'asc' | 'desc'
-  tagsIds?: string[]
+  tagsIds?: string[] // e.g.: tagsIds=tag1&tagsIds=tag2
   userId?: string
   trackId?: string
 }

@@ -18,7 +18,7 @@ export const Default: Story = {
     title: 'Chill Mixg',
     image: 'https://unsplash.it/297/297',
     description: 'Julia Wolf, ayokay, Khalid and more',
-    tags: MOCK_5_HASHTAGS,
+    tags: MOCK_5_HASHTAGS.map((tag) => ({ id: tag, name: tag })),
   },
 }
 
@@ -27,6 +27,6 @@ export const LongTitle: Story = {
     title: 'This is a Very Long Playlist Title That Should Scale Responsively',
     image: 'https://unsplash.it/299/299',
     description: 'A collection of amazing tracks from various artists around the world',
-    tags: MOCK_5_HASHTAGS,
+    tags: MOCK_5_HASHTAGS.map((tag) => ({ id: tag, name: tag })),
   },
 }
