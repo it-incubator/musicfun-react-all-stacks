@@ -4,6 +4,7 @@ import { Outlet } from 'react-router'
 import { LoginModal } from '@/features/auth'
 import { selectIsAuthModalOpen } from '@/features/auth/model'
 import { CreateEditPlaylistModal, selectIsCreateEditModalOpen } from '@/features/playlists'
+import { CreateEditTrackModal, selectIsCreateEditTrackModalOpen } from '@/features/tracks'
 import { AppLoader } from '@/layout/AppLoader'
 import { useAppSelector } from '@/shared/hooks'
 import { Player } from '@/widgets/Player'
@@ -15,6 +16,7 @@ import { Sidebar } from './Sidebar'
 export const Layout = () => {
   const IS_PLAYER_OPEN = false
   const isCreatePlaylistModalOpen = useAppSelector(selectIsCreateEditModalOpen)
+  const isCreateTrackModalOpen = useAppSelector(selectIsCreateEditTrackModalOpen)
   const isAuthModalOpen = useAppSelector(selectIsAuthModalOpen)
 
   return (
@@ -30,6 +32,7 @@ export const Layout = () => {
         {IS_PLAYER_OPEN && <Player />}
         {isAuthModalOpen && <LoginModal />}
         {isCreatePlaylistModalOpen && <CreateEditPlaylistModal />}
+        {isCreateTrackModalOpen && <CreateEditTrackModal />}
       </div>
     </>
   )

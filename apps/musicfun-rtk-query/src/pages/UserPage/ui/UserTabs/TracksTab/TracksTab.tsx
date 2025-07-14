@@ -1,7 +1,8 @@
-// import { useState } from 'react'
+import { useParams } from 'react-router'
 
-import { MOCK_TRACKS, TracksTable } from '@/features/tracks'
+import { TracksTable, useFetchTracksQuery } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Button } from '@/shared/components'
 import {
   DropdownMenu,
@@ -10,11 +11,19 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components'
 import { MoreIcon } from '@/shared/icons'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
 import s from './TracksTab.module.css'
 
 export const TracksTab = () => {
-  // const [isUploadTrackModalOpen, setIsUploadTrackModalOpen] = useState(false) // STATE FOR TESTING
+  const { userId } = useParams()
+
+  const { data: tracks } = useFetchTracksQuery({
+    pageSize: 10,
+    pageNumber: 1,
+    userId: userId!,
+  })
 
   const openUploadTrackModal = () => {
     // setIsUploadTrackModalOpen(true)
@@ -26,18 +35,34 @@ export const TracksTab = () => {
         Upload Track
       </Button>
       <TracksTable
-        trackRows={MOCK_TRACKS.map((track, index) => ({
-          index,
-          id: track.id,
-          title: track.attributes.title,
-          image: track.attributes.images.main[0].url,
-          addedAt: track.attributes.addedAt,
-          artists: track.attributes.artists?.map((artist) => artist.name) || [],
-          duration: track.attributes.duration,
-        }))}
+        trackRows={
+          tracks?.data?.map((track, index) => {
+            const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
+
+            return {
+              index,
+              id: track.id,
+              title: track.attributes.title,
+              image: image?.url || noCoverPlaceholder,
+              addedAt: track.attributes.addedAt,
+              artists: ['Artist 1', 'Artist 2'],
+              duration: 100,
+              likesCount: 100,
+              dislikesCount: 100,
+              currentUserReaction: track.attributes.currentUserReaction,
+              onUnReaction: () => {},
+              onLike: () => {},
+              onDislike: () => {},
+              onDelete: () => {},
+            }
+          }) ?? []
+        }
         renderTrackRow={(trackRow) => (
           <TrackRow
+            key={trackRow.id}
             trackRow={trackRow}
+            playingTrackId={'TEST_ID'}
+            playingTrackProgress={20}
             renderActionsCell={() => (
               <DropdownMenu>
                 <DropdownMenuTrigger>
