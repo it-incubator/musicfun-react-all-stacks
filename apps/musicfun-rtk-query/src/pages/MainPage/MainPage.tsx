@@ -1,6 +1,6 @@
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { TagsList, useFindTagsQuery } from '@/features/tags'
-import { MOCK_TRACKS, TrackCard } from '@/features/tracks'
+import { MOCK_TRACKS, TrackCard, useFetchTracksQuery } from '@/features/tracks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -10,6 +10,11 @@ import s from './MainPage.module.css'
 export const MainPage = () => {
   const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
     pageSize: 10,
+  })
+
+  const { data: tracks } = useFetchTracksQuery({
+    pageSize: 10,
+    pageNumber: 1,
   })
 
   const { data: tags } = useFindTagsQuery({ value: '' })
@@ -41,19 +46,23 @@ export const MainPage = () => {
 
       <ContentList
         title="New tracks"
-        data={MOCK_TRACKS}
-        renderItem={(track) => (
-          <TrackCard
-            artists={track.attributes.artist}
-            title={track.attributes.title}
-            id={track.id}
-            image={track.attributes.images.main[0].url}
-            reaction={track.attributes.currentUserReaction}
-            onDislike={() => {}}
-            onLike={() => {}}
-            likesCount={track.attributes.likesCount}
-          />
-        )}
+        data={tracks?.data}
+        renderItem={(track) => {
+          const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
+          return (
+            <TrackCard
+              artistNames={['Freddie Mercury', 'John Lennon']}
+              title={track.attributes.title}
+              id={track.id}
+              imageSrc={image?.url}
+              reaction={track.attributes.currentUserReaction}
+              onDislike={() => {}}
+              onLike={() => {}}
+              likesCount={99}
+              onUnReaction={() => {}}
+            />
+          )
+        }}
       />
     </PageWrapper>
   )

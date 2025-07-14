@@ -65,10 +65,11 @@ export type TrackRowData = {
   addedAt: string
   artists: string[]
   duration: number
+  currentUserReaction: CurrentUserReaction
 } & ReactionsProps
 
 export const TracksTable = <T extends TrackRowData>({
-  trackRows,
+  trackRows = [],
   renderTrackRow,
 }: TracksTableProps<T>) => {
   return (
