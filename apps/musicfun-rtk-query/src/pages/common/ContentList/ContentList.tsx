@@ -11,6 +11,7 @@ type ContentListProps<T> = {
   listClassName?: string
   isLoading?: boolean
   skeleton?: React.ReactNode
+  emptyMessage?: string
 }
 
 const SKELETON_ITEM_COUNT = 10
@@ -22,7 +23,12 @@ export const ContentList = <T,>({
   listClassName,
   isLoading,
   skeleton,
+  emptyMessage,
 }: ContentListProps<T>) => {
+  if (data?.length === 0 && !isLoading) {
+    return <Typography variant="body2">{emptyMessage}</Typography>
+  }
+
   return (
     <section>
       {title && (

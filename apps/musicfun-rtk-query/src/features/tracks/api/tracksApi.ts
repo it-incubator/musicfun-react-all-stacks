@@ -199,7 +199,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Track'],
     }),
-    like: build.mutation<ReactionResponse, { trackId: string }>({
+    likeTrack: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/likes`,
         method: 'POST',
@@ -214,7 +214,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
-    dislike: build.mutation<ReactionResponse, { trackId: string }>({
+    dislikeTrack: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/dislikes`,
         method: 'POST',
@@ -229,7 +229,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
-    removeReaction: build.mutation<ReactionResponse, { trackId: string }>({
+    unReactionTrack: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/reactions`,
         method: 'DELETE',
@@ -291,12 +291,12 @@ export const {
   useDeleteCoverFromTrackMutation,
   useAddTrackToPlaylistMutation,
   useCreateTrackMutation,
-  useDislikeMutation,
+  useDislikeTrackMutation,
   useFetchTracksInPlaylistQuery,
-  useLikeMutation,
+  useLikeTrackMutation,
   useRemoveTrackMutation,
   useRemoveTrackFromPlaylistMutation,
-  useRemoveReactionMutation,
+  useUnReactionTrackMutation,
   useUpdateTrackMutation,
   useReorderTracksMutation,
 } = tracksAPI
