@@ -1,6 +1,6 @@
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { TagsList, useFindTagsQuery } from '@/features/tags'
-import { MOCK_TRACKS, TrackCard, useFetchTracksQuery } from '@/features/tracks'
+import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 

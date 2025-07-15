@@ -1,4 +1,5 @@
 export * from './AddToPlaylistIcon'
+export * from './AddTrackIcon'
 export * from './ArrowDownIcon'
 export * from './ClockIcon'
 export * from './CreateIcon'

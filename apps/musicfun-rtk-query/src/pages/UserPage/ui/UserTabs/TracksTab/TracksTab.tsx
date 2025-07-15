@@ -1,6 +1,6 @@
 import { useParams } from 'react-router'
 
-import { TracksTable, useFetchTracksQuery } from '@/features/tracks'
+import { TracksTable, useCreateTrackModal, useFetchTracksQuery } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Button } from '@/shared/components'
@@ -18,6 +18,7 @@ import s from './TracksTab.module.css'
 
 export const TracksTab = () => {
   const { userId } = useParams()
+  const { handleOpenCreateTrackModal } = useCreateTrackModal()
 
   const { data: tracks } = useFetchTracksQuery({
     pageSize: 10,
@@ -25,13 +26,9 @@ export const TracksTab = () => {
     userId: userId!,
   })
 
-  const openUploadTrackModal = () => {
-    // setIsUploadTrackModalOpen(true)
-  }
-
   return (
     <>
-      <Button className={s.uploadTrackButton} onClick={openUploadTrackModal}>
+      <Button className={s.uploadTrackButton} onClick={handleOpenCreateTrackModal}>
         Upload Track
       </Button>
       <TracksTable
