@@ -16,6 +16,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.4",
     "@reduxjs/toolkit": "2.8.2",
     "async-mutex": "0.5.0",
     "react": "19.1.0",

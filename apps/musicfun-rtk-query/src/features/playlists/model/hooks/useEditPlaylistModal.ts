@@ -8,14 +8,17 @@ import {
   selectIsCreateEditModalOpen,
 } from '../playlists-slice'
 
-export const useEditPlaylistModal = (playlistId: string) => {
+export const useEditPlaylistModal = () => {
   const dispatch = useAppDispatch()
   const isCreateEditModalOpen = useAppSelector(selectIsCreateEditModalOpen)
   const editingPlaylistId = useAppSelector(selectEditingPlaylistId)
 
-  const handleOpenEditPlaylistModal = useCallback(() => {
-    dispatch(openEditModal(playlistId))
-  }, [dispatch, playlistId])
+  const handleOpenEditPlaylistModal = useCallback(
+    (playlistId: string) => {
+      dispatch(openEditModal(playlistId))
+    },
+    [dispatch]
+  )
 
   return {
     isEditPlaylistModalOpen: isCreateEditModalOpen && editingPlaylistId,

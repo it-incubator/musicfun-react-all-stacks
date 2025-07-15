@@ -1,24 +1,24 @@
 import { useState } from 'react'
 
-import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
-import { MOCK_HASHTAGS } from '@/features/tags'
-import { MOCK_TRACKS, TracksTable } from '@/features/tracks'
+import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import {
-  Autocomplete,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  ReactionButtons,
-  Typography,
-} from '@/shared/components'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
+import { DropdownMenu, DropdownMenuTrigger, ReactionButtons, Typography } from '@/shared/components'
 import { MoreIcon } from '@/shared/icons'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
-import { PageWrapper, SearchTextField, SortSelect } from '../common'
+import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
   const [hashtags, setHashtags] = useState<string[]>([])
   const [artists, setArtists] = useState<string[]>([])
+
+  const { data: tracks } = useFetchTracksQuery({
+    pageSize: 10,
+    pageNumber: 1,
+  })
 
   return (
     <PageWrapper>
@@ -31,18 +31,9 @@ export const TracksPage = () => {
           <SortSelect onChange={() => {}} />
         </div>
         <div className={s.controlsRow}>
-          <Autocomplete
-            options={MOCK_HASHTAGS.map((hashtag) => ({
-              label: hashtag,
-              value: hashtag,
-            }))}
-            value={hashtags}
-            onChange={setHashtags}
-            label="Hashtags"
-            placeholder="Search by hashtags"
-            className={s.autocomplete}
-          />
-          <Autocomplete
+          <SearchTags className={s.searchTags} />
+
+          {/* <Autocomplete
             options={MOCK_ARTISTS.map((artist) => ({
               label: artist.name,
               value: artist.id,
@@ -52,23 +43,33 @@ export const TracksPage = () => {
             label="Artists"
             placeholder="Search by artists"
             className={s.autocomplete}
-          />
+          /> */}
         </div>
       </div>
 
       <TracksTable
-        trackRows={MOCK_TRACKS.map((track, index) => ({
-          index,
-          id: track.id,
-          title: track.attributes.title,
-          image: track.attributes.images.main[0].url,
-          addedAt: track.attributes.addedAt,
-          artists: track.attributes.artists?.map((artist) => artist.name) || [],
-          duration: track.attributes.duration,
-          likesCount: track.attributes.likesCount,
-          dislikesCount: track.attributes.dislikesCount,
-          currentUserReaction: track.attributes.currentUserReaction,
-        }))}
+        trackRows={
+          tracks?.data?.map((track, index) => {
+            const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
+
+            return {
+              index,
+              id: track.id,
+              title: track.attributes.title,
+              image: image?.url || noCoverPlaceholder,
+              addedAt: track.attributes.addedAt,
+              artists: ['Artist 1', 'Artist 2'],
+              duration: 100,
+              likesCount: 100,
+              dislikesCount: 100,
+              currentUserReaction: track.attributes.currentUserReaction,
+              onUnReaction: () => {},
+              onLike: () => {},
+              onDislike: () => {},
+              onDelete: () => {},
+            }
+          }) ?? []
+        }
         renderTrackRow={(trackRow) => (
           <TrackRow
             key={trackRow.id}
@@ -81,6 +82,7 @@ export const TracksPage = () => {
                   reaction={trackRow.currentUserReaction}
                   onLike={() => {}}
                   onDislike={() => {}}
+                  onUnReaction={() => {}}
                   likesCount={trackRow.likesCount}
                 />
                 <DropdownMenu>

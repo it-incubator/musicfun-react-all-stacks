@@ -1,321 +1,302 @@
-enum CurrentUserReaction {
-  None = 0,
-  Like = 1,
-  Dislike = 2,
-}
+import { baseApi } from '@/app/api/base-api.ts'
+import type { Nullable, ReactionResponse } from '@/shared/types'
+import { buildQueryString } from '@/shared/utils'
 
-export const MOCK_TRACKS = [
-  {
-    id: '1',
-    type: 'tracks',
-    attributes: {
-      artist: 'Headlund',
-      id: '1',
-      title: 'Days That Matter',
-      addedAt: '2025-06-01T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/110/110',
-          },
-        ],
+import type {
+  FetchPlaylistsTracksResponse,
+  FetchTrackByIdResponse,
+  FetchTracksArgs,
+  FetchTracksResponse,
+  TrackDetailAttributes,
+  TrackDetails,
+  UpdateTrackArgs,
+} from './tracksApi.types.ts'
+
+export const tracksAPI = baseApi.injectEndpoints({
+  endpoints: (build) => ({
+    fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
+      query: (params) => {
+        const query = buildQueryString(params)
+        return `playlists/tracks?${query}`
       },
-      user: {
-        id: '1',
-        name: 'John Doe',
+
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { pageNumber, ...otherParams } = queryArgs
+        return [endpointName, otherParams]
       },
-      currentUserReaction: CurrentUserReaction.None,
-      likesCount: 104,
-      dislikesCount: 2,
-      artists: [{ id: '1', name: 'John Doe' }],
-      duration: 100,
-    },
-  },
-  {
-    id: '2',
-    type: 'tracks',
-    attributes: {
-      artist: 'Stellar Wave',
-      id: '2',
-      title: 'Cosmic Dust',
-      addedAt: '2025-06-02T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/111/111',
-          },
-        ],
+
+      merge: (currentCacheData, responseData, { arg }) => {
+        const currentPage = arg.pageNumber
+
+        if (currentPage === 1) {
+          return responseData
+        }
+
+        if (!currentCacheData?.data || !responseData?.data) {
+          return responseData
+        }
+
+        return {
+          ...responseData,
+          data: [...currentCacheData.data, ...responseData.data],
+        }
       },
-      user: {
-        id: '2',
-        name: 'Jane Smith',
+
+      forceRefetch: ({ currentArg, previousArg }) => {
+        if (!previousArg) return false
+        return currentArg?.pageNumber !== previousArg?.pageNumber
       },
-      currentUserReaction: CurrentUserReaction.Like,
-      likesCount: 10,
-      dislikesCount: 2,
-      artists: [{ id: '2', name: 'Jane Smith' }],
-      duration: 100,
-    },
-  },
-  {
-    id: '3',
-    type: 'tracks',
-    attributes: {
-      artist: 'Aqua Marine',
-      id: '3',
-      title: 'Ocean Breath Is The Best Track Ever',
-      addedAt: '2025-06-03T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/112/112',
-          },
-        ],
-      },
-      user: {
-        id: '1',
-        name: 'John Doe',
-      },
-      currentUserReaction: CurrentUserReaction.None,
-      likesCount: 1,
-      dislikesCount: 2,
-      artists: [
-        { id: '3', name: 'Peter Jones' },
-        { id: '4', name: 'Chris Green' },
-        { id: '5', name: 'John Doe' },
+
+      providesTags: (result) => [
+        ...(result?.data.map((track) => {
+          return { type: 'Track' as const, id: track.id }
+        }) || []),
+        'Track',
       ],
-      duration: 100,
-    },
-  },
-  {
-    id: '4',
-    type: 'tracks',
-    attributes: {
-      artist: 'Night Rider',
-      id: '4',
-      title: 'Midnight Drive',
-      addedAt: '2025-06-04T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/113/113',
-          },
-        ],
+
+      keepUnusedDataFor: 60,
+    }),
+    fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
+      query: (params) => {
+        const query = buildQueryString(params) // TODO: возможно, это излишне
+
+        return `playlists/tracks?${query}`
       },
-      user: {
-        id: '3',
-        name: 'Peter Jones',
+      providesTags: (result) => [
+        ...(result?.data.map((track) => {
+          return { type: 'Track' as const, id: track.id }
+        }) || []),
+        'Track',
+      ],
+    }),
+    fetchTracksInPlaylist: build.query<
+      FetchPlaylistsTracksResponse,
+      FetchTracksArgs & { playlistId: string }
+    >({
+      query: ({ playlistId, ...params }) => ({
+        url: `playlists/tracks/${playlistId}/tracks`,
+        params: params,
+      }),
+      providesTags: (res) => res?.data.map((track) => ({ type: 'Track', trackId: track.id })) || [],
+    }),
+    fetchTrackById: build.query<FetchTrackByIdResponse, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}`,
+      }),
+      providesTags: (_, __, { trackId }) => [{ type: 'Track', trackId }],
+    }),
+    createTrack: build.mutation<TrackDetails<TrackDetailAttributes>, { title: string; file: File }>(
+      {
+        query: ({ title, file }) => {
+          const formData = new FormData()
+          formData.append('title', title)
+          formData.append('file', file)
+
+          return {
+            url: `playlists/tracks/upload`,
+            method: 'POST',
+            body: formData,
+          }
+        },
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+          try {
+            await queryFulfilled
+            dispatch(baseApi.util.invalidateTags(['Track']))
+          } catch {
+            // При ошибке кеш не трогаем
+          }
+        },
+        invalidatesTags: ['Track'],
+      }
+    ),
+    updateTrack: build.mutation<
+      TrackDetails<TrackDetailAttributes>,
+      { trackId: string; payload: UpdateTrackArgs }
+    >({
+      query: ({ trackId, payload }) => ({
+        url: `playlists/tracks/${trackId}`,
+        method: 'PUT',
+        body: payload,
+      }),
+
+      invalidatesTags: ['Track'],
+    }),
+    addTrackToPlaylist: build.mutation<void, { playlistId: string; trackId: string }>({
+      query: ({ trackId, playlistId }) => ({
+        url: `playlists/${playlistId}/relationships/tracks`,
+        method: 'POST',
+        body: {
+          trackId: trackId,
+        },
+      }),
+      invalidatesTags: ['Track'],
+    }),
+    removeTrackFromPlaylist: build.mutation<void, { playlistId: string; trackId: string }>({
+      query: ({ trackId, playlistId }) => ({
+        url: `playlists/${playlistId}/relationships/tracks`,
+        method: 'POST',
+        body: {
+          trackId: trackId,
+        },
+      }),
+      async onQueryStarted({ playlistId, trackId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(
+            baseApi.util.invalidateTags([
+              'Track',
+              { type: 'Playlist', id: playlistId },
+              { type: 'Track', id: trackId },
+            ])
+          )
+        } catch {
+          // При ошибке кеш не трогаем
+        }
       },
-      currentUserReaction: CurrentUserReaction.Dislike,
-      likesCount: 666,
-      dislikesCount: 2,
-      artists: [{ id: '4', name: 'Chris Green' }],
-      duration: 100,
-    },
-  },
-  {
-    id: '5',
-    type: 'tracks',
-    attributes: {
-      artist: 'Urban Glow',
-      id: '5',
-      title: 'City Lights',
-      addedAt: '2025-06-05T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/114/114',
-          },
-        ],
+      invalidatesTags: (_res, __err, { playlistId, trackId }) => [
+        { type: 'Playlist', id: playlistId },
+        { type: 'Track', id: trackId },
+      ],
+    }),
+    reorderTracks: build.mutation<
+      void,
+      {
+        trackId: string
+        playlistId: string
+        putAfterItemId: Nullable<string>
+      }
+    >({
+      query: ({ trackId, playlistId, putAfterItemId }) => ({
+        url: `playlists/${playlistId}/tracks/${trackId}/reorder`,
+        method: 'PUT',
+        body: {
+          putAfterItemId: putAfterItemId,
+        },
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track']))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
       },
-      user: {
-        id: '2',
-        name: 'Jane Smith',
+      invalidatesTags: (_res, _err, { playlistId }) => [{ type: 'Playlist', id: playlistId }],
+    }),
+    removeTrack: build.mutation<void, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}`,
+        method: 'DELETE',
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track']))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
       },
-      currentUserReaction: CurrentUserReaction.Like,
-      likesCount: 8,
-      dislikesCount: 2,
-      artists: [{ id: '5', name: 'John Doe' }],
-      duration: 100,
-    },
-  },
-  {
-    id: '6',
-    type: 'tracks',
-    attributes: {
-      artist: 'Whispering Pines',
-      id: '6',
-      title: 'Forest Lullaby',
-      addedAt: '2025-06-06T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/115/115',
-          },
-        ],
+      invalidatesTags: ['Track'],
+    }),
+    likeTrack: build.mutation<ReactionResponse, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}/likes`,
+        method: 'POST',
+      }),
+      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
       },
-      user: {
-        id: '1',
-        name: 'John Doe',
+      invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
+    }),
+    dislikeTrack: build.mutation<ReactionResponse, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}/dislikes`,
+        method: 'POST',
+      }),
+      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
       },
-      currentUserReaction: CurrentUserReaction.None,
-      likesCount: 1,
-      dislikesCount: 2,
-      duration: 100,
-    },
-  },
-  {
-    id: '7',
-    type: 'tracks',
-    attributes: {
-      artist: 'Sandstorm',
-      id: '7',
-      title: 'Desert Mirage',
-      addedAt: '2025-06-07T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/116/116',
-          },
-        ],
+      invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
+    }),
+    unReactionTrack: build.mutation<ReactionResponse, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}/reactions`,
+        method: 'DELETE',
+      }),
+      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
       },
-      user: {
-        id: '4',
-        name: 'Susan Lee',
+      invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
+    }),
+    addCoverToTrack: build.mutation<void, { trackId: string; cover: File }>({
+      query: ({ trackId, cover }) => {
+        const formData = new FormData()
+        formData.append('cover', cover)
+
+        return {
+          url: `playlists/tracks/${trackId}/cover`,
+          method: 'POST',
+          body: formData,
+        }
       },
-      currentUserReaction: CurrentUserReaction.None,
-      likesCount: 10,
-      dislikesCount: 2,
-      artists: [{ id: '7', name: 'John Doe' }],
-      duration: 100,
-    },
-  },
-  {
-    id: '8',
-    type: 'tracks',
-    attributes: {
-      artist: 'Altitude',
-      id: '8',
-      title: 'Mountain Peak',
-      addedAt: '2025-06-08T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/117/117',
-          },
-        ],
+      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
       },
-      user: {
-        id: '3',
-        name: 'Peter Jones',
+      invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
+    }),
+    deleteCoverFromTrack: build.mutation<void, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}/cover`,
+        method: 'DELETE',
+      }),
+      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
       },
-      currentUserReaction: CurrentUserReaction.Like,
-      likesCount: 10,
-      dislikesCount: 2,
-      artists: [{ id: '8', name: 'John Doe' }],
-      duration: 100,
-    },
-  },
-  {
-    id: '9',
-    type: 'tracks',
-    attributes: {
-      artist: 'Water Lily',
-      id: '9',
-      title: 'River Flow',
-      addedAt: '2025-06-09T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/118/118',
-          },
-        ],
-      },
-      user: {
-        id: '1',
-        name: 'John Doe',
-      },
-      currentUserReaction: CurrentUserReaction.Dislike,
-      likesCount: 10,
-      dislikesCount: 2,
-      artists: [{ id: '10', name: 'John Doe' }],
-      duration: 100,
-    },
-  },
-  {
-    id: '10',
-    type: 'tracks',
-    attributes: {
-      artist: 'Galaxy Explorer',
-      id: '10',
-      title: 'Final Frontier',
-      addedAt: '2025-06-10T12:00:00Z',
-      attachments: [],
-      images: {
-        main: [
-          {
-            type: 'original',
-            width: 100,
-            height: 100,
-            fileSize: 0,
-            url: 'https://unsplash.it/119/119',
-          },
-        ],
-      },
-      user: {
-        id: '5',
-        name: 'Chris Green',
-      },
-      currentUserReaction: CurrentUserReaction.None,
-      likesCount: 10,
-      dislikesCount: 2,
-      artists: [{ id: '10', name: 'John Doe' }],
-      duration: 100,
-    },
-  },
-]
+      invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
+    }),
+  }),
+})
+
+export const {
+  useFetchTracksInfinityQuery,
+  useFetchTracksQuery,
+  useFetchTrackByIdQuery,
+  useAddCoverToTrackMutation,
+  useDeleteCoverFromTrackMutation,
+  useAddTrackToPlaylistMutation,
+  useCreateTrackMutation,
+  useDislikeTrackMutation,
+  useFetchTracksInPlaylistQuery,
+  useLikeTrackMutation,
+  useRemoveTrackMutation,
+  useRemoveTrackFromPlaylistMutation,
+  useUnReactionTrackMutation,
+  useUpdateTrackMutation,
+  useReorderTracksMutation,
+} = tracksAPI

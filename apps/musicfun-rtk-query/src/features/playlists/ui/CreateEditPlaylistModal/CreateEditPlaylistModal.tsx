@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { PlaylistTagAutocomplete } from '@/features/tags/ui'
 import {
   Button,
   Dialog,
@@ -8,7 +9,6 @@ import {
   DialogFooter,
   DialogHeader,
   ImageUploader,
-  TagEditor,
   Textarea,
   TextField,
   Typography,
@@ -76,7 +76,7 @@ export const CreateEditPlaylistModal = () => {
       reset({
         title: playlist.title,
         description: playlist.description,
-        tags: playlist.tags.map((tag) => tag.name),
+        tags: playlist.tags.map((tag) => tag.id),
       })
     }
   }, [isEditMode, playlistData, reset])
@@ -101,15 +101,19 @@ export const CreateEditPlaylistModal = () => {
           payload: {
             title: data.title,
             description: data.description,
-            // TODO: add update tags
+            tagIds: data.tags,
           },
         }).unwrap()
 
         if (selectedImage) {
-          uploadPlaylistCover({
+          await uploadPlaylistCover({
             playlistId: editingPlaylistId,
             file: selectedImage,
           })
+
+          handleClose()
+        } else {
+          handleClose()
         }
       } else {
         const createResult = await createPlaylist({
@@ -119,15 +123,25 @@ export const CreateEditPlaylistModal = () => {
 
         const playlistId = createResult.data.id
 
-        if (selectedImage) {
-          uploadPlaylistCover({
-            playlistId,
-            file: selectedImage,
-          })
-        }
-      }
+        const updatePromise = updatePlaylist({
+          playlistId: createResult.data.id,
+          payload: {
+            ...createResult.data.attributes,
+            tagIds: data.tags,
+          },
+        }).unwrap()
 
-      handleClose()
+        const uploadImagePromise = selectedImage
+          ? uploadPlaylistCover({
+              playlistId,
+              file: selectedImage,
+            }).unwrap()
+          : Promise.resolve()
+
+        await Promise.all([updatePromise, uploadImagePromise])
+
+        handleClose()
+      }
     } catch (error) {
       console.error(`Failed to ${isEditMode ? 'update' : 'create'} playlist:`, error)
       showErrorToast(`Failed to ${isEditMode ? 'update' : 'create'} playlist`)
@@ -178,12 +192,7 @@ export const CreateEditPlaylistModal = () => {
             errorMessage={errors.description?.message}
           />
 
-          <TagEditor
-            label="Hashtags"
-            value={tagsValue}
-            onTagsChange={handleTagsChange}
-            maxTags={5}
-          />
+          <PlaylistTagAutocomplete value={tagsValue} onChange={handleTagsChange} />
         </DialogContent>
 
         <DialogFooter>

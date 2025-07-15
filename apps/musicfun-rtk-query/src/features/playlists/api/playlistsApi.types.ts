@@ -41,14 +41,17 @@ export type PlaylistsResponse = {
 // Arguments
 export type CreatePlaylistArgs = Pick<PlaylistAttributes, 'title' | 'description'>
 
-export type UpdatePlaylistArgs = Partial<Pick<PlaylistAttributes, 'title' | 'description' | 'tags'>>
+export type UpdatePlaylistArgs = Partial<Pick<PlaylistAttributes, 'title' | 'description'>> & {
+  tagIds: string[]
+}
 
 export type FetchPlaylistsArgs = {
   pageSize?: number
   pageNumber?: number
   search?: string
+  sortBy?: 'addedAt' | 'likesCount'
   sortDirection?: 'asc' | 'desc'
-  tagsIds?: string[]
+  tagsIds?: string[] // e.g.: tagsIds=tag1&tagsIds=tag2
   userId?: string
   trackId?: string
 }

@@ -4,6 +4,7 @@ import { NavLink } from 'react-router'
 import { useMeQuery } from '@/features/auth'
 import { setIsAuthModalOpen } from '@/features/auth/model'
 import { useCreatePlaylistModal } from '@/features/playlists'
+import { useCreateTrackModal } from '@/features/tracks'
 import { Paths } from '@/shared/configs'
 import { useAppDispatch } from '@/shared/hooks'
 import { HomeIcon, LibraryIcon, PlaylistIcon, TrackIcon, UploadIcon } from '@/shared/icons'
@@ -39,7 +40,7 @@ const createLinks: MenuLink[] = [
 export const MenuLinks = () => {
   const { data: user } = useMeQuery()
   const { handleOpenCreatePlaylistModal } = useCreatePlaylistModal()
-
+  const { handleOpenCreateTrackModal } = useCreateTrackModal()
   const dispatch = useAppDispatch()
   const handleOpenAuthModal = () => {
     dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))
@@ -47,7 +48,7 @@ export const MenuLinks = () => {
 
   const actionButtons: MenuButton[] = [
     {
-      onClick: () => {},
+      onClick: user ? handleOpenCreateTrackModal : handleOpenAuthModal,
       icon: <UploadIcon />,
       label: 'Upload Track',
     },

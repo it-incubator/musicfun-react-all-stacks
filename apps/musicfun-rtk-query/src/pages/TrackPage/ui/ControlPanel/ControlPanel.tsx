@@ -1,3 +1,5 @@
+import { useDislikeTrackMutation, useLikeTrackMutation } from '@/features/tracks'
+import { useUnReactionTrackMutation } from '@/features/tracks'
 import {
   CurrentUserReaction,
   DropdownMenu,
@@ -11,7 +13,21 @@ import { AddToPlaylistIcon, EditIcon, MoreIcon, PlayIcon, TextIcon } from '@/sha
 
 import s from './ControlPanel.module.css'
 
-export const ControlPanel = () => {
+export const ControlPanel = ({
+  trackId,
+  isOwnTrack,
+  reaction,
+  likesCount,
+}: {
+  trackId: string
+  isOwnTrack: boolean
+  reaction: CurrentUserReaction
+  likesCount: number
+}) => {
+  const [like] = useLikeTrackMutation()
+  const [dislike] = useDislikeTrackMutation()
+  const [unReaction] = useUnReactionTrackMutation()
+
   return (
     <div className={s.box}>
       <IconButton className={s.playButton}>
@@ -19,11 +35,12 @@ export const ControlPanel = () => {
       </IconButton>
 
       <ReactionButtons
-        reaction={CurrentUserReaction.None}
-        onLike={() => {}}
-        onDislike={() => {}}
+        reaction={reaction}
+        onLike={() => like({ trackId })}
+        onDislike={() => dislike({ trackId })}
+        onUnReaction={() => unReaction({ trackId })}
         size="large"
-        likesCount={438}
+        likesCount={likesCount}
       />
 
       <DropdownMenu>
