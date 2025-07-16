@@ -48,18 +48,16 @@ export type TracksTableProps<T extends TrackRowData> = {
 type ReactionsProps =
   | {
       likesCount: number
-      dislikesCount: number
       currentUserReaction: CurrentUserReaction
     }
   | {
       likesCount?: undefined
-      dislikesCount?: undefined
       currentUserReaction?: undefined
     }
 
 export type TrackRowData = {
   index: number
-  image: string
+  imageSrc?: string
   id: string
   title: string
   addedAt: string
@@ -72,6 +70,10 @@ export const TracksTable = <T extends TrackRowData>({
   trackRows = [],
   renderTrackRow,
 }: TracksTableProps<T>) => {
+  if (trackRows.length === 0) {
+    return <div>No tracks</div>
+  }
+
   return (
     <Table>
       <TableHead>

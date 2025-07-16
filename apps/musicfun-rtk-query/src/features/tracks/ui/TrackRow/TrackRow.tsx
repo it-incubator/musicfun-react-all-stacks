@@ -28,7 +28,7 @@ export const TrackRow = <T extends TrackRowData>({
       </TableCell>
       <TrackInfoCell
         id={trackRow.id}
-        image={trackRow.image}
+        imageSrc={trackRow.imageSrc}
         title={trackRow.title}
         artists={trackRow.artists}
         isPlaying={isPlaying}
