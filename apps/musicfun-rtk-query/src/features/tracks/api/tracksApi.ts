@@ -86,30 +86,31 @@ export const tracksAPI = baseApi.injectEndpoints({
       }),
       providesTags: (_, __, { trackId }) => [{ type: 'Track', trackId }],
     }),
-    createTrack: build.mutation<TrackDetails<TrackDetailAttributes>, { title: string; file: File }>(
-      {
-        query: ({ title, file }) => {
-          const formData = new FormData()
-          formData.append('title', title)
-          formData.append('file', file)
+    createTrack: build.mutation<
+      { data: TrackDetails<TrackDetailAttributes> },
+      { title: string; file: File }
+    >({
+      query: ({ title, file }) => {
+        const formData = new FormData()
+        formData.append('title', title)
+        formData.append('file', file)
 
-          return {
-            url: `playlists/tracks/upload`,
-            method: 'POST',
-            body: formData,
-          }
-        },
-        async onQueryStarted(_, { dispatch, queryFulfilled }) {
-          try {
-            await queryFulfilled
-            dispatch(baseApi.util.invalidateTags(['Track']))
-          } catch {
-            // При ошибке кеш не трогаем
-          }
-        },
-        invalidatesTags: ['Track'],
-      }
-    ),
+        return {
+          url: `playlists/tracks/upload`,
+          method: 'POST',
+          body: formData,
+        }
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(baseApi.util.invalidateTags(['Track']))
+        } catch {
+          // При ошибке кеш не трогаем
+        }
+      },
+      invalidatesTags: ['Track'],
+    }),
     updateTrack: build.mutation<
       TrackDetails<TrackDetailAttributes>,
       { trackId: string; payload: UpdateTrackArgs }
@@ -280,6 +281,13 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
+    publishTrack: build.mutation<void, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `playlists/tracks/${trackId}/actions/publish`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Track'],
+    }),
   }),
 })
 
@@ -299,4 +307,5 @@ export const {
   useUnReactionTrackMutation,
   useUpdateTrackMutation,
   useReorderTracksMutation,
+  usePublishTrackMutation,
 } = tracksAPI
