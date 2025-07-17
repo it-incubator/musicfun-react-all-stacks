@@ -79,7 +79,7 @@ export const TrackItem = ({ track, pageSize, page, index, isReactionMutable }: P
         </IconButton>
         {!isTrackPublished && (
           <button onClick={() => publishTrack({ trackId: track.id })} disabled={isLoading}>
-            {isLoading ? 'Публикуется...' : 'Опубликовать трек'}
+            {isLoading ? 'Публикуется...' : 'Опубликовать'}
           </button>
         )}
         <TrackDuration url={audioUrl} />
