@@ -20,6 +20,7 @@ export type BaseAttributes = {
 
 export type FetchTracksAttributes = BaseAttributes & {
   user: User
+  isPublished: boolean
 }
 
 export type TrackDetailAttributes = BaseAttributes & {
@@ -31,6 +32,7 @@ export type TrackDetailAttributes = BaseAttributes & {
   visibility: TrackVisibility
   tags: Tag[]
   artists: Artist[]
+  isPublished: boolean
   // likes
   dislikesCount: number
   likesCount: number
@@ -60,7 +62,7 @@ export type FetchTracksResponse = {
   meta: Meta
 }
 
-export type FetchTrackByIdResponse = {
+export type TrackApiResponse = {
   data: TrackDetails<TrackDetailAttributes>
 }
 
@@ -79,6 +81,7 @@ export type FetchTracksArgs = {
   tagsIds?: string[]
   artistsIds?: string[]
   userId?: string
+  includeDrafts?: boolean
 }
 
 export type UpdateTrackArgs = {

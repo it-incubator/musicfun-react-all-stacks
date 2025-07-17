@@ -1,4 +1,4 @@
-type QueryParamValue = string | number | (string | number)[] | undefined
+type QueryParamValue = string | number | boolean | (string | number)[] | undefined
 
 /**
  * Формирует строку запроса (query string) из объекта параметров.
