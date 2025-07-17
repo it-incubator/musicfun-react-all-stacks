@@ -7,7 +7,7 @@ import s from './TrackCard.module.css'
 
 type Props = {
   id: string
-  imageSrc: string
+  imageSrc?: string
   title: string
   artistNames: string[]
 } & Omit<ReactionButtonsProps, 'className'>

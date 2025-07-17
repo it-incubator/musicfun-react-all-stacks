@@ -56,7 +56,7 @@ export const TracksPage = () => {
               index,
               id: track.id,
               title: track.attributes.title,
-              image: image?.url || noCoverPlaceholder,
+              imageSrc: image?.url || noCoverPlaceholder,
               addedAt: track.attributes.addedAt,
               artists: ['Artist 1', 'Artist 2'],
               duration: 100,

@@ -75,7 +75,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       FetchTracksArgs & { playlistId: string }
     >({
       query: ({ playlistId, ...params }) => ({
-        url: `playlists/tracks/${playlistId}/tracks`,
+        url: `playlists/${playlistId}/tracks`,
         params: params,
       }),
       providesTags: (res) => res?.data.map((track) => ({ type: 'Track', trackId: track.id })) || [],
