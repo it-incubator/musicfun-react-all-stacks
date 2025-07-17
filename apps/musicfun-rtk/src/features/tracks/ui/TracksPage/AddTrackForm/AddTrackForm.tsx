@@ -1,6 +1,6 @@
 import type { Nullable } from '@/common/types'
 import { showErrorToast, showSuccessToast } from '@/common/utils'
-import { useCreateTrackMutation } from '../../../api/tracksApi.ts'
+import { useCreateTrackMutation, usePublishTrackMutation } from '@/features/tracks/api/tracksApi.ts'
 import { type ChangeEvent, useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 
@@ -15,6 +15,9 @@ export const AddTrackForm = () => {
   } = useForm<{ title: string }>({ mode: 'onChange' })
 
   const [mutate, { isLoading }] = useCreateTrackMutation()
+  const [publishTrack] = usePublishTrackMutation()
+
+  const [shouldPublish, setShouldPublish] = useState(false)
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -40,7 +43,8 @@ export const AddTrackForm = () => {
     }
     mutate({ title, file })
       .unwrap()
-      .then(() => {
+      .then((res) => {
+        if (shouldPublish) publishTrack({ trackId: res.data.id })
         showSuccessToast('Трек успешно загружен')
         reset()
         setFile(null)
@@ -67,6 +71,10 @@ export const AddTrackForm = () => {
       <button type="submit" disabled={isSubmitDisabled}>
         {isLoading ? 'Загрузка...' : 'Добавить трек'}
       </button>
+      <label>
+        <input type="checkbox" onChange={(e) => setShouldPublish(e.currentTarget.checked)} />
+        Опубликовать
+      </label>
     </form>
   )
 }

@@ -14,6 +14,7 @@ export const UserTracks = () => {
     pageNumber: page,
     pageSize: PAGE_SIZE,
     userId: userInfo?.userId,
+    includeDrafts: true,
   })
 
   const pageCount = tracks?.meta.pagesCount || 0

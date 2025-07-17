@@ -1,6 +1,6 @@
 import type {
   FetchPlaylistsTracksResponse,
-  FetchTrackByIdResponse,
+  TrackApiResponse,
   FetchTracksArgs,
   FetchTracksResponse,
   TrackDetailAttributes,
@@ -76,13 +76,13 @@ export const tracksAPI = baseApi.injectEndpoints({
       }),
       providesTags: (res) => res?.data.map((track) => ({ type: 'Track', trackId: track.id })) || [],
     }),
-    fetchTrackById: build.query<FetchTrackByIdResponse, { trackId: string }>({
+    fetchTrackById: build.query<TrackApiResponse, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}`,
       }),
       providesTags: (_, __, { trackId }) => [{ type: 'Track', trackId }],
     }),
-    createTrack: build.mutation<TrackDetails<TrackDetailAttributes>, { title: string; file: File }>({
+    createTrack: build.mutation<TrackApiResponse, { title: string; file: File }>({
       query: ({ title, file }) => {
         const formData = new FormData()
         formData.append('title', title)
@@ -104,13 +104,19 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Track'],
     }),
+    publishTrack: build.mutation<void, { trackId: string }>({
+      query: ({ trackId }) => ({
+        url: `/playlists/tracks/${trackId}/actions/publish`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Track'],
+    }),
     updateTrack: build.mutation<TrackDetails<TrackDetailAttributes>, { trackId: string; payload: UpdateTrackArgs }>({
       query: ({ trackId, payload }) => ({
         url: `playlists/tracks/${trackId}`,
         method: 'PUT',
         body: payload,
       }),
-
       invalidatesTags: ['Track'],
     }),
     addTrackToPlaylist: build.mutation<void, { playlistId: string; trackId: string }>({
@@ -289,5 +295,6 @@ export const {
   useRemoveTrackFromPlaylistMutation,
   useRemoveReactionMutation,
   useUpdateTrackMutation,
+  usePublishTrackMutation,
   useReorderTracksMutation,
 } = tracksAPI
