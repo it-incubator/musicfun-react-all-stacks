@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { ArtistsTagAutocomplete } from '@/features/artists/ui'
@@ -8,7 +8,6 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   FileUploader,
   ImageUploader,
@@ -16,16 +15,17 @@ import {
   TextField,
 } from '@/shared/components'
 import { Typography } from '@/shared/components/Typography/Typography'
-import { useAppDispatch } from '@/shared/hooks'
+import { useAppDispatch, useAppSelector } from '@/shared/hooks'
 
 import {
   useAddCoverToTrackMutation,
   useAddTrackToPlaylistMutation,
   useCreateTrackMutation,
+  useFetchTrackByIdQuery,
   usePublishTrackMutation,
   useUpdateTrackMutation,
 } from '../../api/tracksApi'
-import { closeCreateEditTrackModal } from '../../model/tracks-slice'
+import { closeCreateEditTrackModal, selectEditingTrackId } from '../../model/tracks-slice'
 import s from './CreateEditTrackModal.module.css'
 
 /**
@@ -39,8 +39,8 @@ import s from './CreateEditTrackModal.module.css'
  * - Lyrics
  * 3. При нажатии на кнопку сохранения, мы отправляем данные на сервер
  * - Загружаем изображение
- * - Добавляем трек в плейлисты (если выбрали плейлисты)
- * - Обновляем данные по плейлисты (заголовок, теги, текс)
+ * - Добавляем трек в каждый из выбранных плейлистов
+ * - Обновляем данные по треку (заголовок, теги, текс)
  * - Публикуем трек
  */
 
@@ -48,15 +48,16 @@ type FormData = {
   title: string
   lyrics: string
   playlistIds: string[]
-  tags: string[]
-  artists: string[]
+  tagIds: string[]
+  artistsIds: string[]
+  releaseDate: string
 }
 
 export const CreateEditTrackModal = () => {
   const dispatch = useAppDispatch()
-  //const [playlistIds, setPlaylistIds] = useState<string[]>([])
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [trackId, setTrackId] = useState<string | null>(null)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
   const [createTrack] = useCreateTrackMutation()
   const [updateTrack] = useUpdateTrackMutation()
@@ -64,8 +65,24 @@ export const CreateEditTrackModal = () => {
   const [addCoverToTrack] = useAddCoverToTrackMutation()
   const [publishTrack] = usePublishTrackMutation()
 
+  const editingTrackId = useAppSelector(selectEditingTrackId)
+  console.log('editingTrackId', editingTrackId)
+
+  const isEditMode = Boolean(editingTrackId)
+
+  const { data: trackData } = useFetchTrackByIdQuery(
+    { trackId: editingTrackId! },
+    {
+      skip: !editingTrackId,
+    }
+  )
+
   const handleFileSelect = (file: File) => {
     setSelectedFile(file)
+  }
+
+  const handleImageSelect = (file: File) => {
+    setSelectedImage(file)
   }
 
   const handleUpload = () => {
@@ -85,21 +102,51 @@ export const CreateEditTrackModal = () => {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
       title: '',
       lyrics: '',
       playlistIds: [],
-      tags: [],
-      artists: [],
+      tagIds: [],
+      artistsIds: [],
+      releaseDate: new Date().toISOString(),
     },
   })
 
-  console.log(errors)
+  // Initial values
+  useEffect(() => {
+    if (isEditMode && trackData?.data) {
+      const track = trackData.data.attributes
+      reset({
+        title: track.title,
+        lyrics: track.lyrics || '',
+        tagIds: track.tags.map((tag) => tag.id),
+        artistsIds: track.artists.map((artist) => artist.id),
+      })
+    }
+  }, [isEditMode, trackData, reset])
 
   const onSubmit = (data: FormData) => {
-    console.log(data)
+    if (!trackId) return
+    updateTrack({ trackId, payload: data })
+      .unwrap()
+      .then(() => {
+        dispatch(closeCreateEditTrackModal())
+      })
+
+    for (const playlistId of data.playlistIds) {
+      addTrackToPlaylist({ trackId, playlistId })
+    }
+
+    if (selectedImage) {
+      addCoverToTrack({ trackId, cover: selectedImage })
+    }
+
+    publishTrack({ trackId })
+
+    dispatch(closeCreateEditTrackModal())
   }
 
   return (
@@ -108,18 +155,27 @@ export const CreateEditTrackModal = () => {
         <Typography variant="h2">Create Track</Typography>
       </DialogHeader>
       <DialogContent className={s.content}>
-        <FileUploader onFileSelect={handleFileSelect} />
-        <Button onClick={handleUpload}>Upload</Button>
+        {!isEditMode && (
+          <>
+            <FileUploader onFileSelect={handleFileSelect} />
+            <Button onClick={handleUpload}>Upload</Button>
+          </>
+        )}
 
         <div>
-          <ImageUploader onImageSelect={() => {}} className={s.imageUploader} />
+          <ImageUploader onImageSelect={handleImageSelect} className={s.imageUploader} />
 
           <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-            <TextField label="Title" placeholder="Enter track title" {...register('title')} />
+            <TextField
+              label="Title"
+              placeholder="Enter track title"
+              {...register('title')}
+              errorMessage={errors.title?.message}
+            />
 
             <Controller
               control={control}
-              name="artists"
+              name="artistsIds"
               render={({ field }) => (
                 <ArtistsTagAutocomplete value={field.value} onChange={field.onChange} />
               )}
@@ -127,13 +183,18 @@ export const CreateEditTrackModal = () => {
 
             <Controller
               control={control}
-              name="tags"
+              name="tagIds"
               render={({ field }) => (
                 <PlaylistTagAutocomplete value={field.value} onChange={field.onChange} />
               )}
             />
 
-            <Textarea label="Lyrics" placeholder="Enter track lyrics" {...register('lyrics')} />
+            <Textarea
+              label="Lyrics"
+              placeholder="Enter track lyrics"
+              {...register('lyrics')}
+              errorMessage={errors.lyrics?.message}
+            />
 
             <Controller
               control={control}
@@ -146,12 +207,14 @@ export const CreateEditTrackModal = () => {
               )}
             />
 
-            <Button variant="secondary" onClick={handleClose} type="button">
-              Cancel
-            </Button>
-            <Button variant="primary" type="submit" disabled={!trackId}>
-              Create
-            </Button>
+            <div className={s.buttonsRow}>
+              <Button variant="secondary" onClick={handleClose} type="button">
+                Cancel
+              </Button>
+              <Button variant="primary" type="submit" disabled={!trackId && !isEditMode}>
+                {isEditMode ? 'Save' : 'Create'}
+              </Button>
+            </div>
           </form>
         </div>
       </DialogContent>

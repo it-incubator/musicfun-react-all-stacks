@@ -24,6 +24,7 @@
 
 .button:disabled {
   cursor: initial;
+  opacity: 0.5;
   background-color: var(--color-disabled);
 }
 

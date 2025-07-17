@@ -2,9 +2,13 @@ import { useParams } from 'react-router'
 
 import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
-import { MOCK_TRACKS, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
+import {
+  MOCK_TRACKS,
+  TrackActions,
+  TracksTable,
+  useFetchTracksInPlaylistQuery,
+} from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { ReactionButtons } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -60,15 +64,13 @@ export const PlaylistPage = () => {
             <TrackRow
               key={trackRow.id}
               trackRow={trackRow}
-              playingTrackId={MOCK_TRACKS[0].id}
+              playingTrackId={'mock'}
               playingTrackProgress={20}
               renderActionsCell={(row) => (
-                <ReactionButtons
+                <TrackActions
+                  trackId={row.id}
                   reaction={row.currentUserReaction}
-                  onLike={() => {}}
-                  onDislike={() => {}}
                   likesCount={row.likesCount}
-                  onUnReaction={() => {}}
                 />
               )}
             />

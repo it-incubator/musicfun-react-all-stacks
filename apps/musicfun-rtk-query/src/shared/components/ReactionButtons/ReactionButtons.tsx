@@ -19,13 +19,15 @@ export type ReactionButtonsProps = {
   onUnReaction: () => void
   likesCount?: number
   className?: string
-  size?: keyof typeof SIZE_MAP
+  size?: ReactionButtonsSize
 }
 
 const SIZE_MAP = {
   small: 28,
   large: 40,
 }
+
+export type ReactionButtonsSize = keyof typeof SIZE_MAP
 
 export const ReactionButtons = ({
   reaction = CurrentUserReaction.None,

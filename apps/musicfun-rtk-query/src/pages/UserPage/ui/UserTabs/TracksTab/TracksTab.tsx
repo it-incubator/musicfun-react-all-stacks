@@ -1,6 +1,11 @@
 import { useParams } from 'react-router'
 
-import { TracksTable, useCreateTrackModal, useFetchTracksQuery } from '@/features/tracks'
+import {
+  TracksTable,
+  useCreateTrackModal,
+  useEditTrackModal,
+  useFetchTracksQuery,
+} from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Button } from '@/shared/components'
@@ -19,6 +24,7 @@ import s from './TracksTab.module.css'
 export const TracksTab = () => {
   const { userId } = useParams()
   const { handleOpenCreateTrackModal } = useCreateTrackModal()
+  const { handleOpenEditTrackModal } = useEditTrackModal()
 
   const { data: tracks } = useFetchTracksQuery({
     pageSize: 10,
@@ -66,7 +72,9 @@ export const TracksTab = () => {
                   <MoreIcon />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => alert('Edit clicked!')}>Edit</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackRow.id)}>
+                    Edit
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => alert('Add to playlist clicked!')}>
                     Add to playlist
                   </DropdownMenuItem>

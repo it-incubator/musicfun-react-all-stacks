@@ -20,3 +20,9 @@
   width: 280px;
   margin: 0 auto;
 }
+
+.buttonsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
