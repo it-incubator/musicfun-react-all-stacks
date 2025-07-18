@@ -16,7 +16,7 @@ export const useReorderTracks = (initialTracks: TrackDetails<PlaylistItemAttribu
 
   const handleDragEnd = (event: DragEndEvent) => {
     const putAfterItemId = dragEndUtilsHandler({ event, items: tracks, setItems: setTracks })
-    if (putAfterItemId === undefined) return
+    if (!putAfterItemId) return
     mutate({ playlistId, trackId: event.active.id as string, putAfterItemId })
       .unwrap()
       .then(() => {

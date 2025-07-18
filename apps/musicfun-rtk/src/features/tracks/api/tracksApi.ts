@@ -8,7 +8,7 @@ import type {
   UpdateTrackArgs,
 } from './tracksApi.types.ts'
 import { baseApi } from '@/app/api/base-api.ts'
-import type { Nullable, ReactionResponse } from '@/common/types'
+import type { ReactionResponse } from '@/common/types'
 import { buildQueryString } from '@/common/utils'
 
 export const tracksAPI = baseApi.injectEndpoints({
@@ -21,18 +21,33 @@ export const tracksAPI = baseApi.injectEndpoints({
 
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { pageNumber, ...otherParams } = queryArgs
+        const { pageNumber, cursor, ...otherParams } = queryArgs
         return [endpointName, otherParams]
       },
 
       merge: (currentCacheData, responseData, { arg }) => {
-        const currentPage = arg.pageNumber
+        if (!responseData?.data) {
+          return currentCacheData || responseData
+        }
+
+        if (arg.paginationType === 'cursor') {
+          if (!currentCacheData?.data || !arg.cursor) {
+            return responseData
+          }
+
+          return {
+            ...responseData,
+            data: [...currentCacheData.data, ...responseData.data],
+          }
+        }
+
+        const currentPage = arg.pageNumber || 1
 
         if (currentPage === 1) {
           return responseData
         }
 
-        if (!currentCacheData?.data || !responseData?.data) {
+        if (!currentCacheData?.data) {
           return responseData
         }
 
@@ -43,15 +58,21 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
 
       forceRefetch: ({ currentArg, previousArg }) => {
-        if (!previousArg) return false
-        return currentArg?.pageNumber !== previousArg?.pageNumber
+        if (!previousArg || !currentArg) return false
+
+        if (currentArg.paginationType === 'cursor') {
+          return currentArg.cursor !== previousArg.cursor
+        }
+
+        return currentArg.pageNumber !== previousArg.pageNumber
       },
 
       providesTags: (result) => [
-        ...(result?.data.map((track) => {
-          return { type: 'Track' as const, id: track.id }
-        }) || []),
-        'Track',
+        ...(result?.data?.map((track) => ({
+          type: 'Track' as const,
+          id: track.id,
+        })) || []),
+        { type: 'Track', id: 'LIST' },
       ],
 
       keepUnusedDataFor: 60,
@@ -69,7 +90,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         'Track',
       ],
     }),
-    fetchTracksInPlaylist: build.query<FetchPlaylistsTracksResponse, FetchTracksArgs & { playlistId: string }>({
+    fetchTracksInPlaylist: build.query<FetchPlaylistsTracksResponse, { playlistId: string }>({
       query: ({ playlistId, ...params }) => ({
         url: `playlists/tracks/${playlistId}/tracks`,
         params: params,
@@ -161,7 +182,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       {
         trackId: string
         playlistId: string
-        putAfterItemId: Nullable<string>
+        putAfterItemId: string
       }
     >({
       query: ({ trackId, playlistId, putAfterItemId }) => ({

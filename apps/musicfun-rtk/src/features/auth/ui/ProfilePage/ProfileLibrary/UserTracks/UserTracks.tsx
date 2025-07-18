@@ -1,8 +1,8 @@
 import { useGetMeQuery } from '@/features/auth/api/auth-api.ts'
 import { useState } from 'react'
-import { useFetchTracksQuery } from '@/features/tracks/api/tracksApi.ts'
 import { Pagination } from '@/common/components'
 import { TracksList } from '@/features/tracks/ui/TracksList/TracksList.tsx'
+import { useFetchTracksRegular } from '@/features/tracks/lib/hooks/useFetchTracks.ts'
 
 const PAGE_SIZE = 8
 
@@ -10,14 +10,12 @@ export const UserTracks = () => {
   const [page, setPage] = useState(1)
 
   const { data: userInfo } = useGetMeQuery()
-  const { data: tracks } = useFetchTracksQuery({
+  const { tracks, pageCount } = useFetchTracksRegular({
     pageNumber: page,
     pageSize: PAGE_SIZE,
     userId: userInfo?.userId,
     includeDrafts: true,
   })
-
-  const pageCount = tracks?.meta.pagesCount || 0
 
   return (
     <>
