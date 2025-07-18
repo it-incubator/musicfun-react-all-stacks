@@ -30,6 +30,7 @@ import {
   useUpdateTrackMutation,
 } from '../../api/tracksApi'
 import { closeCreateEditTrackModal, selectEditingTrackId } from '../../model/tracks-slice'
+import { addTrackToPlaylists, syncTrackPlaylists } from '../../utils/playlistSync'
 import s from './CreateEditTrackModal.module.css'
 
 /**
@@ -163,26 +164,22 @@ export const CreateEditTrackModal = () => {
         const originalPlaylistIds = playlists.data.map((playlist) => playlist.id)
         const newPlaylistIds = data.playlistIds
 
-        // Добавляем трек в новые плейлисты
-        const playlistsToAdd = newPlaylistIds.filter(
-          (playlistId) => !originalPlaylistIds.includes(playlistId)
+        promises.push(
+          syncTrackPlaylists({
+            originalPlaylistIds,
+            newPlaylistIds,
+            trackId: trackIdToUpdate,
+            addTrackToPlaylist: (params) => addTrackToPlaylist(params).unwrap(),
+            removeTrackFromPlaylist: (params) => removeTrackFromPlaylist(params).unwrap(),
+          })
         )
-        for (const playlistId of playlistsToAdd) {
-          promises.push(addTrackToPlaylist({ trackId: trackIdToUpdate, playlistId }).unwrap())
-        }
-
-        // Удаляем трек из плейлистов, где его больше нет
-        const playlistsToRemove = originalPlaylistIds.filter(
-          (playlistId) => !newPlaylistIds.includes(playlistId)
-        )
-        for (const playlistId of playlistsToRemove) {
-          promises.push(removeTrackFromPlaylist({ trackId: trackIdToUpdate, playlistId }).unwrap())
-        }
       } else if (!isEditMode) {
         // Для нового трека просто добавляем во все выбранные плейлисты
-        for (const playlistId of data.playlistIds) {
-          promises.push(addTrackToPlaylist({ trackId: trackIdToUpdate, playlistId }).unwrap())
-        }
+        promises.push(
+          addTrackToPlaylists(trackIdToUpdate, data.playlistIds, (params) =>
+            addTrackToPlaylist(params).unwrap()
+          )
+        )
       }
 
       if (selectedImage) {

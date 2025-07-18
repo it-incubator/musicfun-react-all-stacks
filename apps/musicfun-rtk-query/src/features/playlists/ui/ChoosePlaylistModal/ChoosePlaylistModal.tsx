@@ -19,11 +19,13 @@ export const ChoosePlaylistModal = ({
   isOpen,
   setIsOpen,
   setPlaylistIds,
+  onChoose,
 }: {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   playlistIds: string[]
   setPlaylistIds: (playlistIds: string[]) => void
+  onChoose?: () => void
 }) => {
   const { data: user } = useMeQuery()
 
@@ -90,7 +92,10 @@ export const ChoosePlaylistModal = ({
         </Button>
         <Button
           variant="primary"
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            setIsOpen(false)
+            onChoose?.()
+          }}
           disabled={playlistIds.length === 0}>
           Choose
         </Button>
