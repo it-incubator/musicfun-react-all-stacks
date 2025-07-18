@@ -146,28 +146,33 @@ export const CreateEditTrackModal = () => {
     }
   }, [isEditMode, trackData, reset, playlists])
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     if (!trackId && !isEditMode) return
 
     const trackIdToUpdate = trackId || editingTrackId!
 
-    updateTrack({ trackId: trackIdToUpdate, payload: data })
-      .unwrap()
-      .then(() => {
-        dispatch(closeCreateEditTrackModal())
-      })
+    try {
+      const promises: Promise<unknown>[] = []
 
-    for (const playlistId of data.playlistIds) {
-      addTrackToPlaylist({ trackId: trackIdToUpdate, playlistId })
+      promises.push(updateTrack({ trackId: trackIdToUpdate, payload: data }).unwrap())
+
+      for (const playlistId of data.playlistIds) {
+        promises.push(addTrackToPlaylist({ trackId: trackIdToUpdate, playlistId }).unwrap())
+      }
+
+      if (selectedImage) {
+        promises.push(addCoverToTrack({ trackId: trackIdToUpdate, cover: selectedImage }).unwrap())
+      }
+
+      if (!trackData?.data.attributes.releaseDate) {
+        promises.push(publishTrack({ trackId: trackIdToUpdate }).unwrap())
+      }
+
+      await Promise.all(promises)
+      dispatch(closeCreateEditTrackModal())
+    } catch (error) {
+      console.error('Error saving track:', error)
     }
-
-    if (selectedImage) {
-      addCoverToTrack({ trackId: trackIdToUpdate, cover: selectedImage })
-    }
-
-    publishTrack({ trackId: trackIdToUpdate })
-
-    dispatch(closeCreateEditTrackModal())
   }
 
   return (
