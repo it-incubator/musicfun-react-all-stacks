@@ -26,6 +26,7 @@ import {
   useCreateTrackMutation,
   useFetchTrackByIdQuery,
   usePublishTrackMutation,
+  useRemoveTrackFromPlaylistMutation,
   useUpdateTrackMutation,
 } from '../../api/tracksApi'
 import { closeCreateEditTrackModal, selectEditingTrackId } from '../../model/tracks-slice'
@@ -65,6 +66,7 @@ export const CreateEditTrackModal = () => {
   const [createTrack] = useCreateTrackMutation()
   const [updateTrack] = useUpdateTrackMutation()
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
+  const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
   const [addCoverToTrack] = useAddCoverToTrackMutation()
   const [publishTrack] = usePublishTrackMutation()
 
@@ -156,8 +158,31 @@ export const CreateEditTrackModal = () => {
 
       promises.push(updateTrack({ trackId: trackIdToUpdate, payload: data }).unwrap())
 
-      for (const playlistId of data.playlistIds) {
-        promises.push(addTrackToPlaylist({ trackId: trackIdToUpdate, playlistId }).unwrap())
+      // Синхронизация плейлистов
+      if (isEditMode && playlists?.data) {
+        const originalPlaylistIds = playlists.data.map((playlist) => playlist.id)
+        const newPlaylistIds = data.playlistIds
+
+        // Добавляем трек в новые плейлисты
+        const playlistsToAdd = newPlaylistIds.filter(
+          (playlistId) => !originalPlaylistIds.includes(playlistId)
+        )
+        for (const playlistId of playlistsToAdd) {
+          promises.push(addTrackToPlaylist({ trackId: trackIdToUpdate, playlistId }).unwrap())
+        }
+
+        // Удаляем трек из плейлистов, где его больше нет
+        const playlistsToRemove = originalPlaylistIds.filter(
+          (playlistId) => !newPlaylistIds.includes(playlistId)
+        )
+        for (const playlistId of playlistsToRemove) {
+          promises.push(removeTrackFromPlaylist({ trackId: trackIdToUpdate, playlistId }).unwrap())
+        }
+      } else if (!isEditMode) {
+        // Для нового трека просто добавляем во все выбранные плейлисты
+        for (const playlistId of data.playlistIds) {
+          promises.push(addTrackToPlaylist({ trackId: trackIdToUpdate, playlistId }).unwrap())
+        }
       }
 
       if (selectedImage) {
