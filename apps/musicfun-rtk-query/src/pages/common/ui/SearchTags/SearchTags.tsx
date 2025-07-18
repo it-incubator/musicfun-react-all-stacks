@@ -1,49 +1,70 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
+import { useFindArtistsQuery } from '@/features/artists'
 import { useFindTagsQuery } from '@/features/tags'
 import { Autocomplete } from '@/shared/components'
 import { useDebounce } from '@/shared/hooks'
 
-export const SearchTags = ({ className }: { className?: string }) => {
+type SearchType = 'tags' | 'artists'
+
+type SearchTagsProps = {
+  type: SearchType
+  className?: string
+  label?: string
+  placeholder?: string
+}
+
+export const SearchTags = ({ type, className, label, placeholder }: SearchTagsProps) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [searchTerm, setSearchTerm] = useState('')
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
-  const [tags, setTags] = useState<string[]>(() => {
-    const initialTags = searchParams.get('tags')?.split(',').filter(Boolean) || []
+  const paramKey = type === 'tags' ? 'tags' : 'artists'
 
-    return initialTags
+  const [selectedItems, setSelectedItems] = useState<string[]>(() => {
+    const initialItems = searchParams.get(paramKey)?.split(',').filter(Boolean) || []
+    return initialItems
   })
 
-  const { data } = useFindTagsQuery({ value: debouncedSearchTerm })
+  const { data: tagsData } = useFindTagsQuery(
+    { value: debouncedSearchTerm },
+    { skip: type !== 'tags' }
+  )
+  const { data: artistsData } = useFindArtistsQuery(debouncedSearchTerm, {
+    skip: type !== 'artists',
+  })
 
-  // Обновляем URL при изменении тегов
+  const data = type === 'tags' ? tagsData : artistsData
+
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams)
 
-    if (tags.length > 0) {
-      newSearchParams.set('tags', tags.join(','))
+    if (selectedItems.length > 0) {
+      newSearchParams.set(paramKey, selectedItems.join(','))
     } else {
-      newSearchParams.delete('tags')
+      newSearchParams.delete(paramKey)
     }
 
     setSearchParams(newSearchParams)
-  }, [tags, searchParams, setSearchParams])
+  }, [selectedItems, searchParams, setSearchParams, paramKey])
 
   const options =
-    data?.map((tag) => ({
-      label: tag.name,
-      value: tag.id,
+    data?.map((item) => ({
+      label: type === 'tags' ? item.name : item.name,
+      value: item.id,
     })) || []
+
+  const defaultLabel = type === 'tags' ? 'Hashtags' : 'Artists'
+  const defaultPlaceholder = type === 'tags' ? 'Search by hashtags' : 'Search by artists'
 
   return (
     <Autocomplete
       options={options}
-      value={tags}
-      onChange={setTags}
-      label="Hashtags"
-      placeholder="Search by hashtags"
+      value={selectedItems}
+      onChange={setSelectedItems}
+      label={label || defaultLabel}
+      placeholder={placeholder || defaultPlaceholder}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
       className={className}

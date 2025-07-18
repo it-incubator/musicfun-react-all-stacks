@@ -11,6 +11,7 @@ export const usePageSearchParams = () => {
   const sortBy = searchParams.get('sortBy') as 'addedAt' | 'likesCount'
   const sortDirection = searchParams.get('sortDirection') as 'asc' | 'desc'
   const tagsIds = searchParams.get('tags')?.split(',').filter(Boolean) || []
+  const artistsIds = searchParams.get('artists')?.split(',').filter(Boolean) || []
 
   const pageNumber = Number(searchParams.get('page')) || 1
 
@@ -31,6 +32,7 @@ export const usePageSearchParams = () => {
     sortBy,
     sortDirection,
     tagsIds,
+    artistsIds,
     pageNumber,
     handlePageChange,
   }

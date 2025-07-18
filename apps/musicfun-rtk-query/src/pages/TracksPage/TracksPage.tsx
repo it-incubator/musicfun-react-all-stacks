@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
@@ -13,10 +11,8 @@ import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
-  const { pageNumber, handlePageChange, debouncedSearch, sortBy, sortDirection, tagsIds } =
+  const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
     usePageSearchParams()
-
-  const [artists, setArtists] = useState<string[]>([])
 
   const { data: tracks } = useFetchTracksQuery({
     pageNumber,
@@ -24,7 +20,7 @@ export const TracksPage = () => {
     sortDirection,
     search: debouncedSearch,
     ...(tagsIds.length > 0 && { tagsIds }),
-    // artists,
+    ...(artistsIds.length > 0 && { artistsIds }),
   })
 
   return (
@@ -38,19 +34,8 @@ export const TracksPage = () => {
           <SortSelect onChange={() => {}} />
         </div>
         <div className={s.controlsRow}>
-          <SearchTags className={s.searchTags} />
-
-          {/* <Autocomplete
-            options={MOCK_ARTISTS.map((artist) => ({
-              label: artist.name,
-              value: artist.id,
-            }))}
-            value={artists}
-            onChange={setArtists}
-            label="Artists"
-            placeholder="Search by artists"
-            className={s.autocomplete}
-          /> */}
+          <SearchTags type="tags" />
+          <SearchTags type="artists" />
         </div>
       </div>
 

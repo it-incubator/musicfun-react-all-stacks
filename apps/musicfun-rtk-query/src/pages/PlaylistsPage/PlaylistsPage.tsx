@@ -30,7 +30,7 @@ export const PlaylistsPage = () => {
           <SearchTextField placeholder="Search playlists" />
           <SortSelect />
         </div>
-        <SearchTags className={s.searchTags} />
+        <SearchTags type="tags" className={s.searchTags} />
       </div>
 
       <ContentList
