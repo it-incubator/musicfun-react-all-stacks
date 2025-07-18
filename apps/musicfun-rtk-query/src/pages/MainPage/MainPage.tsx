@@ -58,7 +58,7 @@ export const MainPage = () => {
               reaction={track.attributes.currentUserReaction}
               onDislike={() => {}}
               onLike={() => {}}
-              likesCount={99}
+              likesCount={track.attributes.likesCount}
               onUnReaction={() => {}}
             />
           )

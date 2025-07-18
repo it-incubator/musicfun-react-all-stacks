@@ -41,12 +41,13 @@ export const TracksTab = () => {
         trackRows={
           tracks?.data?.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
+            console.log(image, track.attributes.images)
 
             return {
               index,
               id: track.id,
               title: track.attributes.title,
-              image: image?.url || noCoverPlaceholder,
+              imageSrc: image?.url || noCoverPlaceholder,
               addedAt: track.attributes.addedAt,
               artists: ['Artist 1', 'Artist 2'],
               duration: 100,

@@ -9,15 +9,22 @@ import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
-  const [hashtags, setHashtags] = useState<string[]>([])
+  const { pageNumber, handlePageChange, debouncedSearch, sortBy, sortDirection, tagsIds } =
+    usePageSearchParams()
+
   const [artists, setArtists] = useState<string[]>([])
 
   const { data: tracks } = useFetchTracksQuery({
-    pageSize: 10,
-    pageNumber: 1,
+    pageNumber,
+    sortBy,
+    sortDirection,
+    search: debouncedSearch,
+    ...(tagsIds.length > 0 && { tagsIds }),
+    // artists,
   })
 
   return (

@@ -66,7 +66,6 @@ export const CreateEditTrackModal = () => {
   const [publishTrack] = usePublishTrackMutation()
 
   const editingTrackId = useAppSelector(selectEditingTrackId)
-  console.log('editingTrackId', editingTrackId)
 
   const isEditMode = Boolean(editingTrackId)
 
@@ -129,22 +128,25 @@ export const CreateEditTrackModal = () => {
   }, [isEditMode, trackData, reset])
 
   const onSubmit = (data: FormData) => {
-    if (!trackId) return
-    updateTrack({ trackId, payload: data })
+    if (!trackId && !isEditMode) return
+
+    const trackIdToUpdate = trackId || editingTrackId!
+
+    updateTrack({ trackId: trackIdToUpdate, payload: data })
       .unwrap()
       .then(() => {
         dispatch(closeCreateEditTrackModal())
       })
 
     for (const playlistId of data.playlistIds) {
-      addTrackToPlaylist({ trackId, playlistId })
+      addTrackToPlaylist({ trackId: trackIdToUpdate, playlistId })
     }
 
     if (selectedImage) {
-      addCoverToTrack({ trackId, cover: selectedImage })
+      addCoverToTrack({ trackId: trackIdToUpdate, cover: selectedImage })
     }
 
-    publishTrack({ trackId })
+    publishTrack({ trackId: trackIdToUpdate })
 
     dispatch(closeCreateEditTrackModal())
   }
@@ -152,7 +154,7 @@ export const CreateEditTrackModal = () => {
   return (
     <Dialog open={true} onClose={handleClose} className={s.dialog}>
       <DialogHeader>
-        <Typography variant="h2">Create Track</Typography>
+        <Typography variant="h2">{isEditMode ? 'Edit Track' : 'Create Track'}</Typography>
       </DialogHeader>
       <DialogContent className={s.content}>
         {!isEditMode && (

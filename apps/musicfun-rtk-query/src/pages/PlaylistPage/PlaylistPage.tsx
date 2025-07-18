@@ -53,7 +53,7 @@ export const PlaylistPage = () => {
             index,
             id: track.id,
             title: track.attributes.title,
-            imageSrc: getImageByType(track.attributes.images, ImageType.MEDIUM)?.url,
+            imageSrc: getImageByType(track.attributes.images, ImageType.THUMBNAIL)?.url,
             addedAt: track.attributes.addedAt,
             artists: ['Artist 1', 'Artist 2'],
             duration: 100,
