@@ -7,6 +7,14 @@ export type TrackDetails<T> = {
   id: string
   type: 'tracks'
   attributes: T
+  relationships: {
+    artists: {
+      data: {
+        id: string
+        type: string
+      }[]
+    }
+  }
 }
 
 // Attributes
@@ -52,14 +60,15 @@ export type TrackAttachment = {
   url: string
   contentType: string
   originalName: string
-  originalKey: string
   fileSize: number
 }
 
 // Response
 export type FetchTracksResponse = {
   data: TrackDetails<FetchTracksAttributes>[]
-  meta: Meta
+  meta: Meta & {
+    nextCursor: string
+  }
 }
 
 export type TrackApiResponse = {
@@ -68,13 +77,28 @@ export type TrackApiResponse = {
 
 export type FetchPlaylistsTracksResponse = {
   data: TrackDetails<PlaylistItemAttributes>[]
-  meta: Meta
+  meta: Meta['totalCount']
 }
 
 // Arguments
-export type FetchTracksArgs = {
+// export type FetchTracksArgs = {
+//   pageSize?: number
+//   pageNumber: number
+//   search?: string
+//   sortBy?: 'addedAt' | 'likesCount'
+//   sortDirection?: 'asc' | 'desc'
+//   tagsIds?: string[]
+//   artistsIds?: string[]
+//   userId?: string
+//   includeDrafts?: boolean
+//   paginationType?: PaginationType
+//   cursor?: string
+// }
+
+export type PaginationType = 'offset' | 'cursor'
+
+export type FetchTracksArgs<T extends PaginationType = PaginationType> = {
   pageSize?: number
-  pageNumber: number
   search?: string
   sortBy?: 'addedAt' | 'likesCount'
   sortDirection?: 'asc' | 'desc'
@@ -82,15 +106,15 @@ export type FetchTracksArgs = {
   artistsIds?: string[]
   userId?: string
   includeDrafts?: boolean
-}
+  paginationType: T
+} & (T extends 'cursor' ? { cursor: string; pageNumber?: never } : { pageNumber: number; cursor?: never })
 
 export type UpdateTrackArgs = {
-  title?: string
-  lyrics?: string
-  visibility?: TrackVisibility
-  releaseDate?: string
-  tagIds?: string[]
-  artistsIds?: string[]
+  title: string
+  lyrics: string
+  releaseDate: Nullable<string>
+  tagIds: string[]
+  artistsIds: string[]
 }
 
 // Literal types

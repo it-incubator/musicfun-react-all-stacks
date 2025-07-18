@@ -4,12 +4,16 @@ type UseInfiniteScrollTriggerOptions = {
   callback: () => void
   hasNextPage: boolean
   isFetchingNextPage: boolean
+  cursor?: string
+  pageNumber?: number
 }
 
 export const useInfiniteScrollTrigger = ({
   callback,
   hasNextPage,
   isFetchingNextPage,
+  cursor,
+  pageNumber,
 }: UseInfiniteScrollTriggerOptions) => {
   const triggerRef = useRef<HTMLDivElement | null>(null)
 
@@ -33,7 +37,7 @@ export const useInfiniteScrollTrigger = ({
     observer.observe(node)
 
     return () => observer.unobserve(node)
-  }, [callback, hasNextPage, isFetchingNextPage])
+  }, [callback, hasNextPage, isFetchingNextPage, cursor, pageNumber])
 
   return { triggerRef }
 }

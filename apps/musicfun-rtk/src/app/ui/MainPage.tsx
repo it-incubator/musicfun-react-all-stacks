@@ -3,12 +3,13 @@ import { PlaylistsList } from '@/features/playlists/ui/PlaylistsPage/PlaylistsLi
 import { useFetchTracksQuery } from '@/features/tracks/api/tracksApi.ts'
 import { TrackItem } from '@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx'
 import s from './MainPage.module.css'
+import type { FetchTracksArgs } from '@/features/tracks/api/tracksApi.types.ts'
 
 export const MainPage = () => {
   const defaultParams = { search: '', pageSize: 10, pageNumber: 1 }
 
   const { data: playlists } = useFetchPlaylistsQuery(defaultParams)
-  const { data: tracks } = useFetchTracksQuery(defaultParams)
+  const { data: tracks } = useFetchTracksQuery(defaultParams as FetchTracksArgs<'offset'>)
 
   return (
     <div>

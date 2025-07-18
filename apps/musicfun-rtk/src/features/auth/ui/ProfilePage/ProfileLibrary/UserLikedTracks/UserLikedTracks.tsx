@@ -1,18 +1,16 @@
 import { useState } from 'react'
-import { useFetchTracksQuery } from '@/features/tracks/api/tracksApi.ts'
 import { TracksList } from '@/features/tracks/ui/TracksList/TracksList.tsx'
 import { Pagination } from '@/common/components'
+import { useFetchTracksRegular } from '@/features/tracks/lib/hooks/useFetchTracks.ts'
 
 const PAGE_SIZE = 10
 
 export const UserLikedTracks = () => {
   const [page, setPage] = useState(1)
-  const { data: tracks } = useFetchTracksQuery({
+  const { tracks, pageCount } = useFetchTracksRegular({
     pageNumber: page,
     pageSize: PAGE_SIZE,
   })
-
-  const pageCount = tracks?.meta.pagesCount || 0
 
   return (
     <>
