@@ -16,18 +16,31 @@ import {
 } from '../../api/tracksApi'
 import { useEditTrackModal } from '../../model/hooks'
 
-type TrackActionsProps = {
+type TrackActionsPropsBase = {
   trackId: string
+  isOwner?: boolean
+}
+
+type TrackActionsPropsWithReactions = TrackActionsPropsBase & {
   reaction: CurrentUserReaction
   likesCount: number
   sizeReactionButtons?: ReactionButtonsSize
 }
+
+type TrackActionsPropsWithoutReactions = TrackActionsPropsBase & {
+  reaction?: undefined
+  likesCount?: undefined
+  sizeReactionButtons?: undefined
+}
+
+type TrackActionsProps = TrackActionsPropsWithReactions | TrackActionsPropsWithoutReactions
 
 export const TrackActions = ({
   reaction,
   likesCount,
   trackId,
   sizeReactionButtons = 'small',
+  isOwner,
 }: TrackActionsProps) => {
   const { handleOpenEditTrackModal } = useEditTrackModal()
 
@@ -37,23 +50,27 @@ export const TrackActions = ({
 
   return (
     <>
-      <ReactionButtons
-        reaction={reaction}
-        onLike={() => like({ trackId })}
-        onDislike={() => dislike({ trackId })}
-        likesCount={likesCount}
-        onUnReaction={() => unReaction({ trackId })}
-        size={sizeReactionButtons}
-      />
+      {reaction !== undefined && (
+        <ReactionButtons
+          reaction={reaction}
+          onLike={() => like({ trackId })}
+          onDislike={() => dislike({ trackId })}
+          likesCount={likesCount}
+          onUnReaction={() => unReaction({ trackId })}
+          size={sizeReactionButtons}
+        />
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger>
           <MoreIcon />
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackId)}>
-            Edit
-          </DropdownMenuItem>
+          {isOwner && (
+            <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackId)}>
+              Edit
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem onClick={() => alert('Add to playlist clicked!')}>
             Add to playlist
           </DropdownMenuItem>

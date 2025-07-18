@@ -7,6 +7,7 @@ import {
 } from '@/features/tracks'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
+import type { CurrentUserReaction } from '@/shared/types'
 
 import s from './TrackCard.module.css'
 
@@ -15,7 +16,9 @@ type Props = {
   imageSrc?: string
   title: string
   artistNames: string[]
-} & Omit<ReactionButtonsProps, 'className'>
+  reaction: CurrentUserReaction
+  likesCount: number
+}
 
 export const TrackCard = ({
   id,

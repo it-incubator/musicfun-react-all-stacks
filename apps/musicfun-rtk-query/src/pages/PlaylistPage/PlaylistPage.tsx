@@ -57,7 +57,7 @@ export const PlaylistPage = () => {
             addedAt: track.attributes.addedAt,
             artists: ['Artist 1', 'Artist 2'],
             duration: 100,
-            likesCount: 100,
+            likesCount: track.attributes.likesCount,
             currentUserReaction: track.attributes.currentUserReaction,
           }))}
           renderTrackRow={(trackRow) => (

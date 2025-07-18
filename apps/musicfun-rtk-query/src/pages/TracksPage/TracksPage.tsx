@@ -1,8 +1,9 @@
+import { useMeQuery } from '@/features/auth'
 import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
+import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
-import { DropdownMenu, DropdownMenuTrigger, ReactionButtons, Typography } from '@/shared/components'
-import { MoreIcon } from '@/shared/icons'
+import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -22,6 +23,8 @@ export const TracksPage = () => {
     ...(tagsIds.length > 0 && { tagsIds }),
     ...(artistsIds.length > 0 && { artistsIds }),
   })
+
+  const { data: me } = useMeQuery()
 
   return (
     <PageWrapper>
@@ -43,6 +46,8 @@ export const TracksPage = () => {
         trackRows={
           tracks?.data?.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
+            const userId = track.attributes.user.id
+            const isOwner = userId === me?.userId
 
             return {
               index,
@@ -52,13 +57,9 @@ export const TracksPage = () => {
               addedAt: track.attributes.addedAt,
               artists: ['Artist 1', 'Artist 2'],
               duration: 100,
-              likesCount: 100,
-              dislikesCount: 100,
+              likesCount: track.attributes.likesCount,
               currentUserReaction: track.attributes.currentUserReaction,
-              onUnReaction: () => {},
-              onLike: () => {},
-              onDislike: () => {},
-              onDelete: () => {},
+              isOwner,
             }
           }) ?? []
         }
@@ -69,20 +70,12 @@ export const TracksPage = () => {
             playingTrackId={MOCK_TRACKS[0].id}
             playingTrackProgress={20}
             renderActionsCell={() => (
-              <>
-                <ReactionButtons
-                  reaction={trackRow.currentUserReaction}
-                  onLike={() => {}}
-                  onDislike={() => {}}
-                  onUnReaction={() => {}}
-                  likesCount={trackRow.likesCount}
-                />
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <MoreIcon />
-                  </DropdownMenuTrigger>
-                </DropdownMenu>
-              </>
+              <TrackActions
+                reaction={trackRow.currentUserReaction}
+                likesCount={trackRow.likesCount}
+                trackId={trackRow.id}
+                isOwner={trackRow.isOwner}
+              />
             )}
           />
         )}
