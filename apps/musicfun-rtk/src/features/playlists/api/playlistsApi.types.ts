@@ -46,3 +46,13 @@ export type FetchPlaylistsArgs = {
   pageNumber: number
   search: string
 }
+
+// WebSocket Events
+export type PlaylistCreatedEventPayload = {
+  data: Playlist
+}
+
+export type PlaylistCreatedEvent = {
+  type: 'tracks.playlist-created'
+  payload: PlaylistCreatedEventPayload
+}
