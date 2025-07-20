@@ -131,15 +131,12 @@ export const tracksAPI = baseApi.injectEndpoints({
           trackId: trackId,
         },
       }),
-      invalidatesTags: ['Track'],
+      invalidatesTags: ['Track', 'Playlist'],
     }),
     removeTrackFromPlaylist: build.mutation<void, { playlistId: string; trackId: string }>({
       query: ({ trackId, playlistId }) => ({
-        url: `playlists/${playlistId}/relationships/tracks`,
-        method: 'POST',
-        body: {
-          trackId: trackId,
-        },
+        url: `playlists/${playlistId}/relationships/tracks/${trackId}`,
+        method: 'DELETE',
       }),
       async onQueryStarted({ playlistId, trackId }, { dispatch, queryFulfilled }) {
         try {
@@ -156,6 +153,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         }
       },
       invalidatesTags: (_res, __err, { playlistId, trackId }) => [
+        'Playlist',
         { type: 'Playlist', id: playlistId },
         { type: 'Track', id: trackId },
       ],

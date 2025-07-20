@@ -1,44 +1,24 @@
-import { useSearchParams } from 'react-router'
-
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { Pagination, Typography } from '@/shared/components'
-import { useDebounce } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { ContentList, PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { usePageSearchParams } from '../common/hooks'
 import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { pageNumber, handlePageChange, debouncedSearch, sortBy, sortDirection, tagsIds } =
+    usePageSearchParams()
 
-  const search = searchParams.get('search') || ''
-  const debouncedSearch = useDebounce(search, 500)
-
-  const sortBy = searchParams.get('sortBy') as 'addedAt' | 'likesCount'
-  const sortDirection = searchParams.get('sortDirection') as 'asc' | 'desc'
-  const tagsIds = searchParams.get('tags')?.split(',').filter(Boolean) || []
-
-  const pageNumber = Number(searchParams.get('page')) || 1
   const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
     pageNumber,
-    sortBy: sortBy || 'addedAt',
-    sortDirection: sortDirection || 'desc',
+    sortBy,
+    sortDirection,
     search: debouncedSearch,
     ...(tagsIds.length > 0 && { tagsIds }),
   })
   const pagesCount = playlists?.meta.pagesCount || 1
-
-  const handlePageChange = (page: number) => {
-    setSearchParams((prev) => {
-      if (page === 1) {
-        prev.delete('page')
-      } else {
-        prev.set('page', page.toString())
-      }
-      return prev
-    })
-  }
 
   return (
     <PageWrapper>
@@ -50,7 +30,7 @@ export const PlaylistsPage = () => {
           <SearchTextField placeholder="Search playlists" />
           <SortSelect />
         </div>
-        <SearchTags className={s.searchTags} />
+        <SearchTags type="tags" className={s.searchTags} />
       </div>
 
       <ContentList

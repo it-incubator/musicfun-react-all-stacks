@@ -28,6 +28,7 @@ export type BaseAttributes = {
   attachments: TrackAttachment[]
   images: Images
   currentUserReaction: CurrentUserReaction
+  likesCount: number
 }
 
 export type FetchTracksAttributes = BaseAttributes & {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { ArtistsTagAutocomplete } from '@/features/artists/ui'
+import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { ChoosePlaylistButtonAndModal } from '@/features/playlists/ui/ChoosePlaylistButtonAndModal'
 import { PlaylistTagAutocomplete } from '@/features/tags/ui/PlaylistTagAutocomplete/PlaylistTagAutocomplete'
 import {
@@ -16,6 +17,8 @@ import {
 } from '@/shared/components'
 import { Typography } from '@/shared/components/Typography/Typography'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
 import {
   useAddCoverToTrackMutation,
@@ -23,9 +26,11 @@ import {
   useCreateTrackMutation,
   useFetchTrackByIdQuery,
   usePublishTrackMutation,
+  useRemoveTrackFromPlaylistMutation,
   useUpdateTrackMutation,
 } from '../../api/tracksApi'
 import { closeCreateEditTrackModal, selectEditingTrackId } from '../../model/tracks-slice'
+import { addTrackToPlaylists, syncTrackPlaylists } from '../../utils/playlistSync'
 import s from './CreateEditTrackModal.module.css'
 
 /**
@@ -62,16 +67,30 @@ export const CreateEditTrackModal = () => {
   const [createTrack] = useCreateTrackMutation()
   const [updateTrack] = useUpdateTrackMutation()
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
+  const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
   const [addCoverToTrack] = useAddCoverToTrackMutation()
   const [publishTrack] = usePublishTrackMutation()
 
   const editingTrackId = useAppSelector(selectEditingTrackId)
-  console.log('editingTrackId', editingTrackId)
 
   const isEditMode = Boolean(editingTrackId)
 
   const { data: trackData } = useFetchTrackByIdQuery(
     { trackId: editingTrackId! },
+    {
+      skip: !editingTrackId,
+    }
+  )
+
+  const trackCoverUrl = getImageByType(
+    trackData?.data.attributes.images || { main: [] },
+    ImageType.ORIGINAL
+  )?.url
+
+  const { data: playlists } = useFetchPlaylistsQuery(
+    {
+      trackId: editingTrackId!,
+    },
     {
       skip: !editingTrackId,
     }
@@ -124,99 +143,139 @@ export const CreateEditTrackModal = () => {
         lyrics: track.lyrics || '',
         tagIds: track.tags.map((tag) => tag.id),
         artistsIds: track.artists.map((artist) => artist.id),
+        playlistIds: playlists?.data.map((playlist) => playlist.id) || [],
+        releaseDate: track.releaseDate || new Date().toISOString(),
       })
     }
-  }, [isEditMode, trackData, reset])
+  }, [isEditMode, trackData, reset, playlists])
 
-  const onSubmit = (data: FormData) => {
-    if (!trackId) return
-    updateTrack({ trackId, payload: data })
-      .unwrap()
-      .then(() => {
-        dispatch(closeCreateEditTrackModal())
-      })
+  const onSubmit = async (data: FormData) => {
+    if (!trackId && !isEditMode) return
 
-    for (const playlistId of data.playlistIds) {
-      addTrackToPlaylist({ trackId, playlistId })
+    const trackIdToUpdate = trackId || editingTrackId!
+
+    try {
+      const promises: Promise<unknown>[] = []
+
+      promises.push(updateTrack({ trackId: trackIdToUpdate, payload: data }).unwrap())
+
+      // Синхронизация плейлистов
+      if (isEditMode && playlists?.data) {
+        const originalPlaylistIds = playlists.data.map((playlist) => playlist.id)
+        const newPlaylistIds = data.playlistIds
+
+        promises.push(
+          syncTrackPlaylists({
+            originalPlaylistIds,
+            newPlaylistIds,
+            trackId: trackIdToUpdate,
+            addTrackToPlaylist: (params) => addTrackToPlaylist(params).unwrap(),
+            removeTrackFromPlaylist: (params) => removeTrackFromPlaylist(params).unwrap(),
+          })
+        )
+      } else if (!isEditMode) {
+        // Для нового трека просто добавляем во все выбранные плейлисты
+        promises.push(
+          addTrackToPlaylists(trackIdToUpdate, data.playlistIds, (params) =>
+            addTrackToPlaylist(params).unwrap()
+          )
+        )
+      }
+
+      if (selectedImage) {
+        promises.push(addCoverToTrack({ trackId: trackIdToUpdate, cover: selectedImage }).unwrap())
+      }
+
+      if (!trackData?.data.attributes.releaseDate) {
+        promises.push(publishTrack({ trackId: trackIdToUpdate }).unwrap())
+      }
+
+      await Promise.all(promises)
+      dispatch(closeCreateEditTrackModal())
+    } catch (error) {
+      console.error('Error saving track:', error)
     }
-
-    if (selectedImage) {
-      addCoverToTrack({ trackId, cover: selectedImage })
-    }
-
-    publishTrack({ trackId })
-
-    dispatch(closeCreateEditTrackModal())
   }
 
   return (
     <Dialog open={true} onClose={handleClose} className={s.dialog}>
       <DialogHeader>
-        <Typography variant="h2">Create Track</Typography>
+        <Typography variant="h2">{isEditMode ? 'Edit Track' : 'Create Track'}</Typography>
       </DialogHeader>
       <DialogContent className={s.content}>
         {!isEditMode && (
           <>
             <FileUploader onFileSelect={handleFileSelect} />
-            <Button onClick={handleUpload}>Upload</Button>
+            <Button
+              className={s.uploadButton}
+              onClick={handleUpload}
+              disabled={Boolean(trackId) || !selectedFile}>
+              Upload
+            </Button>
           </>
         )}
 
-        <div>
-          <ImageUploader onImageSelect={handleImageSelect} className={s.imageUploader} />
-
-          <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-              label="Title"
-              placeholder="Enter track title"
-              {...register('title')}
-              errorMessage={errors.title?.message}
+        {(trackId || isEditMode) && (
+          <div>
+            <ImageUploader
+              onImageSelect={handleImageSelect}
+              className={s.imageUploader}
+              initialImageUrl={isEditMode ? trackCoverUrl : undefined}
             />
 
-            <Controller
-              control={control}
-              name="artistsIds"
-              render={({ field }) => (
-                <ArtistsTagAutocomplete value={field.value} onChange={field.onChange} />
-              )}
-            />
+            <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+              <TextField
+                label="Title"
+                placeholder="Enter track title"
+                {...register('title')}
+                errorMessage={errors.title?.message}
+              />
 
-            <Controller
-              control={control}
-              name="tagIds"
-              render={({ field }) => (
-                <PlaylistTagAutocomplete value={field.value} onChange={field.onChange} />
-              )}
-            />
+              <Controller
+                control={control}
+                name="artistsIds"
+                render={({ field }) => (
+                  <ArtistsTagAutocomplete value={field.value} onChange={field.onChange} />
+                )}
+              />
 
-            <Textarea
-              label="Lyrics"
-              placeholder="Enter track lyrics"
-              {...register('lyrics')}
-              errorMessage={errors.lyrics?.message}
-            />
+              <Controller
+                control={control}
+                name="tagIds"
+                render={({ field }) => (
+                  <PlaylistTagAutocomplete value={field.value} onChange={field.onChange} />
+                )}
+              />
 
-            <Controller
-              control={control}
-              name="playlistIds"
-              render={({ field }) => (
-                <ChoosePlaylistButtonAndModal
-                  playlistIds={field.value}
-                  setPlaylistIds={field.onChange}
-                />
-              )}
-            />
+              <Textarea
+                label="Lyrics"
+                placeholder="Enter track lyrics"
+                {...register('lyrics')}
+                errorMessage={errors.lyrics?.message}
+              />
 
-            <div className={s.buttonsRow}>
-              <Button variant="secondary" onClick={handleClose} type="button">
-                Cancel
-              </Button>
-              <Button variant="primary" type="submit" disabled={!trackId && !isEditMode}>
-                {isEditMode ? 'Save' : 'Create'}
-              </Button>
-            </div>
-          </form>
-        </div>
+              <Controller
+                control={control}
+                name="playlistIds"
+                render={({ field }) => (
+                  <ChoosePlaylistButtonAndModal
+                    playlistIds={field.value}
+                    setPlaylistIds={field.onChange}
+                  />
+                )}
+              />
+
+              <div className={s.buttonsRow}>
+                <Button variant="secondary" onClick={handleClose} type="button">
+                  Cancel
+                </Button>
+                <Button variant="primary" type="submit" disabled={!trackId && !isEditMode}>
+                  {isEditMode ? 'Save' : 'Create'}
+                </Button>
+              </div>
+            </form>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   )
