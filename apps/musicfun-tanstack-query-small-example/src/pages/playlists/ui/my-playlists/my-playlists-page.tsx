@@ -20,7 +20,6 @@ export function MyPlaylistsPage() {
   return (
     <div>
       <h3>My Playlists</h3>
-      <hr />
       <AddPlaylistForm />
       <div className={styles.playlistsBox}>
         <PaginatedPlaylists

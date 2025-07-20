@@ -10,12 +10,8 @@ export const Header = ({ renderAccountBar }: Props) => (
   <header className={styles.header}>
     <div className={styles.container}>
       <div className={styles.linksBlock}>
-        <Link to="/" className="[&.active]:font-bold">
-          Main
-        </Link>
-        <Link to="/playlists-with-filters" className="[&.active]:font-bold">
-          Playlists
-        </Link>
+        <Link to="/">Main</Link>
+        <Link to="/playlists-with-filters">Playlists</Link>
       </div>
 
       <div>{renderAccountBar()}</div>

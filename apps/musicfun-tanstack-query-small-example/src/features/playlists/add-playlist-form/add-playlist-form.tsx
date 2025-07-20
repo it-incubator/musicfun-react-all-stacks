@@ -1,82 +1,56 @@
-import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getClient } from '../../../shared/api/client.ts'
-import type { components } from '../../../shared/api/schema.ts'
-import { requestWrapper } from '../../../shared/api/request-wrapper.ts'
+import type { components } from '@/shared/api'
+import { getClient } from '@/shared/api'
+import { requestWrapper } from '@/shared/api/request-wrapper.ts'
+import styles from './add-playlist-form.module.css'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 
 export type CreatePlaylistRequestPayload = components['schemas']['CreatePlaylistRequestPayload']
 
 export const AddPlaylistForm = () => {
-  // локальное состояние формы
-  const [form, setForm] = useState<CreatePlaylistRequestPayload>({
-    title: '',
-    description: '',
-  })
-
   const queryClient = useQueryClient()
 
-  // мутация создания плейлиста
-  const { mutate, isPending } = useMutation({
-    mutationFn: (body: CreatePlaylistRequestPayload) =>
-      requestWrapper(
-        getClient().POST('/playlists', {
-          body: body,
-        }),
-      ),
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<CreatePlaylistRequestPayload>({
+    defaultValues: { title: '', description: '' },
+  })
+
+  const { mutate } = useMutation({
+    mutationFn: (body: CreatePlaylistRequestPayload) => requestWrapper(getClient().POST('/playlists', { body })),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['playlists'] })
-      setForm({ title: '', description: '' }) // сброс полей
+      reset()
     },
     onError: (err: unknown) => {
-      console.log('local')
+      console.error(err)
       alert(JSON.stringify(err))
       throw err
     },
     meta: { globalErrorHandler: 'on' },
   })
 
-  // обновляем поле по name
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
-  }
-
-  // отправка формы
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    mutate(form)
+  const onSubmit: SubmitHandler<CreatePlaylistRequestPayload> = (data) => {
+    mutate(data)
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Добавить новый плейлист</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <h2>Add a New Playlist</h2>
 
       <p>
-        <label>
-          <input
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            placeholder="Title"
-            required
-            disabled={isPending}
-          />
-          {}
-        </label>
+        <input {...register('title', { required: true })} placeholder="Title" disabled={isSubmitting} />
       </p>
 
       <div>
-        <input
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description"
-          disabled={isPending}
-        />
+        <input {...register('description')} placeholder="Description" disabled={isSubmitting} />
       </div>
 
-      <button type="submit" disabled={isPending}>
-        {isPending ? 'Создаём…' : 'Создать плейлист'}
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Creating…' : 'Create Playlist'}
       </button>
     </form>
   )
