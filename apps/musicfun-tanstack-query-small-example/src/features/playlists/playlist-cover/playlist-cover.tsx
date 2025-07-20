@@ -1,9 +1,9 @@
 import s from './playlist-cover.module.css'
 import noCover from '../../../assets/img/no-cover.png'
-import type { components } from '../../../shared/api/schema.ts'
+import type { components } from '@/shared/api'
 import type { ChangeEvent } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getClient } from '../../../shared/api/client.ts'
+import { getClient } from '@/shared/api'
 
 type PlaylistImagesOutputDTO = components['schemas']['PlaylistImagesOutputDTO']
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getClient } from '../../../shared/api/client.ts'
+import { getClient } from '@/shared/api'
 import { useState } from 'react'
 
 export const Playlists = ({ filtersEnabled = false }: { filtersEnabled: boolean }) => {

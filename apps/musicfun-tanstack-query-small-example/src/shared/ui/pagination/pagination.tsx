@@ -1,4 +1,4 @@
-import { PaginationNav } from './PaginationNav/PaginationNav.tsx'
+import { PaginationNav } from './pagination-nav/pagination-nav.tsx'
 import s from './Pagination.module.css'
 
 type Props = {

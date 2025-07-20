@@ -105,8 +105,8 @@ export const PaginatedPlaylists = ({ userId, onPlaylistSelected, classNames }: P
                 <button
                   className={styles.deletePlaylistButton}
                   onClick={() => deletePlaylist(playlist.id)}
-                  title={'delete playlist'}
-                  aria-label={'delete playlist'}
+                  title={'Delete playlist'}
+                  aria-label={'Delete playlist'}
                 >
                   🗑️
                 </button>
