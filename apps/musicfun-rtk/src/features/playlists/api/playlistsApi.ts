@@ -102,21 +102,21 @@ export const playlistsAPI = baseApi.injectEndpoints({
     }),
     likePlaylist: build.mutation<ReactionResponse, { id: string }>({
       query: ({ id }) => ({
-        url: `playlists/${id}/like`,
+        url: `playlists/${id}/likes`,
         method: 'POST',
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
     }),
     dislikePlaylist: build.mutation<ReactionResponse, { id: string }>({
       query: ({ id }) => ({
-        url: `playlists/${id}/dislike`,
+        url: `playlists/${id}/dislikes`,
         method: 'POST',
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
     }),
     unReactionPlaylist: build.mutation<ReactionResponse, { id: string }>({
       query: ({ id }) => ({
-        url: `playlists/${id}/reaction`,
+        url: `playlists/${id}/reactions`,
         method: 'DELETE',
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
