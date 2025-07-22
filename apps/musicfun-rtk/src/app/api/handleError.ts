@@ -3,18 +3,18 @@ import { showErrorToast } from '@/common/utils'
 import type { ExtensionsError } from '@/common/types'
 
 export const handleError = (result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>) => {
-  const error = 'Some error occurred'
+  if (!result.error) return
 
-  if (result.error) {
-    const extensionsError = (result.error as ExtensionsError)?.data?.extensions
-    const message = (result.error.data as { message: string }).message
+  const error = result.error
 
-    if (result.error.status === 401 || extensionsError?.length) return
+  const extensionsError = (error as ExtensionsError)?.data?.extensions
+  if (error.status === 401 || extensionsError?.length) return
 
-    if (result.error.status === 500) {
-      showErrorToast(error)
-    }
-
-    showErrorToast(message)
+  if ('status' in error) {
+    const errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
+    showErrorToast(errMsg)
+  } else {
+    const serializedError = error as { message?: string; name?: string; stack?: string; code?: string }
+    showErrorToast(serializedError.message || 'Some error occurred')
   }
 }

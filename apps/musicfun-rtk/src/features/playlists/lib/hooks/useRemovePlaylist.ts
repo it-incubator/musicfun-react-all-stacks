@@ -1,5 +1,5 @@
 import { useRemovePlaylistMutation } from '@/features/playlists/api/playlistsApi'
-import { showErrorToast } from '@/common/utils'
+import { isFetchBaseQueryError, isErrorWithMessage, showErrorToast } from '@/common/utils'
 
 export const useRemovePlaylist = () => {
   const [removePlaylistMutation] = useRemovePlaylistMutation()
@@ -8,7 +8,14 @@ export const useRemovePlaylist = () => {
     if (confirm('Вы уверены, что хотите удалить плейлист?')) {
       removePlaylistMutation(playlistId)
         .unwrap()
-        .catch((err: unknown) => showErrorToast('Не удалось удалить плейлист', err))
+        .catch((err: unknown) => {
+          if (isFetchBaseQueryError(err)) {
+            const errMsg = 'error' in err ? err.error : JSON.stringify(err.data)
+            showErrorToast(errMsg)
+          } else if (isErrorWithMessage(err)) {
+            showErrorToast(err.message)
+          }
+        })
     }
   }
 

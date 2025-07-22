@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { CurrentUserReaction } from '@/common/enums'
-import { showErrorToast } from '@/common/utils'
+import { isFetchBaseQueryError, isErrorWithMessage, showErrorToast } from '@/common/utils'
 
 type ReactionMutations<T = unknown> = {
   like: () => Promise<T>
@@ -11,7 +11,6 @@ type ReactionMutations<T = unknown> = {
 type UseOptimisticReactionsProps<T = unknown> = {
   currentReaction: CurrentUserReaction
   mutations: ReactionMutations<T>
-  entityName?: string
 }
 
 type UseOptimisticReactionsReturn<T = unknown> = {
@@ -25,7 +24,6 @@ type UseOptimisticReactionsReturn<T = unknown> = {
 export const useOptimisticReactions = <T = unknown>({
   currentReaction,
   mutations,
-  entityName = 'элемент',
 }: UseOptimisticReactionsProps<T>): UseOptimisticReactionsReturn<T> => {
   const [optimisticReaction, setOptimisticReaction] = useState(currentReaction)
 
@@ -47,7 +45,12 @@ export const useOptimisticReactions = <T = unknown>({
       return await mutation()
     } catch (error) {
       setOptimisticReaction(previousReaction)
-      showErrorToast(`Ошибка при обновлении реакции для ${entityName}`, error)
+      if (isFetchBaseQueryError(error)) {
+        const errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
+        showErrorToast(errMsg)
+      } else if (isErrorWithMessage(error)) {
+        showErrorToast(error.message)
+      }
       return undefined
     }
   }
