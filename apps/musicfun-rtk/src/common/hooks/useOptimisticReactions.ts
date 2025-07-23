@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { CurrentUserReaction } from '@/common/enums'
-import { isFetchBaseQueryError, isErrorWithMessage, showErrorToast } from '@/common/utils'
 
 type ReactionMutations<T = unknown> = {
   like: () => Promise<T>
@@ -45,12 +44,6 @@ export const useOptimisticReactions = <T = unknown>({
       return await mutation()
     } catch (error) {
       setOptimisticReaction(previousReaction)
-      if (isFetchBaseQueryError(error)) {
-        const errMsg = 'error' in error ? error.error : JSON.stringify(error.data)
-        showErrorToast(errMsg)
-      } else if (isErrorWithMessage(error)) {
-        showErrorToast(error.message)
-      }
       return undefined
     }
   }
