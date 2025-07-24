@@ -67,7 +67,7 @@ export type TrackAttachment = {
 export type FetchTracksResponse = {
   data: TrackDetails<FetchTracksAttributes>[]
   meta: Meta & {
-    nextCursor: string
+    nextCursor: Nullable<string>
   }
 }
 
@@ -81,23 +81,10 @@ export type FetchPlaylistsTracksResponse = {
 }
 
 // Arguments
-// export type FetchTracksArgs = {
-//   pageSize?: number
-//   pageNumber: number
-//   search?: string
-//   sortBy?: 'addedAt' | 'likesCount'
-//   sortDirection?: 'asc' | 'desc'
-//   tagsIds?: string[]
-//   artistsIds?: string[]
-//   userId?: string
-//   includeDrafts?: boolean
-//   paginationType?: PaginationType
-//   cursor?: string
-// }
 
 export type PaginationType = 'offset' | 'cursor'
 
-export type FetchTracksArgs<T extends PaginationType = PaginationType> = {
+export type FetchTracksArgs = {
   pageSize?: number
   search?: string
   sortBy?: 'addedAt' | 'likesCount'
@@ -106,8 +93,16 @@ export type FetchTracksArgs<T extends PaginationType = PaginationType> = {
   artistsIds?: string[]
   userId?: string
   includeDrafts?: boolean
-  paginationType: T
-} & (T extends 'cursor' ? { cursor: string; pageNumber?: never } : { pageNumber: number; cursor?: never })
+  paginationType?: PaginationType
+}
+
+export type FetchTracksCursorArgs = FetchTracksArgs & {
+  cursor: Nullable<string>
+}
+
+export type FetchTracksPageArgs = FetchTracksArgs & { pageNumber: number }
+
+export type FetchTracksInfinityArgs = Omit<FetchTracksArgs, 'paginationType'>
 
 export type UpdateTrackArgs = {
   title: string

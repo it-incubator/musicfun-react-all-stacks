@@ -9,38 +9,44 @@ import { TrackItem } from './TrackItem/TrackItem.tsx'
 import s from './TracksList.module.css'
 import { useInfiniteScrollTrigger } from '@/common/hooks'
 import { useState } from 'react'
-import { useFetchTracksInfinity } from '@/features/tracks/lib/hooks/useFetchTracks.ts'
+import {
+  useFetchTracksCursorInfiniteQuery,
+  // useFetchTracksPagesInfiniteQuery
+} from '@/features/tracks/api/tracksApi.ts'
 
 export const TracksList = () => {
-  const [page, setPage] = useState(1)
-  const [cursor, setCursor] = useState('')
   const [tagsIdsArg, setTagIdsArg] = useState<string[]>([])
   const [artistsIdsArg, setArtistsIdsArg] = useState<string[]>([])
 
   const { register, handleSubmit, onSubmit, trackId, editTrack, errors, tagIds, setTagIds, artistsIds, setArtistsIds } =
     useEditTrack()
 
-  const { tracks, isFetching, isLoading, hasNextPage, nextCursor } = useFetchTracksInfinity<'cursor'>({
-    // pageNumber: page,
-    artistsIds: artistsIdsArg,
-    tagsIds: tagsIdsArg,
-    cursor,
-  })
+  const { data, fetchNextPage, isFetching, isLoading, isFetchingNextPage, hasNextPage } =
+    useFetchTracksCursorInfiniteQuery({
+      artistsIds: artistsIdsArg,
+      tagsIds: tagsIdsArg,
+      pageSize: 5,
+    })
+
+  // const { data, fetchNextPage, isFetching, isLoading, isFetchingNextPage, hasNextPage } =
+  //   useFetchTracksPagesInfiniteQuery({
+  //     artistsIds: artistsIdsArg,
+  //     tagsIds: tagsIdsArg,
+  //     pageSize: 5,
+  //   })
 
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
 
   const { triggerRef } = useInfiniteScrollTrigger({
     hasNextPage: hasNextPage,
-    isFetchingNextPage: isFetching,
-    pageNumber: page,
-    cursor: nextCursor || '',
+    isFetchingNextPage: isFetchingNextPage,
     callback: () => {
-      setPage((prev) => prev + 1)
-
-      if (nextCursor) setCursor(nextCursor)
+      fetchNextPage()
     },
   })
+
+  const allData = data?.pages.flatMap((page) => page.data)
 
   return (
     <div className={s.container}>
@@ -51,7 +57,7 @@ export const TracksList = () => {
         onClose={() => setModalTrackId(null)}
         onSave={addTrackToPlaylist}
       />
-      {tracks?.map((track) => {
+      {allData?.map((track) => {
         const isEditing = trackId === track.id
         return (
           <div key={track.id}>

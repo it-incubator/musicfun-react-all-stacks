@@ -1,83 +1,105 @@
 import type {
   FetchPlaylistsTracksResponse,
   TrackApiResponse,
-  FetchTracksArgs,
   FetchTracksResponse,
   TrackDetailAttributes,
   TrackDetails,
   UpdateTrackArgs,
+  FetchTracksPageArgs,
+  FetchTracksInfinityArgs,
 } from './tracksApi.types.ts'
 import { baseApi } from '@/app/api/base-api.ts'
-import type { ReactionResponse } from '@/common/types'
+import type { Nullable, ReactionResponse } from '@/common/types'
 import { buildQueryString } from '@/common/utils'
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
-      query: (params) => {
-        const query = buildQueryString(params)
-        return `playlists/tracks?${query}`
-      },
-
-      serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { pageNumber, cursor, ...otherParams } = queryArgs
-        return [endpointName, otherParams]
-      },
-
-      merge: (currentCacheData, responseData, { arg }) => {
-        if (!responseData?.data) {
-          return currentCacheData || responseData
-        }
-
-        if (arg.paginationType === 'cursor') {
-          if (!currentCacheData?.data || !arg.cursor) {
-            return responseData
-          }
-
+    fetchTracksPages: build.infiniteQuery<FetchTracksResponse, FetchTracksInfinityArgs, { pageNumber: number }, string>(
+      {
+        query: (params) => {
           return {
-            ...responseData,
-            data: [...currentCacheData.data, ...responseData.data],
+            url: 'playlists/tracks',
+            params: {
+              ...params.queryArg,
+              pageNumber: params.pageParam.pageNumber,
+              paginationType: 'offset',
+            },
           }
-        }
+        },
 
-        const currentPage = arg.pageNumber || 1
+        infiniteQueryOptions: {
+          getNextPageParam: (lastPage, _, lastPageParam) => {
+            const currentPage = lastPageParam.pageNumber
+            const nextPage = currentPage + 1
+            const totalPages = lastPage.meta.pagesCount
 
-        if (currentPage === 1) {
-          return responseData
-        }
+            const hasNext = nextPage <= totalPages
 
-        if (!currentCacheData?.data) {
-          return responseData
-        }
+            return hasNext ? { pageNumber: nextPage } : undefined
+          },
 
+          initialPageParam: {
+            pageNumber: 1,
+          },
+        },
+
+        providesTags: (result) => [
+          ...(result?.pages?.flatMap(
+            (page) =>
+              page.data?.map((track) => ({
+                type: 'Track' as const,
+                id: track.id,
+              })) || [],
+          ) || []),
+          { type: 'Track', id: 'LIST' },
+        ],
+      },
+    ),
+
+    fetchTracksCursor: build.infiniteQuery<
+      FetchTracksResponse,
+      FetchTracksInfinityArgs,
+      { cursor: Nullable<string> },
+      string
+    >({
+      query: (params) => {
         return {
-          ...responseData,
-          data: [...currentCacheData.data, ...responseData.data],
+          url: 'playlists/tracks',
+          params: {
+            ...params.queryArg,
+            cursor: params.pageParam.cursor,
+            paginationType: 'cursor',
+          },
         }
       },
+      infiniteQueryOptions: {
+        getNextPageParam: (lastPage) => {
+          console.log('nextCursor', lastPage.meta.nextCursor)
 
-      forceRefetch: ({ currentArg, previousArg }) => {
-        if (!previousArg || !currentArg) return false
+          return lastPage.meta.nextCursor
+            ? {
+                cursor: lastPage.meta.nextCursor,
+              }
+            : undefined
+        },
 
-        if (currentArg.paginationType === 'cursor') {
-          return currentArg.cursor !== previousArg.cursor
-        }
-
-        return currentArg.pageNumber !== previousArg.pageNumber
+        initialPageParam: {
+          cursor: null,
+        },
       },
 
       providesTags: (result) => [
-        ...(result?.data?.map((track) => ({
-          type: 'Track' as const,
-          id: track.id,
-        })) || []),
+        ...(result?.pages?.flatMap(
+          (page) =>
+            page.data?.map((track) => ({
+              type: 'Track' as const,
+              id: track.id,
+            })) || [],
+        ) || []),
         { type: 'Track', id: 'LIST' },
       ],
-
-      keepUnusedDataFor: 60,
     }),
-    fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
+    fetchTracks: build.query<FetchTracksResponse, FetchTracksPageArgs>({
       query: (params) => {
         const query = buildQueryString(params)
 
@@ -302,7 +324,8 @@ export const tracksAPI = baseApi.injectEndpoints({
 })
 
 export const {
-  useFetchTracksInfinityQuery,
+  useFetchTracksPagesInfiniteQuery,
+  useFetchTracksCursorInfiniteQuery,
   useFetchTracksQuery,
   useFetchTrackByIdQuery,
   useAddCoverToTrackMutation,
