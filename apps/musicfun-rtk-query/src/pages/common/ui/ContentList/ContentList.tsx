@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import { Typography } from '@/shared/components/Typography/Typography'
+import { Typography } from '@/shared/components/Typography/Typography.tsx'
 
 import s from './ContentList.module.css'
 

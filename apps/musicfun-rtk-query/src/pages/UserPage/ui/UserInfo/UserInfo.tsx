@@ -1,20 +1,22 @@
+import { useMeQuery } from '@/features/auth'
 import { Button, Typography } from '@/shared/components'
 import { EditIcon } from '@/shared/icons'
 
 import s from './UserInfo.module.css'
 
 export const UserInfo = () => {
+  const { data: user } = useMeQuery()
+
   return (
     <div className={s.box}>
       <div className={s.avatar}>
         <img src={'https://unsplash.it/192/192'} alt="User avatar" />
       </div>
-      <Typography variant="h2">Martin Fowler</Typography>
+      <Typography variant="h2">{user?.login}</Typography>
 
-      <Button variant="secondary">
-        <EditIcon /> Edit profile
-      </Button>
-      <dl className={s.descriptionList}>
+      {/* TODO: Backend don't return this data 😢 */}
+
+      {/* <dl className={s.descriptionList}>
         <div className={s.descriptionItem}>
           <Typography as="dd" variant="body1">
             58
@@ -31,7 +33,7 @@ export const UserInfo = () => {
             Tracks
           </Typography>
         </div>
-      </dl>
+      </dl> */}
     </div>
   )
 }

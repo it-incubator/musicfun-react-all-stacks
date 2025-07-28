@@ -13,7 +13,7 @@ export const playlistsAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
     fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
       query: (params) => ({ url: 'playlists', params }),
-      providesTags: ['Playlist'],
+      providesTags: ['Playlist', 'Track'],
     }),
     fetchPlaylistById: build.query<{ data: Playlist }, string>({
       query: (playlistId) => ({ url: `playlists/${playlistId}` }),

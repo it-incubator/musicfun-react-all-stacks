@@ -1,7 +1,13 @@
 import { Link } from 'react-router'
 
+import {
+  useDislikeTrackMutation,
+  useLikeTrackMutation,
+  useUnReactionTrackMutation,
+} from '@/features/tracks'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
+import type { CurrentUserReaction } from '@/shared/types'
 
 import s from './TrackCard.module.css'
 
@@ -10,7 +16,9 @@ type Props = {
   imageSrc?: string
   title: string
   artistNames: string[]
-} & Omit<ReactionButtonsProps, 'className'>
+  reaction: CurrentUserReaction
+  likesCount: number
+}
 
 export const TrackCard = ({
   id,
@@ -18,10 +26,12 @@ export const TrackCard = ({
   title,
   artistNames,
   reaction,
-  onLike,
-  onDislike,
   likesCount,
 }: Props) => {
+  const [like] = useLikeTrackMutation()
+  const [dislike] = useDislikeTrackMutation()
+  const [unReaction] = useUnReactionTrackMutation()
+
   return (
     <Card as={Link} to={`/tracks/${id}`} className={s.card}>
       <div className={s.image}>
@@ -37,10 +47,10 @@ export const TrackCard = ({
       </Typography>
       <ReactionButtons
         reaction={reaction}
-        onLike={onLike}
-        onDislike={onDislike}
+        onLike={() => like({ trackId: id })}
+        onDislike={() => dislike({ trackId: id })}
         likesCount={likesCount}
-        onUnReaction={() => {}}
+        onUnReaction={() => unReaction({ trackId: id })}
       />
     </Card>
   )

@@ -56,10 +56,7 @@ export const MainPage = () => {
               id={track.id}
               imageSrc={image?.url}
               reaction={track.attributes.currentUserReaction}
-              onDislike={() => {}}
-              onLike={() => {}}
-              likesCount={99}
-              onUnReaction={() => {}}
+              likesCount={track.attributes.likesCount}
             />
           )
         }}
