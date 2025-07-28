@@ -1,0 +1,17 @@
+.header {
+  border-bottom: #aaaaaa 1px solid;
+  padding-bottom: 10px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.linksBlock {
+  display: flex;
+  gap: 10px;
+}
