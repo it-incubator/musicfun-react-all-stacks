@@ -1,4 +1,4 @@
-import { handleApiResult } from './api-error-handler.ts'
+import { handleErrors } from '@/common/utils'
 import {
   type BaseQueryFn,
   type FetchArgs,
@@ -41,7 +41,9 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   // основной запрос
   let result = await baseQuery(args, api, extraOptions)
 
-  handleApiResult(result)
+  if (result.error) {
+    handleErrors(result.error)
+  }
 
   if (result.error?.status === 401) {
     if (!mutex.isLocked()) {
