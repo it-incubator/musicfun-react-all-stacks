@@ -14,13 +14,11 @@ export const authApi = baseApi.injectEndpoints({
       }),
       // После успешного логина сохраняем токены и инвалидируем
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
-          localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
-          // Инвалидируем ПОСЛЕ сохранения токенов
-          dispatch(authApi.util.invalidateTags(['User']))
-        } catch {}
+        const { data } = await queryFulfilled
+        localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
+        localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
+        // Инвалидируем ПОСЛЕ сохранения токенов
+        dispatch(authApi.util.invalidateTags(['User']))
       },
     }),
 
@@ -34,14 +32,11 @@ export const authApi = baseApi.injectEndpoints({
         },
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          localStorage.removeItem(localStorageKeys.accessToken)
-          localStorage.removeItem(localStorageKeys.refreshToken)
-          await dispatch(authApi.util.resetApiState())
-        } catch {}
+        await queryFulfilled
+        localStorage.removeItem(localStorageKeys.accessToken)
+        localStorage.removeItem(localStorageKeys.refreshToken)
+        await dispatch(authApi.util.resetApiState())
       },
-      invalidatesTags: ['User'],
     }),
 
     // 3) Проверить «кто я»
@@ -58,11 +53,9 @@ export const authApi = baseApi.injectEndpoints({
         body: payload,
       }),
       async onQueryStarted(_arg, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
-          localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
-        } catch {}
+        const { data } = await queryFulfilled
+        localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
+        localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
       },
     }),
   }),

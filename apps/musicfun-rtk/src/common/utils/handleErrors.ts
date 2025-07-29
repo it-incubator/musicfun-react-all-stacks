@@ -33,9 +33,6 @@ export const handleErrors = (error: FetchBaseQueryError) => {
         }
         break
 
-      case 401:
-        break
-
       case 429:
         if (isErrorWithProperty(error.data, 'message')) {
           errorToast(error.data.message)
