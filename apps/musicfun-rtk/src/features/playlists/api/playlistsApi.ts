@@ -11,7 +11,6 @@ import type {
 import type { Images, ReactionResponse } from '@/common/types'
 import type { Nullable } from '@/common/types/common.types'
 import { buildQueryString } from '@/common/utils'
-import { localStorageKeys } from '@/app/api/base-query-with-refresh-token-flow-api.ts'
 
 export const playlistsAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -24,11 +23,9 @@ export const playlistsAPI = baseApi.injectEndpoints({
       providesTags: ['Playlist'],
       async onCacheEntryAdded(_arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         await cacheDataLoaded
-        const token = localStorage.getItem(localStorageKeys.accessToken)
         const socket: Socket = io('https://musicfun.it-incubator.app', {
           path: '/api/1.0/ws',
           transports: ['websocket'],
-          auth: { token },
         })
 
         socket.on('tracks.playlist-created', (msg: PlaylistCreatedEvent) => {
