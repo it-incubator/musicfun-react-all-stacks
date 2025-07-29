@@ -1,5 +1,5 @@
 import type { Nullable } from '@/common/types'
-import { showSuccessToast } from '@/common/utils'
+import { successToast } from '@/common/utils'
 import { useAddTrackToPlaylistMutation } from '../../api/tracksApi.ts'
 import { type MouseEvent, useState } from 'react'
 
@@ -18,7 +18,7 @@ export const useAddToPlaylist = () => {
     mutate({ trackId: modalTrackId, playlistId })
       .unwrap()
       .then(() => {
-        showSuccessToast(`Трек успешно добавлен ${playlistId}`)
+        successToast(`Трек успешно добавлен ${playlistId}`)
       })
   }
 

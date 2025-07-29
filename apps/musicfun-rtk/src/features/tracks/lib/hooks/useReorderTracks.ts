@@ -1,4 +1,4 @@
-import { dragEndUtilsHandler, showSuccessToast } from '@/common/utils'
+import { dragEndUtilsHandler, successToast } from '@/common/utils'
 import { useReorderTracksMutation } from '../../api/tracksApi.ts'
 import type { PlaylistItemAttributes, TrackDetails } from '../../api/tracksApi.types.ts'
 import type { DragEndEvent } from '@dnd-kit/core'
@@ -20,7 +20,7 @@ export const useReorderTracks = (initialTracks: TrackDetails<PlaylistItemAttribu
     mutate({ playlistId, trackId: event.active.id as string, putAfterItemId })
       .unwrap()
       .then(() => {
-        showSuccessToast('Порядок треков обновлен')
+        successToast('Порядок треков обновлен')
       })
   }
 

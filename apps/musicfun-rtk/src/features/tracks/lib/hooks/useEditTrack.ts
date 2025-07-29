@@ -1,5 +1,5 @@
 import type { Nullable } from '@/common/types'
-import { errorHandler, showSuccessToast } from '@/common/utils'
+import { errorHandler, successToast } from '@/common/utils'
 import { useFetchTrackByIdQuery, useUpdateTrackMutation } from '../../api/tracksApi.ts'
 import type { UpdateTrackArgs } from '../../api/tracksApi.types.ts'
 import { type MouseEvent, useEffect, useState } from 'react'
@@ -53,7 +53,7 @@ export const useEditTrack = () => {
       .unwrap()
       .then(() => {
         setTrackId(null)
-        showSuccessToast('Трек успешно обновлен')
+        successToast('Трек успешно обновлен')
       })
       .catch((e) => {
         errorHandler(e, setError)

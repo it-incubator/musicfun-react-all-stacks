@@ -1,5 +1,5 @@
 import type { Nullable } from '@/common/types'
-import { showErrorToast, showSuccessToast } from '@/common/utils'
+import { errorToast, successToast } from '@/common/utils'
 import { useCreateTrackMutation, usePublishTrackMutation } from '@/features/tracks/api/tracksApi.ts'
 import { type ChangeEvent, useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
@@ -24,12 +24,12 @@ export const AddTrackForm = () => {
     if (!file) return
 
     if (!file.type.startsWith('audio/')) {
-      showErrorToast('Неверный формат')
+      errorToast('Неверный формат')
       return
     }
 
     if (file.size > 1024 * 1024) {
-      showErrorToast('Файл слишком большой (макс. 1 МБ).')
+      errorToast('Файл слишком большой (макс. 1 МБ).')
       return
     }
 
@@ -45,7 +45,7 @@ export const AddTrackForm = () => {
       .unwrap()
       .then((res) => {
         if (shouldPublish) publishTrack({ trackId: res.data.id })
-        showSuccessToast('Трек успешно загружен')
+        successToast('Трек успешно загружен')
         reset()
         setFile(null)
       })

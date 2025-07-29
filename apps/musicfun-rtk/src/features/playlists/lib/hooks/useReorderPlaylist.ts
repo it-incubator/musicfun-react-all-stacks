@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { DragEndEvent } from '@dnd-kit/core'
 import { useReorderPlaylistMutation } from '@/features/playlists/api/playlistsApi'
-import { dragEndUtilsHandler, showSuccessToast } from '@/common/utils'
+import { dragEndUtilsHandler, successToast } from '@/common/utils'
 import type { Playlist } from '@/features/playlists/api/playlistsApi.types'
 
 export const useReorderPlaylist = (initialPlaylists: Playlist[]) => {
@@ -20,7 +20,7 @@ export const useReorderPlaylist = (initialPlaylists: Playlist[]) => {
     reorderPlaylistMutation({ playlistId: event.active.id as string, putAfterItemId })
       .unwrap()
       .then(() => {
-        showSuccessToast('Порядок плейлистов обновлен')
+        successToast('Порядок плейлистов обновлен')
       })
   }
 
