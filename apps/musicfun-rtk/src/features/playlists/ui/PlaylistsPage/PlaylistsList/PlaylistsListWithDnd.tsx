@@ -15,7 +15,7 @@ type Props = {
 
 export const PlaylistsWithDnd = ({ playlists: initialPlaylists }: Props) => {
   const { removePlaylist } = useRemovePlaylist()
-  const { playlistId, editPlaylist, register, onSubmit, handleSubmit, errors } = useUpdatePlaylist()
+  const { playlistId, editPlaylist, register, onSubmit, handleSubmit, errors, control } = useUpdatePlaylist()
   const { handleDragEnd, playlists } = useReorderPlaylist(initialPlaylists)
 
   return (
@@ -35,6 +35,7 @@ export const PlaylistsWithDnd = ({ playlists: initialPlaylists }: Props) => {
                       editPlaylist={editPlaylist}
                       handleSubmit={handleSubmit}
                       register={register}
+                      control={control}
                     />
                   ) : (
                     <SortableItem id={playlist.id}>
