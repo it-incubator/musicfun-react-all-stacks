@@ -1,20 +1,24 @@
-# 🚀 Запуск проекта
+# 🚀 Project Launch
 
-Информация по запуску проектов находиться в `README.md` каждого отдельного репозитория
+Information on launching projects can be found in the `README.md` of each individual repository.
 
 ## Actual projects
 
-- musicfun-ui-vanilla - full project html/css/storybook vanilla without ui libraries
+- `youtube/rtk-query` - youtube lessons: rtk-query
 
-- musicfun-tanstack-query - full project with tanstack query
+- `youtube/tanstack-query-router-fsd` - youtube lessons: tanstack-query
 
-- musicfun-rtk-query - full project with rtk-query
+- `apps/musicfun-ui-vanilla` - full project html/css/storybook vanilla without ui libraries
 
-## ❌ Запуск проекта с SDK (в данный момент не поддерживается)
+- `apps/musicfun-tanstack-query` - full project with tanstack query
 
-### 1. Установка зависимостей
+- `apps/musicfun-rtk-query` - full project with rtk-query
 
-В корне проекта запустить (установятся зависимости для всех приложений и пакетов)
+## ❌ Project Launch with SDK (Currently Unsupported)
+
+### 1. Installing Dependencies
+
+Run the following command in the project root (this will install dependencies for all apps and packages):
 
 ```bash
 pnpm i
@@ -22,13 +26,13 @@ pnpm i
 
 ### 2. SDK build
 
-Затем сбилдить `musicfun-api-sdk`
+Then build `musicfun-api-sdk`
 
 ```bash
 pnpm build:sdk
 ```
 
-️🔔 Возможно данные скрипты не являются кросc-платформенными
+️⚠️ Note: Some scripts may not be cross-platform compatible:
 
 ```json
 "scripts": {
@@ -37,13 +41,13 @@ pnpm build:sdk
 }
 ```
 
-тогда попробуй альтернативную команду попроще
+If so, try a simpler alternative command:
 
 ```bash
 pnpm build:sdk:simple
 ```
 
-### 3. Старт проекта
+### 3. Starting the Project
 
 - 🎶musicfun на **tanstack**
 
