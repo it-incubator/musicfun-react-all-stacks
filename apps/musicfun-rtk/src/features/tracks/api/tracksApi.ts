@@ -13,6 +13,7 @@ import { buildQueryString } from '@/common/utils'
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    // 1) Fetch operations
     fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
       query: (params) => {
         const query = buildQueryString(params)
@@ -82,6 +83,8 @@ export const tracksAPI = baseApi.injectEndpoints({
       }),
       providesTags: (_, __, { trackId }) => [{ type: 'Track', trackId }],
     }),
+
+    // 2) Create operations
     createTrack: build.mutation<TrackApiResponse, { title: string; file: File }>({
       query: ({ title, file }) => {
         const formData = new FormData()
@@ -99,7 +102,7 @@ export const tracksAPI = baseApi.injectEndpoints({
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track']))
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: ['Track'],
@@ -111,6 +114,8 @@ export const tracksAPI = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Track'],
     }),
+
+    // 3) Update operations
     updateTrack: build.mutation<TrackDetails<TrackDetailAttributes>, { trackId: string; payload: UpdateTrackArgs }>({
       query: ({ trackId, payload }) => ({
         url: `playlists/tracks/${trackId}`,
@@ -148,7 +153,7 @@ export const tracksAPI = baseApi.injectEndpoints({
             ]),
           )
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: (_res, __err, { playlistId, trackId }) => [
@@ -176,11 +181,13 @@ export const tracksAPI = baseApi.injectEndpoints({
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track']))
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: (_res, _err, { playlistId }) => [{ type: 'Playlist', id: playlistId }],
     }),
+
+    // 4) Delete operations
     removeTrack: build.mutation<void, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}`,
@@ -191,11 +198,13 @@ export const tracksAPI = baseApi.injectEndpoints({
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track']))
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: ['Track'],
     }),
+
+    // 5) Reaction operations
     like: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/likes`,
@@ -206,7 +215,7 @@ export const tracksAPI = baseApi.injectEndpoints({
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
@@ -221,7 +230,7 @@ export const tracksAPI = baseApi.injectEndpoints({
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
@@ -236,7 +245,7 @@ export const tracksAPI = baseApi.injectEndpoints({
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
@@ -257,7 +266,7 @@ export const tracksAPI = baseApi.injectEndpoints({
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
@@ -272,7 +281,7 @@ export const tracksAPI = baseApi.injectEndpoints({
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          // При ошибке кеш не трогаем
+          // Don't touch cache on error
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],

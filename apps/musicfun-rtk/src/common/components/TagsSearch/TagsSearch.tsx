@@ -28,7 +28,7 @@ export const TagsSearch = ({ setValues, selectedIds }: Props) => {
 
   return (
     <div className={s.container}>
-      <h2>Поиск по тегу</h2>
+      <h2>Search by Tag</h2>
       <AutoComplete
         allItems={allTags || []}
         placeholder={'Choose tag'}

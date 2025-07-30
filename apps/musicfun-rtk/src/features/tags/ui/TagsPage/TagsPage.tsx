@@ -5,7 +5,7 @@ import { AddTagForm } from './AddTagForm/AddTagForm.tsx'
 export const TagsPage = () => {
   return (
     <>
-      <PageTitle>Страница тегов</PageTitle>
+      <PageTitle>Tags Page</PageTitle>
       <AddTagForm />
       <TagsList />
     </>

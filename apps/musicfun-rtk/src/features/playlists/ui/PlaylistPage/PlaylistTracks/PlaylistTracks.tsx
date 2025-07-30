@@ -5,9 +5,9 @@ export const PlaylistTracks = () => {
 
   return (
     <div>
-      <h2>Треки плейлиста</h2>
-      <p>Здесь будет список треков плейлиста с ID: {playlistId}</p>
-      {/* Здесь будет реализация треков плейлиста */}
+      <h2>Playlist Tracks</h2>
+      <p>Here will be the playlist tracks list with ID: {playlistId}</p>
+      {/* Here will be playlist tracks implementation */}
     </div>
   )
 }

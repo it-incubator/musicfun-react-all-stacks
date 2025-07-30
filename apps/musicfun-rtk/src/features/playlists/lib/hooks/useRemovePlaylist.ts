@@ -4,7 +4,7 @@ export const useRemovePlaylist = () => {
   const [removePlaylistMutation] = useRemovePlaylistMutation()
 
   const removePlaylist = (playlistId: string) => {
-    if (confirm('Вы уверены, что хотите удалить плейлист?')) {
+    if (confirm('Are you sure you want to delete this playlist?')) {
       removePlaylistMutation(playlistId).unwrap()
     }
   }

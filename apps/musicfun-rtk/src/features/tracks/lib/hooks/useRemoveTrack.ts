@@ -10,12 +10,12 @@ export const useRemoveTrack = (onSuccess?: () => void) => {
 
   const removeTrack = (e: MouseEvent, trackId: string) => {
     e.preventDefault()
-    if (confirm('Вы уверены, что хотите удалить трек?')) {
+    if (confirm('Are you sure you want to delete this track?')) {
       setRemovingTrackId(trackId)
       mutate({ trackId })
         .unwrap()
         .then(() => {
-          successToast('Трек удален')
+          successToast('Track deleted')
           onSuccess?.()
         })
     }

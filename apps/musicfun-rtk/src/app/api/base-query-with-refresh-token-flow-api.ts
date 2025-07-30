@@ -15,7 +15,7 @@ export const localStorageKeys = {
 
 const mutex = new Mutex()
 
-/**Базовый запрос с авторизацией */
+/**Base query with authorization */
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL!,
   prepareHeaders: (headers) => {
@@ -30,15 +30,15 @@ const baseQuery = fetchBaseQuery({
   },
 })
 
-/**Обёртка с логикой рефреша */
+/**Wrapper with refresh logic */
 export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
   extraOptions,
 ) => {
-  // Если кто-то уже рефрешит — ждём
+  // If someone is already refreshing - wait
   await mutex.waitForUnlock()
-  // основной запрос
+  // Main request
   let result = await baseQuery(args, api, extraOptions)
 
   if (result.error?.status === 401) {
@@ -68,16 +68,16 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
           localStorage.setItem(localStorageKeys.accessToken, newAccessToken)
           localStorage.setItem(localStorageKeys.refreshToken, newRefreshToken)
 
-          // Повтор запроса с новым токеном
+          // Retry request with new token
           result = await baseQuery(args, api, extraOptions)
         } else {
           console.log('Logout: refresh token invalid or expired')
-          // диспатчим logout
+          // Dispatch logout
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           api.dispatch(baseApi.endpoints.logout.initiate())
 
-          // можно перенаправить пользователся на страницу login/auth
+          // Can redirect user to login/auth
           // window.location.href = "/login"
         }
       } catch (e) {

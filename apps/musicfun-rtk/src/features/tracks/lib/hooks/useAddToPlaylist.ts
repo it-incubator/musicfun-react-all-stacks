@@ -18,7 +18,7 @@ export const useAddToPlaylist = () => {
     mutate({ trackId: modalTrackId, playlistId })
       .unwrap()
       .then(() => {
-        successToast(`Трек успешно добавлен ${playlistId}`)
+        successToast(`Track successfully added ${playlistId}`)
       })
   }
 

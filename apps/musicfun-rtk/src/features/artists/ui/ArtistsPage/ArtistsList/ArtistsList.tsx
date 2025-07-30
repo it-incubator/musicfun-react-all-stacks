@@ -18,18 +18,18 @@ export const ArtistsList = () => {
         search={search}
         setSearch={setSearch}
         isPending={isPending}
-        title="Поиск по имени артиста"
-        placeholder="Введите имя"
+        title="Search by Artist Name"
+        placeholder="Enter name"
       />
       {Array.isArray(data) && data.length ? (
         <div>
-          <h2>Список артистов</h2>
+          <h2>Artists List</h2>
           {data.map((artist) => {
             return <ArtistItem artist={artist} key={artist.id} />
           })}
         </div>
       ) : (
-        <h2>По заданному условию артисты не найдены. Измените параметры поиска</h2>
+        <h2>No artists found for the given criteria. Change search parameters</h2>
       )}
     </>
   )

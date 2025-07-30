@@ -4,6 +4,17 @@ import { isErrorWithDetailArray } from './isErrorWithDetailArray'
 import { isErrorWithProperty } from './isErrorWithProperty'
 import { trimToMaxLength } from './trimToMaxLength'
 
+/**
+ * Handles different types of RTK Query errors and shows appropriate user notifications.
+ *
+ * Processes various error statuses and formats error messages for display.
+ * Shows error toasts with user-friendly messages.
+ *
+ * @param {FetchBaseQueryError} error - RTK Query error object
+ *
+ * @example
+ * handleErrors(queryResult.error)
+ */
 export const handleErrors = (error: FetchBaseQueryError) => {
   if (error) {
     switch (error.status) {

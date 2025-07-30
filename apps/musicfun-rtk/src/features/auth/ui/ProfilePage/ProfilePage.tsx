@@ -5,7 +5,7 @@ import { ProfileInfo } from './ProfileInfo/ProfileInfo.tsx'
 export const ProfilePage = () => {
   return (
     <>
-      <PageTitle>Профиль</PageTitle>
+      <PageTitle>Profile</PageTitle>
       <ProfileInfo />
       <ProfileLibrary />
     </>

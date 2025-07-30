@@ -11,7 +11,7 @@ export const SelectPlaylists = ({ onChange, value }: Props) => {
   return (
     <select onChange={(e) => onChange(e.currentTarget.value)} value={value}>
       <option value="" disabled>
-        -- Выберите плейлист --
+        -- Select Playlist --
       </option>
       {data?.data.map((playlist) => (
         <option key={playlist.id} value={playlist.id}>

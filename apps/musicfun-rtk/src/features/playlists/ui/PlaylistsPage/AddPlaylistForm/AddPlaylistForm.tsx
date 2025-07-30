@@ -25,7 +25,7 @@ export const AddPlaylistForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Добавить новый плейлист</h2>
+      <h2>Add New Playlist</h2>
       <div>
         <input {...register('title')} placeholder="Title" />
         <span className="error">{errors?.title?.message}</span>
@@ -34,7 +34,7 @@ export const AddPlaylistForm = () => {
         <input {...register('description')} placeholder={'Description'} />
         <span className="error">{errors?.description?.message}</span>
       </div>
-      <button>Создать плейлист</button>
+      <button>Create Playlist</button>
     </form>
   )
 }

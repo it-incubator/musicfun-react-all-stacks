@@ -51,7 +51,7 @@ export const PlaylistsWithDnd = ({ playlists: initialPlaylists }: Props) => {
               )
             })
           ) : (
-            <h1>Плейлисты не созданы</h1>
+            <h1>No playlists created</h1>
           )}
         </div>
       </SortableContext>

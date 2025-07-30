@@ -53,7 +53,7 @@ export const useEditTrack = () => {
       .unwrap()
       .then(() => {
         setTrackId(null)
-        successToast('Трек успешно обновлен')
+        successToast('Track successfully updated')
       })
       .catch((e) => {
         errorHandler(e, setError)

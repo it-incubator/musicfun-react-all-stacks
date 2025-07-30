@@ -7,8 +7,8 @@ import type { Playlist } from '@/features/playlists/api/playlistsApi.types'
 export const useReorderPlaylist = (initialPlaylists: Playlist[]) => {
   const [playlists, setPlaylists] = useState(initialPlaylists)
   const [reorderPlaylistMutation] = useReorderPlaylistMutation()
-  // Нужно чтобы DND отрабатывал без задержки.
-  // Чтобы не использовать useEffect можно попробовать реализовать через optimistic update
+  // Need DND to work without delay.
+  // To avoid using useEffect can try implementing through optimistic update
   useEffect(() => {
     setPlaylists(initialPlaylists)
   }, [initialPlaylists])
@@ -20,7 +20,7 @@ export const useReorderPlaylist = (initialPlaylists: Playlist[]) => {
     reorderPlaylistMutation({ playlistId: event.active.id as string, putAfterItemId })
       .unwrap()
       .then(() => {
-        successToast('Порядок плейлистов обновлен')
+        successToast('Playlist order updated')
       })
   }
 

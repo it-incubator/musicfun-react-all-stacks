@@ -5,7 +5,7 @@ import { AddTrackForm } from '@/features/tracks/ui/TracksPage/AddTrackForm/AddTr
 export const TracksPage = () => {
   return (
     <>
-      <PageTitle>Страница треков</PageTitle>
+      <PageTitle>Tracks Page</PageTitle>
       <AddTrackForm />
       <TracksList />
     </>
