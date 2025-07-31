@@ -28,7 +28,7 @@ export const ArtistsSearch = ({ setValues, selectedIds }: Props) => {
 
   return (
     <div className={s.container}>
-      <h2>Поиск по артисту</h2>
+      <h2>Search by Artist</h2>
       <AutoComplete
         allItems={allArtists}
         placeholder={'Choose artists'}

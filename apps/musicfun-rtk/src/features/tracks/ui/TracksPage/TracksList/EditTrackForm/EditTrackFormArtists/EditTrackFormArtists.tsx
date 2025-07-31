@@ -16,7 +16,7 @@ export const EditTrackFormArtists = ({ artistsIds, setArtistsIds }: Props) => {
 
   return (
     <div>
-      <h4 className={s.subTitle}>Выбери артиста из списка</h4>
+      <h4 className={s.subTitle}>Select Artist from List</h4>
       <div className={'artistList'}>
         {artistsResponse?.map((artist) => {
           const isSelected = artistsIds.includes(artist.id)

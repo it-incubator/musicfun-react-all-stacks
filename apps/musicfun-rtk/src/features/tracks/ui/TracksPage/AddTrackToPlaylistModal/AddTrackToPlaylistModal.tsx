@@ -18,11 +18,11 @@ export const AddTrackToPlaylistModal = ({ open, onClose, onSave }: Props) => {
   }
 
   return (
-    <Modal modalTitle="Добавить трек в плейлист" open={open} onClose={onClose}>
+    <Modal modalTitle="Add Track to Playlist" open={open} onClose={onClose}>
       <SelectPlaylists value={selectedPlaylistId} onChange={setSelectedPlaylistId} />
       <div>
-        <button onClick={handleSubmit}>Сохранить</button>
-        <button onClick={onClose}>Отмена</button>
+        <button onClick={handleSubmit}>Save</button>
+        <button onClick={onClose}>Cancel</button>
       </div>
     </Modal>
   )

@@ -34,18 +34,18 @@ export class PlayerCore {
     this.audio.pause()
   }
 
-  // rewind beat to start position
+  // Rewind track to start position
   setPositionToStart() {
     this.audio.currentTime = 0
   }
 
-  // returns true if at least one byte are downloaded from the server (buffered in a Audio)
-  // todo: should be private
+  // Returns true if at least one byte is downloaded from server (buffered in Audio)
+  // TODO: Should be private
   private areAtLeastAnyBytesOfTrackBuffered() {
     return this.audio.buffered.length > 0
   }
 
-  // rewind beat to start position
+  // Rewind track to start position
   getBufferedPercent() {
     if (!this.areAtLeastAnyBytesOfTrackBuffered()) {
       return 0
@@ -56,13 +56,13 @@ export class PlayerCore {
     return bufferedSecondsPercent
   }
 
-  // rewind beat to neccessary position in percent (for example, play beat from 45%)
-  // parameter: percent from which playing will start
+  // Rewind track to necessary position in percent (for example, play track from 45%)
+  // Parameter: percent from which playing will start
   setTrackPositionByPercent(percent: number) {
     this.audio.currentTime = this.getTimePositionByPercentPosition(percent)
   }
 
-  // activates 'pause' mode. Call play method to start
+  // Activate pause mode (call play method to start)
   bindEvent(eventName: PlayerLogicEvents, callback: (event: Event) => void) {
     this.audio.addEventListener(eventName, callback, false)
     return () => {

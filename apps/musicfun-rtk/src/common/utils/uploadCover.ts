@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react'
-import { showErrorToast } from '@/common/utils/showErrorToast.ts'
+import { errorToast } from './errorToast'
 
 type Props = {
   maxSize: number
@@ -15,12 +15,12 @@ export const uploadCover = ({ maxSize, onSuccess, event, allowedTypes = defaultT
   if (!file) return
 
   if (!allowedTypes.includes(file.type)) {
-    showErrorToast('Разрешены только изображения JPEG, PNG или GIF')
+    errorToast('Only JPEG, PNG or GIF images are allowed')
     return
   }
 
   if (file.size > maxSize) {
-    showErrorToast(`Файл слишком большой (макс. ${Math.round(maxSize / 1024)} КБ)`)
+    errorToast(`File too large (max ${Math.round(maxSize / 1024)} KB)`)
     return
   }
 

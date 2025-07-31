@@ -21,7 +21,6 @@ export const TrackReactions = ({ id, currentUserReaction }: Props) => {
       dislike: () => dislikeTrack({ trackId: id }).unwrap(),
       remove: () => unReactionTrack({ trackId: id }).unwrap(),
     },
-    entityName: 'трек',
   })
 
   return (

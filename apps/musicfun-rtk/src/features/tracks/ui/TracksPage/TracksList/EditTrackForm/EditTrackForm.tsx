@@ -30,15 +30,15 @@ export const EditTrackForm = ({
 }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`item item--fullwidth`}>
-      <h2>Редактировать трек</h2>
+      <h2>Edit Track</h2>
       <div className={s.container}>
         <div>
-          <h4 className={s.subTitle}>Описание трека</h4>
+          <h4 className={s.subTitle}>Track Description</h4>
           <input {...register('title')} placeholder="Title" />
           <span className={'error'}>{errors?.title?.message}</span>
         </div>
         <div>
-          <h4 className={s.subTitle}>Лирика</h4>
+          <h4 className={s.subTitle}>Lyrics</h4>
           <input {...register('lyrics')} placeholder="Lyrics" />
           <span className={'error'}>{errors?.lyrics?.message}</span>
         </div>
@@ -46,9 +46,9 @@ export const EditTrackForm = ({
         <EditTrackFormArtists artistsIds={artistsIds} setArtistsIds={setArtistsIds} />
       </div>
 
-      <button type={'submit'}>Сохранить</button>
+      <button type={'submit'}>Save</button>
       <button type={'button'} onClick={editTrack}>
-        Отмена
+        Cancel
       </button>
     </form>
   )

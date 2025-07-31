@@ -53,8 +53,8 @@ export const PlaylistsPage = () => {
         search={search}
         setSearch={setSearch}
         isPending={isLoading}
-        title="Поиск по названию плейлиста"
-        placeholder="Введите название плейлиста"
+        title="Search by Playlist Title"
+        placeholder="Enter playlist title"
       />
       <TagsSearch setValues={setTags} selectedIds={tags} />
       <Sort setSortDirection={setSortDirection} setSortBy={setSortBy} sortDirection={sortDirection} sortBy={sortBy} />
