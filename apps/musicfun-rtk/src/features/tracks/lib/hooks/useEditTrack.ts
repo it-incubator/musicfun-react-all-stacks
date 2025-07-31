@@ -17,8 +17,11 @@ export const useEditTrack = () => {
     handleSubmit,
     reset,
     setError,
+    setValue,
     formState: { errors },
-  } = useForm<UpdateTrackArgs>()
+  } = useForm<UpdateTrackArgs>({
+    defaultValues: {},
+  })
 
   const [mutate] = useUpdateTrackMutation()
 
@@ -31,13 +34,14 @@ export const useEditTrack = () => {
 
   useEffect(() => {
     if (trackResponse) {
-      const { title, lyrics, tags, artists } = trackResponse.data.attributes
+      const { title, lyrics, tags, artists, releaseDate } = trackResponse.data.attributes
       reset({ title, lyrics: lyrics ?? '' })
       setTagIds(tags?.map((tag) => tag.id) ?? [])
       setArtistsIds(artists?.map((artist) => artist.id) ?? [])
+      setValue('releaseDate', releaseDate)
       setEnabled(false)
     }
-  }, [trackResponse, reset])
+  }, [trackResponse, reset, setValue])
 
   const editTrack = (e: MouseEvent, trackId: Nullable<string>) => {
     e.preventDefault()

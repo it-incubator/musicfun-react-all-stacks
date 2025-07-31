@@ -1,11 +1,11 @@
-import type { FetchTracksResponse } from '../../api/tracksApi.types'
 import s from './TracksList.module.css'
 import { ClockIcon } from '@/common/icons'
 import { type ReactNode } from 'react'
 import { TrackItem } from '@/features/tracks/ui/TracksList/TrackItem/TrackItem.tsx'
+import type { FetchTracksAttributes, TrackDetails } from '@/features/tracks/api/tracksApi.types.ts'
 
 type Props = {
-  tracks?: FetchTracksResponse
+  tracks?: TrackDetails<FetchTracksAttributes>[]
   page: number
   pageSize: number
   isReactionMutable?: boolean
@@ -37,7 +37,7 @@ export const TracksList = ({ tracks, pageSize, page, isReactionMutable = false }
           </div>
         ))}
       </div>
-      {tracks?.data?.map((track, index) => {
+      {tracks?.map((track, index) => {
         return (
           <TrackItem
             key={track.id}
