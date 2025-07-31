@@ -1,0 +1,13 @@
+.container {
+  border-bottom: 1px solid black;
+  padding-left: 100px;
+}
+
+.list {
+  display: flex;
+  gap: 40px;
+}
+
+.activeLink {
+  font-weight: bold;
+}
