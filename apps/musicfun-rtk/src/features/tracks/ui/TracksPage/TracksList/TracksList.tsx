@@ -1,6 +1,5 @@
 import { ArtistsSearch, Loader, TagsSearch } from '@/common/components'
 import type { FetchTracksAttributes } from '../../../api/tracksApi.types.ts'
-import { useFetchTracks } from '../../../lib/hooks/useFetchTracks.ts'
 import { useAddToPlaylist } from '../../../lib/hooks/useAddToPlaylist.ts'
 import { useEditTrack } from '../../../lib/hooks/useEditTrack.ts'
 import { useRemoveTrack } from '../../../lib/hooks/useRemoveTrack.ts'
@@ -10,39 +9,55 @@ import { TrackItem } from './TrackItem/TrackItem.tsx'
 import s from './TracksList.module.css'
 import { useInfiniteScrollTrigger } from '@/common/hooks'
 import { useState } from 'react'
+import {
+  useFetchTracksCursorInfiniteQuery,
+  // useFetchTracksPagesInfiniteQuery
+} from '@/features/tracks/api/tracksApi.ts'
 
 export const TracksList = () => {
-  const [page, setPage] = useState(1)
+  const [tagsIdsArg, setTagIdsArg] = useState<string[]>([])
+  const [artistsIdsArg, setArtistsIdsArg] = useState<string[]>([])
 
-  const { register, handleSubmit, onSubmit, trackId, editTrack, tagIds, setTagIds, artistsIds, setArtistsIds, errors } =
+  const { register, handleSubmit, onSubmit, trackId, editTrack, errors, tagIds, setTagIds, artistsIds, setArtistsIds } =
     useEditTrack()
 
-  const { tracks, isFetching, isLoading, hasNextPage } = useFetchTracks({
-    pageNumber: page,
-    artistsIds,
-    tagsIds: tagIds,
-  })
+  const { data, fetchNextPage, isFetching, isLoading, isFetchingNextPage, hasNextPage } =
+    useFetchTracksCursorInfiniteQuery({
+      artistsIds: artistsIdsArg,
+      tagsIds: tagsIdsArg,
+      pageSize: 5,
+    })
+
+  // const { data, fetchNextPage, isFetching, isLoading, isFetchingNextPage, hasNextPage } =
+  //   useFetchTracksPagesInfiniteQuery({
+  //     artistsIds: artistsIdsArg,
+  //     tagsIds: tagsIdsArg,
+  //     pageSize: 5,
+  //   })
+
   const { removingTrackId, removeTrack } = useRemoveTrack()
   const { modalTrackId, setModalTrackId, addTrackToPlaylist, openModal } = useAddToPlaylist()
 
   const { triggerRef } = useInfiniteScrollTrigger({
-    hasNextPage: !!hasNextPage,
-    isFetchingNextPage: isFetching,
+    hasNextPage: hasNextPage,
+    isFetchingNextPage: isFetchingNextPage,
     callback: () => {
-      setPage((prev) => prev + 1)
+      fetchNextPage()
     },
   })
 
+  const allData = data?.pages.flatMap((page) => page.data)
+
   return (
     <div className={s.container}>
-      <ArtistsSearch setValues={setArtistsIds} selectedIds={artistsIds} />
-      <TagsSearch setValues={setTagIds} selectedIds={tagIds} />
+      <ArtistsSearch setValues={setArtistsIdsArg} selectedIds={artistsIdsArg} />
+      <TagsSearch setValues={setTagIdsArg} selectedIds={tagsIdsArg} />
       <AddTrackToPlaylistModal
         open={!!modalTrackId}
         onClose={() => setModalTrackId(null)}
         onSave={addTrackToPlaylist}
       />
-      {tracks?.map((track) => {
+      {allData?.map((track) => {
         const isEditing = trackId === track.id
         return (
           <div key={track.id}>
