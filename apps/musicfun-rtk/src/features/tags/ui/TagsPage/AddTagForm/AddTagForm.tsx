@@ -28,12 +28,12 @@ export const AddTagForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Создать нового исполнителя</h2>
+      <h2>Create New Tag</h2>
       <div>
-        <input {...register('name')} placeholder="Введите название тега" />
+        <input {...register('name')} placeholder="Enter tag name" />
         <span className="error">{errors.name?.message}</span>
       </div>
-      <button disabled={isLoading}>Создать тег</button>
+      <button disabled={isLoading}>Create Tag</button>
     </form>
   )
 }

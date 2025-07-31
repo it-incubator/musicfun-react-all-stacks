@@ -1,8 +1,8 @@
 import type { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 
-// items: tracks TrackDetails<PlaylistItemAttributes>[]
-// items: playlists Playlist[]
+// Items: tracks TrackDetails<PlaylistItemAttributes>[]
+// Items: playlists Playlist[]
 type ArgsType<T> = {
   event: DragEndEvent
   items: T[]
@@ -17,7 +17,7 @@ export const dragEndUtilsHandler = <T extends { id: string }>(args: ArgsType<T>)
 
   if (!overId || activeId === overId) return
 
-  // Локальное обновление
+  // Local update
   // https://docs.dndkit.com/presets/sortable#overview
   const oldIndex = items.findIndex((t) => t.id === activeId)
   const newIndex = items.findIndex((t) => t.id === overId)
@@ -25,6 +25,6 @@ export const dragEndUtilsHandler = <T extends { id: string }>(args: ArgsType<T>)
   const newList = arrayMove(items, oldIndex, newIndex)
   setItems(newList)
 
-  // Отправляем на сервер новый порядок (putAfterItemId = id предыдущего в списке)
+  // Send new order to server (putAfterItemId = id of previous item in list)
   return newIndex > 0 ? newList[newIndex - 1].id : null
 }

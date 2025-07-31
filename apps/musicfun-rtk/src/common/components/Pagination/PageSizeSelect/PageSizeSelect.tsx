@@ -6,7 +6,7 @@ type Props = {
 
 export const PageSizeSelect = ({ pageSize, onChange, options = [2, 4, 8, 12, 16, 20] }: Props) => (
   <label>
-    Показать
+    Show
     <select value={pageSize} onChange={(e) => onChange(Number(e.target.value))}>
       {options.map((size) => (
         <option value={size} key={size}>
@@ -14,6 +14,6 @@ export const PageSizeSelect = ({ pageSize, onChange, options = [2, 4, 8, 12, 16,
         </option>
       ))}
     </select>
-    на странице
+    on page
   </label>
 )

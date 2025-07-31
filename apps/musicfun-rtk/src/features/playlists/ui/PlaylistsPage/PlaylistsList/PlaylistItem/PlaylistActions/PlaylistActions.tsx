@@ -12,8 +12,8 @@ type Props = {
 export const PlaylistActions = ({ removePlaylist, playlist, editPlaylist }: Props) => {
   return (
     <div className={s.actions}>
-      {editPlaylist && <button onClick={() => editPlaylist(playlist)}>Редактировать</button>}
-      {removePlaylist && <button onClick={() => removePlaylist(playlist.id)}>Удалить</button>}
+      {editPlaylist && <button onClick={() => editPlaylist(playlist)}>Edit</button>}
+      {removePlaylist && <button onClick={() => removePlaylist(playlist.id)}>Delete</button>}
     </div>
   )
 }

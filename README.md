@@ -63,4 +63,17 @@ pnpm build:sdk:simple
      pnpm start:musicfun-nextjs
 ```
 
-Happy hacking 🚀
+## ✅ Рекомендованные форматы нейминга файлов в React/TypeScript проектах
+
+| Category              | Recommended Format | Example                               |
+| --------------------- | ------------------ | ------------------------------------- |
+| **Components**        | `PascalCase`       | `UserCard.tsx`                        |
+| **Hooks**             | `camelCase`        | `useAuth.ts`                          |
+| **Utilities (utils)** | `kebab-case`       | `format-date.ts`, `validate-email.ts` |
+| **Redux Slice/State** | `kebab-case`       | `auth-slice.ts`, `user-slice.ts`      |
+| **API files**         | `kebab-case`       | `playlists-api.ts`, `auth-api.ts`     |
+| **Types/Interfaces**  | `kebab-case`       | `user.types.ts`, `auth.types.ts`      |
+| **Services**          | `kebab-case`       | `auth-service.ts`, `user-service.ts`  |
+| **Mocks (mock data)** | `kebab-case`       | `user-mocks.ts`, `playlist-mocks.ts`  |
+
+### Happy hacking 🚀

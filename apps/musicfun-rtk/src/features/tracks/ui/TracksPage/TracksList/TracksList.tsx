@@ -76,10 +76,10 @@ export const TracksList = () => {
             ) : (
               <TrackItem<FetchTracksAttributes> track={track}>
                 <div className={'trackActions'}>
-                  <button onClick={(e) => openModal(e, track.id)}>Добавить трек в плейлист</button>
-                  <button onClick={(e) => editTrack(e, track.id)}>Редактировать</button>
+                  <button onClick={(e) => openModal(e, track.id)}>Add Track to Playlist</button>
+                  <button onClick={(e) => editTrack(e, track.id)}>Edit</button>
                   <button onClick={(e) => removeTrack(e, track.id)} disabled={removingTrackId === track.id}>
-                    {removingTrackId === track.id ? 'Удаление...' : 'Удалить'}
+                    {removingTrackId === track.id ? 'Deleting...' : 'Delete'}
                   </button>
                 </div>
               </TrackItem>
@@ -90,7 +90,7 @@ export const TracksList = () => {
       {/* Infinity Scroll Trigger */}
       {!isLoading && <div ref={triggerRef} style={{ height: '1px' }} />}
       {isLoading && <Loader />}
-      {!hasNextPage && !isFetching && <p>Все треки загружены</p>}
+      {!hasNextPage && !isFetching && <p>All tracks loaded</p>}
     </div>
   )
 }

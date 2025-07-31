@@ -3,28 +3,30 @@ import { authEndpoint } from '@/common/apiEntities'
 import type { OAuthLoginArgs, RefreshTokensArgs, AuthTokensResponse, MeResponseResponse } from './authApi.types'
 import { localStorageKeys } from '@/app/api/base-query-with-refresh-token-flow-api.ts'
 
+/**
+ * Authentication API endpoints for user management.
+ * Handles login, logout, user profile, and token refresh operations.
+ */
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // 1) Логин
+    // 1) Login
     login: build.mutation<AuthTokensResponse, OAuthLoginArgs>({
       query: (payload) => ({
         url: `${authEndpoint}/login`,
         method: 'POST',
         body: payload,
       }),
-      // После успешного логина сохраняем токены и инвалидируем
+      // Save tokens and invalidate user cache after successful login
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
-          localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
-          // Инвалидируем ПОСЛЕ сохранения токенов
-          dispatch(authApi.util.invalidateTags(['User']))
-        } catch {}
+        const { data } = await queryFulfilled
+        localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
+        localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
+        // Invalidate AFTER saving tokens
+        dispatch(authApi.util.invalidateTags(['User']))
       },
     }),
 
-    // 2) Логаут
+    // 2) Logout
     logout: build.mutation<void, void>({
       query: () => ({
         url: `${authEndpoint}/logout`,
@@ -34,23 +36,20 @@ export const authApi = baseApi.injectEndpoints({
         },
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          localStorage.removeItem(localStorageKeys.accessToken)
-          localStorage.removeItem(localStorageKeys.refreshToken)
-          await dispatch(authApi.util.resetApiState())
-        } catch {}
+        await queryFulfilled
+        localStorage.removeItem(localStorageKeys.accessToken)
+        localStorage.removeItem(localStorageKeys.refreshToken)
+        await dispatch(authApi.util.resetApiState())
       },
-      invalidatesTags: ['User'],
     }),
 
-    // 3) Проверить «кто я»
+    // 3) Check "who am I"
     getMe: build.query<MeResponseResponse, void>({
       query: () => ({ url: `${authEndpoint}/me` }),
       providesTags: ['User'],
     }),
 
-    // 4) Рефреш токена (если вдруг понадобится вызвать вручную)
+    // 4) Refresh token (if need to call manually)
     refreshToken: build.mutation<AuthTokensResponse, RefreshTokensArgs>({
       query: (payload) => ({
         url: `${authEndpoint}/refresh`,
@@ -58,11 +57,9 @@ export const authApi = baseApi.injectEndpoints({
         body: payload,
       }),
       async onQueryStarted(_arg, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
-          localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
-        } catch {}
+        const { data } = await queryFulfilled
+        localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
+        localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
       },
     }),
   }),

@@ -17,7 +17,7 @@ export const TagItem = ({ tag }: Props) => {
         <b>Tag:</b> <span>{name}</span>
       </div>
       <button onClick={() => removeTag({ id })} disabled={isLoading}>
-        {isLoading ? 'Удаление...' : 'Удалить'}
+        {isLoading ? 'Deleting...' : 'Delete'}
       </button>
     </div>
   )

@@ -1,6 +1,6 @@
 import { useRemoveTrackMutation } from '../../api/tracksApi.ts'
 import { type MouseEvent, useState } from 'react'
-import { showSuccessToast } from '@/common/utils'
+import { successToast } from '@/common/utils'
 import type { Nullable } from '@/common/types'
 
 export const useRemoveTrack = (onSuccess?: () => void) => {
@@ -10,12 +10,12 @@ export const useRemoveTrack = (onSuccess?: () => void) => {
 
   const removeTrack = (e: MouseEvent, trackId: string) => {
     e.preventDefault()
-    if (confirm('Вы уверены, что хотите удалить трек?')) {
+    if (confirm('Are you sure you want to delete this track?')) {
       setRemovingTrackId(trackId)
       mutate({ trackId })
         .unwrap()
         .then(() => {
-          showSuccessToast('Трек удален')
+          successToast('Track deleted')
           onSuccess?.()
         })
     }

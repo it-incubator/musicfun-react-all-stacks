@@ -22,7 +22,7 @@ type Props = {
 export const EditPlaylistForm = ({ onSubmit, editPlaylist, handleSubmit, register, errors, control }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Редактировать плейлист</h2>
+      <h2>Edit Playlist</h2>
       <div>
         <input {...register('title')} placeholder="Title" />
         <span className="error">{errors?.title?.message}</span>
@@ -41,9 +41,9 @@ export const EditPlaylistForm = ({ onSubmit, editPlaylist, handleSubmit, registe
           </>
         )}
       />
-      <button>Сохранить</button>
+      <button>Save</button>
       <button type={'button'} onClick={() => editPlaylist(null)}>
-        Отмена
+        Cancel
       </button>
     </form>
   )

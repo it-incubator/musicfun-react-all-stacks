@@ -16,7 +16,7 @@ export const EditTrackFormTags = ({ tagIds, setTagIds }: Props) => {
 
   return (
     <div>
-      <h4 className={s.subTitle}>Выбери тег из списка</h4>
+      <h4 className={s.subTitle}>Select Tag from List</h4>
       <div className={'tagsList'}>
         {tagsResponse?.map((tag) => {
           const isSelected = tagIds.includes(tag.id)

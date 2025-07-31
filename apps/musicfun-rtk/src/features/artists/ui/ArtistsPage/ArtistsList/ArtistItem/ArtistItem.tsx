@@ -19,7 +19,7 @@ export const ArtistItem = ({ artist }: Props) => {
         <b>Name:</b> <span>{name}</span>
       </div>
       <button onClick={deleteHandler} disabled={isLoading}>
-        {isLoading ? 'Удаление...' : 'Удалить'}
+        {isLoading ? 'Deleting...' : 'Delete'}
       </button>
     </div>
   )

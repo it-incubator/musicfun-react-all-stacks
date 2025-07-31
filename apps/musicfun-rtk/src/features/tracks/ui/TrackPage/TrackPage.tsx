@@ -28,7 +28,7 @@ export const TrackPage = () => {
 
   if (isLoading) return <Loader />
 
-  if (!data) return <h1>Трек не найден</h1>
+  if (!data) return <h1>Track not found</h1>
 
   const track = data?.data
 
@@ -41,9 +41,9 @@ export const TrackPage = () => {
       />
       <>
         <Link className={'link'} to={Path.Tracks}>
-          Вернуться назад
+          Back
         </Link>
-        <PageTitle>Информация о треке</PageTitle>
+        <PageTitle>Track Information</PageTitle>
 
         {trackId ? (
           <EditTrackForm
@@ -66,10 +66,10 @@ export const TrackPage = () => {
                 dislikesCount={track.attributes.dislikesCount}
                 trackId={id}
               />
-              <button onClick={(e) => openModal(e, id)}>Добавить трек в плейлист</button>
-              <button onClick={(e) => editTrack(e, id)}>Редактировать</button>
+              <button onClick={(e) => openModal(e, id)}>Add Track to Playlist</button>
+              <button onClick={(e) => editTrack(e, id)}>Edit</button>
               <button onClick={(e) => removeTrack(e, id)} disabled={removingTrackId === id}>
-                {removingTrackId === id ? 'Удаление...' : 'Удалить'}
+                {removingTrackId === id ? 'Deleting...' : 'Delete'}
               </button>
             </div>
           </TrackItem>
