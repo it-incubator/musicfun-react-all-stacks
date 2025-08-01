@@ -29,7 +29,6 @@ export const PlaylistCover = ({ playlistId, images }: Props) => {
     if (!file) return
 
     if (!allowedTypes.includes(file.type)) {
-      debugger
       toast('Only JPEG, PNG or GIF images are allowed', { type: 'error', theme: 'colored' })
       return
     }
