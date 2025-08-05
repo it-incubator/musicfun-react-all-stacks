@@ -27,17 +27,17 @@ jobs:
 
       # Устанавливаем зависимости БЕЗ frozen-lockfile
       - name: Install deps
-        working-directory: apps/musicfun-rtk-query
+        working-directory: apps/tanstack-query
         run: pnpm install --no-frozen-lockfile
 
       # Сборка Vite (должна вывести в ./dist)
       - name: Build
-        working-directory: apps/musicfun-rtk-query
+        working-directory: apps/tanstack-query
         run: pnpm build
 
       # Паблиш на GitHub Pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/musicfun-rtk-query/dist
+          path: apps/tanstack-query/dist
       - uses: actions/deploy-pages@v4
