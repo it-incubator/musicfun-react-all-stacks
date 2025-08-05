@@ -2,20 +2,13 @@ name: Deploy musicfun-rtk-query to GitHub Pages
 
 on:
   push:
-    branches: [deploy]                 # автозапуск при пуше в deploy
-    paths:
-      - 'apps/musicfun-rtk-query/**'
-      - '.github/workflows/deploy.yml'
-  workflow_dispatch:                   # ручной запуск
+    branches: [deploy]            # пушишь в ветку deploy — сайт обновляется
+  workflow_dispatch:              # можно запускать руками из Actions
 
 permissions:
   contents: read
   pages: write
   id-token: write
-
-concurrency:
-  group: pages-deploy
-  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -23,34 +16,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1) Node
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      # 2) pnpm (берёт версию из package.json -> packageManager)
+      # ставим pnpm (версию возьмет из package.json->packageManager, если есть)
       - uses: pnpm/action-setup@v4
         with:
           run_install: false
 
-      # 3) Включаем кэш pnpm (после того как pnpm появился)   dds
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: pnpm
-          cache-dependency-path: apps/musicfun-rtk-query/pnpm-lock.yaml
-
-      # 4) Установка зависимостей только в целевом проекте
+      # Устанавливаем зависимости БЕЗ frozen-lockfile
       - name: Install deps
         working-directory: apps/musicfun-rtk-query
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
-      # 5) Билд
+      # Сборка Vite (должна вывести в ./dist)
       - name: Build
         working-directory: apps/musicfun-rtk-query
         run: pnpm build
 
-      # 6) Паблиш на Pages
+      # Паблиш на GitHub Pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
