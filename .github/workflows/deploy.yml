@@ -1,0 +1,43 @@
+name: Deploy musicfun-rtk-query to GitHub Pages
+
+on:
+  push:
+    branches: [main]      # поменяй при необходимости
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # Устанавливаем зависимости во всей монорепе
+      - run: pnpm install --frozen-lockfile
+
+      # Сборка таргет-приложения
+      - name: Build musicfun-rtk-query
+        working-directory: apps/musicfun-rtk-query
+        run: pnpm build
+
+      - uses: actions/configure-pages@v5
+
+      # Отдаём артефакт именно из dist таргета
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/musicfun-rtk-query/dist
+
+      - uses: actions/deploy-pages@v4
