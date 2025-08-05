@@ -1,0 +1,50 @@
+name: Deploy musicfun-rtk-query to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1) Node без кэша
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      # 2) Устанавливаем pnpm
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # 3) Теперь можно включать кэш pnpm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: apps/musicfun-rtk-query/pnpm-lock.yaml
+
+      # 4) Дальше твои шаги
+      - name: Install deps
+        working-directory: apps/musicfun-rtk-query
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        working-directory: apps/musicfun-rtk-query
+        run: pnpm build
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/musicfun-rtk-query/dist
+      - uses: actions/deploy-pages@v4
+
