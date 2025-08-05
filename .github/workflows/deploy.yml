@@ -16,32 +16,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 1) Node без кэша
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: pnpm
-          # укажем локфайл в сабдиректории, чтобы кеш работал корректно
-          cache-dependency-path: apps/musicfun-rtk-query/pnpm-lock.yaml
 
+      # 2) Устанавливаем pnpm
       - uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      # Установка зависимостей только в целевом проекте
-      - name: Install deps (musicfun-rtk-query)
+      # 3) Теперь можно включать кэш pnpm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: apps/musicfun-rtk-query/pnpm-lock.yaml
+
+      # 4) Дальше твои шаги
+      - name: Install deps
         working-directory: apps/musicfun-rtk-query
         run: pnpm install --frozen-lockfile
 
-      # Билдим только целевой проект
       - name: Build
         working-directory: apps/musicfun-rtk-query
         run: pnpm build
 
       - uses: actions/configure-pages@v5
-
-      # Публикуем dist именно из целевого проекта
       - uses: actions/upload-pages-artifact@v3
         with:
           path: apps/musicfun-rtk-query/dist
-
       - uses: actions/deploy-pages@v4
+
