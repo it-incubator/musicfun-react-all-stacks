@@ -1,18 +1,26 @@
-name: Deploy musicfun-rtk-query to GitHub Pages
+name: Deploy musicfun-tanstack-query to GitHub Pages
 
 on:
   push:
-    branches: [deploy]            # пушишь в ветку deploy — сайт обновляется
-  workflow_dispatch:              # можно запускать руками из Actions
+    branches: [deploy]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,24 +28,28 @@ jobs:
         with:
           node-version: lts/*
 
-      # ставим pnpm (версию возьмет из package.json->packageManager, если есть)
       - uses: pnpm/action-setup@v4
         with:
           run_install: false
 
-      # Устанавливаем зависимости БЕЗ frozen-lockfile
       - name: Install deps
         working-directory: apps/musicfun-tanstack-query
         run: pnpm install --no-frozen-lockfile
 
-      # Сборка Vite (должна вывести в ./dist)
       - name: Build
         working-directory: apps/musicfun-tanstack-query
         run: pnpm build
 
-      # Паблиш на GitHub Pages
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Add CNAME
+        run: echo 'musicfun.dev' > apps/musicfun-tanstack-query/dist/CNAME
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: apps/musicfun-tanstack-query/dist
-      - uses: actions/deploy-pages@v4
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
