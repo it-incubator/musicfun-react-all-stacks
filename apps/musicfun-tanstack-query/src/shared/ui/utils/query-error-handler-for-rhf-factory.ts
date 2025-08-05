@@ -6,7 +6,6 @@ import {
   type JsonApiErrorDocument,
   parseJsonApiErrors,
 } from '../../api/utils/json-api-error.ts'
-import type { MutationMeta } from '../../routes/__root.tsx'
 
 export const queryErrorHandlerForRHFFactory = <T extends FieldValues>({
   setError,

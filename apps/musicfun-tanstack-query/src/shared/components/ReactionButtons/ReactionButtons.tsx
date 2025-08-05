@@ -1,16 +1,16 @@
 import { clsx } from 'clsx'
 
-import type { components } from '@/shared/api/schema.ts'
+import type { components, SchemaReactionValue } from '@/shared/api/schema.ts'
 import { DislikeIcon, LikeIcon, LikeIconFill } from '@/shared/icons'
 
 import { IconButton } from '../IconButton'
 import s from './ReactionButtons.module.css'
 
 // duplication of the CurrentUserReaction type to decouple the shared layer from the features layer
-export type CurrentUserReaction = components['schemas']['ReactionValue']
+export type CurrentUserReaction = SchemaReactionValue
 
 export type ReactionButtonsProps = {
-  reaction: CurrentUserReaction
+  reaction?: CurrentUserReaction
   onLike: () => void
   onDislike: () => void
   likesCount?: number

@@ -16,8 +16,8 @@ export const MainPage = () => {
           <PlaylistCard
             id={playlist.data.id}
             title={playlist.data.attributes.title}
-            imageSrc={playlist.data.attributes.images.main[0].url}
-            description={playlist.data.attributes.description.text}
+            images={playlist.data.attributes.images}
+            description={playlist.data.attributes.description}
             isShowReactionButtons={true}
             reaction={playlist.data.attributes.currentUserReaction}
             onLike={() => {}}

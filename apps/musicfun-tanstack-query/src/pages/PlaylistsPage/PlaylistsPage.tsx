@@ -4,7 +4,11 @@ import { useCallback, useMemo, useState } from 'react'
 import { PlaylistCard } from '@/features/playlists'
 import { usePlaylists } from '@/features/playlists/api/use-playlists.query.ts'
 import { useTags } from '@/features/tags'
-import type { SchemaGetPlaylistsRequestPayload } from '@/shared/api/schema.ts'
+import {
+  PathsPlaylistsGetParametersQuerySortBy,
+  PathsPlaylistsGetParametersQuerySortDirection,
+  type SchemaGetPlaylistsRequestPayload,
+} from '@/shared/api/schema.ts'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
 import { useDebounceValue } from '@/shared/hooks'
 
@@ -13,10 +17,22 @@ import s from './PlaylistsPage.module.css'
 import type { ISortConfig, SortOption } from './PlaylistsPage.types.ts'
 
 const sortConfig: Record<SortOption, ISortConfig> = {
-  newest: { sortBy: 'addedAt', sortDirection: 'desc' },
-  oldest: { sortBy: 'addedAt', sortDirection: 'asc' },
-  mostLiked: { sortBy: 'likesCount', sortDirection: 'desc' },
-  leastLiked: { sortBy: 'likesCount', sortDirection: 'asc' },
+  newest: {
+    sortBy: PathsPlaylistsGetParametersQuerySortBy.addedAt,
+    sortDirection: PathsPlaylistsGetParametersQuerySortDirection.desc,
+  },
+  oldest: {
+    sortBy: PathsPlaylistsGetParametersQuerySortBy.addedAt,
+    sortDirection: PathsPlaylistsGetParametersQuerySortDirection.asc,
+  },
+  mostLiked: {
+    sortBy: PathsPlaylistsGetParametersQuerySortBy.likesCount,
+    sortDirection: PathsPlaylistsGetParametersQuerySortDirection.desc,
+  },
+  leastLiked: {
+    sortBy: PathsPlaylistsGetParametersQuerySortBy.likesCount,
+    sortDirection: PathsPlaylistsGetParametersQuerySortDirection.asc,
+  },
 } as const
 
 export const PlaylistsPage = () => {

@@ -419,9 +419,8 @@ export interface paths {
       cookie?: never
     }
     /**
-     * OAuth редирект
-     * @description The callback URL to redirect after grand access,
-     *          <a target="_blank" href="https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=spotifun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid">https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=spotifun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid</a>
+     * OAuth redirect
+     * @description The callback URL to redirect after granting access, <a target="_blank" href="https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid">https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid</a>
      */
     get: operations['AuthController_OauthRedirect']
     put?: never
@@ -441,7 +440,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Залогиниться с помощью кода, полученного после редиректа после авторизации через OAuth */
+    /** Log in using the code received after OAuth authorization redirect */
     post: operations['AuthController_login']
     delete?: never
     options?: never
@@ -458,7 +457,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Обновить пару refresh/access токенов */
+    /** Refresh refresh/access token pair */
     post: operations['AuthController_refresh']
     delete?: never
     options?: never
@@ -475,7 +474,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Деактивировать refresh-token */
+    /** Deactivate refresh token */
     post: operations['AuthController_logout']
     delete?: never
     options?: never
@@ -490,7 +489,7 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Получить текущего пользователя по access токену */
+    /** Get current user by access token */
     get: operations['AuthController_getMe']
     put?: never
     post?: never
@@ -565,7 +564,7 @@ export interface components {
      * @description Type of the image size (e.g., original, thumbnail variants)
      * @enum {string}
      */
-    ImageSizeType: 'original' | 'thumbnail' | 'medium'
+    ImageSizeType: ImageSizeType
     ImageDto: {
       /** @description Type of the image size (e.g., original, thumbnail variants) */
       type: components['schemas']['ImageSizeType']
@@ -592,7 +591,7 @@ export interface components {
      * @description User reaction: 0 – guest or no reaction; 1 – like; -1 – dislike
      * @enum {number}
      */
-    ReactionValue: 0 | 1 | -1
+    ReactionValue: ReactionValue
     PlaylistAttributesDto: {
       /** @description Title of the playlist */
       title: string
@@ -642,7 +641,7 @@ export interface components {
       /** @description Playlist title (1 to 100 characters) */
       title: string
       /** @description Playlist description (up to 1000 characters) */
-      description?: string | null
+      description: string | null
     }
     PlaylistOutputAttributes: {
       /** @description Title of the playlist */
@@ -690,23 +689,22 @@ export interface components {
       data: components['schemas']['PlaylistOutput']
     }
     UpdatePlaylistRequestPayload: {
-      /** @description Playlist title (1 to 100 characters) */
+      /** @description Playlist title (1 – 100 characters) */
       title: string
       /**
        * @description Playlist description (up to 1000 characters)
        * @example Cool playlist
        */
-      description?: string | null
-      /** @description Array of tag IDs to associate with the playlist (up to 5) */
-      tagIds?: string[]
+      description: string | null
+      /** @description Tag IDs to associate with the playlist (0 – 5 items; [] = clear tags) */
+      tagIds: string[]
     }
     ReorderPlaylistsRequestPayload: {
       /**
        * Format: uuid
-       * @description ID of the playlist after which the current playlist should be inserted. Use null to place the playlist at the beginning of the list.
-       * @example a1b2c3d4-e5f6-7890-abcd-1234567890ef
+       * @description ID of the playlist after which the current playlist should be inserted. Send null to place the playlist at the beginning of the list.
        */
-      putAfterItemId?: string | null
+      putAfterItemId: string | null
     }
     GetImagesOutput: {
       /** @description List of original images and thumbnail versions (e.g., original, 320x180, etc.) */
@@ -720,42 +718,83 @@ export interface components {
       pageNumber: number
       /**
        * @description Page size for pagination (between 1 and 20)
-       * @default 10
+       * @default 20
        */
       pageSize: number
-      /**
-       * @description Search term for filtering playlists by name
-       * @example My Playlist
-       */
+      /** @description Search term for filtering playlists by name */
       search?: string
       /**
        * @description Field by which to sort tracks
        * @default publishedAt
        * @enum {string}
        */
-      sortBy: 'publishedAt' | 'likesCount'
+      sortBy: PathsPlaylistsTracksGetParametersQuerySortBy
       /**
        * @description Sort direction (ascending or descending)
        * @default desc
        * @enum {string}
        */
-      sortDirection: 'asc' | 'desc'
+      sortDirection: PathsPlaylistsGetParametersQuerySortDirection
       /** @description Filter by tag IDs (multiple values allowed) */
       tagsIds?: string[]
       /** @description Filter by artist IDs (multiple values allowed) */
       artistsIds?: string[]
       /** @description Filter by user ID (track creator's ID) */
       userId?: string
-      /** @description If true, include your unpublished tracks (drafts) */
-      includeOwnUnpublished?: boolean
+      /** @description If true, include unpublished tracks (drafts) of current user if userId === currentUserId */
+      includeDrafts?: boolean
       /**
        * @description Pagination type: "offset" for page-number pagination; "cursor" for keyset/seek-based pagination.
        * @default offset
        * @enum {string}
        */
-      paginationType: 'offset' | 'cursor'
+      paginationType: PathsPlaylistsTracksGetParametersQueryPaginationType
       /** @description Base64-encoded cursor for keyset pagination. Used only if paginationType is "cursor". */
       cursor?: string | null
+    }
+    JsonApiErrorSource: {
+      /**
+       * @description e.g. "/data/attributes/field"
+       * @example /data/attributes/field
+       */
+      pointer?: string
+      /**
+       * @description e.g. "?queryParam"
+       * @example ?queryParam
+       */
+      parameter?: string
+    }
+    JsonApiError: {
+      /**
+       * @description HTTP status code as a string
+       * @example 404
+       */
+      status: string
+      /**
+       * @description Application-specific error code
+       * @example E123
+       */
+      code?: Record<string, never>
+      /**
+       * @description Short, human-readable summary
+       * @example Not Found
+       */
+      title?: string
+      /**
+       * @description Detailed explanation
+       * @example User with ID 123 not found
+       */
+      detail?: string
+      /** @description Pointer to the associated entity in the request */
+      source?: components['schemas']['JsonApiErrorSource']
+      /** @description Any extra data */
+      meta?: Record<string, never>
+    }
+    JsonApiErrorDocument: {
+      /** @description Array of one or more errors */
+      errors: components['schemas']['JsonApiError'][]
+      /** @description e.g. timestamp, path, traceId, etc. */
+      meta?: Record<string, never>
     }
     AttachmentDto: {
       /** @description Unique identifier of the entity */
@@ -796,6 +835,7 @@ export interface components {
     TrackListItemOutputAttributes: {
       title: string
       addedAt: string
+      likesCount: number
       attachments: components['schemas']['AttachmentDto'][]
       images: components['schemas']['GetImagesOutput']
       user: components['schemas']['UserOutputDTO']
@@ -803,7 +843,7 @@ export interface components {
        * @description 0 – не залогинен или не реагировал; 1 – лайк; −1 – дизлайк
        * @enum {number}
        */
-      currentUserReaction: 0 | 1 | -1
+      currentUserReaction: ReactionValue
       isPublished: boolean
       publishedAt?: string
     }
@@ -871,7 +911,7 @@ export interface components {
        * @description User reaction: 0 – guest or no reaction; 1 – liked; -1 – disliked
        * @enum {number|null}
        */
-      currentUserReaction: 0 | 1 | -1 | null
+      currentUserReaction: ReactionValue
     }
     GetPlaylistTrackListOutputData: {
       id: string
@@ -918,7 +958,10 @@ export interface components {
       duration: number
       /** @description Total number of likes for this track */
       likesCount: number
-      /** @description Total number of dislikes for this track */
+      /**
+       * @deprecated
+       * @description Total number of dislikes for this track
+       */
       dislikesCount: number
       /** @description List of attachments related to the track */
       attachments: components['schemas']['AttachmentDto'][]
@@ -928,6 +971,7 @@ export interface components {
       tags: components['schemas']['GetTagOutput'][]
       /** @description Artists associated with the track */
       artists: components['schemas']['GetArtistOutput'][]
+      user: components['schemas']['UserOutputDTO']
       /** @description Publication status of the track */
       isPublished: boolean
       /**
@@ -939,7 +983,7 @@ export interface components {
        * @description User reaction: 0 – guest or no reaction; 1 – user liked; -1 – user disliked
        * @enum {number}
        */
-      currentUserReaction: 0 | 1 | -1
+      currentUserReaction: ReactionValue
     }
     TrackDetailsData: {
       /** @description Unique identifier of the track */
@@ -959,7 +1003,7 @@ export interface components {
     ReactionOutput: {
       objectId: string
       /** @enum {number} */
-      value: 0 | 1 | -1
+      value: ReactionValue
       likes: number
       dislikes: number
     }
@@ -971,26 +1015,23 @@ export interface components {
       pageNumber: number
       /**
        * @description Page size for pagination (between 1 and 20)
-       * @default 10
+       * @default 20
        */
       pageSize: number
-      /**
-       * @description Search term for filtering playlists by name
-       * @example My Playlist
-       */
+      /** @description Search term for filtering playlists by name */
       search?: string
       /**
        * @description Field by which to sort playlists
        * @default addedAt
        * @enum {string}
        */
-      sortBy: 'addedAt' | 'likesCount'
+      sortBy: PathsPlaylistsGetParametersQuerySortBy
       /**
        * @description Sort direction (ascending or descending)
        * @default desc
        * @enum {string}
        */
-      sortDirection: 'asc' | 'desc'
+      sortDirection: PathsPlaylistsGetParametersQuerySortDirection
       /** @description Filter by tag IDs. Multiple values allowed, e.g.: tagsIds=tag1&tagsIds=tag2 */
       tagsIds?: string[]
       /** @description Filter by user ID (playlist creator’s ID) */
@@ -1013,25 +1054,25 @@ export interface components {
     ReorderTracksRequestPayload: {
       /**
        * Format: uuid
-       * @description ID of the track after which the current track should be inserted. Use null to place the track at the beginning of the list.
+       * @description ID of the track after which the current track should be inserted. Send null to place the track at the beginning of the list.
        * @example a1b2c3d4-e5f6-7890-abcd-1234567890ef
        */
-      putAfterItemId?: string | null
+      putAfterItemId: string | null
     }
     UpdateTrackRequestPayload: {
       /** @description Track title (1 to 100 characters) */
       title: string
       /** @description Track lyrics (up to 5000 characters) */
-      lyrics?: string | null
+      lyrics: string | null
       /**
        * Format: date-time
        * @description Release date in ISO 8601 format
        */
-      releaseDate?: string | null
+      releaseDate: string | null
       /** @description Array of tag IDs to associate with the track (up to 5) */
-      tagIds?: string[]
+      tagIds: string[]
       /** @description Array of artist IDs to associate with the track (up to 5) */
-      artistsIds?: string[]
+      artistsIds: string[]
     }
     TrackOutputAttributes: {
       /** @description Track title */
@@ -1057,7 +1098,10 @@ export interface components {
       duration: number
       /** @description Total number of likes for this track */
       likesCount: number
-      /** @description Total number of dislikes for this track */
+      /**
+       * @deprecated
+       * @description Total number of dislikes for this track
+       */
       dislikesCount: number
       /** @description List of attachments related to the track */
       attachments: components['schemas']['AttachmentDto'][]
@@ -1067,6 +1111,7 @@ export interface components {
       tags: components['schemas']['GetTagOutput'][]
       /** @description Artists associated with the track */
       artists: components['schemas']['GetArtistOutput'][]
+      user: components['schemas']['UserOutputDTO']
       /** @description Publication status of the track */
       isPublished: boolean
       /**
@@ -1078,7 +1123,7 @@ export interface components {
        * @description User reaction: 0 – guest or no reaction; 1 – user liked; -1 – user disliked
        * @enum {number}
        */
-      currentUserReaction: 0 | 1 | -1
+      currentUserReaction: ReactionValue
     }
     TrackOutput: {
       /** @description Unique identifier of the track */
@@ -1104,19 +1149,19 @@ export interface components {
       name: string
     }
     LoginRequestPayload: {
-      /** @description Код, полученный от oauth-сервер после редиректа */
+      /** @description Authorization code received from OAuth server after redirect */
       code: string
       /**
-       * @description Укажите тоже значение, что и во время первого запроса на oauth-сервер
+       * @description Specify the same redirect URI used in the initial OAuth server request
        * @example http://localhost:3000/oauth2/callback
        */
       redirectUri: string
       /**
-       * @description Срок жизни accessToken-а (по дефолту "3m"), Можно использовать значение в формате: be a string like "60s", "3m", "2h", "1d"
+       * @description Access token lifetime (default "3m"); must be a string like "60s", "3m", "2h", or "1d"
        * @example 3m
        */
       accessTokenTTL?: string
-      /** @description Как долго будет жить refreshToken. Если true - 1 месяц, если false - 30 минут. Явно указанный accessTokenTTL не должен быть больше, чем время жизни refreshToken */
+      /** @description Refresh token lifetime: if true, 30 days; if false, 30 minutes. accessTokenTTL must not exceed the refresh token lifetime */
       rememberMe: boolean
     }
     RefreshOutput: {
@@ -1171,6 +1216,9 @@ export type SchemaReorderPlaylistsRequestPayload =
   components['schemas']['ReorderPlaylistsRequestPayload']
 export type SchemaGetImagesOutput = components['schemas']['GetImagesOutput']
 export type SchemaGetTracksRequestPayload = components['schemas']['GetTracksRequestPayload']
+export type SchemaJsonApiErrorSource = components['schemas']['JsonApiErrorSource']
+export type SchemaJsonApiError = components['schemas']['JsonApiError']
+export type SchemaJsonApiErrorDocument = components['schemas']['JsonApiErrorDocument']
 export type SchemaAttachmentDto = components['schemas']['AttachmentDto']
 export type SchemaTrackListItemOutputAttributes =
   components['schemas']['TrackListItemOutputAttributes']
@@ -1252,9 +1300,9 @@ export interface operations {
         /** @description Search term for filtering playlists by name */
         search?: string
         /** @description Field by which to sort playlists */
-        sortBy?: 'addedAt' | 'likesCount'
+        sortBy?: PathsPlaylistsGetParametersQuerySortBy
         /** @description Sort direction (ascending or descending) */
-        sortDirection?: 'asc' | 'desc'
+        sortDirection?: PathsPlaylistsGetParametersQuerySortDirection
         /** @description Filter by tag IDs. Multiple values allowed, e.g.: tagsIds=tag1&tagsIds=tag2 */
         tagsIds?: string[]
         /** @description Filter by user ID (playlist creator’s ID) */
@@ -1530,19 +1578,19 @@ export interface operations {
         /** @description Search term for filtering playlists by name */
         search?: string
         /** @description Field by which to sort tracks */
-        sortBy?: 'publishedAt' | 'likesCount'
+        sortBy?: PathsPlaylistsTracksGetParametersQuerySortBy
         /** @description Sort direction (ascending or descending) */
-        sortDirection?: 'asc' | 'desc'
+        sortDirection?: PathsPlaylistsGetParametersQuerySortDirection
         /** @description Filter by tag IDs (multiple values allowed) */
         tagsIds?: string[]
         /** @description Filter by artist IDs (multiple values allowed) */
         artistsIds?: string[]
         /** @description Filter by user ID (track creator's ID) */
         userId?: string
-        /** @description If true, include your unpublished tracks (drafts) */
-        includeOwnUnpublished?: boolean
+        /** @description If true, include unpublished tracks (drafts) of current user if userId === currentUserId */
+        includeDrafts?: boolean
         /** @description Pagination type: "offset" for page-number pagination; "cursor" for keyset/seek-based pagination. */
-        paginationType?: 'offset' | 'cursor'
+        paginationType?: PathsPlaylistsTracksGetParametersQueryPaginationType
         /** @description Base64-encoded cursor for keyset pagination. Used only if paginationType is "cursor". */
         cursor?: string | null
       }
@@ -1559,6 +1607,15 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['GetTrackListOutput']
+        }
+      }
+      /** @description Bad Request: invalid query parameters */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['JsonApiErrorDocument']
         }
       }
     }
@@ -2345,7 +2402,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description The callback URL to redirect after grand access,
-         *          https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=spotifun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid */
+         *          https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid */
         callbackUrl?: string
       }
       header?: never
@@ -2354,7 +2411,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK: Редирект выполнен */
+      /** @description OK: Redirect executed successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -2376,7 +2433,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description OK: Успешно получена пара токенов */
+      /** @description OK: Token pair retrieved successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -2385,7 +2442,7 @@ export interface operations {
           'application/json': components['schemas']['RefreshOutput']
         }
       }
-      /** @description BadRequest: Неверный формат запроса или отсутствуют обязательные параметры */
+      /** @description Bad Request: Invalid request format or required parameters are missing */
       400: {
         headers: {
           [name: string]: unknown
@@ -2394,7 +2451,7 @@ export interface operations {
           'application/json': components['schemas']['BadRequestException']
         }
       }
-      /** @description Unauthorized: Код недействителен, истёк или не передан, или не совпадает redirectUri */
+      /** @description Unauthorized: Code is invalid, expired, missing, or redirectUri does not match */
       401: {
         headers: {
           [name: string]: unknown
@@ -2418,7 +2475,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description OK: Успешное обновление пары токенов */
+      /** @description OK: Token pair refreshed successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -2427,7 +2484,7 @@ export interface operations {
           'application/json': components['schemas']['RefreshOutput']
         }
       }
-      /** @description Unauthorized: Refresh-token недействителен, истёк или не передан */
+      /** @description Unauthorized: Refresh token is invalid, expired, or missing */
       401: {
         headers: {
           [name: string]: unknown
@@ -2451,7 +2508,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description OK: refresh токен деактивирован, при этом access-токен остаётся ещё валидным. */
+      /** @description No Content: Refresh token deactivated; access token remains valid. */
       204: {
         headers: {
           [name: string]: unknown
@@ -2469,7 +2526,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description OK: Успешное получение информации о пользователе */
+      /** @description OK: Successfully retrieved user information */
       200: {
         headers: {
           [name: string]: unknown
@@ -2478,7 +2535,7 @@ export interface operations {
           'application/json': components['schemas']['GetMeOutput']
         }
       }
-      /** @description Unauthorized: access токен отсутствует или недействителен */
+      /** @description Unauthorized: access token is missing or invalid */
       401: {
         headers: {
           [name: string]: unknown
@@ -2611,4 +2668,30 @@ export interface operations {
       }
     }
   }
+}
+export enum PathsPlaylistsGetParametersQuerySortBy {
+  addedAt = 'addedAt',
+  likesCount = 'likesCount',
+}
+export enum PathsPlaylistsGetParametersQuerySortDirection {
+  asc = 'asc',
+  desc = 'desc',
+}
+export enum PathsPlaylistsTracksGetParametersQuerySortBy {
+  publishedAt = 'publishedAt',
+  likesCount = 'likesCount',
+}
+export enum PathsPlaylistsTracksGetParametersQueryPaginationType {
+  offset = 'offset',
+  cursor = 'cursor',
+}
+export enum ImageSizeType {
+  original = 'original',
+  thumbnail = 'thumbnail',
+  medium = 'medium',
+}
+export enum ReactionValue {
+  Value0 = 0,
+  Value1 = 1,
+  ValueMinus1 = -1,
 }

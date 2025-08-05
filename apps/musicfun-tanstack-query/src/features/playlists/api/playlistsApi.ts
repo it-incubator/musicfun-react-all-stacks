@@ -1,3 +1,10 @@
+import {
+  ImageSizeType,
+  ReactionValue,
+  type SchemaGetPlaylistOutput,
+  type SchemaPlaylistOutput,
+} from '@/shared/api/schema.ts'
+
 export const playlistsApi = {}
 
 export enum CurrentUserReaction {
@@ -6,27 +13,22 @@ export enum CurrentUserReaction {
   Dislike = 2,
 }
 
-export const MOCK_PLAYLISTS = [
+export const MOCK_PLAYLISTS: SchemaGetPlaylistOutput[] = [
   {
     data: {
       id: '1',
       type: 'playlists',
       attributes: {
         title: 'Chill Vibes',
-        description: {
-          text: 'Relax and unwind with these chill tracks 🌊',
-        },
+        description: 'Relax and unwind with these chill tracks 🌊',
         addedAt: '2025-06-01T12:00:00Z',
         updatedAt: '2025-06-10T15:30:00Z',
         order: 1,
-        user: {
-          id: 'user-101',
-          name: 'Alice',
-        },
+        user: { id: 'user-101', name: 'Alice' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 640,
               height: 640,
               fileSize: 204800,
@@ -34,9 +36,14 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['chill', 'lofi', 'relax'],
-        currentUserReaction: CurrentUserReaction.Like,
+        tags: [
+          { id: '1', name: 'chill' },
+          { id: '2', name: 'lofi' },
+          { id: '3', name: 'relax' },
+        ],
+        currentUserReaction: ReactionValue.Value1,
         likesCount: 542,
+        dislikesCount: 2,
       },
     },
   },
@@ -46,20 +53,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Workout Pump',
-        description: {
-          text: 'High energy tracks to keep you moving 💪',
-        },
+        description: 'High energy tracks to keep you moving 💪',
         addedAt: '2025-05-20T08:00:00Z',
         updatedAt: '2025-06-05T18:00:00Z',
         order: 2,
-        user: {
-          id: 'user-202',
-          name: 'Bob',
-        },
+        user: { id: 'user-202', name: 'Bob' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 800,
               height: 800,
               fileSize: 307200,
@@ -67,9 +69,14 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['fitness', 'pump', 'motivation'],
-        currentUserReaction: CurrentUserReaction.None,
+        tags: [
+          { id: '1', name: 'fitness' },
+          { id: '2', name: 'pump' },
+          { id: '3', name: 'motivation' },
+        ],
+        currentUserReaction: ReactionValue.Value0,
         likesCount: 123,
+        dislikesCount: 9,
       },
     },
   },
@@ -79,20 +86,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Fantasy Soundtrack',
-        description: {
-          text: 'Epic and magical music for your quests 🏹',
-        },
+        description: 'Epic and magical music for your quests 🏹',
         addedAt: '2025-04-15T14:30:00Z',
         updatedAt: '2025-05-01T10:10:00Z',
         order: 3,
-        user: {
-          id: 'user-303',
-          name: 'Elrond',
-        },
+        user: { id: 'user-303', name: 'Elrond' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 1024,
               height: 768,
               fileSize: 512000,
@@ -100,9 +102,14 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['fantasy', 'soundtrack', 'epic'],
-        currentUserReaction: CurrentUserReaction.None,
+        tags: [
+          { id: '1', name: 'fantasy' },
+          { id: '2', name: 'soundtrack' },
+          { id: '3', name: 'epic' },
+        ],
+        currentUserReaction: ReactionValue.Value0,
         likesCount: 54,
+        dislikesCount: 7,
       },
     },
   },
@@ -112,20 +119,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Suffer possible assume',
-        description: {
-          text: 'Recently religious responsibility whether only.',
-        },
+        description: 'Recently religious responsibility whether only.',
         addedAt: '2025-04-29T10:39:13',
         updatedAt: '2025-06-14T21:01:35',
         order: 4,
-        user: {
-          id: 'user-4',
-          name: 'Katie',
-        },
+        user: { id: 'user-4', name: 'Katie' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 936,
               height: 306,
               fileSize: 243840,
@@ -133,9 +135,14 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['any', 'shake', 'white'],
-        currentUserReaction: CurrentUserReaction.Like,
+        tags: [
+          { id: '1', name: 'any' },
+          { id: '2', name: 'shake' },
+          { id: '3', name: 'white' },
+        ],
+        currentUserReaction: ReactionValue.Value1,
         likesCount: 3,
+        dislikesCount: 4,
       },
     },
   },
@@ -145,20 +152,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Risk still',
-        description: {
-          text: 'Skin pay sure yeah couple live heart.',
-        },
+        description: 'Skin pay sure yeah couple live heart.',
         addedAt: '2025-01-26T00:52:16',
         updatedAt: '2025-06-14T21:00:56',
         order: 5,
-        user: {
-          id: 'user-5',
-          name: 'Robert',
-        },
+        user: { id: 'user-5', name: 'Robert' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 525,
               height: 500,
               fileSize: 185000,
@@ -166,9 +168,13 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['term', 'item'],
-        currentUserReaction: CurrentUserReaction.None,
-        likesCount: 12,
+        tags: [
+          { id: '1', name: 'term' },
+          { id: '2', name: 'item' },
+        ],
+        currentUserReaction: ReactionValue.Value0,
+        likesCount: 14,
+        dislikesCount: 12,
       },
     },
   },
@@ -178,20 +184,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Attack through go',
-        description: {
-          text: 'Plan deep sport growth tonight.',
-        },
+        description: 'Plan deep sport growth tonight.',
         addedAt: '2025-04-07T10:16:19',
         updatedAt: '2025-06-14T21:02:28',
         order: 6,
-        user: {
-          id: 'user-6',
-          name: 'Shelly',
-        },
+        user: { id: 'user-6', name: 'Shelly' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 985,
               height: 44,
               fileSize: 105000,
@@ -199,9 +200,13 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['feeling', 'size'],
-        currentUserReaction: CurrentUserReaction.None,
+        tags: [
+          { id: '1', name: 'feeling' },
+          { id: '2', name: 'size' },
+        ],
+        currentUserReaction: ReactionValue.Value0,
         likesCount: 0,
+        dislikesCount: 2,
       },
     },
   },
@@ -211,20 +216,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Yet woman outside',
-        description: {
-          text: 'Attorney especially child music capital well.',
-        },
+        description: 'Attorney especially child music capital well.',
         addedAt: '2025-01-02T16:37:47',
         updatedAt: '2025-06-14T21:03:26',
         order: 7,
-        user: {
-          id: 'user-7',
-          name: 'Kristopher',
-        },
+        user: { id: 'user-7', name: 'Kristopher' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 541,
               height: 589,
               fileSize: 312000,
@@ -232,9 +232,10 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['week'],
-        currentUserReaction: CurrentUserReaction.Like,
+        tags: [{ id: '1', name: 'week' }],
+        currentUserReaction: ReactionValue.Value1,
         likesCount: 12,
+        dislikesCount: 1,
       },
     },
   },
@@ -244,20 +245,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Community',
-        description: {
-          text: 'Visit about occur it fast industry process.',
-        },
+        description: 'Visit about occur it fast industry process.',
         addedAt: '2025-06-03T22:12:23',
         updatedAt: '2025-06-14T21:00:31',
         order: 8,
-        user: {
-          id: 'user-8',
-          name: 'Kimberly',
-        },
+        user: { id: 'user-8', name: 'Kimberly' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 376,
               height: 803,
               fileSize: 460000,
@@ -265,9 +261,14 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['serve', 'although', 'item'],
-        currentUserReaction: CurrentUserReaction.None,
+        tags: [
+          { id: '1', name: 'serve' },
+          { id: '2', name: 'although' },
+          { id: '3', name: 'item' },
+        ],
+        currentUserReaction: ReactionValue.Value0,
         likesCount: 12,
+        dislikesCount: 14,
       },
     },
   },
@@ -277,20 +278,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Dance Lights Forever',
-        description: {
-          text: 'Feel the beat drop and the lights flash 🎉',
-        },
+        description: 'Feel the beat drop and the lights flash 🎉',
         addedAt: '2024-12-14T15:20:12',
         updatedAt: '2025-06-13T17:15:00',
         order: 9,
-        user: {
-          id: 'user-9',
-          name: 'Jasmine',
-        },
+        user: { id: 'user-9', name: 'Jasmine' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 800,
               height: 800,
               fileSize: 310000,
@@ -298,9 +294,14 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['dance', 'party', 'electro'],
-        currentUserReaction: CurrentUserReaction.None,
+        tags: [
+          { id: '1', name: 'dance' },
+          { id: '2', name: 'party' },
+          { id: '3', name: 'electro' },
+        ],
+        currentUserReaction: ReactionValue.Value0,
         likesCount: 2,
+        dislikesCount: 14,
       },
     },
   },
@@ -310,20 +311,15 @@ export const MOCK_PLAYLISTS = [
       type: 'playlists',
       attributes: {
         title: 'Calm Forest Ambience',
-        description: {
-          text: 'Let nature help you concentrate 🌲',
-        },
+        description: 'Let nature help you concentrate 🌲',
         addedAt: '2025-03-01T09:45:00',
         updatedAt: '2025-06-10T13:20:00',
         order: 10,
-        user: {
-          id: 'user-10',
-          name: 'Leo',
-        },
+        user: { id: 'user-10', name: 'Leo' },
         images: {
           main: [
             {
-              type: 'original',
+              type: ImageSizeType.original,
               width: 1024,
               height: 576,
               fileSize: 280000,
@@ -331,9 +327,14 @@ export const MOCK_PLAYLISTS = [
             },
           ],
         },
-        tags: ['nature', 'focus', 'relax'],
-        currentUserReaction: CurrentUserReaction.Dislike,
+        tags: [
+          { id: '1', name: 'nature' },
+          { id: '2', name: 'focus' },
+          { id: '3', name: 'relax' },
+        ],
+        currentUserReaction: ReactionValue.ValueMinus1,
         likesCount: 84,
+        dislikesCount: 14,
       },
     },
   },

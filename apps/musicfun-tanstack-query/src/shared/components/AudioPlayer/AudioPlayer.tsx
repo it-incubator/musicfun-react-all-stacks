@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import { ComponentProps, useRef, useState } from 'react'
+import { type ComponentProps, useRef, useState } from 'react'
 
 import {
   PauseIcon,
