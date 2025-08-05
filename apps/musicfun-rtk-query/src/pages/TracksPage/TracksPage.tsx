@@ -1,24 +1,30 @@
-import { useState } from 'react'
-
-import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
-import { MOCK_HASHTAGS } from '@/features/tags'
-import { MOCK_TRACKS, TracksTable } from '@/features/tracks'
+import { useMeQuery } from '@/features/auth'
+import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
+import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import {
-  Autocomplete,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  ReactionButtons,
-  Typography,
-} from '@/shared/components'
-import { MoreIcon } from '@/shared/icons'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
+import { Typography } from '@/shared/components'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
-import { PageWrapper, SearchTextField, SortSelect } from '../common'
+import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
-  const [hashtags, setHashtags] = useState<string[]>([])
-  const [artists, setArtists] = useState<string[]>([])
+  const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
+    usePageSearchParams()
+
+  const { data: tracks } = useFetchTracksQuery({
+    pageNumber,
+    sortBy,
+    sortDirection,
+    search: debouncedSearch,
+    ...(tagsIds.length > 0 && { tagsIds }),
+    ...(artistsIds.length > 0 && { artistsIds }),
+  })
+
+  const { data: me } = useMeQuery()
 
   return (
     <PageWrapper>
@@ -31,44 +37,32 @@ export const TracksPage = () => {
           <SortSelect onChange={() => {}} />
         </div>
         <div className={s.controlsRow}>
-          <Autocomplete
-            options={MOCK_HASHTAGS.map((hashtag) => ({
-              label: hashtag,
-              value: hashtag,
-            }))}
-            value={hashtags}
-            onChange={setHashtags}
-            label="Hashtags"
-            placeholder="Search by hashtags"
-            className={s.autocomplete}
-          />
-          <Autocomplete
-            options={MOCK_ARTISTS.map((artist) => ({
-              label: artist.name,
-              value: artist.id,
-            }))}
-            value={artists}
-            onChange={setArtists}
-            label="Artists"
-            placeholder="Search by artists"
-            className={s.autocomplete}
-          />
+          <SearchTags type="tags" />
+          <SearchTags type="artists" />
         </div>
       </div>
 
       <TracksTable
-        trackRows={MOCK_TRACKS.map((track, index) => ({
-          index,
-          id: track.id,
-          title: track.attributes.title,
-          image: track.attributes.images.main[0].url,
-          addedAt: track.attributes.addedAt,
-          artists: track.attributes.artists?.map((artist) => artist.name) || [],
-          duration: track.attributes.duration,
-          likesCount: track.attributes.likesCount,
-          dislikesCount: track.attributes.dislikesCount,
-          currentUserReaction: track.attributes.currentUserReaction,
-        }))}
+        trackRows={
+          tracks?.data?.map((track, index) => {
+            const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
+            const userId = track.attributes.user.id
+            const isOwner = userId === me?.userId
+
+            return {
+              index,
+              id: track.id,
+              title: track.attributes.title,
+              imageSrc: image?.url || noCoverPlaceholder,
+              addedAt: track.attributes.addedAt,
+              artists: ['Artist 1', 'Artist 2'],
+              duration: 100,
+              likesCount: track.attributes.likesCount,
+              currentUserReaction: track.attributes.currentUserReaction,
+              isOwner,
+            }
+          }) ?? []
+        }
         renderTrackRow={(trackRow) => (
           <TrackRow
             key={trackRow.id}
@@ -76,19 +70,12 @@ export const TracksPage = () => {
             playingTrackId={MOCK_TRACKS[0].id}
             playingTrackProgress={20}
             renderActionsCell={() => (
-              <>
-                <ReactionButtons
-                  reaction={trackRow.currentUserReaction}
-                  onLike={() => {}}
-                  onDislike={() => {}}
-                  likesCount={trackRow.likesCount}
-                />
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <MoreIcon />
-                  </DropdownMenuTrigger>
-                </DropdownMenu>
-              </>
+              <TrackActions
+                reaction={trackRow.currentUserReaction}
+                likesCount={trackRow.likesCount}
+                trackId={trackRow.id}
+                isOwner={trackRow.isOwner}
+              />
             )}
           />
         )}

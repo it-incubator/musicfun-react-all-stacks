@@ -9,10 +9,10 @@ export const PlaylistTypeSwitcher = ({ type, setType }: Props) => {
   return (
     <div>
       <button onClick={() => setType('all')} disabled={type === 'all'}>
-        Все плейлисты
+        All Playlists
       </button>
       <button onClick={() => setType('my')} disabled={type === 'my'}>
-        Мои плейлисты
+        My Playlists
       </button>
     </div>
   )

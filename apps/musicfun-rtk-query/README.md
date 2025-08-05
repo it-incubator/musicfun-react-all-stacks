@@ -1,5 +1,5 @@
-UI for Musicfun app without libs
-
 TODO:
 [] Add common components for TrackOverview and PlaylistOverview
-[] Refactor DropdownMenu
+[] Refactor autocomplete (Headless UI)
+[] Errors handling
+[] Infinity scroll for tracks

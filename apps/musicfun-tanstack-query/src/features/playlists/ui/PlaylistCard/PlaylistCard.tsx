@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 
-import type { PlaylistImagesOutputDTO } from '@/features/playlists/api/types.ts'
+import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
 import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
 
 import stab from '../../../../assets/img/no-cover.png'
@@ -9,7 +9,7 @@ import s from './PlaylistCard.module.css'
 type PlaylistCardPropsBase = {
   id: string
   title: string
-  images: PlaylistImagesOutputDTO
+  images: SchemaPlaylistImagesOutputDto
   description: string | null
 }
 

@@ -1,14 +1,24 @@
-import { useState } from 'react'
+import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
+import { Pagination, Typography } from '@/shared/components'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
-import { MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
-import { MOCK_HASHTAGS } from '@/features/tags'
-import { Autocomplete, Pagination, Typography } from '@/shared/components'
-
-import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
+import { ContentList, PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { usePageSearchParams } from '../common/hooks'
 import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {
-  const [hashtags, setHashtags] = useState<string[]>([])
+  const { pageNumber, handlePageChange, debouncedSearch, sortBy, sortDirection, tagsIds } =
+    usePageSearchParams()
+
+  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
+    pageNumber,
+    sortBy,
+    sortDirection,
+    search: debouncedSearch,
+    ...(tagsIds.length > 0 && { tagsIds }),
+  })
+  const pagesCount = playlists?.meta.pagesCount || 1
 
   return (
     <PageWrapper>
@@ -17,38 +27,39 @@ export const PlaylistsPage = () => {
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField placeholder="Search playlists" onChange={() => {}} />
-          <SortSelect onChange={() => {}} />
+          <SearchTextField placeholder="Search playlists" />
+          <SortSelect />
         </div>
-        <Autocomplete
-          options={MOCK_HASHTAGS.map((hashtag) => ({
-            label: hashtag,
-            value: hashtag,
-          }))}
-          value={hashtags}
-          onChange={setHashtags}
-          label="Hashtags"
-          placeholder="Search by hashtags"
-          className={s.autocomplete}
-        />
+        <SearchTags type="tags" className={s.searchTags} />
       </div>
+
       <ContentList
-        data={[...MOCK_PLAYLISTS, ...MOCK_PLAYLISTS, ...MOCK_PLAYLISTS]}
-        renderItem={(playlist) => (
-          <PlaylistCard
-            id={playlist.data.id}
-            title={playlist.data.attributes.title}
-            image={playlist.data.attributes.images.main[0].url}
-            description={playlist.data.attributes.description.text}
-            isShowReactionButtons={true}
-            reaction={playlist.data.attributes.currentUserReaction}
-            onLike={() => {}}
-            onDislike={() => {}}
-            likesCount={playlist.data.attributes.likesCount}
-          />
-        )}
+        data={playlists?.data}
+        isLoading={isPlaylistsLoading}
+        skeleton={<PlaylistCardSkeleton showReactionButtons />}
+        renderItem={(playlist) => {
+          const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
+
+          return (
+            <PlaylistCard
+              id={playlist.id}
+              title={playlist.attributes.title}
+              imageSrc={image?.url}
+              description={playlist.attributes.description}
+              isShowReactionButtons={true}
+              reaction={playlist.attributes.currentUserReaction}
+              likesCount={playlist.attributes.likesCount}
+            />
+          )
+        }}
       />
-      <Pagination className={s.pagination} page={1} pagesCount={10} onPageChange={() => {}} />
+
+      <Pagination
+        className={s.pagination}
+        page={pageNumber}
+        pagesCount={pagesCount}
+        onPageChange={handlePageChange}
+      />
     </PageWrapper>
   )
 }

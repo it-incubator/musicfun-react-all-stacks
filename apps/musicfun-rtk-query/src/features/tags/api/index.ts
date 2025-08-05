@@ -1,1 +1,1 @@
-export * from './tags-api'
+export * from './tagsApi'

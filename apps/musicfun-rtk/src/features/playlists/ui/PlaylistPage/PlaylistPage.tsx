@@ -15,7 +15,7 @@ export const PlaylistPage = () => {
   const { playlistId } = useParams<{ playlistId?: string }>()
   const { data: userData } = useGetMeQuery()
   const { removePlaylist } = useRemovePlaylist()
-  const { editPlaylist, playlistId: editingId, register, handleSubmit, onSubmit, errors } = useUpdatePlaylist()
+  const { editPlaylist, playlistId: editingId, register, handleSubmit, onSubmit, errors, control } = useUpdatePlaylist()
   const location = useLocation()
   const from = location.state?.from || Path.Playlists
 
@@ -27,16 +27,15 @@ export const PlaylistPage = () => {
 
   if (isLoading) return <Loader />
 
-  if (!data) return <h1>Плейлист не найден</h1>
+  if (!data) return <h1>Playlist not found</h1>
 
   const isMyPlaylist = userData?.userId === data.data.attributes.user.id
-
   return (
     <>
       <Link className={'link'} to={from}>
-        Вернуться назад
+        Back
       </Link>
-      <PageTitle>Информация о плейлисте</PageTitle>
+      <PageTitle>Playlist Information</PageTitle>
       <div>
         <PlaylistCover playlist={data.data} editable={isMyPlaylist} />
         <PlaylistDescription attributes={data.data.attributes} />
@@ -48,6 +47,7 @@ export const PlaylistPage = () => {
               editPlaylist={editPlaylist}
               handleSubmit={handleSubmit}
               register={register}
+              control={control}
             />
           ) : (
             <PlaylistActions playlist={data.data} editPlaylist={editPlaylist} removePlaylist={removePlaylist} />

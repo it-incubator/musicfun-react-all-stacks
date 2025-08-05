@@ -22,6 +22,7 @@ export const Default: Story = {
     reaction: CurrentUserReaction.None,
     onLike: () => console.log('Liked!'),
     onDislike: () => console.log('Disliked!'),
+    onUnReaction: () => console.log('Unreaction!'),
   },
 }
 
@@ -30,6 +31,7 @@ export const WithLikesCount: Story = {
     reaction: CurrentUserReaction.None,
     onLike: () => console.log('Liked!'),
     onDislike: () => console.log('Disliked!'),
+    onUnReaction: () => console.log('Unreaction!'),
     likesCount: 10,
   },
 }
@@ -39,6 +41,7 @@ export const LikedState: Story = {
     reaction: CurrentUserReaction.Like,
     onLike: () => console.log('Unlike'),
     onDislike: () => console.log('Disliked!'),
+    onUnReaction: () => console.log('Unreaction!'),
   },
 }
 
@@ -47,6 +50,7 @@ export const DislikedState: Story = {
     reaction: CurrentUserReaction.Dislike,
     onLike: () => console.log('Liked!'),
     onDislike: () => console.log('Remove dislike'),
+    onUnReaction: () => console.log('Unreaction!'),
   },
 }
 
@@ -79,7 +83,12 @@ export const Interactive = {
         </Typography>
 
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <ReactionButtons reaction={reaction} onLike={handleLike} onDislike={handleDislike} />
+          <ReactionButtons
+            reaction={reaction}
+            onLike={handleLike}
+            onDislike={handleDislike}
+            onUnReaction={() => console.log('Unreaction!')}
+          />
         </div>
 
         <Typography
@@ -108,6 +117,7 @@ export const AllStates = {
           reaction={CurrentUserReaction.None}
           onLike={() => {}}
           onDislike={() => {}}
+          onUnReaction={() => console.log('Unreaction!')}
         />
       </div>
 
@@ -119,6 +129,7 @@ export const AllStates = {
           reaction={CurrentUserReaction.Like}
           onLike={() => {}}
           onDislike={() => {}}
+          onUnReaction={() => console.log('Unreaction!')}
         />
       </div>
 
@@ -129,6 +140,7 @@ export const AllStates = {
         <ReactionButtons
           reaction={CurrentUserReaction.Dislike}
           onLike={() => {}}
+          onUnReaction={() => console.log('Unreaction!')}
           onDislike={() => {}}
         />
       </div>
@@ -139,6 +151,7 @@ export const AllStates = {
         </Typography>
         <ReactionButtons
           reaction={CurrentUserReaction.None}
+          onUnReaction={() => console.log('Unreaction!')}
           onLike={() => {}}
           onDislike={() => {}}
           likesCount={10}

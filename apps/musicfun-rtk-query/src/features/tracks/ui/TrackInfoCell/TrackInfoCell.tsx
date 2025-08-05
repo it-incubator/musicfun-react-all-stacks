@@ -1,18 +1,19 @@
 import clsx from 'clsx'
 import { Link } from 'react-router'
 
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { TableCell, Typography } from '@/shared/components'
 
 import s from './TrackInfoCell.module.css'
 
 export const TrackInfoCell = ({
-  image,
+  imageSrc = noCoverPlaceholder,
   title,
   artists,
   isPlaying,
   id,
 }: {
-  image: string
+  imageSrc?: string
   title: string
   artists: string[]
   isPlaying: boolean
@@ -22,7 +23,7 @@ export const TrackInfoCell = ({
     <TableCell>
       <div className={s.box}>
         <div className={s.image}>
-          <img src={image} alt={title} />
+          <img src={imageSrc} alt={title} />
         </div>
         <div className={s.info}>
           <Typography

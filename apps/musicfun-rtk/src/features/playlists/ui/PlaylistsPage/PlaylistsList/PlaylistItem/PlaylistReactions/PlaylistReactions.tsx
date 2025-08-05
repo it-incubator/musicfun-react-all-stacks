@@ -25,7 +25,6 @@ export const PlaylistReactions = ({ id, currentUserReaction }: Props) => {
       dislike: () => dislikePlaylist({ id }).unwrap(),
       remove: () => unReactionPlaylist({ id }).unwrap(),
     },
-    entityName: 'плейлист',
   })
 
   return (

@@ -7,6 +7,14 @@ export type TrackDetails<T> = {
   id: string
   type: 'tracks'
   attributes: T
+  relationships: {
+    artists: {
+      data: {
+        id: string
+        type: string
+      }[]
+    }
+  }
 }
 
 // Attributes
@@ -15,10 +23,12 @@ export type BaseAttributes = {
   addedAt: string
   attachments: TrackAttachment[]
   images: Images
+  currentUserReaction: CurrentUserReaction
 }
 
 export type FetchTracksAttributes = BaseAttributes & {
   user: User
+  isPublished: boolean
 }
 
 export type TrackDetailAttributes = BaseAttributes & {
@@ -30,8 +40,8 @@ export type TrackDetailAttributes = BaseAttributes & {
   visibility: TrackVisibility
   tags: Tag[]
   artists: Artist[]
+  isPublished: boolean
   // likes
-  currentUserReaction: CurrentUserReaction
   dislikesCount: number
   likesCount: number
 }
@@ -50,39 +60,56 @@ export type TrackAttachment = {
   url: string
   contentType: string
   originalName: string
-  originalKey: string
   fileSize: number
 }
 
 // Response
 export type FetchTracksResponse = {
   data: TrackDetails<FetchTracksAttributes>[]
-  meta: Meta
+  meta: Meta & {
+    nextCursor: Nullable<string>
+  }
 }
 
-export type FetchTrackByIdResponse = {
+export type TrackApiResponse = {
   data: TrackDetails<TrackDetailAttributes>
 }
 
 export type FetchPlaylistsTracksResponse = {
   data: TrackDetails<PlaylistItemAttributes>[]
-  meta: Meta
+  meta: Meta['totalCount']
 }
 
 // Arguments
+
+export type PaginationType = 'offset' | 'cursor'
+
 export type FetchTracksArgs = {
   pageSize?: number
-  pageNumber: number
   search?: string
+  sortBy?: 'addedAt' | 'likesCount'
+  sortDirection?: 'asc' | 'desc'
+  tagsIds?: string[]
+  artistsIds?: string[]
+  userId?: string
+  includeDrafts?: boolean
+  paginationType?: PaginationType
 }
 
+export type FetchTracksCursorArgs = FetchTracksArgs & {
+  cursor: Nullable<string>
+}
+
+export type FetchTracksPageArgs = FetchTracksArgs & { pageNumber: number }
+
+export type FetchTracksInfinityArgs = Omit<FetchTracksArgs, 'paginationType'>
+
 export type UpdateTrackArgs = {
-  title?: string
-  lyrics?: string
-  visibility?: TrackVisibility
-  releaseDate?: string
-  tagIds?: string[]
-  artistsIds?: string[]
+  title: string
+  lyrics: string
+  releaseDate: Nullable<string>
+  tagIds: string[]
+  artistsIds: string[]
 }
 
 // Literal types

@@ -1,21 +1,32 @@
-import { Pagination, SearchInput } from '@/common/components'
-import { useDebounceValue } from '@/common/hooks'
-import { useFetchPlaylistsQuery } from '../../api/playlistsApi'
 import { useEffect, useState } from 'react'
-import { PlaylistsList } from './PlaylistsList/PlaylistsList'
+import { useDebounceValue } from '@/common/hooks'
 import { useGetMeQuery } from '@/features/auth/api/auth-api'
+import { useFetchPlaylistsQuery } from '@/features/playlists/api/playlistsApi.ts'
+import { Pagination, SearchInput, Sort, TagsSearch } from '@/common/components'
+import { PlaylistsList } from './PlaylistsList/PlaylistsList'
+import type { SortBy, SortDirection } from '@/common/types'
 
 export const PlaylistsPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize, setPageSize] = useState(4)
   const [search, setSearch] = useState('')
   const [debouncedSearch] = useDebounceValue(search)
+
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+  const [sortBy, setSortBy] = useState<SortBy>('addedAt')
+
+  const [tags, setTags] = useState<string[]>([])
+  const [debouncedTags] = useDebounceValue(tags)
+
   const { data: userData, isLoading: isAuthLoading } = useGetMeQuery()
   const { data, isLoading, refetch } = useFetchPlaylistsQuery(
     {
       search: debouncedSearch,
       pageNumber,
       pageSize,
+      sortDirection,
+      sortBy,
+      tagsIds: debouncedTags,
     },
     {
       skip: isAuthLoading,
@@ -34,7 +45,7 @@ export const PlaylistsPage = () => {
     setPageNumber(1)
   }
 
-  const playlists = (data?.data || []).slice().sort((a, b) => a.attributes.order - b.attributes.order)
+  const playlists = data?.data || []
 
   return (
     <>
@@ -42,9 +53,11 @@ export const PlaylistsPage = () => {
         search={search}
         setSearch={setSearch}
         isPending={isLoading}
-        title="Поиск по названию плейлиста"
-        placeholder="Введите название плейлиста"
+        title="Search by Playlist Title"
+        placeholder="Enter playlist title"
       />
+      <TagsSearch setValues={setTags} selectedIds={tags} />
+      <Sort setSortDirection={setSortDirection} setSortBy={setSortBy} sortDirection={sortDirection} sortBy={sortBy} />
       <PlaylistsList playlists={playlists} />
       <Pagination
         current={pageNumber}

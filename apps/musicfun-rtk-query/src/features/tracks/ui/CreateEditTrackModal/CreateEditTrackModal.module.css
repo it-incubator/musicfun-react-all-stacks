@@ -1,0 +1,33 @@
+.dialog {
+  width: 100%;
+  max-width: 745px;
+}
+
+.uploadButton {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 16px;
+}
+
+.imageUploader {
+  width: 280px;
+  margin: 0 auto;
+}
+
+.buttonsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}

@@ -16,18 +16,26 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.4",
+    "@reduxjs/toolkit": "2.8.2",
+    "async-mutex": "0.5.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-router": "7.6.2"
+    "react-easy-crop": "^5.4.2",
+    "react-hook-form": "7.58.0",
+    "react-redux": "9.2.0",
+    "react-router": "7.6.2",
+    "react-toastify": "11.0.5",
+    "zod": "3.24.2"
   },
   "devDependencies": {
-    "clsx": "^2.1.1",
     "@eslint/js": "^9.25.0",
     "@storybook/react-vite": "9.0.8",
     "@types/node": "^24.0.1",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
+    "clsx": "^2.1.1",
     "eslint": "^9.25.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",

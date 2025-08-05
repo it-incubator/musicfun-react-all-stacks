@@ -5,7 +5,7 @@ import { PageTitle } from '@/common/components'
 export const ArtistsPage = () => {
   return (
     <>
-      <PageTitle>Страница артистов</PageTitle>
+      <PageTitle>Artists Page</PageTitle>
       <AddArtistForm />
       <ArtistsList />
     </>

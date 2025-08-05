@@ -1,18 +1,26 @@
-import { LoginButtonAndModal, ProfileDropdownMenu } from '@/features/auth'
+import { ProfileDropdownMenu } from '@/features/auth'
+import { useMeQuery } from '@/features/auth/api'
+import { setIsAuthModalOpen } from '@/features/auth/model'
+import { Button } from '@/shared/components'
+import { useAppDispatch } from '@/shared/hooks'
 
 import s from './Header.module.css'
 
-const IS_AUTH = true // temporary data
-
 export const Header = () => {
+  const { data: user, isLoading } = useMeQuery()
+  const dispatch = useAppDispatch()
+  const isAuth = !!user
+
   return (
     <header className={s.header}>
       <div className={s.logo}>Musicfun</div>
 
-      {IS_AUTH ? (
-        <ProfileDropdownMenu avatar={'//unsplash.it/100/100'} name={'Martin Fowler'} id={'1'} />
-      ) : (
-        <LoginButtonAndModal />
+      {isAuth ? (
+        <ProfileDropdownMenu avatar={'//unsplash.it/100/100'} name={user.login} id={user.userId} />
+      ) : isLoading ? null : (
+        <Button onClick={() => dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))}>
+          Sign in
+        </Button>
       )}
     </header>
   )

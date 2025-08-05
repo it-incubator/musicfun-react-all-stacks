@@ -12,7 +12,7 @@ export const MainPage = () => {
 
   return (
     <div>
-      <h1>Главная страница</h1>
+      <h1>Main Page</h1>
       <div>
         <h2>New playlists</h2>
         {playlists && <PlaylistsList playlists={playlists.data} />}

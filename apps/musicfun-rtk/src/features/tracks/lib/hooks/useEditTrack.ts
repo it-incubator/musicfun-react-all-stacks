@@ -1,5 +1,5 @@
 import type { Nullable } from '@/common/types'
-import { errorHandler, showSuccessToast } from '@/common/utils'
+import { errorHandler, successToast } from '@/common/utils'
 import { useFetchTrackByIdQuery, useUpdateTrackMutation } from '../../api/tracksApi.ts'
 import type { UpdateTrackArgs } from '../../api/tracksApi.types.ts'
 import { type MouseEvent, useEffect, useState } from 'react'
@@ -17,8 +17,11 @@ export const useEditTrack = () => {
     handleSubmit,
     reset,
     setError,
+    setValue,
     formState: { errors },
-  } = useForm<UpdateTrackArgs>()
+  } = useForm<UpdateTrackArgs>({
+    defaultValues: {},
+  })
 
   const [mutate] = useUpdateTrackMutation()
 
@@ -31,13 +34,14 @@ export const useEditTrack = () => {
 
   useEffect(() => {
     if (trackResponse) {
-      const { title, lyrics, tags, artists } = trackResponse.data.attributes
+      const { title, lyrics, tags, artists, releaseDate } = trackResponse.data.attributes
       reset({ title, lyrics: lyrics ?? '' })
       setTagIds(tags?.map((tag) => tag.id) ?? [])
       setArtistsIds(artists?.map((artist) => artist.id) ?? [])
+      setValue('releaseDate', releaseDate)
       setEnabled(false)
     }
-  }, [trackResponse, reset])
+  }, [trackResponse, reset, setValue])
 
   const editTrack = (e: MouseEvent, trackId: Nullable<string>) => {
     e.preventDefault()
@@ -53,7 +57,7 @@ export const useEditTrack = () => {
       .unwrap()
       .then(() => {
         setTrackId(null)
-        showSuccessToast('Трек успешно обновлен')
+        successToast('Track successfully updated')
       })
       .catch((e) => {
         errorHandler(e, setError)

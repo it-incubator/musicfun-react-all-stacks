@@ -1,4 +1,10 @@
 import {
+  useDislikePlaylistMutation,
+  useEditPlaylistModal,
+  useLikePlaylistMutation,
+  useUnReactionPlaylistMutation,
+} from '@/features/playlists'
+import {
   CurrentUserReaction,
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +17,23 @@ import { EditIcon, MoreIcon, PlayIcon } from '@/shared/icons'
 
 import s from './ControlPanel.module.css'
 
-export const ControlPanel = () => {
+export const ControlPanel = ({
+  playlistId,
+  isOwnPlaylist,
+  reaction,
+  likesCount,
+}: {
+  playlistId: string
+  isOwnPlaylist: boolean
+  reaction: CurrentUserReaction
+  likesCount: number
+}) => {
+  const [like] = useLikePlaylistMutation()
+  const [dislike] = useDislikePlaylistMutation()
+  const [unReaction] = useUnReactionPlaylistMutation()
+
+  const { handleOpenEditPlaylistModal } = useEditPlaylistModal()
+
   return (
     <div className={s.box}>
       <IconButton className={s.playButton}>
@@ -19,24 +41,31 @@ export const ControlPanel = () => {
       </IconButton>
 
       <ReactionButtons
-        reaction={CurrentUserReaction.None}
-        onLike={() => {}}
-        onDislike={() => {}}
+        reaction={reaction}
+        onLike={() => like({ id: playlistId })}
+        onDislike={() => dislike({ id: playlistId })}
+        onUnReaction={() => unReaction({ id: playlistId })}
+        likesCount={likesCount}
         size="large"
       />
 
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <MoreIcon />
-        </DropdownMenuTrigger>
+      {isOwnPlaylist && (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MoreIcon />
+          </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => {}}>
-            <EditIcon />
-            <span>Edit</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem
+              onClick={() => {
+                handleOpenEditPlaylistModal(playlistId)
+              }}>
+              <EditIcon />
+              <span>Edit</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   )
 }

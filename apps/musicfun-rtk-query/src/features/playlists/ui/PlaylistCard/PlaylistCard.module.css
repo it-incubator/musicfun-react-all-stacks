@@ -2,7 +2,19 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+
   width: 264px;
+  min-height: 225px;
+}
+
+.card.withReactionButtons {
+  min-height: 267px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .image {
@@ -34,4 +46,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.reactionButtons {
+  margin-top: auto;
 }

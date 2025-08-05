@@ -82,8 +82,8 @@ export class PlayerLogic {
     this.status = PlayStatus.Stopped
     this.currentTrack = track
     this.trackDataValue = data
-    // trigger play event to notify subscribers for refreshing
-    // todo: trigger other event?
+    // Trigger play event to notify subscribers for refreshing
+    // TODO: Trigger other event?
     this.eventsObject.triggerEvent('play', { track, data })
   }
 
@@ -123,7 +123,7 @@ export class PlayerLogic {
   }
 
   public playPrev() {
-    // no current - no prev
+    // No current - no prev
     if (!this.currentTrack) {
       return
     }

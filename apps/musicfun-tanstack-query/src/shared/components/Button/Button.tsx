@@ -1,7 +1,7 @@
 import { clsx } from 'clsx'
 import type { ComponentProps, ElementType } from 'react'
 
-import s from './button.module.css'
+import s from './Button.module.css'
 
 export type ButtonVariant = 'primary' | 'secondary'
 
