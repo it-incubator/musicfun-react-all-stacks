@@ -1,16 +1,19 @@
-import { io, Socket } from 'socket.io-client'
 import { baseApi } from '@/app/api/base-api.ts'
+import { buildQueryString } from '@/common/utils'
+import { subscribeToEvent } from '@/common/socket'
+import { SOCKET_EVENTS } from '@/common/constants'
+import type { Images, ReactionResponse } from '@/common/types'
+import type { Nullable } from '@/common/types/common.types'
 import type {
   CreatePlaylistArgs,
   FetchPlaylistsArgs,
   Playlist,
   PlaylistCreatedEvent,
+  PlaylistUpdatedEvent,
   PlaylistsResponse,
   UpdatePlaylistArgs,
+  PlaylistImageProcessedEvent,
 } from './playlistsApi.types.ts'
-import type { Images, ReactionResponse } from '@/common/types'
-import type { Nullable } from '@/common/types/common.types'
-import { buildQueryString } from '@/common/utils'
 
 export const playlistsAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -23,23 +26,39 @@ export const playlistsAPI = baseApi.injectEndpoints({
       providesTags: ['Playlist'],
       async onCacheEntryAdded(_arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         await cacheDataLoaded
-        const socket: Socket = io('https://musicfun.it-incubator.app', {
-          path: '/api/1.0/ws',
-          transports: ['websocket'],
-        })
 
-        socket.on('tracks.playlist-created', (msg: PlaylistCreatedEvent) => {
-          const newPl = msg.payload.data
-          updateCachedData((draft) => {
-            draft.data.unshift(newPl)
-            if (draft.meta?.totalCount != null) {
-              draft.meta.totalCount += 1
-            }
-          })
-        })
+        const unsubscribes = [
+          subscribeToEvent<PlaylistCreatedEvent>(SOCKET_EVENTS.PLAYLIST_CREATED, (msg) => {
+            const newPlaylist = msg.payload.data
+            updateCachedData((state) => {
+              state.data.pop()
+              state.data.unshift(newPlaylist)
+              state.meta.totalCount = state.meta.totalCount + 1
+              state.meta.pagesCount = Math.ceil(state.meta.totalCount / state.meta.pageSize)
+            })
+          }),
+          subscribeToEvent<PlaylistUpdatedEvent>(SOCKET_EVENTS.PLAYLIST_UPDATED, (msg) => {
+            const updatedPlaylist = msg.payload.data
+            updateCachedData((state) => {
+              const index = state.data.findIndex((playlist) => playlist.id === updatedPlaylist.id)
+              if (index !== -1) {
+                state.data[index] = { ...state.data[index], ...updatedPlaylist }
+              }
+            })
+          }),
+          subscribeToEvent<PlaylistImageProcessedEvent>(SOCKET_EVENTS.PLAYLIST_IMAGE_PROCESSED, (msg) => {
+            const { itemId, images } = msg.payload
+            updateCachedData((state) => {
+              const index = state.data.findIndex((playlist) => playlist.id === itemId)
+              if (index !== -1) {
+                state.data[index].attributes.images = images
+              }
+            })
+          }),
+        ]
 
         await cacheEntryRemoved
-        socket.disconnect()
+        unsubscribes.forEach((unsubscribe) => unsubscribe())
       },
     }),
     fetchMyPlaylists: build.query<Omit<PlaylistsResponse, 'meta'>, void>({

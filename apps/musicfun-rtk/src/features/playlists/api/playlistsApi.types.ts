@@ -52,7 +52,22 @@ export type PlaylistCreatedEventPayload = {
   data: Playlist
 }
 
+export type PlaylistImageProcessedEventPayload = {
+  itemId: string
+  images: Images
+}
+
 export type PlaylistCreatedEvent = {
   type: 'tracks.playlist-created'
   payload: PlaylistCreatedEventPayload
+}
+
+export type PlaylistUpdatedEvent = {
+  type: 'tracks.playlist-updated'
+  payload: PlaylistCreatedEventPayload
+}
+
+export type PlaylistImageProcessedEvent = {
+  type: 'tracks.playlist-image-processed'
+  payload: PlaylistImageProcessedEventPayload
 }
