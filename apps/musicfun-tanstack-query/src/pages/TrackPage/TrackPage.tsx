@@ -1,4 +1,5 @@
-import { MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
+import { PlaylistCard } from '@/entities/playlist'
+import { MOCK_PLAYLISTS } from '@/features/playlists'
 import { TrackOverview } from '@/features/tracks'
 import { Pagination, SearchField, Typography } from '@/shared/components'
 

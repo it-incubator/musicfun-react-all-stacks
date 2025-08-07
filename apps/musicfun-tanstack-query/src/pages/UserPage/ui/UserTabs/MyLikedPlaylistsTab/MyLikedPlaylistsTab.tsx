@@ -1,4 +1,5 @@
-import { MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
+import { PlaylistCard } from '@/entities/playlist'
+import { MOCK_PLAYLISTS } from '@/features/playlists'
 import { ContentList } from '@/pages/common'
 import { Pagination } from '@/shared/components'
 

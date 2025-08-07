@@ -1,17 +1,20 @@
-import './styles/fonts.css'
-import './styles/variables.css'
-import './styles/reset.css'
-import './styles/global.css'
+import '@/app/styles/fonts.css'
+import '@/app/styles/variables.css'
+import '@/app/styles/reset.css'
+import '@/app/styles/global.css'
+import 'react-toastify/dist/ReactToastify.css'
 
-import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
+import { toast } from 'react-toastify'
 
+import { queryClient } from '@/app/query-client/query-client.tsx'
 import { localStorageKeys } from '@/features/auth/types/auth-api.types.ts'
 import { setClientConfig } from '@/shared/api/client.ts'
 
-import { App } from './app/App.tsx'
+import { App } from '../App.tsx'
 
 export type MutationMeta = {
   /**
@@ -43,19 +46,9 @@ setClientConfig({
     token
       ? localStorage.setItem(localStorageKeys.refreshToken, token)
       : localStorage.removeItem(localStorageKeys.refreshToken),
-})
 
-const queryClient = new QueryClient({
-  mutationCache: new MutationCache({
-    //onError: mutationGlobalErrorHandler, // 🔹 вызывается ВСЕГДА
-  }),
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      staleTime: Infinity, //5000,
-      //gcTime: 10000 // если нет подписчиков - удалить всё нафик...
-    },
+  toManyRequestsErrorHandler: (message: string | null) => {
+    toast(message)
   },
 })
 

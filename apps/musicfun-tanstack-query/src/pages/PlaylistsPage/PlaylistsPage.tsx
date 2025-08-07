@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
-import { PlaylistCard } from '@/features/playlists'
+import { PlaylistCard } from '@/entities/playlist'
 import { usePlaylists } from '@/features/playlists/api/use-playlists.query.ts'
 import { useTags } from '@/features/tags'
 import {

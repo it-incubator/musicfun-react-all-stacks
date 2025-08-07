@@ -9,6 +9,7 @@ const config = {
   saveAccessToken: null as ((accessToken: string | null) => Promise<void>) | null,
   getRefreshToken: null as (() => Promise<string | null>) | null,
   saveRefreshToken: null as ((refreshToken: string | null) => Promise<void>) | null,
+  toManyRequestsErrorHandler: null as ((message: string | null) => void) | null,
 }
 
 export const setClientConfig = (newConfig: Partial<typeof config>) => {
@@ -66,6 +67,11 @@ const authMiddleware: Middleware = {
   },
   async onResponse({ request, response }) {
     const req = request as Request & { _retry: boolean }
+
+    if (response.status === 429) {
+      const { message } = await response.clone().json()
+      config.toManyRequestsErrorHandler?.(message)
+    }
 
     if (response.status !== 401 || request.url.includes('/auth/refresh')) {
       return response // всё ок

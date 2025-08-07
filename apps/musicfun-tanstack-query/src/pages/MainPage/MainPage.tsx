@@ -1,4 +1,5 @@
-import { MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
+import { PlaylistCard } from '@/entities/playlist'
+import { MOCK_PLAYLISTS } from '@/features/playlists'
 import { MOCK_HASHTAGS, TagsList } from '@/features/tags'
 import { MOCK_TRACKS, TrackCard } from '@/features/tracks'
 

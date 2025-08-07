@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { CurrentUserReaction } from '../../api'
-import { PlaylistCard } from './PlaylistCard'
+import { CurrentUserReaction } from '../../../../features/playlists/api'
+import { PlaylistCard } from './PlaylistCard.tsx'
 import { ImageSizeType, ReactionValue } from '@/shared/api/schema.ts'
 
 const meta: Meta<typeof PlaylistCard> = {
