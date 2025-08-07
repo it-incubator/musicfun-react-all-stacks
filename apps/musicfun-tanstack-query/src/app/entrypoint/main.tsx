@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { queryClient } from '@/app/query-client/query-client.tsx'
 import { localStorageKeys } from '@/features/auth/types/auth-api.types.ts'
 import { setClientConfig } from '@/shared/api/client.ts'
+import { PrerenderReady } from '@/shared/ui/prerender-ready.tsx'
 
 import { App } from '../App.tsx'
 
@@ -57,6 +58,7 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <App />
+        <PrerenderReady />
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>
