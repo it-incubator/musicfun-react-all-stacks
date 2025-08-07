@@ -45,7 +45,7 @@ jobs:
           enablement: true
 
       - name: Add CNAME
-        run: echo 'musicfun.dev' > apps/musicfun-tanstack-query/dist/CNAME
+        run: echo 'app.musicfun.dev' > apps/musicfun-tanstack-query/dist/CNAME
 
       - uses: actions/upload-pages-artifact@v3
         with:
