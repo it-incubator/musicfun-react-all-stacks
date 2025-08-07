@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
-import { PlaylistCard } from '@/entities/playlist'
+import { PlaylistItem } from '@/entities/playlist'
 import { usePlaylists } from '@/features/playlists/api/use-playlists.query.ts'
 import { useTags } from '@/features/tags'
 import {
@@ -11,10 +11,14 @@ import {
 } from '@/shared/api/schema.ts'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
 import { useDebounceValue } from '@/shared/hooks'
+import { VU } from '@/shared/utils'
 
 import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
 import s from './PlaylistsPage.module.css'
 import type { ISortConfig, SortOption } from './PlaylistsPage.types.ts'
+
+const PAGE_SIZE = 5
+const DEFAULT_PAGE = 1
 
 const sortConfig: Record<SortOption, ISortConfig> = {
   newest: {
@@ -36,11 +40,12 @@ const sortConfig: Record<SortOption, ISortConfig> = {
 } as const
 
 export const PlaylistsPage = () => {
-  const [pageNumber, setPageNumber] = useState(1)
-  const [search, setSearch] = useState('')
-  const [debouncedSearch] = useDebounceValue(search)
+  const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
+  const [search, setSearch] = useState<string>('')
   const [sort, setSort] = useState<SortOption>('newest')
   const [hashtags, setHashtags] = useState<string[]>([])
+
+  const [debouncedSearch] = useDebounceValue(search)
 
   const { sortBy, sortDirection } = sortConfig[sort]
 
@@ -48,7 +53,7 @@ export const PlaylistsPage = () => {
     () => ({
       search: debouncedSearch,
       pageNumber,
-      pageSize: 5,
+      pageSize: PAGE_SIZE,
       sortBy,
       sortDirection,
       tagsIds: hashtags,
@@ -59,75 +64,56 @@ export const PlaylistsPage = () => {
   const { data, isPending, isError } = usePlaylists(queryParams)
   const { data: tagsData, isPending: isTagsLoading } = useTags('')
 
-  const resetPage = useCallback(() => {
-    setPageNumber(1)
+  const handleSortChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value as SortOption
+
+    setSort(value)
+    setPageNumber(DEFAULT_PAGE)
   }, [])
-
-  const handleSortChange = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      const value = event.target.value as SortOption
-      setSort(value)
-      resetPage()
-    },
-    [resetPage]
-  )
-
-  const handleSearchChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setSearch(event.target.value)
-      resetPage()
-    },
-    [resetPage]
-  )
-
+  const handleSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value)
+    setPageNumber(DEFAULT_PAGE)
+  }, [])
   const handlePageChange = useCallback((page: SchemaGetPlaylistsRequestPayload['pageNumber']) => {
     setPageNumber(page)
   }, [])
+  const handleHashtagsChange = useCallback((tags: SchemaGetPlaylistsRequestPayload['tagsIds']) => {
+    setHashtags(tags || [])
+    setPageNumber(DEFAULT_PAGE)
+  }, [])
 
-  const handleHashtagsChange = useCallback(
-    (tags: SchemaGetPlaylistsRequestPayload['tagsIds']) => {
-      setHashtags(tags || [])
-      resetPage()
-    },
-    [resetPage]
+  const tagsOptions = useMemo(
+    () =>
+      tagsData?.data?.map((tag) => ({
+        label: tag.name,
+        value: tag.id,
+      })) || [],
+    [tagsData?.data]
   )
+  const content = useMemo(() => {
+    if (!VU.isValid(data?.data)) {
+      return null
+    }
 
-  let content
+    if (isPending) {
+      return <>Loading...</>
+    }
 
-  if (isPending) {
-    content = <span>Loading...</span>
-  } else if (isError) {
-    content = <span>Playlist loading error. Please try again later.</span>
-  } else if (data?.data?.data.length === 0) {
-    content = <span>No results found for your search.</span>
-  } else if (data?.data) {
-    content = (
-      <>
-        <ContentList
-          data={data.data!.data}
-          renderItem={(playlist) => (
-            <PlaylistCard
-              id={playlist.id}
-              title={playlist.attributes.title}
-              images={playlist.attributes.images}
-              description={playlist.attributes.description}
-              isShowReactionButtons={true}
-              reaction={playlist.attributes.currentUserReaction}
-              onLike={() => {}}
-              onDislike={() => {}}
-              likesCount={playlist.attributes.likesCount}
-            />
-          )}
-        />
-        <Pagination
-          className={s.pagination}
-          page={pageNumber}
-          pagesCount={data.data.meta.pagesCount || 1}
-          onPageChange={handlePageChange}
-        />
-      </>
+    if (isError) {
+      return <>Playlist loading error. Please try again later.</>
+    }
+
+    if (!VU.isValidArray(data?.data?.data)) {
+      return <>No results found for your search.</>
+    }
+
+    return (
+      <ContentList
+        data={data.data.data}
+        renderItem={(playlist) => <PlaylistItem playlist={playlist} />}
+      />
     )
-  }
+  }, [data?.data, isError, isPending])
 
   return (
     <PageWrapper>
@@ -144,12 +130,7 @@ export const PlaylistsPage = () => {
           <SortSelect onChange={handleSortChange} value={sort} />
         </div>
         <Autocomplete
-          options={
-            tagsData?.data?.map((tag) => ({
-              label: tag.name,
-              value: tag.id,
-            })) || []
-          }
+          options={tagsOptions}
           value={hashtags}
           onChange={handleHashtagsChange}
           label="Hashtags"
@@ -159,6 +140,12 @@ export const PlaylistsPage = () => {
         />
       </div>
       {content}
+      <Pagination
+        className={s.pagination}
+        page={pageNumber}
+        pagesCount={data?.data?.meta.pagesCount || 1}
+        onPageChange={handlePageChange}
+      />
     </PageWrapper>
   )
 }
