@@ -1,8 +1,8 @@
-name: Deploy musicfun-rtk-query to GitHub Pages
+name: Deploy musicfun-tanstack-query to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [deploy]
   workflow_dispatch:
 
 permissions:
@@ -10,41 +10,46 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - uses: actions/checkout@v4
 
-      # 1) Node без кэша
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      # 2) Устанавливаем pnpm
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          run_install: false
 
-      # 3) Теперь можно включать кэш pnpm
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: pnpm
-          cache-dependency-path: apps/musicfun-rtk-query/pnpm-lock.yaml
-
-      # 4) Дальше твои шаги
       - name: Install deps
-        working-directory: apps/musicfun-rtk-query
-        run: pnpm install --frozen-lockfile
+        working-directory: apps/musicfun-tanstack-query
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build
-        working-directory: apps/musicfun-rtk-query
+        working-directory: apps/musicfun-tanstack-query
         run: pnpm build
 
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Add CNAME
+        run: echo 'app.musicfun.dev' > apps/musicfun-tanstack-query/dist/CNAME
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/musicfun-rtk-query/dist
-      - uses: actions/deploy-pages@v4
+          path: apps/musicfun-tanstack-query/dist
 
+      - id: deployment
+        uses: actions/deploy-pages@v4
