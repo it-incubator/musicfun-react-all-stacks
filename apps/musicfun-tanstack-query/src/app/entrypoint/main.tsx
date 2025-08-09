@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { queryClient } from '@/app/query-client/query-client.tsx'
 import { localStorageKeys } from '@/features/auth/types/auth-api.types.ts'
 import { setClientConfig } from '@/shared/api/client.ts'
+import { API_BASE_URL, API_KEY } from '@/shared/config/config.ts'
 import { PrerenderReady } from '@/shared/ui/prerender-ready.tsx'
 
 import { App } from '../App.tsx'
@@ -35,8 +36,8 @@ declare module '@tanstack/react-query' {
 }
 
 setClientConfig({
-  baseURL: import.meta.env.VITE_BASE_URL,
-  apiKey: import.meta.env.VITE_API_KEY,
+  baseURL: API_BASE_URL,
+  apiKey: API_KEY,
   getAccessToken: async () => localStorage.getItem(localStorageKeys.accessToken),
   getRefreshToken: async () => localStorage.getItem(localStorageKeys.refreshToken),
   saveAccessToken: async (token) =>
