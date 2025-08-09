@@ -101,15 +101,34 @@ const authMiddleware: Middleware = {
 
 let _client: ReturnType<typeof createClient<paths>> | undefined
 
+const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1', '0.0.0.0'])
+
+function isLocalClient(): boolean {
+  if (typeof window === 'undefined') return false // не клиент
+  const h = window.location.hostname
+  return LOCAL_HOSTNAMES.has(h) || h.endsWith('.localhost')
+}
+
+export function assertApiConfig() {
+  if (!config.baseURL) {
+    const msg = 'baseURL is required. Call setClientConfig({ baseURL })'
+    console.error(msg)
+    throw new Error(msg)
+  }
+  if (isLocalClient() && !config.apiKey) {
+    const msg =
+      'apiKey is required when running client on localhost. Call setClientConfig({ apiKey })'
+    console.error(msg)
+    throw new Error(msg)
+  }
+}
+
 export const getClient = () => {
   if (_client) return _client
 
-  if (!config.baseURL || !config.apiKey) {
-    console.error('call setClientConfig to setup api')
-    throw new Error('call setClientConfig to setup api')
-  }
+  assertApiConfig()
 
-  const client = createClient<paths>({ baseUrl: config.baseURL })
+  const client = createClient<paths>({ baseUrl: config.baseURL! })
   client.use(authMiddleware)
   _client = client
   return _client
