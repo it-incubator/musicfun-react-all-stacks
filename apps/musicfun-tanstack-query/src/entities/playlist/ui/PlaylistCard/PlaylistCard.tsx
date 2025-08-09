@@ -1,10 +1,12 @@
+import type { FC, ReactNode } from 'react'
 import { Link } from 'react-router'
 
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
-import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
+import { Card, Typography } from '@/shared/components'
 
 import stab from '../../../../assets/img/no-cover.png'
 import s from './PlaylistCard.module.css'
+import { VU } from '@/shared/utils'
 
 type PlaylistCardPropsBase = {
   id: string
@@ -13,24 +15,13 @@ type PlaylistCardPropsBase = {
   description: string | null
 }
 
-type PlaylistCardPropsWithReactions = PlaylistCardPropsBase & {
-  isShowReactionButtons: true
-} & Omit<ReactionButtonsProps, 'className'>
-
-type PlaylistCardPropsWithoutReactions = PlaylistCardPropsBase & {
-  isShowReactionButtons?: false
+type PlaylistCardProps = PlaylistCardPropsBase & {
+  render?: () => ReactNode
 }
 
-type PlaylistCardProps = PlaylistCardPropsWithReactions | PlaylistCardPropsWithoutReactions
+export const PlaylistCard: FC<PlaylistCardProps> = (props) => {
+  const { title, images, description, id, render } = props
 
-export const PlaylistCard = ({
-  title,
-  images,
-  description,
-  id,
-  isShowReactionButtons,
-  ...props
-}: PlaylistCardProps) => {
   let imageSrc = images?.main?.length ? images.main[0].url : undefined
 
   if (!imageSrc) {
@@ -48,15 +39,7 @@ export const PlaylistCard = ({
       <Typography variant="body3" className={s.description}>
         {description}
       </Typography>
-      {/*  'reaction' in props — Type guard for correct type checking */}
-      {isShowReactionButtons && 'reaction' in props && (
-        <ReactionButtons
-          reaction={props.reaction}
-          onLike={props.onLike}
-          onDislike={props.onDislike}
-          likesCount={props.likesCount}
-        />
-      )}
+      {VU.isFunction(render) && render()}
     </Card>
   )
 }

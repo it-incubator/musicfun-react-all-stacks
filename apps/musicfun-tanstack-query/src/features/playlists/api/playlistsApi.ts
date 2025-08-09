@@ -1,11 +1,38 @@
-import {
-  ImageSizeType,
-  ReactionValue,
-  type SchemaGetPlaylistOutput,
-  type SchemaPlaylistOutput,
-} from '@/shared/api/schema.ts'
+import { getClient } from '@/shared/api/client.ts'
+import type { SchemaReactionOutput } from '@/shared/api/schema.ts'
+import { ImageSizeType, ReactionValue, type SchemaGetPlaylistOutput } from '@/shared/api/schema.ts'
 
-export const playlistsApi = {}
+export const playlistsApi = {
+  likePlaylist: (playlistId: SchemaReactionOutput['objectId']) => {
+    return getClient().POST('/playlists/{playlistId}/likes', {
+      params: {
+        path: {
+          playlistId,
+        },
+      },
+    })
+  },
+
+  dislikePlaylist: (playlistId: SchemaReactionOutput['objectId']) => {
+    return getClient().POST('/playlists/{playlistId}/dislikes', {
+      params: {
+        path: {
+          playlistId,
+        },
+      },
+    })
+  },
+
+  removePlaylistReaction: (playlistId: SchemaReactionOutput['objectId']) => {
+    return getClient().DELETE('/playlists/{playlistId}/reactions', {
+      params: {
+        path: {
+          playlistId,
+        },
+      },
+    })
+  },
+}
 
 export enum CurrentUserReaction {
   None = 0,
