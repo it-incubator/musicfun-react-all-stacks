@@ -19,11 +19,6 @@ export const MainPage = () => {
             title={playlist.data.attributes.title}
             images={playlist.data.attributes.images}
             description={playlist.data.attributes.description}
-            isShowReactionButtons={true}
-            reaction={playlist.data.attributes.currentUserReaction}
-            onLike={() => {}}
-            onDislike={() => {}}
-            likesCount={playlist.data.attributes.likesCount}
           />
         )}
       />

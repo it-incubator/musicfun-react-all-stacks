@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
+import { ImageSizeType, ReactionValue } from '@/shared/api/schema.ts'
+
 import { CurrentUserReaction } from '../../../../features/playlists/api'
 import { PlaylistCard } from './PlaylistCard.tsx'
-import { ImageSizeType, ReactionValue } from '@/shared/api/schema.ts'
 
 const meta: Meta<typeof PlaylistCard> = {
   title: 'entities/PlaylistCard',
@@ -48,11 +49,7 @@ export const WithReactions: Story = {
       ],
     },
     description: 'A playlist for relaxing and unwinding.',
-    isShowReactionButtons: true,
-    reaction: ReactionValue.Value1,
-    likesCount: 10,
-    onLike: () => {},
-    onDislike: () => {},
+    render: () => <span>Like</span>,
   },
 }
 

@@ -14,11 +14,6 @@ export const MyLikedPlaylistsTab = () => {
             title={playlist.data.attributes.title}
             images={playlist.data.attributes.images}
             description={playlist.data.attributes.description}
-            likesCount={playlist.data.attributes.likesCount}
-            isShowReactionButtons={true}
-            reaction={playlist.data.attributes.currentUserReaction}
-            onLike={() => {}}
-            onDislike={() => {}}
           />
         )}
       />
