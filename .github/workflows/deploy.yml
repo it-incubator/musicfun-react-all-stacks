@@ -44,6 +44,14 @@ jobs:
         with:
           enablement: true
 
+      # ⬇️ СДЕЛАТЬ ДО upload-pages-artifact
+      - name: SPA fallback (404 -> index)
+        working-directory: apps/musicfun-tanstack-query/dist
+        run: |
+          cp index.html 404.html
+          touch .nojekyll
+          ls -la
+
       - name: Add CNAME
         run: echo 'app.musicfun.dev' > apps/musicfun-tanstack-query/dist/CNAME
 
@@ -53,9 +61,3 @@ jobs:
 
       - id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: SPA fallback (404 -> index)
-        working-directory: apps/musicfun-tanstack-query/dist
-        run: |
-          cp index.html 404.html
-          touch .nojekyll
