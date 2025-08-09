@@ -53,3 +53,9 @@ jobs:
 
       - id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: SPA fallback (404 -> index)
+        working-directory: apps/musicfun-tanstack-query/dist
+        run: |
+          cp index.html 404.html
+          touch .nojekyll
