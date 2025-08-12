@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "5.2.1",
     "@reduxjs/toolkit": "2.8.2",
     "async-mutex": "0.5.0",
     "react": "19.1.1",
@@ -17,7 +18,8 @@
     "react-hook-form": "7.61.1",
     "react-redux": "9.2.0",
     "react-router": "7.7.1",
-    "react-toastify": "11.0.5"
+    "react-toastify": "11.0.5",
+    "zod": "4.0.17"
   },
   "devDependencies": {
     "@eslint/js": "9.32.0",
