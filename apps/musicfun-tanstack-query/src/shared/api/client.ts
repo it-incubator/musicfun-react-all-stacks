@@ -10,6 +10,7 @@ const config = {
   getRefreshToken: null as (() => Promise<string | null>) | null,
   saveRefreshToken: null as ((refreshToken: string | null) => Promise<void>) | null,
   toManyRequestsErrorHandler: null as ((message: string | null) => void) | null,
+  logoutHandler: null as (() => void) | null,
 }
 
 export const setClientConfig = (newConfig: Partial<typeof config>) => {
@@ -94,6 +95,7 @@ const authMiddleware: Middleware = {
       // refresh не удался → чистим хранилище, отдаём 401
       await config.saveAccessToken!(null)
       await config.saveRefreshToken!(null)
+      await config.logoutHandler?.()
       return response
     }
   },

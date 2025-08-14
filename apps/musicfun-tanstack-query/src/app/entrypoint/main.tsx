@@ -52,6 +52,9 @@ setClientConfig({
   toManyRequestsErrorHandler: (message: string | null) => {
     toast(message)
   },
+  logoutHandler: () => {
+    // store.dispatch(logoutThunk())
+  },
 })
 
 createRoot(document.getElementById('root')!).render(
