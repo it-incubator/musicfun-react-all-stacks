@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { Pagination, Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
@@ -8,6 +10,8 @@ import { usePageSearchParams } from '../common/hooks'
 import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {
+  const { t } = useTranslation()
+
   const { pageNumber, handlePageChange, debouncedSearch, sortBy, sortDirection, tagsIds } =
     usePageSearchParams()
 
@@ -27,7 +31,7 @@ export const PlaylistsPage = () => {
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField placeholder="Search playlists" />
+          <SearchTextField placeholder={t('playlists.placeholder.search_playlist')} />
           <SortSelect />
         </div>
         <SearchTags type="tags" className={s.searchTags} />

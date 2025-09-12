@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { useMeQuery } from '@/features/auth'
 import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
@@ -12,6 +14,8 @@ import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
+  const { t } = useTranslation()
+
   const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
     usePageSearchParams()
 
@@ -33,7 +37,10 @@ export const TracksPage = () => {
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField placeholder="Search tracks" onChange={() => {}} />
+          <SearchTextField
+            placeholder={t('tracks.placeholder.search_tracks')}
+            onChange={() => {}}
+          />
           <SortSelect onChange={() => {}} />
         </div>
         <div className={s.controlsRow}>

@@ -1,0 +1,37 @@
+{
+  "description": {
+    "label": {
+      "description": "Описание"
+    },
+    "max_value": "Описание должно содержать менее {{ quantity }} символов"
+  },
+  "playlists": {
+    "button": {
+      "choose_playlist": "Выбрать плейлист"
+    },
+    "placeholder": {
+      "enter_playlist_description": "Введите описание плейлиста",
+      "enter_playlist_title": "Введите название плейлиста",
+      "search_playlist": "Поиск плейлиста"
+    },
+    "title": {
+      "create_playlist": "Создать плейлист",
+      "edit_playlist": "Редактировать плейлист",
+      "new_playlists": "Новые плейлисты",
+      "not_found_playlists": "Плейлисты не найдены"
+    }
+  },
+  "title": {
+    "max_value": "Название должно содержать менее {{ quantity }} символов",
+    "min_value": "Название должно содержать не менее {{ quantity }} символов",
+    "required": "Название обязательно"
+  },
+  "tracks": {
+    "placeholder": {
+      "search_tracks": "Поиск треков"
+    },
+    "title": {
+      "new_tracks": "Новые треки"
+    }
+  }
+}

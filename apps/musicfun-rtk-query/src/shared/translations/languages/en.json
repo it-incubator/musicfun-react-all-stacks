@@ -1,0 +1,37 @@
+{
+  "description": {
+    "label": {
+      "description": "Description"
+    },
+    "max_value": "Description must be less than {{ quantity }} characters"
+  },
+  "playlists": {
+    "button": {
+      "choose_playlist": "Choose playlist"
+    },
+    "placeholder": {
+      "enter_playlist_description": "Enter playlist description",
+      "enter_playlist_title": "Enter playlist title",
+      "search_playlist": "Search playlist"
+    },
+    "title": {
+      "create_playlist": "Create Playlist",
+      "edit_playlist": "Edit Playlist",
+      "new_playlists": "New playlists",
+      "not_found_playlists": "No playlists found"
+    }
+  },
+  "title": {
+    "max_value": "Title must be less than {{ quantity }} characters",
+    "min_value": "Title must be at least {{ quantity }} characters",
+    "required": "Title is required"
+  },
+  "tracks": {
+    "placeholder": {
+      "search_tracks": "Search tracks"
+    },
+    "title": {
+      "new_tracks": "New tracks"
+    }
+  }
+}

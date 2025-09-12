@@ -2,12 +2,7 @@ import { useParams } from 'react-router'
 
 import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
-import {
-  MOCK_TRACKS,
-  TrackActions,
-  TracksTable,
-  useFetchTracksInPlaylistQuery,
-} from '@/features/tracks'
+import { TrackActions, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'

@@ -1,13 +1,13 @@
 import clsx from 'clsx'
 
 import { setIsAuthModalOpen } from '@/features/auth'
+import { useLoginMutation } from '@/features/auth'
 import { Button } from '@/shared/components/Button'
 import { Dialog, DialogContent, DialogHeader } from '@/shared/components/Dialog'
 import { Typography } from '@/shared/components/Typography'
 import { Paths } from '@/shared/configs'
 import { useAppDispatch } from '@/shared/hooks'
 
-import { useLoginMutation } from '../../api/auth-api'
 import s from './LoginModal.module.css'
 
 export const LoginModal = () => {

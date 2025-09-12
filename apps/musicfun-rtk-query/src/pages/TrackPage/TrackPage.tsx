@@ -1,14 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import { useMeQuery } from '@/features/auth'
-import {
-  CurrentUserReaction,
-  MOCK_PLAYLISTS,
-  PlaylistCard,
-  useFetchPlaylistsQuery,
-} from '@/features/playlists'
+import { PlaylistCard, useFetchPlaylistsQuery } from '@/features/playlists'
 import { TrackOverview, useFetchTrackByIdQuery } from '@/features/tracks'
-import { Pagination, SearchField, Typography } from '@/shared/components'
+import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -17,6 +13,8 @@ import s from './TrackPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
 export const TrackPage = () => {
+  const { t } = useTranslation()
+
   const { id } = useParams()
   const { data: track } = useFetchTrackByIdQuery({ trackId: id! })
   const { data: me } = useMeQuery()
@@ -57,7 +55,7 @@ export const TrackPage = () => {
       {playlists?.data && (
         <ContentList
           data={playlists.data}
-          emptyMessage="No playlists found"
+          emptyMessage={t('playlists.title.not_found_playlists')}
           renderItem={(playlist) => (
             <PlaylistCard
               id={playlist.id}

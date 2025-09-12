@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
+import {
+  useCreatePlaylistMutation,
+  useFetchPlaylistByIdQuery,
+  useUpdatePlaylistMutation,
+  useUploadPlaylistCoverMutation,
+} from '@/features/playlists'
+import { closeCreateEditModal, selectEditingPlaylistId } from '@/features/playlists'
 import { PlaylistTagAutocomplete } from '@/features/tags/ui'
 import {
   Button,
@@ -16,13 +24,6 @@ import {
 import { useAppDispatch, useAppSelector } from '@/shared/hooks'
 import { showErrorToast } from '@/shared/utils'
 
-import {
-  useCreatePlaylistMutation,
-  useFetchPlaylistByIdQuery,
-  useUpdatePlaylistMutation,
-  useUploadPlaylistCoverMutation,
-} from '../../api/playlistsApi'
-import { closeCreateEditModal, selectEditingPlaylistId } from '../../model/playlists-slice'
 import s from './CreateEditPlaylistModal.module.css'
 
 type FormData = {
@@ -32,6 +33,8 @@ type FormData = {
 }
 
 export const CreateEditPlaylistModal = () => {
+  const { t } = useTranslation()
+
   const dispatch = useAppDispatch()
   const editingPlaylistId = useAppSelector(selectEditingPlaylistId)
 
@@ -151,7 +154,9 @@ export const CreateEditPlaylistModal = () => {
   return (
     <Dialog open onClose={handleClose} className={s.dialog}>
       <DialogHeader>
-        <Typography variant="h2">{isEditMode ? 'Edit Playlist' : 'Create Playlist'}</Typography>
+        <Typography variant="h2">
+          {isEditMode ? t('playlists.title.edit_playlist') : t('playlists.title.create_playlist')}
+        </Typography>
       </DialogHeader>
 
       <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
@@ -164,18 +169,18 @@ export const CreateEditPlaylistModal = () => {
 
           <TextField
             {...register('title', {
-              required: 'Title is required',
+              required: t('title.required'),
               minLength: {
                 value: 2,
-                message: 'Title must be at least 2 characters',
+                message: t('title.min_value', { quantity: '2' }),
               },
               maxLength: {
                 value: 100,
-                message: 'Title must be less than 100 characters',
+                message: t('title.max_value', { quantity: '100' }),
               },
             })}
             label="Title"
-            placeholder="Enter playlist title"
+            placeholder={t('playlists.placeholder.enter_playlist_title')}
             errorMessage={errors.title?.message}
           />
 
@@ -183,12 +188,12 @@ export const CreateEditPlaylistModal = () => {
             {...register('description', {
               maxLength: {
                 value: 500,
-                message: 'Description must be less than 500 characters',
+                message: t('description.max_value', { quantity: '500' }),
               },
             })}
             rows={3}
-            label="Description"
-            placeholder="Enter playlist description"
+            label={t('description.label.description')}
+            placeholder={t('playlists.placeholder.enter_playlist_description')}
             errorMessage={errors.description?.message}
           />
 
