@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
 import { TagsList, useFindTagsQuery } from '@/features/tags'
 import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
@@ -8,6 +10,8 @@ import { ContentList, PageWrapper } from '../common'
 import s from './MainPage.module.css'
 
 export const MainPage = () => {
+  const { t } = useTranslation()
+
   const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
     pageSize: 10,
   })
@@ -26,7 +30,7 @@ export const MainPage = () => {
       <ContentList
         isLoading={isPlaylistsLoading}
         skeleton={<PlaylistCardSkeleton showReactionButtons />}
-        title="New playlists"
+        title={t('playlists.title.new_playlists')}
         data={playlists?.data}
         renderItem={(playlist) => {
           const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
@@ -45,7 +49,7 @@ export const MainPage = () => {
       />
 
       <ContentList
-        title="New tracks"
+        title={t('tracks.title.new_tracks')}
         data={tracks?.data}
         renderItem={(track) => {
           const image = getImageByType(track.attributes.images, ImageType.MEDIUM)

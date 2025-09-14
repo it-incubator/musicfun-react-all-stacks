@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import {
@@ -22,6 +23,8 @@ import { getImageByType } from '@/shared/utils'
 import s from './PlaylistsTab.module.css'
 
 export const PlaylistsTab = () => {
+  const { t } = useTranslation()
+
   const { userId } = useParams()
 
   const { handleOpenCreatePlaylistModal } = useCreatePlaylistModal()
@@ -57,13 +60,13 @@ export const PlaylistsTab = () => {
                         onClick={() => {
                           handleOpenEditPlaylistModal(playlist.id)
                         }}>
-                        Edit
+                        {t('button.edit')}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => {
                           removePlaylist(playlist.id)
                         }}>
-                        Delete
+                        {t('button.delete')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

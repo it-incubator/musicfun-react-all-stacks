@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import {
@@ -22,6 +23,8 @@ export const ProfileDropdownMenu = ({
   name: string
   id: string
 }) => {
+  const { t } = useTranslation()
+
   const [logout] = useLogoutMutation()
 
   return (
@@ -38,11 +41,11 @@ export const ProfileDropdownMenu = ({
       <DropdownMenuContent align="end">
         <DropdownMenuItem as={Link} to={`${Paths.Profile}/${id}`}>
           <ProfileIcon />
-          <span>My Profile</span>
+          <span>{t('auth.title.my_profile')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => logout()}>
           <LogoutIcon />
-          <span>Logout</span>
+          <span>{t('auth.title.logout')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

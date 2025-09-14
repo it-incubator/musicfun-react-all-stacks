@@ -1,0 +1,99 @@
+{
+  "artists": {
+    "label": "Артисты",
+    "placeholder": "Поиск по артистам"
+  },
+  "auth": {
+    "button": {
+      "continue_without_sign_in": "Продолжить без входа",
+      "sign_in": "Войти",
+      "sign_in_with_apihub": "Войти через APIHub"
+    },
+    "title": {
+      "logout": "Выйти",
+      "my_profile": "Мой профиль"
+    }
+  },
+  "button": {
+    "choose": "Выбрать",
+    "create": "Создать",
+    "edit": "Редактировать"
+  },
+  "description": {
+    "label": {
+      "description": "Описание"
+    },
+    "title": {
+      "max_value": "Описание должно быть короче {{ quantity }} символов"
+    }
+  },
+  "playlists": {
+    "button": {
+      "choose_playlist": "Выбрать плейлист"
+    },
+    "placeholder": {
+      "enter_playlist_description": "Введите описание плейлиста",
+      "enter_playlist_title": "Введите название плейлиста",
+      "search_playlist": "Поиск плейлиста"
+    },
+    "title": {
+      "all_playlists": "Все плейлисты",
+      "create_playlist": "Создать плейлист",
+      "edit_playlist": "Редактировать плейлист",
+      "new_playlists": "Новые плейлисты",
+      "playlists_not_found": "Плейлисты не найдены"
+    }
+  },
+  "sidebar": {
+    "all_playlists": "Все плейлисты",
+    "all_tracks": "Все треки",
+    "create_playlist": "Создать плейлист",
+    "home": "Главная",
+    "upload_track": "Загрузить трек",
+    "your_library": "Ваша библиотека"
+  },
+  "tabs": {
+    "playlists": "Плейлисты",
+    "tracks": "Треки",
+    "liked_playlists": "Любимые плейлисты",
+    "liked_tracks": "Любимые треки"
+  },
+  "tags": {
+    "label": "Хэштеги",
+    "placeholder": "Поиск по хэштегам"
+  },
+  "title": {
+    "max_value": "Название должно быть короче {{ quantity }} символов",
+    "min_value": "Название должно содержать не менее {{ quantity }} символов",
+    "required": "Название обязательно",
+    "title": "Название"
+  },
+  "tracks": {
+    "button": {
+      "add_to_playlist": "Добавить в плейлист",
+      "all_tracks": "Все треки",
+      "cancel": "Отмена",
+      "create": "Создать",
+      "edit": "Редактировать",
+      "save": "Сохранить",
+      "show_text_song": "Показать текст песни",
+      "tracks_not_found": "Треки не найдены",
+      "upload": "Загрузить"
+    },
+    "label": {
+      "lyrics": "Текст песни",
+      "title": "Название"
+    },
+    "placeholder": {
+      "lyrics": "Введите текст песни",
+      "search_tracks": "Поиск треков",
+      "title": "Введите название трека"
+    },
+    "title": {
+      "all_tracks": "Все треки",
+      "create": "Создать трек",
+      "edit": "Редактировать трек",
+      "new_tracks": "Новые треки"
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { useMeQuery } from '@/features/auth'
 import { useFetchPlaylistsQuery } from '@/features/playlists'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
@@ -27,6 +29,8 @@ export const ChoosePlaylistModal = ({
   setPlaylistIds: (playlistIds: string[]) => void
   onChoose?: () => void
 }) => {
+  const { t } = useTranslation()
+
   const { data: user } = useMeQuery()
 
   const { data: playlists } = useFetchPlaylistsQuery({
@@ -97,7 +101,7 @@ export const ChoosePlaylistModal = ({
             onChoose?.()
           }}
           disabled={playlistIds.length === 0}>
-          Choose
+          {t('button.choose')}
         </Button>
       </DialogFooter>
     </Dialog>

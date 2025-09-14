@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useMeQuery } from '@/features/auth'
+import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { ChoosePlaylistModal } from '@/features/playlists/ui/ChoosePlaylistModal/ChoosePlaylistModal.tsx'
 import { Typography } from '@/shared/components'
 
-import { useFetchPlaylistsQuery } from '../../api/playlistsApi'
 import s from './ChoosePlaylistButtonAndModal.module.css'
 
 export const ChoosePlaylistButtonAndModal = ({
@@ -14,6 +15,8 @@ export const ChoosePlaylistButtonAndModal = ({
   playlistIds: string[]
   setPlaylistIds: (playlistIds: string[]) => void
 }) => {
+  const { t } = useTranslation()
+
   const { data: user } = useMeQuery()
 
   const [isOpen, setIsOpen] = useState(false)
@@ -34,7 +37,7 @@ export const ChoosePlaylistButtonAndModal = ({
           {playlistIds.length > 0 ? (
             <span>{selectedPlaylists.map((p) => p.attributes.title).join(', ')}</span>
           ) : (
-            'Choose playlist'
+            t('playlists.button.choose_playlist')
           )}
         </button>
       </div>

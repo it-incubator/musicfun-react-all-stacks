@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 
 import { useFindArtistsQuery } from '@/features/artists'
@@ -16,6 +17,8 @@ type SearchTagsProps = {
 }
 
 export const SearchTags = ({ type, className, label, placeholder }: SearchTagsProps) => {
+  const { t } = useTranslation()
+
   const [searchParams, setSearchParams] = useSearchParams()
   const [searchTerm, setSearchTerm] = useState('')
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -55,8 +58,8 @@ export const SearchTags = ({ type, className, label, placeholder }: SearchTagsPr
       value: item.id,
     })) || []
 
-  const defaultLabel = type === 'tags' ? 'Hashtags' : 'Artists'
-  const defaultPlaceholder = type === 'tags' ? 'Search by hashtags' : 'Search by artists'
+  const defaultLabel = type === 'tags' ? t('tags.label') : t('artists.label')
+  const defaultPlaceholder = type === 'tags' ? t('tags.placeholder') : t('artists.placeholder')
 
   return (
     <Autocomplete

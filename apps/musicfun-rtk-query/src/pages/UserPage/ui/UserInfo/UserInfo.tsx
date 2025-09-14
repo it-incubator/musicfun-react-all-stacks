@@ -1,6 +1,5 @@
 import { useMeQuery } from '@/features/auth'
-import { Button, Typography } from '@/shared/components'
-import { EditIcon } from '@/shared/icons'
+import { Typography } from '@/shared/components'
 
 import s from './UserInfo.module.css'
 

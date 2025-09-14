@@ -6,7 +6,7 @@ import {
   useUnReactionTrackMutation,
 } from '@/features/tracks'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
-import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
+import { Card, ReactionButtons, Typography } from '@/shared/components'
 import type { CurrentUserReaction } from '@/shared/types'
 
 import s from './TrackCard.module.css'

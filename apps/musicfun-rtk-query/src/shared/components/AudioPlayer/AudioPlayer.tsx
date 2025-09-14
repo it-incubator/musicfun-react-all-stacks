@@ -1,5 +1,6 @@
 import { clsx } from 'clsx'
-import { ComponentProps, useRef, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useRef, useState } from 'react'
 
 import {
   PauseIcon,
@@ -54,7 +55,9 @@ export const AudioPlayer = ({
 
   const handlePlayPause = () => {
     const audio = audioRef.current
-    if (!audio) return
+    if (!audio) {
+      return
+    }
 
     if (isPlaying) {
       audio.pause()

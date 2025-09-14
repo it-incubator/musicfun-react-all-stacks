@@ -1,3 +1,5 @@
+import '../shared/translations/i18nConfiguration'
+
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router'
 
