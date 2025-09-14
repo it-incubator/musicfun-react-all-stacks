@@ -179,7 +179,7 @@ export const CreateEditPlaylistModal = () => {
                 message: t('title.max_value', { quantity: '100' }),
               },
             })}
-            label="Title"
+            label={t('title.title')}
             placeholder={t('playlists.placeholder.enter_playlist_title')}
             errorMessage={errors.title?.message}
           />

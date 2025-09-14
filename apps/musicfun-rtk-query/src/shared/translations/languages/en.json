@@ -6,7 +6,7 @@
   "auth": {
     "button": {
       "continue_without_sign_in": "Continue without Sign in",
-      "sign_in": " Sign in",
+      "sign_in": "Sign in",
       "sign_in_with_apihub": "Sign in with APIHub"
     },
     "title": {
@@ -52,6 +52,12 @@
     "upload_track": "Upload Track",
     "your_library": "Your Library"
   },
+  "tabs": {
+    "playlists": "Playlists",
+    "tracks": "Tracks",
+    "liked_playlists": "Liked Playlists",
+    "liked_tracks": "Liked Tracks"
+  },
   "tags": {
     "label": "Hashtags",
     "placeholder": "Search by hashtags"
@@ -59,7 +65,8 @@
   "title": {
     "max_value": "Title must be less than {{ quantity }} characters",
     "min_value": "Title must be at least {{ quantity }} characters",
-    "required": "Title is required"
+    "required": "Title is required",
+    "title": "Title"
   },
   "tracks": {
     "button": {
@@ -83,6 +90,7 @@
       "title": "Enter track title"
     },
     "title": {
+      "all_tracks": "All tracks",
       "create": "Create Track",
       "edit": "Edit Track",
       "new_tracks": "New tracks"
