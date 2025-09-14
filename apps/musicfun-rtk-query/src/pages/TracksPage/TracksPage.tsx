@@ -33,7 +33,7 @@ export const TracksPage = () => {
   return (
     <PageWrapper>
       <Typography variant="h2" as="h1" className={s.title}>
-        All Tracks
+        {t('tracks.title.all_tracks')}
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>

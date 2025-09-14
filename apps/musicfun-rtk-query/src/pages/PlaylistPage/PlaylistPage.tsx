@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import { useMeQuery } from '@/features/auth'
@@ -12,6 +13,8 @@ import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
 export const PlaylistPage = () => {
+  const { t } = useTranslation()
+
   const { id } = useParams()
   const { data: playlist } = useFetchPlaylistByIdQuery(id!)
   const { data: me } = useMeQuery()
@@ -23,7 +26,7 @@ export const PlaylistPage = () => {
   })
 
   if (!playlist) {
-    return <div>Playlist not found</div>
+    return <div>{t('playlists.title.playlists_not_found')}</div>
   }
   const playlistCover = getImageByType(playlist?.data.attributes.images, ImageType.ORIGINAL)
 

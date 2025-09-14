@@ -1,9 +1,31 @@
 {
+  "artists": {
+    "label": "Artists",
+    "placeholder": "Search by artists"
+  },
+  "auth": {
+    "button": {
+      "continue_without_sign_in": "Continue without Sign in",
+      "sign_in": " Sign in",
+      "sign_in_with_apihub": "Sign in with APIHub"
+    },
+    "title": {
+      "logout": "Logout",
+      "my_profile": "My Profile"
+    }
+  },
+  "button": {
+    "choose": "Choose",
+    "create": "Create",
+    "edit": "Edit"
+  },
   "description": {
     "label": {
       "description": "Description"
     },
-    "max_value": "Description must be less than {{ quantity }} characters"
+    "title": {
+      "max_value": "Description must be less than {{ quantity }} characters"
+    }
   },
   "playlists": {
     "button": {
@@ -15,11 +37,16 @@
       "search_playlist": "Search playlist"
     },
     "title": {
+      "all_playlists": "All Playlists",
       "create_playlist": "Create Playlist",
       "edit_playlist": "Edit Playlist",
       "new_playlists": "New playlists",
-      "not_found_playlists": "No playlists found"
+      "playlists_not_found": "No playlists found"
     }
+  },
+  "tags": {
+    "label": "Hashtags",
+    "placeholder": "Search by hashtags"
   },
   "title": {
     "max_value": "Title must be less than {{ quantity }} characters",
@@ -27,10 +54,29 @@
     "required": "Title is required"
   },
   "tracks": {
+    "button": {
+      "add_to_playlist": "Add to playlist",
+      "all_tracks": "All Tracks",
+      "cancel": "Cancel",
+      "create": "Create",
+      "edit": "Edit",
+      "save": "Save",
+      "show_text_song": "Show text song",
+      "tracks_not_found": "Tracks not found",
+      "upload": "Upload"
+    },
+    "label": {
+      "lyrics": "Lyrics",
+      "title": "Title"
+    },
     "placeholder": {
-      "search_tracks": "Search tracks"
+      "lyrics": "Enter track lyrics",
+      "search_tracks": "Search tracks",
+      "title": "Enter track title"
     },
     "title": {
+      "create": "Create Track",
+      "edit": "Edit Track",
       "new_tracks": "New tracks"
     }
   }

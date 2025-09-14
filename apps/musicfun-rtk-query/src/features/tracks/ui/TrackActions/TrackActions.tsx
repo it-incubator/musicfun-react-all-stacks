@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { ChoosePlaylistModal } from '@/features/playlists/ui/ChoosePlaylistModal/ChoosePlaylistModal'
+import {
+  useAddTrackToPlaylistMutation,
+  useDislikeTrackMutation,
+  useLikeTrackMutation,
+  useRemoveTrackFromPlaylistMutation,
+  useUnReactionTrackMutation,
+} from '@/features/tracks'
 import {
   DropdownMenuContent,
   DropdownMenuItem,
@@ -13,13 +21,6 @@ import { DropdownMenu } from '@/shared/components'
 import { MoreIcon } from '@/shared/icons'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
 
-import {
-  useAddTrackToPlaylistMutation,
-  useDislikeTrackMutation,
-  useLikeTrackMutation,
-  useRemoveTrackFromPlaylistMutation,
-  useUnReactionTrackMutation,
-} from '../../api/tracksApi'
 import { useEditTrackModal } from '../../model/hooks'
 import { syncTrackPlaylists } from '../../utils/playlistSync'
 
@@ -49,6 +50,8 @@ export const TrackActions = ({
   sizeReactionButtons = 'small',
   isOwner,
 }: TrackActionsProps) => {
+  const { t } = useTranslation()
+
   const [isOpenChoosePlaylistModal, setIsOpenChoosePlaylistModal] = useState(false)
 
   const { handleOpenEditTrackModal } = useEditTrackModal()
@@ -91,14 +94,14 @@ export const TrackActions = ({
         <DropdownMenuContent>
           {isOwner && (
             <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackId)}>
-              Edit
+              {t('tracks.button.edit')}
             </DropdownMenuItem>
           )}
           <DropdownMenuItem onClick={() => setIsOpenChoosePlaylistModal(true)}>
-            Add to playlist
+            {t('tracks.button.add_to_playlist')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
-            Show text song
+            {t('tracks.button.show_text_song')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

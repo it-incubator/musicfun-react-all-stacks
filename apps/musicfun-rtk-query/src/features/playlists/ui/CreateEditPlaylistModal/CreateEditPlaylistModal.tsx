@@ -188,7 +188,7 @@ export const CreateEditPlaylistModal = () => {
             {...register('description', {
               maxLength: {
                 value: 500,
-                message: t('description.max_value', { quantity: '500' }),
+                message: t('description.title.max_value', { quantity: '500' }),
               },
             })}
             rows={3}

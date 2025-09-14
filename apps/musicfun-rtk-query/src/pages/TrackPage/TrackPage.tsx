@@ -25,7 +25,7 @@ export const TrackPage = () => {
   const { data: playlists } = useFetchPlaylistsQuery({ trackId: id! })
 
   if (!track) {
-    return <div>Track not found</div>
+    return <div>{t('tracks.title.tracks_not_found')}</div>
   }
 
   const trackCover = getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)

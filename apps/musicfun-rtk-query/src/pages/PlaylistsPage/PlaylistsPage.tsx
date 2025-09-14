@@ -27,7 +27,7 @@ export const PlaylistsPage = () => {
   return (
     <PageWrapper>
       <Typography variant="h2" as="h1" className={s.title}>
-        All Playlists
+        {t('playlists.title.all_playlists')}
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
