@@ -44,6 +44,14 @@
       "playlists_not_found": "Плейлисты не найдены"
     }
   },
+  "sidebar": {
+    "all_playlists": "Все плейлисты",
+    "all_tracks": "Все треки",
+    "create_playlist": "Создать плейлист",
+    "home": "Главная",
+    "upload_track": "Загрузить трек",
+    "your_library": "Ваша библиотека"
+  },
   "tags": {
     "label": "Хэштеги",
     "placeholder": "Поиск по хэштегам"

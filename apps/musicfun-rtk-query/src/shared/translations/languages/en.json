@@ -44,6 +44,14 @@
       "playlists_not_found": "No playlists found"
     }
   },
+  "sidebar": {
+    "all_playlists": "All Playlists",
+    "all_tracks": "All Tracks",
+    "create_playlist": "Create Playlist",
+    "home": "Home",
+    "upload_track": "Upload Track",
+    "your_library": "Your Library"
+  },
   "tags": {
     "label": "Hashtags",
     "placeholder": "Search by hashtags"
