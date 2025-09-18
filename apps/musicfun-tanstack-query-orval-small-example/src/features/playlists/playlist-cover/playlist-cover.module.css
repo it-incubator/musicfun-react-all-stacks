@@ -1,0 +1,9 @@
+.container {
+  margin-bottom: 30px;
+}
+
+.cover {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
