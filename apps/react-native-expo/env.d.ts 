@@ -1,0 +1,6 @@
+declare module '@env' {
+  // перераховуйте ТІЛЬКИ ті змінні, що реально є у `.env`
+  export const EXPO_PUBLIC_API_BASE_URL: string;
+  export const EXPO_PUBLIC_API_KEY: string;
+  // add more if needed …
+}
