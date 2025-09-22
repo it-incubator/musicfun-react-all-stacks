@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
+import { useFindTagsQuery } from '@/features/tags'
 import { Autocomplete } from '@/shared/components'
-
-import { useFindTagsQuery } from '../../api/tagsApi'
 
 export const PlaylistTagAutocomplete = ({
   value,
@@ -11,6 +11,8 @@ export const PlaylistTagAutocomplete = ({
   value: string[]
   onChange: (value: string[]) => void
 }) => {
+  const { t } = useTranslation()
+
   const [searchTerm, setSearchTerm] = useState('')
   const { data: tags } = useFindTagsQuery({ value: searchTerm })
 
@@ -22,7 +24,7 @@ export const PlaylistTagAutocomplete = ({
 
   return (
     <Autocomplete
-      label="Hashtags"
+      label={t('tags.label')}
       value={value}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}

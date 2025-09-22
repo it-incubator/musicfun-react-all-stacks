@@ -1,0 +1,99 @@
+{
+  "artists": {
+    "label": "Artists",
+    "placeholder": "Search by artists"
+  },
+  "auth": {
+    "button": {
+      "continue_without_sign_in": "Continue without Sign in",
+      "sign_in": "Sign in",
+      "sign_in_with_apihub": "Sign in with APIHub"
+    },
+    "title": {
+      "logout": "Logout",
+      "my_profile": "My Profile"
+    }
+  },
+  "button": {
+    "choose": "Choose",
+    "create": "Create",
+    "edit": "Edit"
+  },
+  "description": {
+    "label": {
+      "description": "Description"
+    },
+    "title": {
+      "max_value": "Description must be less than {{ quantity }} characters"
+    }
+  },
+  "playlists": {
+    "button": {
+      "choose_playlist": "Choose playlist"
+    },
+    "placeholder": {
+      "enter_playlist_description": "Enter playlist description",
+      "enter_playlist_title": "Enter playlist title",
+      "search_playlist": "Search playlist"
+    },
+    "title": {
+      "all_playlists": "All Playlists",
+      "create_playlist": "Create Playlist",
+      "edit_playlist": "Edit Playlist",
+      "new_playlists": "New playlists",
+      "playlists_not_found": "No playlists found"
+    }
+  },
+  "sidebar": {
+    "all_playlists": "All Playlists",
+    "all_tracks": "All Tracks",
+    "create_playlist": "Create Playlist",
+    "home": "Home",
+    "upload_track": "Upload Track",
+    "your_library": "Your Library"
+  },
+  "tabs": {
+    "playlists": "Playlists",
+    "tracks": "Tracks",
+    "liked_playlists": "Liked Playlists",
+    "liked_tracks": "Liked Tracks"
+  },
+  "tags": {
+    "label": "Hashtags",
+    "placeholder": "Search by hashtags"
+  },
+  "title": {
+    "max_value": "Title must be less than {{ quantity }} characters",
+    "min_value": "Title must be at least {{ quantity }} characters",
+    "required": "Title is required",
+    "title": "Title"
+  },
+  "tracks": {
+    "button": {
+      "add_to_playlist": "Add to playlist",
+      "all_tracks": "All Tracks",
+      "cancel": "Cancel",
+      "create": "Create",
+      "edit": "Edit",
+      "save": "Save",
+      "show_text_song": "Show text song",
+      "tracks_not_found": "Tracks not found",
+      "upload": "Upload"
+    },
+    "label": {
+      "lyrics": "Lyrics",
+      "title": "Title"
+    },
+    "placeholder": {
+      "lyrics": "Enter track lyrics",
+      "search_tracks": "Search tracks",
+      "title": "Enter track title"
+    },
+    "title": {
+      "all_tracks": "All tracks",
+      "create": "Create Track",
+      "edit": "Edit Track",
+      "new_tracks": "New tracks"
+    }
+  }
+}
