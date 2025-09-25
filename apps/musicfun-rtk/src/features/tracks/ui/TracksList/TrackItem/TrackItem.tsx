@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { ProgressBar } from './ProgressBar/ProgressBar.tsx'
 import { TrackPlayer } from '@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackPlayer/TrackPlayer.tsx'
 import { TrackReactions } from './TrackReaction/TrackReaction.tsx'
+import { usePublishTrackMutation } from '@/features/tracks/api/tracksApi.ts'
 
 type Props = {
   track: TrackDetails<FetchTracksAttributes>
@@ -31,6 +32,9 @@ export const TrackItem = ({ track, pageSize, page, index, isReactionMutable }: P
   const audioUrl = track.attributes.attachments?.[0]?.url || ''
 
   const [player, isPlayingMe] = usePlayer(true, track)
+  const [publishTrack, { isLoading }] = usePublishTrackMutation()
+
+  const isTrackPublished = track.attributes.isPublished
 
   const renderTrackNumber = () => {
     if (isHovered) {
@@ -73,6 +77,11 @@ export const TrackItem = ({ track, pageSize, page, index, isReactionMutable }: P
         <IconButton>
           <MoreIcon />
         </IconButton>
+        {!isTrackPublished && (
+          <button onClick={() => publishTrack({ trackId: track.id })} disabled={isLoading}>
+            {isLoading ? 'Publishing...' : 'Publish'}
+          </button>
+        )}
         <TrackDuration url={audioUrl} />
       </div>
     </div>

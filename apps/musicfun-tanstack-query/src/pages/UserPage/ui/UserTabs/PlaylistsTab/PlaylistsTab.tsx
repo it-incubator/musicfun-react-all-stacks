@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
-import { CreatePlaylistModal, MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
+import { PlaylistCard } from '@/entities/playlist'
+import { CreatePlaylistModal, MOCK_PLAYLISTS } from '@/features/playlists'
 import { ContentList } from '@/pages/common'
-import { Button, Pagination, Typography } from '@/shared/components'
+import { Button, Pagination } from '@/shared/components'
 
 import s from './PlaylistsTab.module.css'
 
@@ -28,8 +29,8 @@ export const PlaylistsTab = () => {
           <PlaylistCard
             id={playlist.data.id}
             title={playlist.data.attributes.title}
-            imageSrc={playlist.data.attributes.images.main[0].url}
-            description={playlist.data.attributes.description.text}
+            images={playlist.data.attributes.images || []}
+            description={playlist.data.attributes.description}
           />
         )}
       />

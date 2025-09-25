@@ -1,9 +1,11 @@
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router'
 
 import { useMeQuery } from '@/features/auth'
 import { setIsAuthModalOpen } from '@/features/auth/model'
 import { useCreatePlaylistModal } from '@/features/playlists'
+import { useCreateTrackModal } from '@/features/tracks'
 import { Paths } from '@/shared/configs'
 import { useAppDispatch } from '@/shared/hooks'
 import { HomeIcon, LibraryIcon, PlaylistIcon, TrackIcon, UploadIcon } from '@/shared/icons'
@@ -23,38 +25,40 @@ type MenuButton = {
   label: string
 }
 
-const createLinks: MenuLink[] = [
-  {
-    to: Paths.Tracks,
-    icon: <TrackIcon />,
-    label: 'All Tracks',
-  },
-  {
-    to: Paths.Playlists,
-    icon: <PlaylistIcon />,
-    label: 'All Playlists',
-  },
-]
-
 export const MenuLinks = () => {
+  const { t } = useTranslation()
+
   const { data: user } = useMeQuery()
   const { handleOpenCreatePlaylistModal } = useCreatePlaylistModal()
-
+  const { handleOpenCreateTrackModal } = useCreateTrackModal()
   const dispatch = useAppDispatch()
   const handleOpenAuthModal = () => {
     dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))
   }
 
+  const createLinks: MenuLink[] = [
+    {
+      to: Paths.Tracks,
+      icon: <TrackIcon />,
+      label: t('sidebar.all_tracks'),
+    },
+    {
+      to: Paths.Playlists,
+      icon: <PlaylistIcon />,
+      label: t('sidebar.all_playlists'),
+    },
+  ]
+
   const actionButtons: MenuButton[] = [
     {
-      onClick: () => {},
+      onClick: user ? handleOpenCreateTrackModal : handleOpenAuthModal,
       icon: <UploadIcon />,
-      label: 'Upload Track',
+      label: t('sidebar.upload_track'),
     },
     {
       onClick: user ? handleOpenCreatePlaylistModal : handleOpenAuthModal,
       icon: <CreateIcon />,
-      label: 'Create Playlist',
+      label: t('sidebar.create_playlist'),
     },
   ]
 
@@ -62,14 +66,18 @@ export const MenuLinks = () => {
     <nav className={s.column} aria-label="Main navigation">
       <ul className={s.list}>
         <li>
-          <SidebarLink to={Paths.Main} icon={<HomeIcon width={32} height={32} />} label="Home" />
+          <SidebarLink
+            to={Paths.Main}
+            icon={<HomeIcon width={32} height={32} />}
+            label={t('sidebar.home')}
+          />
         </li>
         {user ? (
           <li>
             <SidebarLink
               to={`${Paths.Profile}/${user?.userId}`}
               icon={<LibraryIcon />}
-              label="Your Library"
+              label={t('sidebar.your_library')}
             />
           </li>
         ) : (
@@ -77,7 +85,7 @@ export const MenuLinks = () => {
             <SidebarButton
               onClick={handleOpenAuthModal}
               icon={<LibraryIcon />}
-              label="Your Library"
+              label={t('sidebar.your_library')}
             />
           </li>
         )}

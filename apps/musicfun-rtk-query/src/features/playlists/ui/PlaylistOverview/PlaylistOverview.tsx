@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { type ComponentProps } from 'react'
 
 import { TagsList } from '@/features/tags'
+import type { Tag } from '@/features/tags/api/tagsApi.types'
 import Image from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 
@@ -11,7 +12,7 @@ type PlaylistOverviewProps = {
   title: string
   image?: string
   description: string
-  tags: string[]
+  tags: Tag[]
 } & ComponentProps<'div'>
 
 export const PlaylistOverview = ({

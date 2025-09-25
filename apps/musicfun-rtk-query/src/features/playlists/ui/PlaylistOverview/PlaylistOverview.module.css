@@ -33,7 +33,6 @@
 
   font-size: clamp(var(--font-size-xxl), 8vw, var(--font-size-xxxl));
   font-weight: 900;
-  line-height: 1;
   white-space: pre-wrap;
 }
 

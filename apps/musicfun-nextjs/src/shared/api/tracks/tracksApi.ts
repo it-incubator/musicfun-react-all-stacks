@@ -7,9 +7,8 @@ import type {
   TrackDetails,
   UpdateTrackArgs,
 } from './tracksApi.types.ts'
-import { Nullable } from '@it-incubator/musicfun-api-sdk/dist/common/types/common.types'
-import { Cover } from '@it-incubator/musicfun-api-sdk/dist/common/types/playlists-tracks.types'
 import { baseUrl, formHeaders, jsonHeaders } from '@/shared/api/base'
+import { Nullable } from '@/shared/common.types'
 
 export const tracksApi = {
   async fetchTracks({ pageSize = 3, pageNumber, search = '' }: FetchTracksArgs) {
@@ -53,18 +52,18 @@ export const tracksApi = {
     await fetch(url, { method: 'DELETE', headers: jsonHeaders })
   },
 
-  async uploadTrackCover({ trackId, file }: { trackId: string; file: File }) {
-    const formData = new FormData()
-    formData.append('cover', file)
-
-    const url = `${baseUrl}/playlists/tracks/${trackId}/cover`
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: formHeaders,
-      body: formData,
-    })
-    return res.json() as Promise<Cover>
-  },
+  // async uploadTrackCover({ trackId, file }: { trackId: string; file: File }) {
+  //   const formData = new FormData()
+  //   formData.append('cover', file)
+  //
+  //   const url = `${baseUrl}/playlists/tracks/${trackId}/cover`
+  //   const res = await fetch(url, {
+  //     method: 'POST',
+  //     headers: formHeaders,
+  //     body: formData,
+  //   })
+  //   return res.json() as Promise<Cover>
+  // },
 
   async updateTrack({ trackId, payload }: { trackId: string; payload: UpdateTrackArgs }) {
     const url = `${baseUrl}/playlists/tracks/${trackId}`

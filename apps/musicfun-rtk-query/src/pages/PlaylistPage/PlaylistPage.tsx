@@ -1,29 +1,34 @@
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
-import { MOCK_TRACKS, TracksTable } from '@/features/tracks'
+import { TrackActions, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { ReactionButtons } from '@/shared/components'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
 import { PageWrapper } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
 export const PlaylistPage = () => {
+  const { t } = useTranslation()
+
   const { id } = useParams()
   const { data: playlist } = useFetchPlaylistByIdQuery(id!)
   const { data: me } = useMeQuery()
 
   const isOwnPlaylist = me?.userId === playlist?.data.attributes.user.id
 
-  const playlistCover = playlist?.data.attributes.images.main.find(
-    (image) => image.type === 'original'
-  )
+  const { data: tracks } = useFetchTracksInPlaylistQuery({
+    playlistId: id!,
+  })
 
   if (!playlist) {
-    return <div>Playlist not found</div>
+    return <div>{t('playlists.title.playlists_not_found')}</div>
   }
+  const playlistCover = getImageByType(playlist?.data.attributes.images, ImageType.ORIGINAL)
 
   return (
     <PageWrapper className={s.playlistPage}>
@@ -32,7 +37,7 @@ export const PlaylistPage = () => {
         title={playlist.data.attributes.title}
         image={playlistCover?.url}
         description={playlist.data.attributes.description}
-        tags={playlist.data.attributes.tags.map((tag) => tag.name)}
+        tags={playlist.data.attributes.tags}
       />
       <ControlPanel
         playlistId={playlist.data.id}
@@ -40,36 +45,36 @@ export const PlaylistPage = () => {
         reaction={playlist.data.attributes.currentUserReaction}
         likesCount={playlist.data.attributes.likesCount}
       />
-      <TracksTable
-        trackRows={MOCK_TRACKS.map((track, index) => ({
-          index,
-          id: track.id,
-          title: track.attributes.title,
-          image: track.attributes.images.main[0].url,
-          addedAt: track.attributes.addedAt,
-          artists: track.attributes.artists?.map((artist) => artist.name) || [],
-          duration: track.attributes.duration,
-          likesCount: track.attributes.likesCount,
-          dislikesCount: track.attributes.dislikesCount,
-          currentUserReaction: track.attributes.currentUserReaction,
-        }))}
-        renderTrackRow={(trackRow) => (
-          <TrackRow
-            key={trackRow.id}
-            trackRow={trackRow}
-            playingTrackId={MOCK_TRACKS[0].id}
-            playingTrackProgress={20}
-            renderActionsCell={(row) => (
-              <ReactionButtons
-                reaction={row.currentUserReaction}
-                onLike={() => {}}
-                onDislike={() => {}}
-                likesCount={row.likesCount}
-              />
-            )}
-          />
-        )}
-      />
+      {tracks?.data && (
+        <TracksTable
+          trackRows={tracks?.data.map((track, index) => ({
+            index,
+            id: track.id,
+            title: track.attributes.title,
+            imageSrc: getImageByType(track.attributes.images, ImageType.THUMBNAIL)?.url,
+            addedAt: track.attributes.addedAt,
+            artists: ['Artist 1', 'Artist 2'],
+            duration: 100,
+            likesCount: track.attributes.likesCount,
+            currentUserReaction: track.attributes.currentUserReaction,
+          }))}
+          renderTrackRow={(trackRow) => (
+            <TrackRow
+              key={trackRow.id}
+              trackRow={trackRow}
+              playingTrackId={'mock'}
+              playingTrackProgress={20}
+              renderActionsCell={(row) => (
+                <TrackActions
+                  trackId={row.id}
+                  reaction={row.currentUserReaction}
+                  likesCount={row.likesCount}
+                />
+              )}
+            />
+          )}
+        />
+      )}
     </PageWrapper>
   )
 }

@@ -11,6 +11,12 @@
   min-height: 267px;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .image {
   overflow: hidden;
   height: 153px;

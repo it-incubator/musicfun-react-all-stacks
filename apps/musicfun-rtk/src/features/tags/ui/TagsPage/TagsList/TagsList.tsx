@@ -16,18 +16,18 @@ export const TagsList = () => {
         search={search}
         setSearch={setSearch}
         isPending={isLoading}
-        title="Поиск по тегу"
-        placeholder="Введите тег"
+        title="Search by Tag"
+        placeholder="Enter tag"
       />
       {Array.isArray(data) && data.length ? (
         <div>
-          <h2>Список тегов</h2>
+          <h2>Tags List</h2>
           {data?.map((tag) => {
             return <TagItem tag={tag} key={tag.id} />
           })}
         </div>
       ) : (
-        <h2>По заданному условию теги не найдены. Измените параметры поиска</h2>
+        <h2>No tags found for the given criteria. Change search parameters</h2>
       )}
     </>
   )

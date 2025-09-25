@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import {
-  CurrentUserReaction,
+  type CurrentUserReaction,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,

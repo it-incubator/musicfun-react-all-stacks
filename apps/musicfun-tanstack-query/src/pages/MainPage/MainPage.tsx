@@ -1,4 +1,5 @@
-import { MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
+import { PlaylistCard } from '@/entities/playlist'
+import { MOCK_PLAYLISTS } from '@/features/playlists'
 import { MOCK_HASHTAGS, TagsList } from '@/features/tags'
 import { MOCK_TRACKS, TrackCard } from '@/features/tracks'
 
@@ -16,13 +17,8 @@ export const MainPage = () => {
           <PlaylistCard
             id={playlist.data.id}
             title={playlist.data.attributes.title}
-            imageSrc={playlist.data.attributes.images.main[0].url}
-            description={playlist.data.attributes.description.text}
-            isShowReactionButtons={true}
-            reaction={playlist.data.attributes.currentUserReaction}
-            onLike={() => {}}
-            onDislike={() => {}}
-            likesCount={playlist.data.attributes.likesCount}
+            images={playlist.data.attributes.images}
+            description={playlist.data.attributes.description}
           />
         )}
       />

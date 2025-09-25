@@ -1,53 +1,40 @@
-import { useState } from 'react'
-import { useSearchParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
-import { MOCK_HASHTAGS } from '@/features/tags'
-import { Autocomplete, Pagination, Typography } from '@/shared/components'
+import { Pagination, Typography } from '@/shared/components'
+import { ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
+import { ContentList, PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { usePageSearchParams } from '../common/hooks'
 import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {
-  const [hashtags, setHashtags] = useState<string[]>([])
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { t } = useTranslation()
 
-  const pageNumber = Number(searchParams.get('page')) || 1
-  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({ pageNumber })
+  const { pageNumber, handlePageChange, debouncedSearch, sortBy, sortDirection, tagsIds } =
+    usePageSearchParams()
+
+  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
+    pageNumber,
+    sortBy,
+    sortDirection,
+    search: debouncedSearch,
+    ...(tagsIds.length > 0 && { tagsIds }),
+  })
   const pagesCount = playlists?.meta.pagesCount || 1
-
-  const handlePageChange = (page: number) => {
-    setSearchParams((prev) => {
-      if (page === 1) {
-        prev.delete('page')
-      } else {
-        prev.set('page', page.toString())
-      }
-      return prev
-    })
-  }
 
   return (
     <PageWrapper>
       <Typography variant="h2" as="h1" className={s.title}>
-        All Playlists
+        {t('playlists.title.all_playlists')}
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField placeholder="Search playlists" onChange={() => {}} />
-          <SortSelect onChange={() => {}} />
+          <SearchTextField placeholder={t('playlists.placeholder.search_playlist')} />
+          <SortSelect />
         </div>
-        <Autocomplete
-          options={MOCK_HASHTAGS.map((hashtag) => ({
-            label: hashtag,
-            value: hashtag,
-          }))}
-          value={hashtags}
-          onChange={setHashtags}
-          label="Hashtags"
-          placeholder="Search by hashtags"
-          className={s.autocomplete}
-        />
+        <SearchTags type="tags" className={s.searchTags} />
       </div>
 
       <ContentList
@@ -55,7 +42,7 @@ export const PlaylistsPage = () => {
         isLoading={isPlaylistsLoading}
         skeleton={<PlaylistCardSkeleton showReactionButtons />}
         renderItem={(playlist) => {
-          const image = playlist.attributes.images.main[1]
+          const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
 
           return (
             <PlaylistCard

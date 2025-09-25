@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { CurrentUserReaction } from '@/features/playlists'
+import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components'
+import { MoreIcon } from '@/shared/icons'
 
 import { PlaylistCard } from './PlaylistCard'
 
@@ -41,5 +43,21 @@ export const WithLongTextContent: Story = {
     imageSrc: 'https://unsplash.it/183/183',
     description:
       'A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding.',
+  },
+}
+
+export const WithActions: Story = {
+  args: {
+    id: '1',
+    title: 'Lofi for Vibe Coding',
+    imageSrc: 'https://unsplash.it/182/182',
+    description: 'A playlist for relaxing and unwinding.',
+    actions: (
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <MoreIcon />
+        </DropdownMenuTrigger>
+      </DropdownMenu>
+    ),
   },
 }

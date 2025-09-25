@@ -1,15 +1,26 @@
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 
+import { setIsAuthModalOpen } from '@/features/auth'
+import { useLoginMutation } from '@/features/auth'
 import { Button } from '@/shared/components/Button'
 import { Dialog, DialogContent, DialogHeader } from '@/shared/components/Dialog'
 import { Typography } from '@/shared/components/Typography'
 import { Paths } from '@/shared/configs'
+import { useAppDispatch } from '@/shared/hooks'
 
-import { useLoginMutation } from '../../api/auth-api'
 import s from './LoginModal.module.css'
 
-export const LoginModal = ({ onClose }: { onClose: () => void }) => {
+export const LoginModal = () => {
+  const { t } = useTranslation()
+
   const [mutate] = useLoginMutation()
+
+  const dispatch = useAppDispatch()
+
+  const handleCloseAuthModal = () => {
+    dispatch(setIsAuthModalOpen({ isAuthModalOpen: false }))
+  }
 
   /**
    * Handles the OAuth login process via popup window.
@@ -22,13 +33,20 @@ export const LoginModal = ({ onClose }: { onClose: () => void }) => {
     window.open(url, 'oauthPopup', 'width=500,height=600')
 
     const receiveMessage = async (event: MessageEvent) => {
-      if (event.origin !== import.meta.env.VITE_DOMAIN_ADDRESS) return
+      if (event.origin !== import.meta.env.VITE_DOMAIN_ADDRESS) {
+        return
+      }
 
       const { code } = event.data
       if (code) {
         window.removeEventListener('message', receiveMessage)
-        mutate({ code, accessTokenTTL: '3m', redirectUri, rememberMe: true })
-        onClose()
+        mutate({
+          code,
+          accessTokenTTL: '3m',
+          redirectUri,
+          rememberMe: true,
+        })
+        handleCloseAuthModal()
       }
     }
 
@@ -36,7 +54,7 @@ export const LoginModal = ({ onClose }: { onClose: () => void }) => {
   }
 
   return (
-    <Dialog open onClose={onClose} className={s.dialog}>
+    <Dialog open onClose={handleCloseAuthModal} className={s.dialog}>
       <DialogHeader />
 
       <DialogContent className={s.content}>
@@ -46,11 +64,11 @@ export const LoginModal = ({ onClose }: { onClose: () => void }) => {
 
         <div className={s.icon}>😊</div>
 
-        <Button className={clsx(s.button, s.secondary)} fullWidth onClick={onClose}>
-          Continue without Sign in
+        <Button className={clsx(s.button, s.secondary)} fullWidth onClick={handleCloseAuthModal}>
+          {t('auth.button.continue_without_sign_in')}
         </Button>
         <Button className={s.button} variant="primary" fullWidth onClick={loginHandler}>
-          Sign in with APIHub
+          {t('auth.button.sign_in_with_apihub')}
         </Button>
       </DialogContent>
     </Dialog>

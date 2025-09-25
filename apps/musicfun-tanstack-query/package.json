@@ -14,8 +14,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate:api": "pnpm openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/shared/api/schema.ts",
-    "generate:api:dimych": "pnpm openapi-typescript http://localhost:9001/api-json -o ./src/shared/api/schema.ts"
+    "generate:api": "pnpm openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/shared/api/schema.ts --root-types --enum --enum-values --dedupe-enums",
+    "generate:api:dimych": "pnpm openapi-typescript http://localhost:9001/api-json -o ./src/shared/api/schema.ts --root-types"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.81.5",
@@ -24,7 +24,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.60.0",
-    "react-router": "7.6.2"
+    "react-router": "7.6.2",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

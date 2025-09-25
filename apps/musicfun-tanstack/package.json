@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "api-gen:dimych": "pnpm dlx openapi-typescript http://localhost:9001/api-json -o ./src/common/api/schema.ts",
-    "api-gen": "pnpm dlx openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/common/api/schema.ts"
+    "api-gen:dimych": "pnpm dlx openapi-typescript http://localhost:9001/api-json --root-types -o ./src/common/api/schema.ts",
+    "api-gen": "pnpm dlx openapi-typescript https://musicfun.it-incubator.app/api-json --root-types -o ./src/common/api/schema.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

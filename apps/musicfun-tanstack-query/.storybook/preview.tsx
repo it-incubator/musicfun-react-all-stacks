@@ -1,7 +1,7 @@
-import '../src/styles/fonts.css'
-import '../src/styles/variables.css'
-import '../src/styles/reset.css'
-import '../src/styles/global.css'
+import '../src/app/styles/fonts.css'
+import '../src/app/styles/variables.css'
+import '../src/app/styles/reset.css'
+import '../src/app/styles/global.css'
 
 import type { Preview } from '@storybook/react-vite'
 import React from 'react'

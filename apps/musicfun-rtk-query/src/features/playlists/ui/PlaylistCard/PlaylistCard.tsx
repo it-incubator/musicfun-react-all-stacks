@@ -16,6 +16,7 @@ type PlaylistCardPropsBase = {
   title: string
   imageSrc?: string
   description: string
+  actions?: React.ReactNode
 }
 
 type PlaylistCardPropsWithReactions = PlaylistCardPropsBase & {
@@ -36,6 +37,7 @@ export const PlaylistCard = ({
   description,
   id,
   isShowReactionButtons,
+  actions,
   ...props
 }: PlaylistCardProps) => {
   const [like] = useLikePlaylistMutation()
@@ -50,9 +52,12 @@ export const PlaylistCard = ({
       <div className={s.image}>
         <img src={imageSrc} alt="" aria-hidden />
       </div>
-      <Typography variant="h3" className={s.title}>
-        {title}
-      </Typography>
+      <div className={s.header}>
+        <Typography variant="h3" className={s.title}>
+          {title}
+        </Typography>
+        {actions}
+      </div>
       <Typography variant="body3" className={s.description}>
         {description}
       </Typography>

@@ -1,15 +1,17 @@
-import { Loader } from '@/shared/components'
+import '../shared/translations/i18nConfiguration'
 
-import { useIsLoading } from './hooks'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router'
+
 import { Routing } from './routing'
+import { store } from './store'
 
 export const App = () => {
-  const isLoading = useIsLoading()
-
   return (
-    <>
-      {isLoading && <Loader />}
-      <Routing />
-    </>
+    <BrowserRouter>
+      <Provider store={store}>
+        <Routing />
+      </Provider>
+    </BrowserRouter>
   )
 }

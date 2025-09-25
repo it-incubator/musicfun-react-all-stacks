@@ -1,8 +1,10 @@
+import { io, Socket } from 'socket.io-client'
 import { baseApi } from '@/app/api/base-api.ts'
 import type {
   CreatePlaylistArgs,
   FetchPlaylistsArgs,
   Playlist,
+  PlaylistCreatedEvent,
   PlaylistsResponse,
   UpdatePlaylistArgs,
 } from './playlistsApi.types.ts'
@@ -19,6 +21,26 @@ export const playlistsAPI = baseApi.injectEndpoints({
         return { url: `playlists/?${query}` }
       },
       providesTags: ['Playlist'],
+      async onCacheEntryAdded(_arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
+        await cacheDataLoaded
+        const socket: Socket = io('https://musicfun.it-incubator.app', {
+          path: '/api/1.0/ws',
+          transports: ['websocket'],
+        })
+
+        socket.on('tracks.playlist-created', (msg: PlaylistCreatedEvent) => {
+          const newPl = msg.payload.data
+          updateCachedData((draft) => {
+            draft.data.unshift(newPl)
+            if (draft.meta?.totalCount != null) {
+              draft.meta.totalCount += 1
+            }
+          })
+        })
+
+        await cacheEntryRemoved
+        socket.disconnect()
+      },
     }),
     fetchMyPlaylists: build.query<Omit<PlaylistsResponse, 'meta'>, void>({
       query: () => ({ url: 'playlists/my' }),
@@ -77,21 +99,21 @@ export const playlistsAPI = baseApi.injectEndpoints({
     }),
     likePlaylist: build.mutation<ReactionResponse, { id: string }>({
       query: ({ id }) => ({
-        url: `playlists/${id}/like`,
+        url: `playlists/${id}/likes`,
         method: 'POST',
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
     }),
     dislikePlaylist: build.mutation<ReactionResponse, { id: string }>({
       query: ({ id }) => ({
-        url: `playlists/${id}/dislike`,
+        url: `playlists/${id}/dislikes`,
         method: 'POST',
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
     }),
     unReactionPlaylist: build.mutation<ReactionResponse, { id: string }>({
       query: ({ id }) => ({
-        url: `playlists/${id}/reaction`,
+        url: `playlists/${id}/reactions`,
         method: 'DELETE',
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
