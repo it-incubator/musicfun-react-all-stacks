@@ -6,10 +6,9 @@ import { getOauthRedirectUrl } from '@/features/auth/types/auth-api.types.ts'
 import { Button } from '@/shared/components/Button'
 import { Dialog, DialogContent, DialogHeader } from '@/shared/components/Dialog'
 import { Typography } from '@/shared/components/Typography'
+import { CURRENT_APP_DOMAIN } from '@/shared/config/config.ts'
 
 import s from './LoginButtonAndModal.module.css'
-
-const currentDomain = import.meta.env.VITE_CURRENT_DOMAIN
 
 export const LoginButtonAndModal = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -20,12 +19,12 @@ export const LoginButtonAndModal = () => {
   const { mutate } = useLoginMutation()
 
   const loginHandler = () => {
-    const redirectUri = currentDomain + '/oauth/callback' // todo: to config
+    const redirectUri = window.location.origin + CURRENT_APP_DOMAIN + 'oauth/callback' // todo: to config
     const url = getOauthRedirectUrl(redirectUri)
     window.open(url, 'oauthPopup', 'width=500,height=600')
 
     const receiveMessage = async (event: MessageEvent) => {
-      if (event.origin !== currentDomain) {
+      if (event.origin !== window.location.origin) {
         // todo: to config
         return
       }

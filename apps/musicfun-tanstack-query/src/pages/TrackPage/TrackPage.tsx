@@ -1,4 +1,5 @@
-import { MOCK_PLAYLISTS, PlaylistCard } from '@/features/playlists'
+import { PlaylistCard } from '@/entities/playlist'
+import { MOCK_PLAYLISTS } from '@/features/playlists'
 import { TrackOverview } from '@/features/tracks'
 import { Pagination, SearchField, Typography } from '@/shared/components'
 
@@ -32,8 +33,8 @@ export const TrackPage = () => {
           <PlaylistCard
             id={playlist.data.id}
             title={playlist.data.attributes.title}
-            imageSrc={playlist.data.attributes.images.main[0].url}
-            description={playlist.data.attributes.description.text}
+            images={playlist.data.attributes.images}
+            description={playlist.data.attributes.description}
           />
         )}
       />

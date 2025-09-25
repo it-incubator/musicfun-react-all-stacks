@@ -1,16 +1,19 @@
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 
 import { setIsAuthModalOpen } from '@/features/auth'
+import { useLoginMutation } from '@/features/auth'
 import { Button } from '@/shared/components/Button'
 import { Dialog, DialogContent, DialogHeader } from '@/shared/components/Dialog'
 import { Typography } from '@/shared/components/Typography'
 import { Paths } from '@/shared/configs'
 import { useAppDispatch } from '@/shared/hooks'
 
-import { useLoginMutation } from '../../api/auth-api'
 import s from './LoginModal.module.css'
 
 export const LoginModal = () => {
+  const { t } = useTranslation()
+
   const [mutate] = useLoginMutation()
 
   const dispatch = useAppDispatch()
@@ -30,12 +33,19 @@ export const LoginModal = () => {
     window.open(url, 'oauthPopup', 'width=500,height=600')
 
     const receiveMessage = async (event: MessageEvent) => {
-      if (event.origin !== import.meta.env.VITE_DOMAIN_ADDRESS) return
+      if (event.origin !== import.meta.env.VITE_DOMAIN_ADDRESS) {
+        return
+      }
 
       const { code } = event.data
       if (code) {
         window.removeEventListener('message', receiveMessage)
-        mutate({ code, accessTokenTTL: '3m', redirectUri, rememberMe: true })
+        mutate({
+          code,
+          accessTokenTTL: '3m',
+          redirectUri,
+          rememberMe: true,
+        })
         handleCloseAuthModal()
       }
     }
@@ -55,10 +65,10 @@ export const LoginModal = () => {
         <div className={s.icon}>😊</div>
 
         <Button className={clsx(s.button, s.secondary)} fullWidth onClick={handleCloseAuthModal}>
-          Continue without Sign in
+          {t('auth.button.continue_without_sign_in')}
         </Button>
         <Button className={s.button} variant="primary" fullWidth onClick={loginHandler}>
-          Sign in with APIHub
+          {t('auth.button.sign_in_with_apihub')}
         </Button>
       </DialogContent>
     </Dialog>

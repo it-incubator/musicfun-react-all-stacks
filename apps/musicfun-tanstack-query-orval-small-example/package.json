@@ -1,0 +1,50 @@
+{
+  "name": "tanstack-query-musicfun-small-example",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "generate:api": "pnpm dlx openapi-typescript https://musicfun.it-incubator.app/api-json --root-types -o ./src/shared/api/schema.ts",
+    "generate:async-api": "pnpm asyncapi generate models typescript https://musicfun.it-incubator.app/async-api-json  -o ./src/shared/async-api/schema.ts --tsEnumType union --tsModelType interface",
+    "generate:async-api:dimych": "pnpm asyncapi generate models typescript http://localhost:9001/async-api-json -o ./src/shared/async-api --tsModelType interface --tsEnumType union --tsRawPropertyNames",
+    "generate:api:dimych": "pnpm dlx openapi-typescript http://localhost:9001/api-json -o ./src/shared/api/schema.ts",
+    "generate:orval": " orval --input https://musicfun.it-incubator.app/api-json --output ./src/shared/api/orval/musicfun.ts",
+    "__generate:orval": "orval --config orval.config.cjs"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.81.5",
+    "@tanstack/react-query-devtools": "^5.81.5",
+    "@tanstack/react-router": "^1.124.0",
+    "axios": "^1.12.2",
+    "openapi-fetch": "^0.14.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.60.0",
+    "react-toastify": "11.0.5",
+    "socket.io-client": "4.8.1"
+  },
+  "devDependencies": {
+    "@asyncapi/cli": "^3.2.0",
+    "@eslint/js": "^9.29.0",
+    "@tanstack/eslint-plugin-query": "^5.81.2",
+    "@tanstack/router-plugin": "^1.124.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.5.2",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "openapi-typescript": "^7.8.0",
+    "orval": "^7.11.2",
+    "path": "^0.12.7",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.34.1",
+    "vite": "^7.0.0"
+  },
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+}
