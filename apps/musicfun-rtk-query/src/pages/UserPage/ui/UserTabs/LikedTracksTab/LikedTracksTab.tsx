@@ -18,7 +18,7 @@ export const LikedTracksTab = () => {
         duration: track.attributes.duration,
         likesCount: track.attributes.likesCount,
         dislikesCount: track.attributes.dislikesCount,
-        currentUserReaction: track.attributes.currentUserReaction,
+        currentUserReaction: 0,
       }))}
       renderTrackRow={(trackRow) => (
         <TrackRow
@@ -28,6 +28,7 @@ export const LikedTracksTab = () => {
           renderActionsCell={() => (
             <>
               <ReactionButtons
+                onUnReaction={() => {}}
                 reaction={trackRow.currentUserReaction}
                 onLike={() => {}}
                 onDislike={() => {}}

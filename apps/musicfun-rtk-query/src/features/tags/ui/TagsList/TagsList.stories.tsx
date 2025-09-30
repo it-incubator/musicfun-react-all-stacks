@@ -1,3 +1,4 @@
+/*
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { MOCK_HASHTAGS } from '../../api/tagsApi'
@@ -17,3 +18,4 @@ export const Default: Story = {
     tags: MOCK_HASHTAGS,
   },
 }
+*/

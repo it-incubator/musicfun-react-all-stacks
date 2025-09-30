@@ -1,3 +1,4 @@
+/*
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 
@@ -41,3 +42,4 @@ export const RoundCrop: Story = {
     cropShape: 'round',
   },
 }
+*/
