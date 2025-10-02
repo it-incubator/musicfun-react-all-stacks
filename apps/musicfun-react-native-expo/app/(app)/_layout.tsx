@@ -3,13 +3,17 @@ import { IcAllPlaylist } from '@/shared/ui/Icons/navigation/IcAllPlaylist'
 import { IcAllTracks } from '@/shared/ui/Icons/navigation/IcAllTracks'
 import { IcHome } from '@/shared/ui/Icons/navigation/IcHome'
 import { IcYourLibrary } from '@/shared/ui/Icons/navigation/IcYourLibrary'
-import { useRootNavigationState, useRouter, SplashScreen, Tabs } from 'expo-router'
+import { useRootNavigationState, useRouter, SplashScreen, Tabs, Redirect } from 'expo-router'
 import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { useAuthContext } from '@/features/auth/model/api/context/AuthContext'
 
 export default function AppLayout() {
-  const router = useRouter()
   const rootState = useRootNavigationState()
+
+  const { isAuth } = useAuthContext()
+
+  if (!isAuth) return <Redirect href="/(auth)/login" />
 
   return (
     <>
