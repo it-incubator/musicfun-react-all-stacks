@@ -1,4 +1,3 @@
-/*
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { MOCK_5_HASHTAGS } from '@/features/tags'
@@ -31,4 +30,3 @@ export const LongTitle: Story = {
     tags: MOCK_5_HASHTAGS,
   },
 }
-*/
