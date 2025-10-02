@@ -48,10 +48,12 @@ export type TracksTableProps<T extends TrackRowData> = {
 type ReactionsProps =
   | {
       likesCount: number
+      dislikesCount: number
       currentUserReaction: CurrentUserReaction
     }
   | {
       likesCount?: undefined
+      dislikesCount?: undefined
       currentUserReaction?: undefined
     }
 
@@ -63,7 +65,6 @@ export type TrackRowData = {
   addedAt: string
   artists: string[]
   duration: number
-  currentUserReaction: CurrentUserReaction
   isOwner?: boolean
 } & ReactionsProps
 

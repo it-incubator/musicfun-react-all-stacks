@@ -1,11 +1,11 @@
 import clsx from 'clsx'
 import type { ReactNode } from 'react'
 
+import type { TrackRowData } from '@/features/tracks'
 import { Progress, TableCell, TableRow, Typography } from '@/shared/components'
 import { LiveWaveIcon } from '@/shared/icons'
 
 import { TrackInfoCell } from '../TrackInfoCell'
-import type { TrackRowData } from '../TracksTable/TracksTable.tsx'
 import s from './TrackRow.module.css'
 
 export const TrackRow = <T extends TrackRowData>({

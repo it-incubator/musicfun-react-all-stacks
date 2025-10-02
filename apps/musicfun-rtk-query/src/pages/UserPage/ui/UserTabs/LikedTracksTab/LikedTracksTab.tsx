@@ -28,6 +28,7 @@ export const LikedTracksTab = () => {
           renderActionsCell={() => (
             <>
               <ReactionButtons
+                onUnReaction={() => {}}
                 reaction={trackRow.currentUserReaction}
                 onLike={() => {}}
                 onDislike={() => {}}

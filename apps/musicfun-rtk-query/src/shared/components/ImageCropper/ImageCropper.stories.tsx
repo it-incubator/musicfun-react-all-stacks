@@ -1,10 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { useState } from 'react'
 
-import { Button } from '../Button'
-import { Card } from '../Card'
-import { Typography } from '../Typography'
-import { type CroppedArea, ImageCropper } from './ImageCropper'
+import { ImageCropper } from './ImageCropper'
 
 const meta = {
   title: 'Components/ImageCropper',

@@ -65,6 +65,7 @@ const skills: AutocompleteOption[] = [
 
 export const Basic = {
   render: () => {
+    const [search, setSearch] = useState<string>('')
     const [selectedValues, setSelectedValues] = useState<string[]>([])
 
     return (
@@ -75,6 +76,8 @@ export const Basic = {
           options={programmingLanguages}
           value={selectedValues}
           onChange={setSelectedValues}
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
       </div>
     )
@@ -83,6 +86,7 @@ export const Basic = {
 
 export const WithMaxTags = {
   render: () => {
+    const [search, setSearch] = useState<string>('')
     const [selectedValues, setSelectedValues] = useState<string[]>([])
 
     return (
@@ -94,6 +98,8 @@ export const WithMaxTags = {
           value={selectedValues}
           onChange={setSelectedValues}
           maxTags={3}
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
       </div>
     )
@@ -102,6 +108,7 @@ export const WithMaxTags = {
 
 export const WithPreselected = {
   render: () => {
+    const [search, setSearch] = useState<string>('')
     const [selectedValues, setSelectedValues] = useState<string[]>(['javascript', 'typescript'])
 
     return (
@@ -112,6 +119,8 @@ export const WithPreselected = {
           options={programmingLanguages}
           value={selectedValues}
           onChange={setSelectedValues}
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
       </div>
     )
@@ -120,6 +129,7 @@ export const WithPreselected = {
 
 export const WithDisabledOptions = {
   render: () => {
+    const [search, setSearch] = useState<string>('')
     const [selectedValues, setSelectedValues] = useState<string[]>([])
 
     return (
@@ -130,6 +140,8 @@ export const WithDisabledOptions = {
           options={skills}
           value={selectedValues}
           onChange={setSelectedValues}
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
       </div>
     )
@@ -138,6 +150,7 @@ export const WithDisabledOptions = {
 
 export const Disabled = {
   render: () => {
+    const [search, setSearch] = useState<string>('')
     const [selectedValues, setSelectedValues] = useState<string[]>(['rock', 'jazz'])
 
     return (
@@ -149,6 +162,8 @@ export const Disabled = {
           value={selectedValues}
           onChange={setSelectedValues}
           disabled
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
       </div>
     )
@@ -157,6 +172,7 @@ export const Disabled = {
 
 export const WithError = {
   render: () => {
+    const [search, setSearch] = useState<string>('')
     const [selectedValues, setSelectedValues] = useState<string[]>([])
 
     return (
@@ -168,6 +184,8 @@ export const WithError = {
           value={selectedValues}
           onChange={setSelectedValues}
           errorMessage="Please select at least one programming language"
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
       </div>
     )
@@ -176,9 +194,10 @@ export const WithError = {
 
 export const Interactive = {
   render: () => {
-    const [frontendSkills, setFrontendSkills] = useState<string[]>(['javascript'])
     const [backendSkills, setBackendSkills] = useState<string[]>([])
+    const [frontendSkills, setFrontendSkills] = useState<string[]>(['javascript'])
     const [genres, setGenres] = useState<string[]>([])
+    const [search, setSearch] = useState<string>('')
 
     const frontendOptions: AutocompleteOption[] = [
       { value: 'html', label: 'HTML' },
@@ -223,6 +242,8 @@ export const Interactive = {
           value={frontendSkills}
           onChange={setFrontendSkills}
           maxTags={5}
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
 
         <Autocomplete
@@ -232,6 +253,8 @@ export const Interactive = {
           value={backendSkills}
           onChange={setBackendSkills}
           maxTags={4}
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
 
         <Autocomplete
@@ -241,6 +264,8 @@ export const Interactive = {
           value={genres}
           onChange={setGenres}
           maxTags={6}
+          searchTerm={search}
+          setSearchTerm={setSearch}
         />
 
         <Card style={{ padding: '16px' }}>
@@ -269,6 +294,11 @@ export const Interactive = {
 
 export const AllStates = {
   render: () => {
+    const [search1, setSearch1] = useState<string>('')
+    const [search2, setSearch2] = useState<string>('')
+    const [search3, setSearch3] = useState<string>('')
+    const [search4, setSearch4] = useState<string>('')
+
     const [state1, setState1] = useState<string[]>([])
     const [state2, setState2] = useState<string[]>(['rock', 'jazz'])
     const [state3, setState3] = useState<string[]>([])
@@ -292,6 +322,8 @@ export const AllStates = {
             options={programmingLanguages}
             value={state1}
             onChange={setState1}
+            searchTerm={search1}
+            setSearchTerm={setSearch1}
           />
         </div>
 
@@ -305,6 +337,8 @@ export const AllStates = {
             options={musicGenres}
             value={state2}
             onChange={setState2}
+            searchTerm={search2}
+            setSearchTerm={setSearch2}
           />
         </div>
 
@@ -319,6 +353,8 @@ export const AllStates = {
             value={state3}
             onChange={setState3}
             errorMessage="Please select at least one option"
+            searchTerm={search3}
+            setSearchTerm={setSearch3}
           />
         </div>
 
@@ -333,6 +369,8 @@ export const AllStates = {
             value={state4}
             onChange={setState4}
             disabled
+            searchTerm={search4}
+            setSearchTerm={setSearch4}
           />
         </div>
       </div>
@@ -343,8 +381,9 @@ export const AllStates = {
 export const InDialog = {
   render: () => {
     const [isOpen, setIsOpen] = useState(false)
-    const [selectedSkills, setSelectedSkills] = useState<string[]>([])
+    const [search, setSearch] = useState<string>('')
     const [selectedGenres, setSelectedGenres] = useState<string[]>(['rock'])
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([])
 
     const handleSubmit = () => {
       console.log('Selected skills:', selectedSkills)
@@ -385,6 +424,8 @@ export const InDialog = {
                 onChange={setSelectedSkills}
                 maxTags={8}
                 isRenderInPortal
+                searchTerm={search}
+                setSearchTerm={setSearch}
               />
 
               <Autocomplete
@@ -395,6 +436,8 @@ export const InDialog = {
                 onChange={setSelectedGenres}
                 maxTags={5}
                 isRenderInPortal
+                searchTerm={search}
+                setSearchTerm={setSearch}
               />
             </div>
           </DialogContent>

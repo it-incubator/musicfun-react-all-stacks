@@ -65,6 +65,7 @@ export const TracksPage = () => {
               artists: ['Artist 1', 'Artist 2'],
               duration: 100,
               likesCount: track.attributes.likesCount,
+              dislikesCount: track.attributes.likesCount,
               currentUserReaction: track.attributes.currentUserReaction,
               isOwner,
             }

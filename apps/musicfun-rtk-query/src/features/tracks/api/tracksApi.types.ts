@@ -28,6 +28,7 @@ export type BaseAttributes = {
   attachments: TrackAttachment[]
   images: Images
   currentUserReaction: CurrentUserReaction
+  dislikesCount: number
   likesCount: number
 }
 

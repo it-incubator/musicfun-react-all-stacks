@@ -13,7 +13,7 @@ export enum CurrentUserReaction {
 }
 
 export type ReactionButtonsProps = {
-  reaction: CurrentUserReaction
+  reaction?: CurrentUserReaction
   onLike: () => void
   onDislike: () => void
   onUnReaction: () => void

@@ -56,6 +56,7 @@ export const PlaylistPage = () => {
             artists: ['Artist 1', 'Artist 2'],
             duration: 100,
             likesCount: track.attributes.likesCount,
+            dislikesCount: track.attributes.dislikesCount,
             currentUserReaction: track.attributes.currentUserReaction,
           }))}
           renderTrackRow={(trackRow) => (
@@ -66,9 +67,9 @@ export const PlaylistPage = () => {
               playingTrackProgress={20}
               renderActionsCell={(row) => (
                 <TrackActions
-                  trackId={row.id}
-                  reaction={row.currentUserReaction}
                   likesCount={row.likesCount}
+                  reaction={row.currentUserReaction}
+                  trackId={row.id}
                 />
               )}
             />

@@ -1,7 +1,7 @@
 enum CurrentUserReaction {
   None = 0,
   Like = 1,
-  Dislike = 2,
+  Dislike = -1,
 }
 
 export const MOCK_TRACKS = [
