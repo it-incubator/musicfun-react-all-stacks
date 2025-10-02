@@ -1,10 +1,12 @@
 import { httpApiInterceptor } from '@/shared/api/api-root/api-root-instanse'
 import { API_PREFIX_ROOT } from '@/shared/api/api-root/api-root'
+import { ResMeT } from '@/features/auth/model/types/api.types'
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export default class apiAuthInstance {
-  static apiAuthInstance = httpApiInterceptor(API_PREFIX_ROOT.TEST)
+  private static api = httpApiInterceptor(API_PREFIX_ROOT.AUTH)
 
-  static getLogin = () => this.apiAuthInstance.get('/login')
-
-  static postLogin = () => this.apiAuthInstance.post('/login')
+  static me() {
+    return this.api.get<ResMeT>('/me')
+  }
 }

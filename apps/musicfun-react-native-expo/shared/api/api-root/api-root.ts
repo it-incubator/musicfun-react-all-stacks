@@ -28,4 +28,5 @@ export const VERSION_ROOT = '1.0'
 
 export const API_PREFIX_ROOT = {
   TEST: 'test',
+  AUTH: 'auth',
 } as const
