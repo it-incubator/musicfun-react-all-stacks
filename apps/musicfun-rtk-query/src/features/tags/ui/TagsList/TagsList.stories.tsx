@@ -1,7 +1,8 @@
 /*
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { MOCK_HASHTAGS } from '../../api/tagsApi'
+import { MOCK_HASHTAGS } from '@/features/tags'
+
 import { TagsList } from './TagsList'
 
 const meta: Meta<typeof TagsList> = {

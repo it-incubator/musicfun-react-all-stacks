@@ -1,9 +1,9 @@
 /*
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
+import type { Area } from 'react-easy-crop'
 
 import { Card } from '../Card'
-import { type CroppedArea } from '../ImageCropper'
 import { Typography } from '../Typography'
 import { ImageUploader } from './ImageUploader'
 
@@ -106,7 +106,12 @@ export const CustomFileRestrictions: Story = {
   render: (args) => (
     <div style={{ width: '300px' }}>
       <ImageUploader {...args} />
-      <Typography variant="caption" style={{ marginTop: '8px', display: 'block' }}>
+      <Typography
+        variant="caption"
+        style={{
+          marginTop: '8px',
+          display: 'block',
+        }}>
         Accepts only JPEG/PNG files up to 2MB
       </Typography>
     </div>
@@ -118,13 +123,13 @@ export const Interactive = {
     const [uploadedImages, setUploadedImages] = useState<
       Array<{
         file: File
-        croppedArea?: CroppedArea
+        croppedArea?: Area
         type: string
         url: string
       }>
     >([])
 
-    const handleImageSelect = (type: string) => (file: File, croppedArea?: CroppedArea) => {
+    const handleImageSelect = (type: string) => (file: File, croppedArea?: Area) => {
       const url = URL.createObjectURL(file)
       setUploadedImages((prev) => [
         ...prev,
@@ -181,12 +186,25 @@ export const Interactive = {
     ]
 
     return (
-      <div style={{ width: '100%', maxWidth: '800px' }}>
-        <Typography variant="h2" style={{ marginBottom: '24px', textAlign: 'center' }}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '800px',
+        }}>
+        <Typography
+          variant="h2"
+          style={{
+            marginBottom: '24px',
+            textAlign: 'center',
+          }}>
           Interactive Image Uploader
         </Typography>
 
-        <Card style={{ padding: '20px', marginBottom: '20px' }}>
+        <Card
+          style={{
+            padding: '20px',
+            marginBottom: '20px',
+          }}>
           <Typography variant="h3" style={{ marginBottom: '16px' }}>
             Try Different Upload Types
           </Typography>
@@ -200,7 +218,12 @@ export const Interactive = {
             }}>
             {uploaderConfigs.map((config) => (
               <div key={config.id} style={{ width: config.width }}>
-                <Typography variant="body2" style={{ marginBottom: '8px', fontWeight: '600' }}>
+                <Typography
+                  variant="body2"
+                  style={{
+                    marginBottom: '8px',
+                    fontWeight: '600',
+                  }}>
                   {config.title}
                 </Typography>
                 <ImageUploader
@@ -265,7 +288,12 @@ export const Interactive = {
                       marginBottom: '8px',
                     }}
                   />
-                  <Typography variant="body3" style={{ fontWeight: '600', marginBottom: '4px' }}>
+                  <Typography
+                    variant="body3"
+                    style={{
+                      fontWeight: '600',
+                      marginBottom: '4px',
+                    }}>
                     {image.type}
                   </Typography>
                   <Typography variant="caption">
@@ -283,7 +311,11 @@ export const Interactive = {
           </Card>
         )}
 
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <div
+          style={{
+            marginTop: '20px',
+            textAlign: 'center',
+          }}>
           <Typography variant="caption">
             Upload images using different cropping modes to see the results
           </Typography>
@@ -299,26 +331,65 @@ export const AllVariants = {
 
     const handleImageSelect = (variant: string) => (file: File) => {
       const url = URL.createObjectURL(file)
-      setResults((prev) => ({ ...prev, [variant]: { file, url } }))
+      setResults((prev) => ({
+        ...prev,
+        [variant]: {
+          file,
+          url,
+        },
+      }))
     }
 
     const variants = [
-      { key: 'square', title: 'Square (1:1)', cropShape: 'rect' as const, aspectRatio: 1 },
-      { key: 'round', title: 'Round Avatar', cropShape: 'round' as const, aspectRatio: 1 },
-      { key: 'banner', title: 'Banner (16:9)', cropShape: 'rect' as const, aspectRatio: 16 / 9 },
-      { key: 'portrait', title: 'Portrait (3:4)', cropShape: 'rect' as const, aspectRatio: 3 / 4 },
+      {
+        key: 'square',
+        title: 'Square (1:1)',
+        cropShape: 'rect' as const,
+        aspectRatio: 1,
+      },
+      {
+        key: 'round',
+        title: 'Round Avatar',
+        cropShape: 'round' as const,
+        aspectRatio: 1,
+      },
+      {
+        key: 'banner',
+        title: 'Banner (16:9)',
+        cropShape: 'rect' as const,
+        aspectRatio: 16 / 9,
+      },
+      {
+        key: 'portrait',
+        title: 'Portrait (3:4)',
+        cropShape: 'rect' as const,
+        aspectRatio: 3 / 4,
+      },
       {
         key: 'landscape',
         title: 'Landscape (4:3)',
         cropShape: 'rect' as const,
         aspectRatio: 4 / 3,
       },
-      { key: 'no-crop', title: 'No Cropping', enableCrop: false },
+      {
+        key: 'no-crop',
+        title: 'No Cropping',
+        enableCrop: false,
+      },
     ]
 
     return (
-      <div style={{ width: '100%', maxWidth: '1000px' }}>
-        <Typography variant="h2" style={{ marginBottom: '24px', textAlign: 'center' }}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '1000px',
+        }}>
+        <Typography
+          variant="h2"
+          style={{
+            marginBottom: '24px',
+            textAlign: 'center',
+          }}>
           All ImageUploader Variants
         </Typography>
 
@@ -330,7 +401,12 @@ export const AllVariants = {
           }}>
           {variants.map((variant) => (
             <Card key={variant.key} style={{ padding: '16px' }}>
-              <Typography variant="h3" style={{ marginBottom: '12px', textAlign: 'center' }}>
+              <Typography
+                variant="h3"
+                style={{
+                  marginBottom: '12px',
+                  textAlign: 'center',
+                }}>
                 {variant.title}
               </Typography>
 
@@ -343,7 +419,11 @@ export const AllVariants = {
               />
 
               {results[variant.key] && (
-                <div style={{ marginTop: '12px', textAlign: 'center' }}>
+                <div
+                  style={{
+                    marginTop: '12px',
+                    textAlign: 'center',
+                  }}>
                   <img
                     src={results[variant.key].url}
                     alt={`Result for ${variant.title}`}
@@ -364,7 +444,11 @@ export const AllVariants = {
           ))}
         </div>
 
-        <div style={{ marginTop: '24px', textAlign: 'center' }}>
+        <div
+          style={{
+            marginTop: '24px',
+            textAlign: 'center',
+          }}>
           <Typography variant="caption">
             Upload images to see how different crop settings affect the result
           </Typography>

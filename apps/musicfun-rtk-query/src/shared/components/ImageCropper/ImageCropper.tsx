@@ -1,6 +1,7 @@
 import { clsx } from 'clsx'
 import { useState } from 'react'
-import Cropper, { type Area } from 'react-easy-crop'
+import type { Area } from 'react-easy-crop'
+import Cropper from 'react-easy-crop'
 
 import { Button } from '../Button'
 import { Dialog, DialogContent, DialogFooter } from '../Dialog'
@@ -28,7 +29,10 @@ export const ImageCropper = ({
   cropShape = 'rect',
   className,
 }: ImageCropperProps) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [crop, setCrop] = useState({
+    x: 0,
+    y: 0,
+  })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -96,7 +100,9 @@ export const ImageCropper = ({
   }
 
   const handleCropConfirm = async () => {
-    if (!croppedAreaPixels) return
+    if (!croppedAreaPixels) {
+      return
+    }
 
     setIsProcessing(true)
 
@@ -118,7 +124,10 @@ export const ImageCropper = ({
   }
 
   const handleReset = () => {
-    setCrop({ x: 0, y: 0 })
+    setCrop({
+      x: 0,
+      y: 0,
+    })
     setZoom(1)
     setCroppedAreaPixels(null)
     setIsProcessing(false)
