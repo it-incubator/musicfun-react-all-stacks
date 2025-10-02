@@ -8,7 +8,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import '../shared/api/api-root/api-root'
 import { ReactQueryProvider } from '@/shared/providers/reactQueryProviders/ReactQueryProviders'
-import { AuthContextProvider } from '@/features/auth/model/api/context/AuthContext'
+import { AuthContextProvider } from '@/features/auth/model/context/AuthContext'
 
 SplashScreen.preventAutoHideAsync().catch(() => {})
 

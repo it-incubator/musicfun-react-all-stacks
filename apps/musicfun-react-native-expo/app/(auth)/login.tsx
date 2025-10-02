@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native'
 import { Button } from '@/shared/ui/Button/Button'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
-import { useAuthContext } from '@/features/auth/model/api/context/AuthContext'
+import { useAuthContext } from '@/features/auth/model/context/AuthContext'
 
 export default function Login() {
   const router = useRouter()

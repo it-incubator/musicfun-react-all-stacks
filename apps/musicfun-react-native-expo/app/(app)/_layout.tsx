@@ -6,7 +6,7 @@ import { IcYourLibrary } from '@/shared/ui/Icons/navigation/IcYourLibrary'
 import { useRootNavigationState, useRouter, SplashScreen, Tabs, Redirect } from 'expo-router'
 import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { useAuthContext } from '@/features/auth/model/api/context/AuthContext'
+import { useAuthContext } from '@/features/auth/model/context/AuthContext'
 
 export default function AppLayout() {
   const rootState = useRootNavigationState()
