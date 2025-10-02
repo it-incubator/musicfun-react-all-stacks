@@ -18,7 +18,7 @@ export const LikedTracksTab = () => {
         duration: track.attributes.duration,
         likesCount: track.attributes.likesCount,
         dislikesCount: track.attributes.dislikesCount,
-        currentUserReaction: 0,
+        currentUserReaction: track.attributes.currentUserReaction,
       }))}
       renderTrackRow={(trackRow) => (
         <TrackRow

@@ -1,4 +1,3 @@
-/*
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import type { Area } from 'react-easy-crop'
@@ -457,4 +456,3 @@ export const AllVariants = {
     )
   },
 }
-*/

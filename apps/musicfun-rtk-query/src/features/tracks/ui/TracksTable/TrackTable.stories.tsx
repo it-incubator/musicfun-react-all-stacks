@@ -1,4 +1,3 @@
-/*
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
@@ -69,6 +68,7 @@ export const Default: Story = {
         renderActionsCell={() => (
           <>
             <ReactionButtons
+              onUnReaction={() => {}}
               reaction={trackRow.currentUserReaction}
               onLike={() => {}}
               onDislike={() => {}}
@@ -136,4 +136,3 @@ export const WithoutReactions: Story = {
     ),
   },
 }
-*/
