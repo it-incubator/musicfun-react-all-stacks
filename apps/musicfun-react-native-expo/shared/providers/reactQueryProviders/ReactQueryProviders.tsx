@@ -4,9 +4,6 @@ import NetInfo from '@react-native-community/netinfo'
 import { QueryClientProvider, focusManager, onlineManager } from '@tanstack/react-query'
 import { setupQueryPersist } from '@/shared/api/query-persist/query-presist'
 import { queryClient } from '@/shared/api/query-client/queryClient'
-import { FloatingDevTools } from '@react-buoy/core'
-import { ReactQueryDevToolsModal } from '@react-buoy/react-query'
-import { ReactQueryIcon } from '@react-buoy/shared-ui'
 
 setupQueryPersist()
 
@@ -24,7 +21,7 @@ export function ReactQueryProvider({ children }: PropsWithChildren) {
     return () => sub.remove()
   }, [])
 
-  //сообщает React Query текущий статус «онлайн/офлайн».
+  //Сообщает React Query текущий статус «онлайн/офлайн».
   //Когда offline: остановятся ретраи, не будут стартовать новые фетчи.
   // Когда online: запросы с refetchOnReconnect: true автоматически обновятся.
   useEffect(() => {

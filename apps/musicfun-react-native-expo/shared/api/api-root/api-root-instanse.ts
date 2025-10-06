@@ -9,9 +9,10 @@ export const httpApiInterceptor = (prefix: ApiPrefixT, version = VERSION_ROOT): 
   const ver = String(version).replace(/^\/+/, '')
 
   const instance = axios.create({
-    baseURL: `${base}/${ver}/${pfx}/`,
+    baseURL: `${base}/${ver}/${pfx}`,
     headers: {
       'Content-Type': 'application/json',
+      Origin: 'http://localhost:3000',
       ...(API_KEY ? { 'api-key': `${API_KEY}` } : {}),
     },
   })
