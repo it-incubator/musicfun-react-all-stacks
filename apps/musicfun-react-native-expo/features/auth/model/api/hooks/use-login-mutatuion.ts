@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import apiAuthInstance from '@/features/auth/model/api/auth-instanse/auth-instanse'
+import { tokenStorage } from '@/shared/storage/tokenStorage'
 
 export const useLoginMutation = () => {
   const queryClient = useQueryClient()
@@ -13,14 +14,12 @@ export const useLoginMutation = () => {
         rememberMe: true,
       })
 
-      console.log('response', response)
-
       return response.data
     },
     onSuccess: async (data) => {
       console.log('data', data)
-      localStorage.setItem('musicfun-refresh-token', data?.refreshToken || '')
-      localStorage.setItem('musicfun-access-token', data?.accessToken || '')
+      await tokenStorage.set({ accessToken: data.accessToken, refreshToken: data.refreshToken })
+
       await queryClient.invalidateQueries({ queryKey: ['auth', 'me'] })
     },
   })

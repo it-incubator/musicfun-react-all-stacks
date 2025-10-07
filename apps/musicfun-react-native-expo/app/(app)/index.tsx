@@ -1,18 +1,14 @@
 import { COLORS, GAPS } from '@/shared/styles/tokens'
-import { Button } from '@/shared/ui/Button/Button'
+
 import { StyleSheet } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import { useAuthContext } from '@/features/auth/model/context/AuthContext'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { LogoutButton } from '@/features/auth/components/LogoutButton/LogoutButton'
 
 export default function Home() {
-  const { logout } = useAuthContext()
-
   return (
     <SafeAreaView style={styles.container}>
-      <Button onPress={logout} title={'Logout'} />
-      <Button title={'Button'} />
-      <Button title={'Button'} />
-      <Button title={'Button'} />
+      <LogoutButton />
     </SafeAreaView>
   )
 }

@@ -10,6 +10,13 @@ export type RequestLoginT = {
   rememberMe: boolean
 }
 
+export type RequestLogoutT = {
+  refreshToken: string
+  rememberMe: boolean
+  accessTokenTTL: string
+  redirectUri: string
+}
+
 export type ResponseLoginT = {
   accessToken: string
   refreshToken: string

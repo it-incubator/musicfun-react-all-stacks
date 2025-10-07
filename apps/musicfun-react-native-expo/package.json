@@ -31,6 +31,7 @@
     "expo-font": "^14.0.8",
     "expo-linking": "~8.0.8",
     "expo-router": "~6.0.8",
+    "expo-secure-store": "^15.0.7",
     "expo-status-bar": "~3.0.8",
     "expo-web-browser": "^15.0.8",
     "react": "19.1.0",
