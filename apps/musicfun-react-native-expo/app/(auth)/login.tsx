@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Button } from '@/shared/ui/Button/Button'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -9,6 +9,7 @@ import { LoginButton } from '@/features/auth/components/LoginButton/LoginButton'
 import { useAuthContext } from '@/features/auth/model/context/AuthContext'
 import { useEffect } from 'react'
 import { router } from 'expo-router'
+import { IcSmile } from '@/shared/ui/Icons/screens/login/IcSmile'
 
 export default function Login() {
   const { isAuth } = useAuthContext()
@@ -36,9 +37,23 @@ export default function Login() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <LoginButton />
-        <Button variant={'gray'} isFull onPress={onPressSignUp} title="Continue without Sign In" />
+      <View style={styles.flexContainer}>
+        <View></View>
+        <View>
+          <View style={styles.smileContainer}>
+            <IcSmile />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>
+              Millions of Songs.{'\n'}
+              Free on Musifun.
+            </Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <LoginButton />
+            <Button variant={'gray'} isFull onPress={onPressSignUp} title="Continue without Sign In" />
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   )
@@ -55,6 +70,32 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     gap: GAPS.G27,
+    width: '100%',
+    alignItems: 'stretch',
+  },
+  smileContainer: {
+    marginBottom: 19,
+    width: '100%',
+    alignItems: 'center',
+  },
+  textContainer: {
+    marginBottom: 26,
+    paddingHorizontal: 30,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 30,
+    // lineHeight: 10,
+    letterSpacing: 0,
+    fontWeight: 700,
+    textAlign: 'center',
+    color: COLORS.DARK.TEXT_MAIN_WHITE,
+  },
+  flexContainer: {
+    flexDirection: 'column',
+    height: '100%',
+    justifyContent: 'space-around',
     width: '100%',
   },
 })
