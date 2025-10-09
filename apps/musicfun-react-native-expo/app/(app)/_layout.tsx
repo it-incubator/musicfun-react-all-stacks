@@ -41,15 +41,15 @@ export default function AppLayout() {
           }}
         />
         <Tabs.Screen
-          name="playlists"
+          name="playlists/playlists"
           options={{
             title: 'Playlists',
             tabBarIcon: () => <IcAllPlaylist />,
           }}
         />
-        <Tabs.Screen name="tracks" options={{ title: 'Tracks', tabBarIcon: () => <IcAllTracks /> }} />
+        <Tabs.Screen name="tracks/tracks" options={{ title: 'Tracks', tabBarIcon: () => <IcAllTracks /> }} />
         <Tabs.Screen
-          name="library"
+          name="library/library"
           options={{
             title: 'Library',
             tabBarIcon: () => <IcYourLibrary />,

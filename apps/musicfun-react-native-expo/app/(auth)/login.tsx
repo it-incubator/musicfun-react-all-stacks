@@ -17,9 +17,9 @@ export default function Login() {
   const onPressSignUp = async () => {
     await WebBrowser.openBrowserAsync('https://github.com/signup')
   }
-
+  //
   useEffect(() => {
-    if (isAuth) router.replace('/')
+    if (isAuth) router.replace('/playlists/playlists')
   }, [isAuth])
 
   // const query = useQuery({
