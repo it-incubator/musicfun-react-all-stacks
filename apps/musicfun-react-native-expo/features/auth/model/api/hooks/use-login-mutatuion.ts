@@ -21,6 +21,7 @@ export const useLoginMutation = () => {
       await tokenStorage.set({ accessToken: data.accessToken, refreshToken: data.refreshToken })
 
       await queryClient.invalidateQueries({ queryKey: ['auth', 'me'] })
+      //   await queryClient.refetchQueries({ queryKey: ['auth','me'], type: 'all' })
     },
   })
 }

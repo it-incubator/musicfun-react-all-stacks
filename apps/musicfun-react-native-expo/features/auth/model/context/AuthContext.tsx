@@ -67,6 +67,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuthContext = () => {
   const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('контекст AuthContext не найден')
+  if (!ctx) console.warn('контекст AuthContext не найден')
   return ctx
 }

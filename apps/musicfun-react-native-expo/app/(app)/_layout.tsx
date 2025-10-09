@@ -7,17 +7,19 @@ import { useRootNavigationState, useRouter, SplashScreen, Tabs, Redirect } from 
 import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useAuthContext } from '@/features/auth/model/context/AuthContext'
+import { useMeQuery } from '@/features/auth/model/api/hooks/use-me.query'
 
 export default function AppLayout() {
   const rootState = useRootNavigationState()
 
   const { isAuth } = useAuthContext()
-
+  useMeQuery()
   if (!isAuth) return <Redirect href="/(auth)/login" />
 
   return (
     <>
       <Tabs
+        initialRouteName={'index'}
         screenOptions={{
           headerShown: false,
           headerShadowVisible: false,
