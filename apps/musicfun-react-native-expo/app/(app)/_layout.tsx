@@ -11,9 +11,8 @@ import { useMeQuery } from '@/features/auth/model/api/hooks/use-me.query'
 
 export default function AppLayout() {
   const rootState = useRootNavigationState()
-
   const { isAuth } = useAuthContext()
-  useMeQuery()
+
   if (!isAuth) return <Redirect href="/(auth)/login" />
 
   return (
