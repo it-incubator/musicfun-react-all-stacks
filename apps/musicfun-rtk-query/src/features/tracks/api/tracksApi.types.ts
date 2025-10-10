@@ -97,6 +97,7 @@ export type FetchTracksArgs = {
   tagsIds?: string[]
   artistsIds?: string[]
   userId?: string
+  includeDrafts?: boolean
 }
 
 export type UpdateTrackArgs = {
