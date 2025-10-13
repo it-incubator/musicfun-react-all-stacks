@@ -1,0 +1,1 @@
+export { LiveWaveIcon } from './LiveWaveIcon'
