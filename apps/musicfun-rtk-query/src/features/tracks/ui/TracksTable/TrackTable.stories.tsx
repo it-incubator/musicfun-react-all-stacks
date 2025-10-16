@@ -68,6 +68,7 @@ export const Default: Story = {
         renderActionsCell={() => (
           <>
             <ReactionButtons
+              onUnReaction={() => {}}
               reaction={trackRow.currentUserReaction}
               onLike={() => {}}
               onDislike={() => {}}

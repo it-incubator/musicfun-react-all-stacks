@@ -1,13 +1,13 @@
-export const MOCK_HASHTAGS = [
-  'Rock',
-  'Jazz',
-  'Blues',
-  'Metal',
-  'Folk',
-  'Coding',
-  'Dark Ambient',
-  'Chill',
-  'Lo-fi',
+export const MOCK_HASHTAGS: Tag[] = [
+  { id: '1', name: 'Rock' },
+  { id: '2', name: 'Jazz' },
+  { id: '3', name: 'Blues' },
+  { id: '4', name: 'Metal' },
+  { id: '5', name: 'Folk' },
+  { id: '6', name: 'Coding' },
+  { id: '7', name: 'Dark Ambient' },
+  { id: '8', name: 'Chill' },
+  { id: '9', name: 'Lo-fi' },
 ]
 
 export const MOCK_5_HASHTAGS = MOCK_HASHTAGS.slice(0, 5)
