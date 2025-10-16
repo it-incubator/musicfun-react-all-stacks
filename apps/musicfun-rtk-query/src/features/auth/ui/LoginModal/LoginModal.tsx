@@ -33,7 +33,7 @@ export const LoginModal = () => {
     window.open(url, 'oauthPopup', 'width=500,height=600')
 
     const receiveMessage = async (event: MessageEvent) => {
-      if (event.origin !== import.meta.env.VITE_DOMAIN_ADDRESS) {
+      if (event.origin !== window.location.origin) {
         return
       }
 
