@@ -52,6 +52,14 @@ jobs:
         with:
           enablement: true
 
+      - name: SPA fallback for tanstack-query
+        working-directory: apps/musicfun-tanstack-query/dist
+        run: cp index.html 404.html
+
+      - name: SPA fallback for rtk-query
+        working-directory: apps/musicfun-rtk-query/dist
+        run: cp index.html 404.html
+
       - name: Prepare deployment folder
         run: |
           mkdir -p dist/tanstackquery
