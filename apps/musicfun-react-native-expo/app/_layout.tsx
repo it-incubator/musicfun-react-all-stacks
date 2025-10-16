@@ -1,10 +1,16 @@
 import { COLORS } from '@/shared/styles/tokens'
 import { useFonts } from 'expo-font'
-import { SplashScreen, Stack } from 'expo-router'
+import { SplashScreen, Stack, Redirect } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import '../shared/api/api-root/api-root'
+import { ReactQueryProvider } from '@/shared/providers/reactQueryProviders/ReactQueryProviders'
+import { AuthContextProvider } from '@/features/auth/model/context/AuthContext'
+
+SplashScreen.preventAutoHideAsync().catch(() => {})
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -20,26 +26,31 @@ export default function RootLayout() {
 
   if (!fontsLoaded) {
     return (
-      <View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <ActivityIndicator />
       </View>
     )
   }
 
   return (
-    <>
-      <StatusBar hidden={false} style="light" />
-      <SafeAreaProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            headerStyle: { backgroundColor: COLORS.DARK.BACKGROUND_MAIN },
-            headerTintColor: COLORS.DARK.BUTTON_MAIN_PINK_HOVER,
-          }}
-        >
-          <Stack.Screen name="(app)" options={{ autoHideHomeIndicator: false }} />
-        </Stack>
-      </SafeAreaProvider>
-    </>
+    <ReactQueryProvider>
+      <AuthContextProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <StatusBar hidden={false} style="light" />
+          <SafeAreaProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                headerStyle: { backgroundColor: COLORS.DARK.BACKGROUND_MAIN },
+                headerTintColor: COLORS.DARK.BUTTON_MAIN_PINK_HOVER,
+              }}
+            >
+              <Stack.Screen name="(app)" options={{ autoHideHomeIndicator: false }} />
+              <Stack.Screen name="(auth)" options={{ autoHideHomeIndicator: false }} />
+            </Stack>
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
+      </AuthContextProvider>
+    </ReactQueryProvider>
   )
 }

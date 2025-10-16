@@ -1,6 +1,9 @@
 .container {
   border-bottom: 1px solid black;
-  padding-left: 100px;
+  padding: 0 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .list {
@@ -10,4 +13,10 @@
 
 .activeLink {
   font-weight: bold;
+}
+
+.loginContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }

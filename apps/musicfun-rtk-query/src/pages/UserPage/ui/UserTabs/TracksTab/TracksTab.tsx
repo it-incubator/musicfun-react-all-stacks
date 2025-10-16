@@ -24,6 +24,7 @@ export const TracksTab = () => {
     pageSize: 10,
     pageNumber: 1,
     userId: userId!,
+    includeDrafts: true,
   })
 
   return (

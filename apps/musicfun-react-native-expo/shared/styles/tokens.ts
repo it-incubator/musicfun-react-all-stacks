@@ -7,6 +7,7 @@ export const COLORS = {
     DEEP_DARK: '#000000',
 
     BUTTON_MAIN_GRAY: '#555555',
+    BUTTON_MAIN_GRAY_HOVER: '#444444',
     BUTTON_MAIN_PINK: '#FF38B6',
     BUTTON_MAIN_PINK_HOVER: '#ff02a0',
 
@@ -18,6 +19,7 @@ export const COLORS = {
 
 export const GAPS = {
   G8: 8,
+  G27: 27,
 }
 
 export const RADIUS = {

@@ -1,15 +1,18 @@
 import { COLORS, GAPS } from '@/shared/styles/tokens'
-import { Button } from '@/shared/ui/Button/Button'
-import { StyleSheet } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+
+import { StyleSheet, Text } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { LogoutButton } from '@/features/auth/components/LogoutButton/LogoutButton'
+import { useMeQuery } from '@/features/auth/model/api/hooks/use-me.query'
 
 export default function Home() {
+  const { data, isPending } = useMeQuery()
   return (
     <SafeAreaView style={styles.container}>
-      <Button title={'Button'} />
-      <Button title={'Button'} />
-      <Button title={'Button'} />
-      <Button title={'Button'} />
+      {data && <Text style={{ color: 'white' }}>{data.login}</Text>}
+
+      <LogoutButton />
     </SafeAreaView>
   )
 }
