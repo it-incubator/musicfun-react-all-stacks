@@ -1,63 +1,109 @@
-  name: Deploy musicfun-tanstack-query to GitHub Pages
+name: Deploy MusicFun Apps to GitHub Pages
 
-  on:
-    push:
-      branches: [main]
-    workflow_dispatch:
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
-  permissions:
-    contents: read
-    pages: write
-    id-token: write
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-  concurrency:
-    group: pages-deploy
-    cancel-in-progress: true
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-      steps:
-        - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-        - uses: actions/setup-node@v4
-          with:
-            node-version: lts/*
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
 
-        - uses: pnpm/action-setup@v4
-          with:
-            run_install: false
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
 
-        - name: Install deps
-          working-directory: apps/musicfun-tanstack-query
-          run: pnpm install --no-frozen-lockfile
+      - name: Install deps for tanstack-query
+        working-directory: apps/musicfun-tanstack-query
+        run: pnpm install --no-frozen-lockfile
 
-        - name: Build
-          working-directory: apps/musicfun-tanstack-query
-          run: pnpm build
+      - name: Install deps for rtk-query
+        working-directory: apps/musicfun-rtk-query
+        run: pnpm install --no-frozen-lockfile
 
-        - uses: actions/configure-pages@v5
-          with:
-            enablement: true
+      - name: Build tanstack-query
+        working-directory: apps/musicfun-tanstack-query
+        run: pnpm build
 
-        # ⬇️ СДЕЛАТЬ ДО upload-pages-artifact
-        - name: SPA fallback (404 -> index)
-          working-directory: apps/musicfun-tanstack-query/dist
-          run: |
-            cp index.html 404.html
-            touch .nojekyll
-            ls -la
+      - name: Build rtk-query
+        working-directory: apps/musicfun-rtk-query
+        run: pnpm build
 
-        - name: Add CNAME
-          run: echo 'app.musicfun.dev' > apps/musicfun-tanstack-query/dist/CNAME
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
-        - uses: actions/upload-pages-artifact@v3
-          with:
-            path: apps/musicfun-tanstack-query/dist
+      - name: Prepare deployment folder
+        run: |
+          mkdir -p dist/tanstackquery
+          mkdir -p dist/rtkquery
+          cp -r apps/musicfun-tanstack-query/dist/* dist/tanstackquery/
+          cp -r apps/musicfun-rtk-query/dist/* dist/rtkquery/
+          touch dist/.nojekyll
 
-        - id: deployment
-          uses: actions/deploy-pages@v4
+      - name: Create root index.html
+        run: |
+          cat > dist/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>MusicFun Apps</title>
+              <style>
+                body {
+                  font-family: system-ui, -apple-system, sans-serif;
+                  max-width: 600px;
+                  margin: 100px auto;
+                  padding: 20px;
+                }
+                h1 { color: #333; }
+                a {
+                  display: block;
+                  padding: 15px;
+                  margin: 10px 0;
+                  background: #f0f0f0;
+                  border-radius: 8px;
+                  text-decoration: none;
+                  color: #0066cc;
+                  transition: background 0.2s;
+                }
+                a:hover { background: #e0e0e0; }
+              </style>
+            </head>
+            <body>
+              <h1>MusicFun Applications</h1>
+              <a href="/tanstackquery/">TanStack Query App</a>
+              <a href="/rtkquery/">RTK Query App</a>
+            </body>
+          </html>
+          EOF
+
+      - name: Add CNAME
+        run: echo 'app.musicfun.dev' > dist/CNAME
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
