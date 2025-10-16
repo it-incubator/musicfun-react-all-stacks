@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  base: '/tanstackquery/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),

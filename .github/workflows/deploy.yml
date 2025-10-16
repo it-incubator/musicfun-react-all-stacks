@@ -1,63 +1,63 @@
-name: Deploy musicfun-tanstack-query to GitHub Pages
+  name: Deploy musicfun-tanstack-query to GitHub Pages
 
-on:
-  push:
-    branches: [deploy]
-  workflow_dispatch:
+  on:
+    push:
+      branches: [main]
+    workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+  permissions:
+    contents: read
+    pages: write
+    id-token: write
 
-concurrency:
-  group: pages-deploy
-  cancel-in-progress: true
+  concurrency:
+    group: pages-deploy
+    cancel-in-progress: true
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
 
-    steps:
-      - uses: actions/checkout@v4
+      steps:
+        - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
+        - uses: actions/setup-node@v4
+          with:
+            node-version: lts/*
 
-      - uses: pnpm/action-setup@v4
-        with:
-          run_install: false
+        - uses: pnpm/action-setup@v4
+          with:
+            run_install: false
 
-      - name: Install deps
-        working-directory: apps/musicfun-tanstack-query
-        run: pnpm install --no-frozen-lockfile
+        - name: Install deps
+          working-directory: apps/musicfun-tanstack-query
+          run: pnpm install --no-frozen-lockfile
 
-      - name: Build
-        working-directory: apps/musicfun-tanstack-query
-        run: pnpm build
+        - name: Build
+          working-directory: apps/musicfun-tanstack-query
+          run: pnpm build
 
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
+        - uses: actions/configure-pages@v5
+          with:
+            enablement: true
 
-      # ⬇️ СДЕЛАТЬ ДО upload-pages-artifact
-      - name: SPA fallback (404 -> index)
-        working-directory: apps/musicfun-tanstack-query/dist
-        run: |
-          cp index.html 404.html
-          touch .nojekyll
-          ls -la
+        # ⬇️ СДЕЛАТЬ ДО upload-pages-artifact
+        - name: SPA fallback (404 -> index)
+          working-directory: apps/musicfun-tanstack-query/dist
+          run: |
+            cp index.html 404.html
+            touch .nojekyll
+            ls -la
 
-      - name: Add CNAME
-        run: echo 'app.musicfun.dev' > apps/musicfun-tanstack-query/dist/CNAME
+        - name: Add CNAME
+          run: echo 'app.musicfun.dev' > apps/musicfun-tanstack-query/dist/CNAME
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: apps/musicfun-tanstack-query/dist
+        - uses: actions/upload-pages-artifact@v3
+          with:
+            path: apps/musicfun-tanstack-query/dist
 
-      - id: deployment
-        uses: actions/deploy-pages@v4
+        - id: deployment
+          uses: actions/deploy-pages@v4
