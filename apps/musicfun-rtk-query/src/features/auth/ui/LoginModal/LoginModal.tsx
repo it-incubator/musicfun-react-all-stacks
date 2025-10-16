@@ -28,7 +28,7 @@ export const LoginModal = () => {
    * and triggers the login mutation when the code is received.
    */
   const loginHandler = () => {
-    const redirectUri = `${import.meta.env.VITE_DOMAIN_ADDRESS}${Paths.OAuthRedirect}`
+    const redirectUri = `${window.location.origin}${Paths.OAuthRedirect}`
     const url = `${import.meta.env.VITE_BASE_URL}/auth/oauth-redirect?callbackUrl=${redirectUri}`
     window.open(url, 'oauthPopup', 'width=500,height=600')
 

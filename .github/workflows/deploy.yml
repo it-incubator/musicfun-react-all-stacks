@@ -60,41 +60,39 @@ jobs:
           cp -r apps/musicfun-rtk-query/dist/* dist/rtkquery/
           touch dist/.nojekyll
 
-      - name: Create root index.html
+      - name: Copy root index.html
+        run: cp public/index.html dist/index.html
+
+      - name: Create 404.html for SPA fallback
         run: |
-          cat > dist/index.html << 'EOF'
+          cat > dist/404.html << 'EOF'
           <!DOCTYPE html>
-          <html lang="en">
+          <html>
             <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>MusicFun Apps</title>
-              <style>
-                body {
-                  font-family: system-ui, -apple-system, sans-serif;
-                  max-width: 600px;
-                  margin: 100px auto;
-                  padding: 20px;
-                }
-                h1 { color: #333; }
-                a {
-                  display: block;
-                  padding: 15px;
-                  margin: 10px 0;
-                  background: #f0f0f0;
-                  border-radius: 8px;
-                  text-decoration: none;
-                  color: #0066cc;
-                  transition: background 0.2s;
-                }
-                a:hover { background: #e0e0e0; }
-              </style>
+              <meta charset="utf-8">
+              <title>Redirecting...</title>
+              <script>
+                // SPA redirect for GitHub Pages
+                (function() {
+                  var path = window.location.pathname;
+                  var search = window.location.search;
+                  var hash = window.location.hash;
+
+                  // Determine which app the path belongs to
+                  if (path.startsWith('/tanstackquery/') || path === '/tanstackquery') {
+                    var fullPath = path + search + hash;
+                    window.location.replace('/tanstackquery/?spa_redirect=' + encodeURIComponent(fullPath));
+                  } else if (path.startsWith('/rtkquery/') || path === '/rtkquery') {
+                    var fullPath = path + search + hash;
+                    window.location.replace('/rtkquery/?spa_redirect=' + encodeURIComponent(fullPath));
+                  } else {
+                    // Unknown path, redirect to home
+                    window.location.replace('/');
+                  }
+                })();
+              </script>
             </head>
-            <body>
-              <h1>MusicFun Applications</h1>
-              <a href="/tanstackquery/">TanStack Query App</a>
-              <a href="/rtkquery/">RTK Query App</a>
-            </body>
+            <body></body>
           </html>
           EOF
 
