@@ -60,7 +60,7 @@ setClientConfig({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename="/tanstackquery">
         <App />
         <PrerenderReady />
       </BrowserRouter>
