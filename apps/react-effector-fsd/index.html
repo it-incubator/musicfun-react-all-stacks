@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Musicfun Effector</title>
+    <!-- SPA redirect handler for GitHub Pages -->
+    <script>
+      ;(function () {
+        var redirect = sessionStorage.redirect
+        delete sessionStorage.redirect
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect)
+        }
+
+        // Check for spa_redirect query parameter
+        var searchParams = new URLSearchParams(window.location.search)
+        var spaRedirect = searchParams.get('spa_redirect')
+        if (spaRedirect) {
+          searchParams.delete('spa_redirect')
+          var newSearch = searchParams.toString()
+          var newUrl = decodeURIComponent(spaRedirect)
+          sessionStorage.redirect = newUrl
+          window.location.replace(window.location.pathname + (newSearch ? '?' + newSearch : ''))
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/app/main.tsx"></script>
+  </body>
+</html>

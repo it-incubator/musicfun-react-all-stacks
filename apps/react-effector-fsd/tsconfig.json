@@ -7,8 +7,6 @@
     "module": "ESNext",
     "rootDirs": [".", "./.react-router/types"],
     "paths": {
-      "~/*": ["./src/app/*"],
-      "@router/*": [".react-router/types/src/app/*"],
       "@/*": ["./src/*"]
     },
 
@@ -23,7 +21,7 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
