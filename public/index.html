@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MusicFun Apps - State Management Showcase</title>
     <style>
       * {
@@ -12,7 +12,13 @@
       }
 
       body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          'Roboto',
+          sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         display: flex;
@@ -92,6 +98,12 @@
       .app-card.reatom {
         --accent-color: #06b6d4;
         --accent-color-light: #22d3ee;
+      }
+
+      /* Effector card styles */
+      .app-card.effector {
+        --accent-color: #10b981;
+        --accent-color-light: #34d399;
       }
 
       .app-icon {
@@ -189,9 +201,7 @@
           <div class="app-icon">TQ</div>
           <h2 class="app-title">TanStack Query</h2>
           <p class="app-subtitle">Server State Management</p>
-          <p class="app-description">
-            Modern data fetching and caching with powerful hooks and automatic refetching.
-          </p>
+          <p class="app-description">Modern data fetching and caching with powerful hooks and automatic refetching.</p>
         </a>
 
         <a href="/rtkquery/" class="app-card rtk">
@@ -207,8 +217,15 @@
           <div class="app-icon">RA</div>
           <h2 class="app-title">Reatom</h2>
           <p class="app-subtitle">Atomic State Management</p>
+          <p class="app-description">Declarative and reactive state management with fine-grained reactivity.</p>
+        </a>
+
+        <a href="/effector/" class="app-card effector">
+          <div class="app-icon">EF</div>
+          <h2 class="app-title">Effector</h2>
+          <p class="app-subtitle">Reactive State Manager</p>
           <p class="app-description">
-            Declarative and reactive state management with fine-grained reactivity.
+            Predictable and fast state manager with events, stores and effects — great for complex apps.
           </p>
         </a>
       </div>

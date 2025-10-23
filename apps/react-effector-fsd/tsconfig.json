@@ -5,7 +5,6 @@
     "types": ["node", "vite/client"],
     "target": "ES2022",
     "module": "ESNext",
-    "rootDirs": [".", "./.react-router/types"],
     "paths": {
       "@/*": ["./src/*"]
     },
