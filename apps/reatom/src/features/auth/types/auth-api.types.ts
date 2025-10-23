@@ -1,5 +1,5 @@
-import type { components } from '../../../shared/api/schema.ts'
-import { getClientConfig } from '../../../shared/api/client.ts'
+import { getClientConfig } from '@/shared/api/client.ts'
+import type { components } from '@/shared/api/schema.ts'
 
 export type RefreshOutput = components['schemas']['RefreshOutput']
 

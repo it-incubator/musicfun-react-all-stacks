@@ -1,6 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { DownloadIcon, HomeIcon, LikeIcon, MoreIcon, PlayIcon, PlusIcon, SearchIcon } from '@/shared/icons'
+import {
+  DownloadIcon,
+  HomeIcon,
+  LikeIcon,
+  MoreIcon,
+  PlayIcon,
+  PlusIcon,
+  SearchIcon,
+} from '@/shared/icons'
 
 import { IconButton } from './IconButton'
 
@@ -33,8 +41,7 @@ export const AllIcons = {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '20px',
-      }}
-    >
+      }}>
       <IconButton aria-label="Home">
         <HomeIcon />
       </IconButton>

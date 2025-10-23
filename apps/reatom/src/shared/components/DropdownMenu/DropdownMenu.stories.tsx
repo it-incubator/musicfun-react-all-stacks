@@ -32,8 +32,12 @@ export const BasicDropdownMenu: Story = {
 
       <DropdownMenuContent>
         <DropdownMenuItem onClick={() => alert('Edit clicked!')}>Edit</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => alert('Add to playlist clicked!')}>Add to playlist</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>Show text song</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => alert('Add to playlist clicked!')}>
+          Add to playlist
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
+          Show text song
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   ),
@@ -109,8 +113,7 @@ export const DifferentAlignments: Story = {
         padding: '100px',
         alignItems: 'center',
         backgroundColor: 'var(--color-bg-secondary)',
-      }}
-    >
+      }}>
       <div>
         <Typography variant="caption" style={{ display: 'block', marginBottom: '8px' }}>
           Align Start
@@ -178,7 +181,11 @@ export const WithLinks: Story = {
           <CreateIcon />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem as="a" href="https://example.com" target="_blank" onClick={() => console.log('Link clicked')}>
+        <DropdownMenuItem
+          as="a"
+          href="https://example.com"
+          target="_blank"
+          onClick={() => console.log('Link clicked')}>
           <PlusIcon />
           Visit Website
         </DropdownMenuItem>
@@ -199,8 +206,7 @@ export const Interactive: Story = {
         gap: '20px',
         alignItems: 'center',
         padding: '40px',
-      }}
-    >
+      }}>
       <Typography variant="h3">Click the menu buttons to test functionality</Typography>
 
       <div style={{ display: 'flex', gap: '20px' }}>
@@ -223,11 +229,12 @@ export const Interactive: Story = {
               as="a"
               href="https://example.com"
               target="_blank"
-              onClick={() => console.log('External link clicked')}
-            >
+              onClick={() => console.log('External link clicked')}>
               Show lyrics online
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => console.log('Download clicked')}>Download</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => console.log('Download clicked')}>
+              Download
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem disabled>Share (coming soon)</DropdownMenuItem>
           </DropdownMenuContent>
@@ -241,11 +248,18 @@ export const Interactive: Story = {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="start">
-            <DropdownMenuItem onClick={() => console.log('Edit playlist')}>Edit playlist</DropdownMenuItem>
-            <DropdownMenuItem as="a" href="/share/playlist" onClick={() => console.log('Share playlist')}>
+            <DropdownMenuItem onClick={() => console.log('Edit playlist')}>
+              Edit playlist
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              as="a"
+              href="/share/playlist"
+              onClick={() => console.log('Share playlist')}>
               Share playlist
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => console.log('Delete playlist')}>Delete playlist</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => console.log('Delete playlist')}>
+              Delete playlist
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

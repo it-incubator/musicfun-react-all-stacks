@@ -12,7 +12,7 @@ export const useLogoutMutation = () => {
           body: {
             refreshToken: localStorage.getItem(localStorageKeys.refreshToken)!,
           },
-        }),
+        })
       )
     },
     onSuccess: async () => {

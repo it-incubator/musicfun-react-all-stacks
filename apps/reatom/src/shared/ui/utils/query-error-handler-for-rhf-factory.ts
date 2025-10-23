@@ -36,7 +36,12 @@ export const queryErrorHandlerForRHFFactory = <T extends FieldValues>({
   }
 }
 
-export const mutationGlobalErrorHandler = (error: Error, _: unknown, __: unknown, mutation: unknown) => {
+export const mutationGlobalErrorHandler = (
+  error: Error,
+  _: unknown,
+  __: unknown,
+  mutation: unknown
+) => {
   // 400 от сервера в JSON:API формате
   // @ts-expect-error ignore typing
   const globalFlag = (mutation.meta as MutationMeta)?.globalErrorHandler

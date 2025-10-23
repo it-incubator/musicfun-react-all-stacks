@@ -60,21 +60,24 @@ export const ControlledTabs = {
             <Typography variant="h3" style={{ marginBottom: '12px' }}>
               Second Tab Content
             </Typography>
-            <Typography variant="body2">This is content for the second tab with different information.</Typography>
+            <Typography variant="body2">
+              This is content for the second tab with different information.
+            </Typography>
           </TabsContent>
           <TabsContent value="tab3">
             <Typography variant="h3" style={{ marginBottom: '12px' }}>
               Third Tab Content
             </Typography>
-            <Typography variant="body2">And this is the third tab with its own unique content.</Typography>
+            <Typography variant="body2">
+              And this is the third tab with its own unique content.
+            </Typography>
           </TabsContent>
         </Tabs>
 
         <Card
           style={{
             marginTop: '20px',
-          }}
-        >
+          }}>
           <Typography variant="body2">
             Active tab: <strong>{activeTab}</strong>
           </Typography>

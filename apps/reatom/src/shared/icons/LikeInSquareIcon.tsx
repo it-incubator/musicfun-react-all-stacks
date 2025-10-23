@@ -1,7 +1,13 @@
 import type { SVGProps } from 'react'
 
 export const LikeInSquareIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="currentColor" viewBox="0 0 32 32" {...props}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={32}
+    height={32}
+    fill="currentColor"
+    viewBox="0 0 32 32"
+    {...props}>
     <rect width={32} height={32} fill="url(#a)" rx={2} />
     <path
       fill="#fff"

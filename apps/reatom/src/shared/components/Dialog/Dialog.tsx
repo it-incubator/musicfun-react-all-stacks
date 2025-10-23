@@ -73,7 +73,11 @@ export type DialogHeaderProps = {
   showCloseButton?: boolean
 }
 
-export const DialogHeader = ({ children, className, showCloseButton = true }: DialogHeaderProps) => {
+export const DialogHeader = ({
+  children,
+  className,
+  showCloseButton = true,
+}: DialogHeaderProps) => {
   const { onClose } = useDialogContext()
 
   return (

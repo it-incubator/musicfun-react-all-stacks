@@ -13,7 +13,14 @@ type PlaylistOverviewProps = {
   tags: string[]
 } & ComponentProps<'div'>
 
-export const PlaylistOverview = ({ title, image, description, tags, className, ...props }: PlaylistOverviewProps) => {
+export const PlaylistOverview = ({
+  title,
+  image,
+  description,
+  tags,
+  className,
+  ...props
+}: PlaylistOverviewProps) => {
   return (
     <div className={clsx(s.container, className)} {...props}>
       <div className={s.imageContainer}>

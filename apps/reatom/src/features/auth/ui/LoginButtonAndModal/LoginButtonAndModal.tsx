@@ -62,7 +62,13 @@ export const LoginButtonAndModal = () => {
           <Button className={clsx(s.button, s.secondary)} fullWidth onClick={handleCloseModal}>
             Continue without Sign in
           </Button>
-          <Button as="button" target="_blank" className={s.button} variant="primary" fullWidth onClick={loginHandler}>
+          <Button
+            as="button"
+            target="_blank"
+            className={s.button}
+            variant="primary"
+            fullWidth
+            onClick={loginHandler}>
             Sign in with APIHub
           </Button>
         </DialogContent>

@@ -1,5 +1,12 @@
 import { clsx } from 'clsx'
-import { type ComponentProps, type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react'
+import {
+  type ComponentProps,
+  type KeyboardEvent,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import { useGetId } from '@/shared/hooks'
 import { ArrowDownIcon, DeleteIcon } from '@/shared/icons'
@@ -50,7 +57,8 @@ export const Autocomplete = ({
   const id = useGetId(props.id)
 
   const filteredOptions = options.filter(
-    (option) => option.label.toLowerCase().includes(searchTerm.toLowerCase()) && !value.includes(option.value),
+    (option) =>
+      option.label.toLowerCase().includes(searchTerm.toLowerCase()) && !value.includes(option.value)
   )
 
   const isMaxTagsReached = maxTags ? value.length >= maxTags : false
@@ -143,12 +151,22 @@ export const Autocomplete = ({
   return (
     <div className={clsx(s.container, className)} ref={containerRef} {...props}>
       {label && (
-        <Typography variant="label" className={clsx(s.label, showError && s.labelError)} as="label" htmlFor={id}>
+        <Typography
+          variant="label"
+          className={clsx(s.label, showError && s.labelError)}
+          as="label"
+          htmlFor={id}>
           {label}
         </Typography>
       )}
 
-      <div className={clsx(s.inputWrapper, isOpen && s.focused, showError && s.error, disabled && s.disabled)}>
+      <div
+        className={clsx(
+          s.inputWrapper,
+          isOpen && s.focused,
+          showError && s.error,
+          disabled && s.disabled
+        )}>
         {/* Selected tags */}
         {selectedOptions.map((option) => (
           <div key={option.value} className={s.tag}>
@@ -161,8 +179,7 @@ export const Autocomplete = ({
                 className={s.deleteButton}
                 aria-label={`Remove ${option.label}`}
                 type="button"
-                tabIndex={-1}
-              >
+                tabIndex={-1}>
                 <DeleteIcon />
               </IconButton>
             )}
@@ -203,11 +220,10 @@ export const Autocomplete = ({
                 className={clsx(
                   s.option,
                   index === focusedIndex && s.optionFocused,
-                  option.disabled && s.optionDisabled,
+                  option.disabled && s.optionDisabled
                 )}
                 onClick={() => !option.disabled && selectOption(option)}
-                onMouseEnter={() => setFocusedIndex(index)}
-              >
+                onMouseEnter={() => setFocusedIndex(index)}>
                 <Typography variant="body2">{option.label}</Typography>
               </div>
             ))

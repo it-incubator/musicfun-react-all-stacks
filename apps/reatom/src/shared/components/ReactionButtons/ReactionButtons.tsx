@@ -46,8 +46,7 @@ export const ReactionButtons = ({
           }}
           className={clsx(s.button, isLiked && s.liked, size === 'large' && s.large)}
           aria-label={isLiked ? 'Remove like' : 'Like'}
-          type="button"
-        >
+          type="button">
           {isLiked ? (
             <LikeIconFill width={iconSize} height={iconSize} />
           ) : (
@@ -64,8 +63,7 @@ export const ReactionButtons = ({
         }}
         className={clsx(s.button, isDisliked && s.disliked, size === 'large' && s.large)}
         aria-label={isDisliked ? 'Remove dislike' : 'Dislike'}
-        type="button"
-      >
+        type="button">
         <DislikeIcon width={iconSize} height={iconSize} />
       </IconButton>
     </div>

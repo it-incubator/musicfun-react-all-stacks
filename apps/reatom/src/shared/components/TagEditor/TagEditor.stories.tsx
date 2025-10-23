@@ -22,7 +22,12 @@ export const Basic = {
 
     return (
       <div style={{ width: '400px' }}>
-        <TagEditor label="Tags" placeholder="Add tag and press Enter" value={tags} onTagsChange={setTags} />
+        <TagEditor
+          label="Tags"
+          placeholder="Add tag and press Enter"
+          value={tags}
+          onTagsChange={setTags}
+        />
       </div>
     )
   },
@@ -66,7 +71,14 @@ export const Disabled = {
 
 export const PrefilledTags = {
   render: () => {
-    const [tags, setTags] = useState(['JavaScript', 'TypeScript', 'React', 'Node.js', 'CSS', 'HTML'])
+    const [tags, setTags] = useState([
+      'JavaScript',
+      'TypeScript',
+      'React',
+      'Node.js',
+      'CSS',
+      'HTML',
+    ])
 
     return (
       <div style={{ width: '450px' }}>
@@ -94,8 +106,7 @@ export const Interactive = {
           display: 'flex',
           flexDirection: 'column',
           gap: '24px',
-        }}
-      >
+        }}>
         <div>
           <Typography variant="h3" style={{ marginBottom: '16px' }}>
             Frontend Technologies

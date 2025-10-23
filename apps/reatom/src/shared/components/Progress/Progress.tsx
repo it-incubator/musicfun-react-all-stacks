@@ -18,8 +18,7 @@ export const Progress = ({ value, max = 100, className, ...props }: ProgressProp
       aria-valuenow={value}
       aria-valuemin={0}
       aria-valuemax={max}
-      {...props}
-    >
+      {...props}>
       <div className={s.progressBar} style={{ width: `${percentage}%` }} />
     </div>
   )
