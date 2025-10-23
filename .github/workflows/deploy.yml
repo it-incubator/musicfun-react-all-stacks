@@ -44,6 +44,10 @@ jobs:
         working-directory: apps/reatom
         run: pnpm install --no-frozen-lockfile
 
+      - name: Install deps for effector
+        working-directory: apps/react-effector-fsd
+        run: pnpm install --no-frozen-lockfile
+
       - name: Build tanstack-query
         working-directory: apps/musicfun-tanstack-query
         run: pnpm build
@@ -54,6 +58,10 @@ jobs:
 
       - name: Build reatom
         working-directory: apps/reatom
+        run: pnpm build
+
+      - name: Build effector
+        working-directory: apps/react-effector-fsd
         run: pnpm build
 
       - uses: actions/configure-pages@v5
@@ -72,14 +80,20 @@ jobs:
         working-directory: apps/reatom/dist
         run: cp index.html 404.html
 
+      - name: SPA fallback for effector
+        working-directory: apps/react-effector-fsd/dist
+        run: cp index.html 404.html
+
       - name: Prepare deployment folder
         run: |
           mkdir -p dist/tanstackquery
           mkdir -p dist/rtkquery
           mkdir -p dist/reatom
+          mkdir -p dist/effector
           cp -r apps/musicfun-tanstack-query/dist/* dist/tanstackquery/
           cp -r apps/musicfun-rtk-query/dist/* dist/rtkquery/
           cp -r apps/reatom/dist/* dist/reatom/
+          cp -r apps/react-effector-fsd/dist/* dist/effector/
           touch dist/.nojekyll
 
       - name: Copy root index.html
