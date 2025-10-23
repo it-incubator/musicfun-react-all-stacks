@@ -8,23 +8,27 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc",
+    "start": "vite ./build/server/index.js",
+    "typecheck": "tsc --watch",
     "generate:api": "pnpm openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/shared/api/schema.ts --root-types --enum --enum-values --dedupe-enums"
   },
   "dependencies": {
     "@react-router/node": "^7.9.4",
     "@react-router/serve": "^7.9.4",
     "clsx": "^2.1.1",
+    "effector": "^23.4.4",
+    "effector-react": "^23.3.0",
     "isbot": "^5.1.31",
     "openapi-fetch": "^0.14.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router": "^7.9.4"
+    "react-router": "^7.9.4",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
     "@react-router/dev": "^7.9.4",
+    "@storybook/react-vite": "^9.1.13",
     "@tailwindcss/vite": "^4.1.14",
     "@types/node": "^24.7.2",
     "@types/react": "^19.2.2",
