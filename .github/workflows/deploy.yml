@@ -40,12 +40,20 @@ jobs:
         working-directory: apps/musicfun-rtk-query
         run: pnpm install --no-frozen-lockfile
 
+      - name: Install deps for reatom
+        working-directory: apps/reatom
+        run: pnpm install --no-frozen-lockfile
+
       - name: Build tanstack-query
         working-directory: apps/musicfun-tanstack-query
         run: pnpm build
 
       - name: Build rtk-query
         working-directory: apps/musicfun-rtk-query
+        run: pnpm build
+
+      - name: Build reatom
+        working-directory: apps/reatom
         run: pnpm build
 
       - uses: actions/configure-pages@v5
@@ -60,12 +68,18 @@ jobs:
         working-directory: apps/musicfun-rtk-query/dist
         run: cp index.html 404.html
 
+      - name: SPA fallback for reatom
+        working-directory: apps/reatom/dist
+        run: cp index.html 404.html
+
       - name: Prepare deployment folder
         run: |
           mkdir -p dist/tanstackquery
           mkdir -p dist/rtkquery
+          mkdir -p dist/reatom
           cp -r apps/musicfun-tanstack-query/dist/* dist/tanstackquery/
           cp -r apps/musicfun-rtk-query/dist/* dist/rtkquery/
+          cp -r apps/reatom/dist/* dist/reatom/
           touch dist/.nojekyll
 
       - name: Copy root index.html

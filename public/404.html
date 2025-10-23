@@ -17,6 +17,9 @@
         } else if (path.startsWith('/rtkquery/') || path === '/rtkquery') {
           var fullPath = path + search + hash;
           window.location.replace('/rtkquery/?spa_redirect=' + encodeURIComponent(fullPath));
+        } else if (path.startsWith('/reatom/') || path === '/reatom') {
+          var fullPath = path + search + hash;
+          window.location.replace('/reatom/?spa_redirect=' + encodeURIComponent(fullPath));
         } else {
           // Unknown path, redirect to home
           window.location.replace('/');
