@@ -14,7 +14,7 @@ import s from './Layout.module.css'
 import { Sidebar } from './Sidebar'
 
 export const Layout = () => {
-  const IS_PLAYER_OPEN = false
+  const IS_PLAYER_OPEN = true
   const isCreatePlaylistModalOpen = useAppSelector(selectIsCreateEditModalOpen)
   const isCreateTrackModalOpen = useAppSelector(selectIsCreateEditTrackModalOpen)
   const isAuthModalOpen = useAppSelector(selectIsAuthModalOpen)

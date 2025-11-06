@@ -13,11 +13,13 @@ export const TrackRow = <T extends TrackRowData>({
   playingTrackId,
   playingTrackProgress,
   renderActionsCell,
+  onTrackPlayClick,
 }: {
   renderActionsCell: (trackRow: T) => ReactNode
   trackRow: T
   playingTrackId?: string
   playingTrackProgress?: number
+  onTrackPlayClick?: (trackId: string) => void
 }) => {
   const isPlaying = playingTrackId === trackRow.id
 
@@ -32,6 +34,8 @@ export const TrackRow = <T extends TrackRowData>({
         title={trackRow.title}
         artists={trackRow.artists}
         isPlaying={isPlaying}
+        onTrackPlayClick={onTrackPlayClick}
+        url={trackRow.url}
       />
       <TableCell>
         {isPlaying && (
