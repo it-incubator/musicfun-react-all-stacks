@@ -29,6 +29,7 @@ export const TrackInfoCell = ({
     <TableCell>
       <div className={s.box}>
         <div className={s.image} onClick={handlePlayClick}>
+          {/* todo:task extrack track cover to sepaarate component and create plceholder photo if no photo */}
           <img src={image} alt={title} />
         </div>
         <div className={s.info}>

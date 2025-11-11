@@ -20,6 +20,8 @@ export const TracksTab = () => {
     // setIsUploadTrackModalOpen(true)
   }
 
+  // todo:task load user tracks
+
   return (
     <>
       <Button className={s.uploadTrackButton} onClick={openUploadTrackModal}>
@@ -44,8 +46,13 @@ export const TracksTab = () => {
                   <MoreIcon />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
+                  {/* todo:task if it's current logined user track, show edit popup and implement edit */}
                   <DropdownMenuItem onClick={() => alert('Edit clicked!')}>Edit</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => alert('Add to playlist clicked!')}>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      // todo:task implement feature
+                      alert('Add to playlist clicked!')
+                    }}>
                     Add to playlist
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
