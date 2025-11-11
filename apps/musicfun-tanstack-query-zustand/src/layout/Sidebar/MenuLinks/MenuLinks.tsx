@@ -47,12 +47,16 @@ const createLinks: MenuLink[] = [
 export const MenuLinks = () => {
   const actionButtons: MenuButton[] = [
     {
-      onClick: () => {},
+      onClick: () => {
+        // todo:task, implement upload track
+      },
       icon: <UploadIcon />,
       label: 'Upload Track',
     },
     {
-      onClick: () => {},
+      onClick: () => {
+        // todo:task, implement create playlist
+      },
       icon: <CreateIcon />,
       label: 'Create Playlist',
     },

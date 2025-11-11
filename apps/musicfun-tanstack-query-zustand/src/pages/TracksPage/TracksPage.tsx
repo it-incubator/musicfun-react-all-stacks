@@ -22,6 +22,9 @@ export const TracksPage = () => {
   const [hashtags, setHashtags] = useState<string[]>([])
   const [artists, setArtists] = useState<string[]>([])
 
+  // todo:task search tracks filter w/o trhotling/debounce
+  // add sorting;
+
   const { data, isPending, isError } = useTracksQuery({})
 
   const { play } = usePlayerStore()

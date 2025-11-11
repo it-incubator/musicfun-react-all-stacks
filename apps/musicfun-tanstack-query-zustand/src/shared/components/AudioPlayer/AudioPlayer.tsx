@@ -66,6 +66,7 @@ export const AudioPlayer = ({
     // }
   }
 
+  // todo:task .. implement volume (add to store: volume,setVolume)
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(e.target.value)
     setVolume(newVolume)
@@ -74,6 +75,7 @@ export const AudioPlayer = ({
     // }
   }
 
+  // todo:task .. implement mute (add to store: muteStatus/toggleMute)
   const handleVolumeMute = () => {
     const newVolume = volume > 0 ? 0 : 1
     setVolume(newVolume)
