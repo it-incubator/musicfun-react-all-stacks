@@ -1,0 +1,58 @@
+.label {
+  font-size: var(--font-size-s);
+  line-height: 1.7;
+  color: var(--color-text-label);
+}
+
+.error {
+  font-size: var(--font-size-s);
+  color: var(--color-text-error);
+}
+
+.h1 {
+  font-size: var(--font-size-xxxl);
+  line-height: 1.3;
+}
+
+.h2 {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.h3 {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.body1 {
+  margin: 0;
+  font-size: var(--font-size-l);
+  font-weight: 400;
+}
+
+.body2 {
+  margin: 0;
+  font-size: var(--font-size-m);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.body3 {
+  margin: 0;
+  font-size: var(--font-size-xxs);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* ------------------------------------------------------------ */
+
+.caption {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.66;
+}

@@ -1,0 +1,46 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.textarea {
+  resize: none;
+
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border-input-primary);
+  border-radius: 4px;
+
+  font-size: var(--font-size-m);
+  color: var(--color-text-primary);
+
+  background-color: var(--color-bg-primary);
+  outline: none;
+
+  transition:
+    200ms background-color,
+    200ms color,
+    200ms border-color;
+}
+
+.textarea:disabled {
+  color: var(--color-disabled);
+}
+
+.textarea:focus,
+.textarea:active:enabled {
+  border-color: var(--color-border-input-active);
+}
+
+.textarea:hover:not(:disabled) {
+  background-color: var(--color-bg-input-hover);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.textarea.error {
+  border-color: var(--color-text-error);
+}

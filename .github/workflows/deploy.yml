@@ -1,0 +1,113 @@
+name: Deploy MusicFun Apps to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install deps for tanstack-query
+        working-directory: apps/musicfun-tanstack-query
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install deps for rtk-query
+        working-directory: apps/musicfun-rtk-query
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install deps for reatom
+        working-directory: apps/reatom
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install deps for effector
+        working-directory: apps/react-effector-fsd
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build tanstack-query
+        working-directory: apps/musicfun-tanstack-query
+        run: pnpm build
+
+      - name: Build rtk-query
+        working-directory: apps/musicfun-rtk-query
+        run: pnpm build
+
+      - name: Build reatom
+        working-directory: apps/reatom
+        run: pnpm build
+
+      - name: Build effector
+        working-directory: apps/react-effector-fsd
+        run: pnpm build
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: SPA fallback for tanstack-query
+        working-directory: apps/musicfun-tanstack-query/dist
+        run: cp index.html 404.html
+
+      - name: SPA fallback for rtk-query
+        working-directory: apps/musicfun-rtk-query/dist
+        run: cp index.html 404.html
+
+      - name: SPA fallback for reatom
+        working-directory: apps/reatom/dist
+        run: cp index.html 404.html
+
+      - name: SPA fallback for effector
+        working-directory: apps/react-effector-fsd/dist
+        run: cp index.html 404.html
+
+      - name: Prepare deployment folder
+        run: |
+          mkdir -p dist/tanstackquery
+          mkdir -p dist/rtkquery
+          mkdir -p dist/reatom
+          mkdir -p dist/effector
+          cp -r apps/musicfun-tanstack-query/dist/* dist/tanstackquery/
+          cp -r apps/musicfun-rtk-query/dist/* dist/rtkquery/
+          cp -r apps/reatom/dist/* dist/reatom/
+          cp -r apps/react-effector-fsd/dist/* dist/effector/
+          touch dist/.nojekyll
+
+      - name: Copy root index.html
+        run: cp public/index.html dist/index.html
+
+      - name: Copy root 404.html
+        run: cp public/404.html dist/404.html
+
+      - name: Add CNAME
+        run: echo 'app.musicfun.dev' > dist/CNAME
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

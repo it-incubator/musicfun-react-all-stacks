@@ -1,0 +1,17 @@
+.cardBox {
+  width: 300px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.title {
+  word-break: break-all;
+}
+
+.deletePlaylistButton {
+  all: unset;
+}

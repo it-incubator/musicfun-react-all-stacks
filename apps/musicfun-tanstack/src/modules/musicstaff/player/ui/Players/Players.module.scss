@@ -1,0 +1,62 @@
+.bg,
+.playBeatButton {
+  margin: 0 30px;
+  position: fixed;
+  right: 0;
+  bottom: 20px;
+  border: none;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  background: var(--highlight);
+  background-size: 18px;
+  cursor: pointer;
+  outline: none;
+  width: 40px;
+  height: 40px;
+
+  &:after {
+    display: inline-block;
+    cursor: pointer;
+    content: '';
+    background-size: cover;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.play {
+  background: var(--player-play-icon) center no-repeat;
+}
+
+.bg {
+  animation: pulse 1.4s ease infinite;
+  background: var(--highlight);
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  position: fixed;
+}
+
+.playBeatButton a {
+  position: absolute;
+  color: white;
+  font-size: 17px;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1.1);
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.3);
+  }
+}

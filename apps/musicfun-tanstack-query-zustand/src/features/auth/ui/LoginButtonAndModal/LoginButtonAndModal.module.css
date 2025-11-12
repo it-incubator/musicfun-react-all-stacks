@@ -1,0 +1,35 @@
+.dialog {
+  width: 376px;
+  padding-bottom: 22px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+
+  text-align: center;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  font-size: 24px;
+
+  background-color: var(--color-accent);
+}
+
+.button {
+  height: 55px;
+}
+
+.secondary {
+  background-color: #555;
+}

@@ -1,0 +1,42 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.list + .list {
+  padding-top: 20px;
+  border-top: 1px solid var(--color-bg-secondary);
+}
+
+.link {
+  all: unset;
+
+  cursor: pointer;
+
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  width: fit-content;
+
+  font-size: var(--font-size-m);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--color-text-primary);
+}
+
+.active {
+  color: var(--color-text-primary);
+}

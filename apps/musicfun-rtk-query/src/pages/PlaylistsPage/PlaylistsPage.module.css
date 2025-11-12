@@ -1,0 +1,24 @@
+.title {
+  margin-bottom: 24px;
+}
+
+.pagination {
+  margin-top: 32px;
+}
+
+.controls {
+  margin-bottom: 32px;
+}
+
+.controlsRow {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 32px;
+}
+
+.searchTags {
+  max-width: 513px;
+}

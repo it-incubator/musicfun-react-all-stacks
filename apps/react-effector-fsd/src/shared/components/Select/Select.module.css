@@ -1,0 +1,101 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+  height: 40px;
+  padding: 8px 36px 8px 12px;
+  border: none;
+
+  font-size: var(--font-size-m);
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  appearance: none;
+  background-color: transparent;
+  outline: none;
+
+  transition:
+    200ms background-color,
+    200ms color;
+}
+
+.select:disabled {
+  cursor: not-allowed;
+  color: var(--color-disabled);
+}
+
+.select:focus-visible {
+  background-color: var(--color-bg-input-hover);
+}
+
+.select:hover:not(:disabled) {
+  background-color: var(--color-bg-input-hover);
+}
+
+.select.error {
+  border-color: var(--color-text-error);
+}
+
+/* Style dropdown options */
+.select option {
+  padding: 8px 12px;
+
+  font-size: var(--font-size-m);
+  color: var(--color-text-primary);
+
+  background-color: var(--color-bg-secondary);
+
+  transition: background-color 200ms ease;
+}
+
+.select option:hover {
+  background-color: var(--color-bg-input-hover);
+}
+
+.select option:checked {
+  font-weight: 600;
+  color: var(--color-accent);
+  background-color: var(--color-bg-input-hover);
+}
+
+.select option:disabled {
+  color: var(--color-disabled);
+}
+
+/* Custom dropdown icon */
+.icon {
+  pointer-events: none;
+
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+
+  width: 20px;
+  height: 20px;
+
+  color: var(--color-text-secondary);
+
+  transition:
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+/* Rotate icon when dropdown is open */
+.select:open + .icon {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.label.error {
+  color: var(--color-text-error);
+}

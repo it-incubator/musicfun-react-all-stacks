@@ -1,0 +1,11 @@
+.box {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.playButton {
+  width: 80px;
+  height: 80px;
+}

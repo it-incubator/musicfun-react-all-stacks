@@ -1,0 +1,37 @@
+.selected {
+  opacity: 1;
+  background-color: rgb(255 56 182 / 30%);
+  outline: 1px solid #e052c6;
+  box-shadow: 0 0 0 2px #e052c6;
+}
+
+.chooseButton {
+  all: unset;
+
+  cursor: pointer;
+
+  display: flex;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border-input-primary);
+  border-radius: 4px;
+
+  font-size: var(--font-size-m);
+  color: var(--color-text-primary);
+
+  background-color: var(--color-bg-primary);
+  outline: none;
+
+  transition:
+    200ms background-color,
+    200ms color,
+    200ms border-color;
+}
+
+.chooseButton:hover,
+.chooseButton:focus {
+  background-color: var(--color-bg-input-hover);
+}

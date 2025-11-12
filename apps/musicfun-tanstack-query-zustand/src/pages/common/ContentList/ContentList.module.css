@@ -1,0 +1,10 @@
+.title {
+  margin-bottom: 20px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--list-gap, 8px);
+  padding-bottom: 8px;
+}

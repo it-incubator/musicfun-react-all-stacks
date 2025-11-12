@@ -1,0 +1,14 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1260px;
+  margin: 0 auto 200px;
+  box-sizing: border-box;
+}
+
+.layoutContent {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}

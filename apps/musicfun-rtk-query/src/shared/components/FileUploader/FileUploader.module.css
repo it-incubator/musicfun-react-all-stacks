@@ -1,0 +1,76 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+
+  width: 100%;
+}
+
+.uploadButton {
+  cursor: pointer;
+
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 280px;
+  min-height: 64px;
+  padding: 0 32px;
+  border: none;
+  border-radius: 12px;
+
+  font-size: var(--font-size-m);
+  font-weight: 500;
+  color: var(--color-text-primary);
+
+  background-color: var(--color-bg-interactive-secondary);
+  box-shadow: 0 2px 16px 0 rgb(0 0 0 / 12%);
+
+  transition: background 0.2s;
+}
+
+.uploadButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.uploadButton:hover:not(:disabled),
+.uploadButton:focus-visible:not(:disabled) {
+  background: var(--color-bg-input-hover);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-text-primary);
+}
+
+.input {
+  display: none;
+}
+
+.fileNameBox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  min-width: 220px;
+  min-height: 40px;
+  margin-top: 8px;
+  padding: 0 20px;
+  border-radius: 10px;
+
+  font-size: var(--font-size-m);
+  font-weight: 400;
+  color: var(--color-text-primary);
+
+  background: var(--color-bg-secondary);
+  box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
+}
+
+.fileNameBox .icon {
+  width: 20px;
+  height: 20px;
+}

@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  gap: 8px;
+  align-items: start;
+  width: fit-content;
+}
+
+.button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  transition: color 200ms ease;
+}
+
+.button.large {
+  width: 40px;
+  height: 40px;
+}
+
+.button.liked {
+  color: var(--color-accent);
+}
+
+.button.disliked {
+  color: var(--color-accent);
+}
+
+.button:enabled:hover:is(.liked, .disliked),
+.button:enabled:focus:is(.liked, .disliked) {
+  color: var(--color-accent);
+  background-color: var(--color-bg-input-hover);
+}
+
+.likesCountBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.likesCount {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+}

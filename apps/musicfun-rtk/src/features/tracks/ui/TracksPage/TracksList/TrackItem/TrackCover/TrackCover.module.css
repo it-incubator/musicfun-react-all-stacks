@@ -1,0 +1,7 @@
+.cover {
+  width: 150px;
+}
+
+.cover ~ button {
+  max-width: fit-content;
+}

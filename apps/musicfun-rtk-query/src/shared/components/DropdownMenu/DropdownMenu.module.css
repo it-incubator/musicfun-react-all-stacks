@@ -1,0 +1,124 @@
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.trigger {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+
+  font-size: var(--font-size-s);
+  color: var(--color-text-secondary);
+
+  background: transparent;
+
+  transition: all 200ms ease;
+}
+
+.trigger:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.trigger:enabled:hover,
+.trigger:enabled:focus-visible {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-input-hover);
+}
+
+.content {
+  z-index: 50;
+
+  min-width: 160px;
+  padding: 4px;
+  border-radius: 8px;
+
+  background-color: var(--color-bg-primary);
+  outline: none;
+  box-shadow:
+    0 10px 38px -10px rgb(22 23 24 / 35%),
+    0 10px 20px -15px rgb(22 23 24 / 20%);
+
+  /* HeadlessUI transition classes */
+}
+
+.content[data-closed] {
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+.content[data-open] {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Alignment styles for HeadlessUI positioning */
+.content.align-start {
+  transform-origin: top left;
+}
+
+.content.align-center {
+  transform-origin: top center;
+}
+
+.content.align-end {
+  transform-origin: top right;
+}
+
+.content.side-top {
+  transform-origin: bottom;
+}
+
+.item {
+  cursor: pointer;
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+
+  font-size: var(--font-size-m);
+  color: var(--color-text-primary);
+  text-align: left;
+
+  background: transparent;
+
+  transition: all 200ms ease;
+}
+
+.item:focus,
+.item[data-focus] {
+  background-color: var(--color-accent);
+  outline: none;
+}
+
+.item:hover:not(:disabled) {
+  background-color: var(--color-accent);
+}
+
+.itemDisabled {
+  cursor: not-allowed;
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.itemDisabled:hover {
+  background: transparent;
+}
+
+.separator {
+  height: 1px;
+  margin: 4px 0;
+  background-color: var(--color-border-base);
+}

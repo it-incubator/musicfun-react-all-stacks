@@ -1,0 +1,8 @@
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+  gap: 20px;
+}

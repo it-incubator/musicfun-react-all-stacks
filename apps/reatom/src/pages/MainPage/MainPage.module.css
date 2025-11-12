@@ -1,0 +1,9 @@
+.mainPage {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.artistsList {
+  --list-gap: 24px;
+}

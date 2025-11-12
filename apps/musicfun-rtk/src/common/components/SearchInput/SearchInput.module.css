@@ -1,0 +1,37 @@
+.inputWrapper {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 18px;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.search {
+  width: 100%;
+  padding: 20px 50px 20px 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #cfd8dc;
+  box-sizing: border-box;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.search:focus {
+  border: 1px solid #3b82f6;
+}
+
+.inputLoader {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
