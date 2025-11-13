@@ -36,7 +36,6 @@ export const AudioPlayer = ({
   className,
   ...props
 }: PlayerProps) => {
-  const [volume, setVolume] = useState(1)
 
   const {
     currentTrack: track,
@@ -46,6 +45,10 @@ export const AudioPlayer = ({
     pause,
     currentTime,
     seek,
+    volume,
+    isMuted,
+    setVolume,
+    toggleMute
   } = usePlayerStore()
 
   const isPlaying = currentState === 'playing'
@@ -70,18 +73,12 @@ export const AudioPlayer = ({
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(e.target.value)
     setVolume(newVolume)
-    // if (audioRef.current) {
-    //   audioRef.current.volume = newVolume
-    // }
+  
   }
 
   // todo:task .. implement mute (add to store: muteStatus/toggleMute)
   const handleVolumeMute = () => {
-    const newVolume = volume > 0 ? 0 : 1
-    setVolume(newVolume)
-    // if (audioRef.current) {
-    //   audioRef.current.volume = newVolume
-    // }
+    toggleMute()
   }
 
   if (!track) {
@@ -146,7 +143,7 @@ export const AudioPlayer = ({
 
       <div className={s.volumeColumn}>
         <IconButton onClick={handleVolumeMute}>
-          {volume > 0 ? <VolumeIcon /> : <VolumeMuteIcon />}
+          {isMuted || volume === 0 ? <VolumeMuteIcon /> : <VolumeIcon />}
         </IconButton>
         <input
           type="range"

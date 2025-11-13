@@ -7,9 +7,14 @@ export type PlayerStore = {
   duration: number
   currentTime: number
   currentTrack: CurrentTrack | null
+  volume: number
+  prevVolume: number | null
+  isMuted: boolean
   play: (track: CurrentTrack) => void
   pause: () => void
   seek: (time: number) => void
+  setVolume: (volume: number) => void
+  toggleMute: () => void
 }
 
 const audio = new Audio()
@@ -28,6 +33,10 @@ export const usePlayerStore = create<PlayerStore>((set, get) => {
     duration: 0,
     currentTime: 0,
     currentTrack: null,
+    volume: 1,
+    prevVolume: null,
+    isMuted: false,
+
     play(track) {
       const prevTrack = get().currentTrack
       if (prevTrack?.id !== track.id) {
@@ -44,6 +53,23 @@ export const usePlayerStore = create<PlayerStore>((set, get) => {
     },
     seek(time) {
       audio.currentTime = time
+    },
+    setVolume(volume) {
+      audio.volume = volume
+      set({ volume, isMuted: volume === 0 })
+    },
+    toggleMute() {
+      const { isMuted, volume, prevVolume } = get()
+
+      if (isMuted) {
+        const restoredVolume = prevVolume ?? 1
+        audio.muted = false
+        audio.volume = restoredVolume
+        set({ isMuted: false, volume: restoredVolume, prevVolume: null })
+      } else {
+        audio.muted = true
+        set({ isMuted: true, prevVolume: volume, volume: 0 })
+      }
     },
   }
 })
