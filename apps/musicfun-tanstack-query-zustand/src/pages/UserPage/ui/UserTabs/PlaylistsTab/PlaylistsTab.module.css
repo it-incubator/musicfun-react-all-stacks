@@ -6,3 +6,10 @@
   margin: 0 auto;
   margin-bottom: 24px;
 }
+
+.emptyState {
+  text-align: center;
+  padding: 60px 0;
+  color: #888;
+  font-size: 16px;
+}
