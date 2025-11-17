@@ -1,6 +1,7 @@
-// import { useState } from 'react'
+import { useState } from 'react'
 
 import { MOCK_TRACKS, TracksTable } from '@/features/tracks'
+import { CreateTrackModal } from '@/features/tracks/ui/CreateTrackForm/CreateTrackModal'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { Button } from '@/shared/components'
 import {
@@ -14,10 +15,10 @@ import { MoreIcon } from '@/shared/icons'
 import s from './TracksTab.module.css'
 
 export const TracksTab = () => {
-  // const [isUploadTrackModalOpen, setIsUploadTrackModalOpen] = useState(false) // STATE FOR TESTING
+  const [isUploadTrackModalOpen, setIsUploadTrackModalOpen] = useState(false) // STATE FOR TESTING
 
   const openUploadTrackModal = () => {
-    // setIsUploadTrackModalOpen(true)
+    setIsUploadTrackModalOpen(true)
   }
 
   // todo:task load user tracks
@@ -27,6 +28,9 @@ export const TracksTab = () => {
       <Button className={s.uploadTrackButton} onClick={openUploadTrackModal}>
         Upload Track
       </Button>
+      {isUploadTrackModalOpen && (
+        <CreateTrackModal onClose={() => setIsUploadTrackModalOpen(false)} />
+      )}
       <TracksTable
         trackRows={MOCK_TRACKS.map((track, index) => ({
           index,
