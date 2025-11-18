@@ -53,13 +53,11 @@ export const MenuLinks = () => {
 
   const actionButtons: MenuButton[] = [
     {
-      // todo:task, implement upload track
       onClick: () => setIsCreateTrackOpen(true),
       icon: <UploadIcon />,
       label: 'Upload Track',
     },
     {
-      // todo:task, implement upload playlist
       onClick: () => setIsCreatePlaylistOpen(true),
       icon: <CreateIcon />,
       label: 'Create Playlist',

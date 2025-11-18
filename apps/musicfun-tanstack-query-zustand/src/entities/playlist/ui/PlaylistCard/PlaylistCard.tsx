@@ -1,12 +1,13 @@
 import type { FC, ReactNode } from 'react'
 import { Link } from 'react-router'
 
+import { useDeletePlaylist } from '@/pages/PlaylistsPage/model/useDeletePlaylist'
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
-import { Card, Typography } from '@/shared/components'
+import { Button, Card, Typography } from '@/shared/components'
+import { VU } from '@/shared/utils'
 
 import stab from '../../../../assets/img/no-cover.png'
 import s from './PlaylistCard.module.css'
-import { VU } from '@/shared/utils'
 
 type PlaylistCardPropsBase = {
   id: string
@@ -21,11 +22,17 @@ type PlaylistCardProps = PlaylistCardPropsBase & {
 
 export const PlaylistCard: FC<PlaylistCardProps> = (props) => {
   const { title, images, description, id, render } = props
+  const { mutate } = useDeletePlaylist()
 
   let imageSrc = images?.main?.length ? images.main[0].url : undefined
 
   if (!imageSrc) {
     imageSrc = stab
+  }
+
+  const handleDeletePlaylist = (e: MouseEvent) => {
+    e.preventDefault()
+    mutate(id)
   }
 
   return (
@@ -40,6 +47,9 @@ export const PlaylistCard: FC<PlaylistCardProps> = (props) => {
         {description}
       </Typography>
       {VU.isFunction(render) && render()}
+      <Button className={s.btnDelete} onClick={handleDeletePlaylist}>
+        Delete
+      </Button>
     </Card>
   )
 }
