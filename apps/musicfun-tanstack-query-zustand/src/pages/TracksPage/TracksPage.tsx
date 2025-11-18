@@ -80,6 +80,7 @@ export const TracksPage = () => {
         </div>
       </div>
 
+      {/* todo:task add infinity scroll ( for first version add button Show More ) */}
       <TracksTable
         trackRows={data?.data.map((track, index) => ({
           index,
@@ -101,6 +102,7 @@ export const TracksPage = () => {
             playingTrackProgress={20}
             onPlayClick={handleClickPlay}
             renderActionsCell={() => (
+              // todo:task Implement like/dislike
               <>
                 <ReactionButtons
                   reaction={trackRow.currentUserReaction}
@@ -110,6 +112,7 @@ export const TracksPage = () => {
                 />
                 <DropdownMenu>
                   <DropdownMenuTrigger>
+                    {/* implement add to playlist (via popup, see figma) */}
                     <MoreIcon />
                   </DropdownMenuTrigger>
                 </DropdownMenu>

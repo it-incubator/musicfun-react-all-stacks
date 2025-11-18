@@ -6,39 +6,16 @@ import { getClient } from '@/shared/api/client.ts'
 import type { SchemaGetPlaylistsRequestPayload, SchemaReactionOutput } from '@/shared/api/schema.ts'
 import { VU } from '@/shared/utils'
 
-export const usePlaylists = ({
-  search,
-  pageNumber,
-  pageSize,
-  userId,
-  sortBy,
-  sortDirection,
-  tagsIds,
-  trackId,
-}: SchemaGetPlaylistsRequestPayload) => {
+export const usePlaylists = (params: SchemaGetPlaylistsRequestPayload) => {
   const query = useQuery({
-    queryKey: playlistsKeys.list({
-      search,
-      pageNumber,
-      pageSize,
-      userId,
-      sortBy,
-      sortDirection,
-      tagsIds,
-      trackId,
-    }),
+    queryKey: playlistsKeys.list(params),
     queryFn: () => {
       return getClient().GET('/playlists', {
         params: {
           query: {
-            search: search || void 0,
-            pageNumber,
-            pageSize,
-            userId,
-            sortBy,
-            sortDirection,
-            tagsIds: VU.isValid(tagsIds) ? tagsIds : void 0,
-            trackId,
+            ...params,
+            search: params.search || undefined,
+            tagsIds: VU.isValid(params.tagsIds) ? params.tagsIds : undefined,
           },
         },
       })

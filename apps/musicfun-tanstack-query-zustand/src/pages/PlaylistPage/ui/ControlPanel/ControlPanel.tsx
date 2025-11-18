@@ -18,7 +18,7 @@ export const ControlPanel = () => {
       </IconButton>
 
       <ReactionButtons reaction={0} onLike={() => {}} onDislike={() => {}} size="large" />
-
+      {/* todo:task add delete button for playlist owner and implement logic */}
       <DropdownMenu>
         <DropdownMenuTrigger>
           <MoreIcon />

@@ -21,6 +21,7 @@ export const TrackRow = <T extends TrackRowData>({
   playingTrackProgress?: number
   onPlayClick?: (trackId: string) => void
 }) => {
+  // todo:task Implement this logic
   const isPlaying = playingTrackId === trackRow.id
 
   return (
