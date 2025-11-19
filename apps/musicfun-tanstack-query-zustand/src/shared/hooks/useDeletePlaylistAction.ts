@@ -2,12 +2,11 @@ import { toast } from 'react-toastify'
 
 import { useDeletePlaylist } from '@/pages/PlaylistsPage/model/useDeletePlaylist'
 
+/*for delete Playlist into Playlist modal and PlaylistCard*/
 export const useDeletePlaylistAction = (playlistId: string) => {
   const { mutate } = useDeletePlaylist()
 
-  return (e: MouseEvent) => {
-    e.preventDefault()
-
+  return () => {
     if (confirm('Do you want to delete the playlist?')) {
       mutate(playlistId, {
         onSuccess: () => {
