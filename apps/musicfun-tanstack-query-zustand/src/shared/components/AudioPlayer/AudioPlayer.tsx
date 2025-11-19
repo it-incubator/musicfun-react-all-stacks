@@ -36,7 +36,6 @@ export const AudioPlayer = ({
   className,
   ...props
 }: PlayerProps) => {
-
   const {
     currentTrack: track,
     currentState,
@@ -48,7 +47,7 @@ export const AudioPlayer = ({
     volume,
     isMuted,
     setVolume,
-    toggleMute
+    toggleMute,
   } = usePlayerStore()
 
   const isPlaying = currentState === 'playing'
@@ -69,14 +68,11 @@ export const AudioPlayer = ({
     // }
   }
 
-  // todo:task .. implement volume (add to store: volume,setVolume)
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(e.target.value)
     setVolume(newVolume)
-  
   }
 
-  // todo:task .. implement mute (add to store: muteStatus/toggleMute)
   const handleVolumeMute = () => {
     toggleMute()
   }
@@ -150,7 +146,7 @@ export const AudioPlayer = ({
           min={0}
           max={1}
           step={0.01}
-          value={volume}
+          value={isMuted ? 0 : volume}
           onChange={handleVolume}
           className={clsx(s.progress, s.volumeProgress)}
         />

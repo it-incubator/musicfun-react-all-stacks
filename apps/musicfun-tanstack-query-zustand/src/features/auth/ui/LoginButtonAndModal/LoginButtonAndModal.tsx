@@ -7,6 +7,7 @@ import { Button } from '@/shared/components/Button'
 import { Dialog, DialogContent, DialogHeader } from '@/shared/components/Dialog'
 import { Typography } from '@/shared/components/Typography'
 import { CURRENT_APP_DOMAIN } from '@/shared/config/config.ts'
+import { joinUrl } from '@/shared/utils/join-url.ts'
 
 import s from './LoginButtonAndModal.module.css'
 
@@ -19,13 +20,18 @@ export const LoginButtonAndModal = () => {
   const { mutate } = useLoginMutation()
 
   const loginHandler = () => {
-    const redirectUri = window.location.origin + CURRENT_APP_DOMAIN + '/oauth/callback' // todo: to config
+    const segments = [window.location.origin]
+    if (CURRENT_APP_DOMAIN) {
+      segments.push(CURRENT_APP_DOMAIN)
+    }
+    segments.push('oauth/callback')
+
+    const redirectUri = joinUrl(...segments)
     const url = getOauthRedirectUrl(redirectUri)
     window.open(url, 'oauthPopup', 'width=500,height=600')
 
     const receiveMessage = async (event: MessageEvent) => {
       if (event.origin !== window.location.origin) {
-        // todo: to config
         return
       }
 
