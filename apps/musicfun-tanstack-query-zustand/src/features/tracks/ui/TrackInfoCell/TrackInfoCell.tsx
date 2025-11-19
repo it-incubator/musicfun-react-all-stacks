@@ -5,6 +5,7 @@ import { usePlayerStore } from '@/player/model/player-store.ts'
 import { TableCell, Typography } from '@/shared/components'
 
 import s from './TrackInfoCell.module.css'
+import { CoverImage } from '@/shared/components/CoverImage'
 
 export const TrackInfoCell = ({
   image,
@@ -29,9 +30,7 @@ export const TrackInfoCell = ({
     <TableCell>
       <div className={s.box}>
         <div className={s.image} onClick={handlePlayClick}>
-          {/* todo:task extrack track cover to sepaarate component and create plceholder photo if no photo */}
-          {/*{<TrackCover image={image} alt={title} /> }*/}
-          <img src={image} alt={title} />
+          <CoverImage imageSrc={image} imageDescription={title} />
         </div>
         <div className={s.info}>
           <Typography

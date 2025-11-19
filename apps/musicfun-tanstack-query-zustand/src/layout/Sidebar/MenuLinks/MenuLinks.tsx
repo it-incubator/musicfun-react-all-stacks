@@ -94,9 +94,7 @@ export const MenuLinks = () => {
       {isCreatePlaylistOpen && (
         <CreatePlaylistModal onClose={() => setIsCreatePlaylistOpen(false)} />
       )}
-      {isCreateTrackOpen && (
-        <CreateTrackModal onClose={() => setIsCreateTrackOpen(false)} />
-      )}
+      {isCreateTrackOpen && <CreateTrackModal onClose={() => setIsCreateTrackOpen(false)} />}
     </>
   )
 }

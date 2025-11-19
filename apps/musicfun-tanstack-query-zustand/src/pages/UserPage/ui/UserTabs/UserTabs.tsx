@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger} from '@/shared/components'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components'
 
 import { LikedTracksTab } from './LikedTracksTab'
 import { MyLikedPlaylistsTab } from './MyLikedPlaylistsTab'
