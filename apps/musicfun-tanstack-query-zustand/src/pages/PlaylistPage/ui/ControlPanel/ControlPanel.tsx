@@ -6,11 +6,14 @@ import {
   IconButton,
   ReactionButtons,
 } from '@/shared/components'
-import { EditIcon, MoreIcon, PlayIcon } from '@/shared/icons'
+import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
+import { DeleteIcon, EditIcon, MoreIcon, PlayIcon } from '@/shared/icons'
 
 import s from './ControlPanel.module.css'
 
-export const ControlPanel = () => {
+export const ControlPanel = ({ playlistId }: { playlistId: string }) => {
+  const handleDeletePlaylist = useDeletePlaylistAction(playlistId)
+
   return (
     <div className={s.box}>
       <IconButton className={s.playButton}>
@@ -18,7 +21,6 @@ export const ControlPanel = () => {
       </IconButton>
 
       <ReactionButtons reaction={0} onLike={() => {}} onDislike={() => {}} size="large" />
-      {/* todo:task add delete button for playlist owner and implement logic */}
       <DropdownMenu>
         <DropdownMenuTrigger>
           <MoreIcon />
@@ -26,8 +28,12 @@ export const ControlPanel = () => {
 
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => {}}>
-            <EditIcon />
+            <EditIcon className={s.menuIcon} />
             <span>Edit</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDeletePlaylist} className={s.deleteItem}>
+            <DeleteIcon className={s.menuIcon} />
+            <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

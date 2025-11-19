@@ -1,3 +1,5 @@
+import { useParams } from 'react-router'
+
 import { MOCK_PLAYLIST, PlaylistOverview } from '@/features/playlists'
 import { MOCK_TRACKS, TracksTable } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
@@ -8,6 +10,7 @@ import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
 export const PlaylistPage = () => {
+  const { id: playlistId } = useParams<{ id: string }>()
   const playlist = MOCK_PLAYLIST
 
   return (
@@ -19,7 +22,7 @@ export const PlaylistPage = () => {
         description={playlist.data.attributes.description.text}
         tags={playlist.data.attributes.tags}
       />
-      <ControlPanel />
+      <ControlPanel playlistId={playlistId!} />
       <TracksTable
         trackRows={MOCK_TRACKS.map((track, index) => ({
           index,
