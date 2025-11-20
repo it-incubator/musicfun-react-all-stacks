@@ -94,9 +94,6 @@ export const baseQueryWithReauth: BaseQueryFn<
           result = await baseQuery(args, api, extraOptions)
         } else {
           console.log('Logout: refresh token invalid or expired')
-          // диспатчим logout
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
           //api.dispatch(baseApi.endpoints.logout.initiate())
 
           // можно перенаправить пользователся на страницу login/auth
