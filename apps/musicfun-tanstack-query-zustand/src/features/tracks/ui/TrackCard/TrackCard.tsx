@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
 
 import s from './TrackCard.module.css'
+import { CoverImage } from '@/shared/components/CoverImage'
 
 type Props = {
   id: string
@@ -25,7 +26,7 @@ export const TrackCard = ({
   return (
     <Card as={Link} to={`/tracks/${id}`} className={s.card}>
       <div className={s.image}>
-        <img src={image} alt={title} />
+        <CoverImage imageSrc={image} imageDescription={title} />
       </div>
 
       <Typography variant="h3" className={s.title}>

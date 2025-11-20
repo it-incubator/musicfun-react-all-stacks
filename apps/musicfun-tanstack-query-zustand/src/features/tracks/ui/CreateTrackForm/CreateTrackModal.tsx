@@ -73,7 +73,7 @@ export const CreateTrackModal = ({ onClose }: { onClose: () => void }) => {
                   toast('Error upload cover', { type: 'success', theme: 'colored' })
                   setSelectedFile(null)
                 },
-              },
+              }
             )
           }
 

@@ -1,10 +1,10 @@
 import clsx from 'clsx'
 import { type ComponentProps } from 'react'
-
 import { TagsList } from '@/features/tags'
 import { Typography } from '@/shared/components'
 
 import s from './PlaylistOverview.module.css'
+import { CoverImage } from '@/shared/components/CoverImage'
 
 type PlaylistOverviewProps = {
   title: string
@@ -24,7 +24,7 @@ export const PlaylistOverview = ({
   return (
     <div className={clsx(s.container, className)} {...props}>
       <div className={s.imageContainer}>
-        <img src={image} alt="" aria-hidden />
+        <CoverImage imageSrc={image} imageDescription={'cover'} aria-hidden />
       </div>
 
       <div className={s.content}>
