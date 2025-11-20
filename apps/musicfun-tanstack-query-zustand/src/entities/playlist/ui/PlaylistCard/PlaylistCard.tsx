@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
 import { Card, Typography } from '@/shared/components'
+import { CoverImage } from '@/shared/components/CoverImage'
 import { VU } from '@/shared/utils'
 
 import s from './PlaylistCard.module.css'
