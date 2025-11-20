@@ -1,0 +1,6 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background: var(--color-bg-card);
+}

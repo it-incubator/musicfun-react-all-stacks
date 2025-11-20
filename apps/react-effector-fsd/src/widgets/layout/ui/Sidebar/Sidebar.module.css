@@ -1,0 +1,9 @@
+.sidebar {
+  overflow-y: auto;
+  display: flex;
+  grid-area: sidebar;
+  flex-direction: column;
+
+  height: calc(100vh - var(--header-height) - var(--player-height));
+  padding: 0 30px;
+}

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MusicFun Apps - State Management Showcase</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          'Roboto',
+          sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 900px;
+        width: 100%;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 60px;
+        color: white;
+      }
+
+      .header h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .header p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        font-weight: 300;
+      }
+
+      .apps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+      }
+
+      .app-card {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .app-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      }
+
+      .app-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
+      }
+
+      .app-card.tanstack {
+        --accent-color: #ef4444;
+        --accent-color-light: #f87171;
+      }
+
+      .app-card.rtk {
+        --accent-color: #764abc;
+        --accent-color-light: #9575cd;
+      }
+
+      .app-card.reatom {
+        --accent-color: #06b6d4;
+        --accent-color-light: #22d3ee;
+      }
+
+      /* Effector card styles */
+      .app-card.effector {
+        --accent-color: #10b981;
+        --accent-color-light: #34d399;
+      }
+
+      .app-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--accent-color), var(--accent-color-light));
+        border-radius: 12px;
+        color: white;
+        font-size: 32px;
+        font-weight: 700;
+      }
+
+      .app-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1f2937;
+      }
+
+      .app-subtitle {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 16px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .app-description {
+        font-size: 1rem;
+        color: #4b5563;
+        line-height: 1.6;
+      }
+
+      .footer {
+        text-align: center;
+        color: white;
+        opacity: 0.9;
+        font-size: 0.9rem;
+      }
+
+      .footer a {
+        color: white;
+        text-decoration: underline;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2rem;
+        }
+
+        .header p {
+          font-size: 1rem;
+        }
+
+        .apps-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Animated gradient background */
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-size: 200% 200%;
+        animation: gradient 15s ease infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🎵 MusicFun Apps</h1>
+        <p>State Management Showcase</p>
+      </div>
+
+      <div class="apps-grid">
+        <a href="/tanstackquery/" class="app-card tanstack">
+          <div class="app-icon">TQ</div>
+          <h2 class="app-title">TanStack Query</h2>
+          <p class="app-subtitle">Server State Management</p>
+          <p class="app-description">Modern data fetching and caching with powerful hooks and automatic refetching.</p>
+        </a>
+
+        <a href="/rtkquery/" class="app-card rtk">
+          <div class="app-icon">RQ</div>
+          <h2 class="app-title">RTK Query</h2>
+          <p class="app-subtitle">Redux Toolkit Query</p>
+          <p class="app-description">
+            Integrated Redux data fetching with automatic cache management and TypeScript support.
+          </p>
+        </a>
+
+        <a href="/reatom/" class="app-card reatom">
+          <div class="app-icon">RA</div>
+          <h2 class="app-title">Reatom</h2>
+          <p class="app-subtitle">Atomic State Management</p>
+          <p class="app-description">Declarative and reactive state management with fine-grained reactivity.</p>
+        </a>
+
+        <a href="/effector/" class="app-card effector">
+          <div class="app-icon">EF</div>
+          <h2 class="app-title">Effector</h2>
+          <p class="app-subtitle">Reactive State Manager</p>
+          <p class="app-description">
+            Predictable and fast state manager with events, stores and effects — great for complex apps.
+          </p>
+        </a>
+      </div>
+
+      <div class="footer">
+        <p>Built with ❤️ using React + Vite | Deployed on GitHub Pages</p>
+      </div>
+    </div>
+  </body>
+</html>

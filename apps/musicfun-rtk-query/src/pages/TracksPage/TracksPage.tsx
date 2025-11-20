@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
 import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
+import { loadPlaylist } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
@@ -29,6 +31,27 @@ export const TracksPage = () => {
   })
 
   const { data: me } = useMeQuery()
+
+  const dispatch = useDispatch()
+
+  const handleTrackPlayClick = (trackId: string) => {
+    // TODO: Update to pass full track array with url, title, artist, duration, albumArt
+    const tracksForRedux = tracks!.data.map((t) => ({
+      id: t.id,
+      title: t.attributes.title,
+      artist: 'artist',
+      url: t.attributes.attachments[0].url,
+      duration: 100,
+      albumArt: undefined,
+    }))
+    dispatch(
+      loadPlaylist({
+        playlistId: 'all-tracks',
+        tracks: tracksForRedux,
+        startIndex: tracksForRedux.findIndex((t) => t.id === trackId),
+      })
+    )
+  }
 
   return (
     <PageWrapper>
@@ -67,6 +90,7 @@ export const TracksPage = () => {
               likesCount: track.attributes.likesCount,
               dislikesCount: track.attributes.likesCount,
               currentUserReaction: track.attributes.currentUserReaction,
+              url: track.attributes.attachments[0].url,
               isOwner,
             }
           }) ?? []
@@ -77,6 +101,7 @@ export const TracksPage = () => {
             trackRow={trackRow}
             playingTrackId={MOCK_TRACKS[0].id}
             playingTrackProgress={20}
+            onTrackPlayClick={handleTrackPlayClick}
             renderActionsCell={() => (
               <TrackActions
                 reaction={trackRow.currentUserReaction}

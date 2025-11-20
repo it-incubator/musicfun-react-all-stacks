@@ -21,7 +21,9 @@ const mutex = new Mutex()
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
   prepareHeaders: (headers) => {
-    headers.set('API-KEY', import.meta.env.VITE_API_KEY)
+    if (import.meta.env.VITE_API_KEY) {
+      headers.set('API-KEY', import.meta.env.VITE_API_KEY)
+    }
     const token =
       localStorage.getItem(localStorageKeys.accessToken) ?? import.meta.env.VITE_AUTH_TOKEN
     if (token) {
@@ -95,7 +97,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           // диспатчим logout
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
-          api.dispatch(baseApi.endpoints.logout.initiate())
+          //api.dispatch(baseApi.endpoints.logout.initiate())
 
           // можно перенаправить пользователся на страницу login/auth
           // window.location.href = "/login"

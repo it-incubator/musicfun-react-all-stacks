@@ -1,0 +1,7 @@
+.userPage {
+  --page-gradient-color: #b8a661;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

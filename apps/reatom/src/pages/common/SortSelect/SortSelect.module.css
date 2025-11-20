@@ -1,0 +1,13 @@
+.selectLabel {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  align-items: center;
+
+  width: 210px;
+}
+
+.select {
+  flex-shrink: 0;
+  width: 145px;
+}

@@ -8,7 +8,7 @@ import { store } from './store'
 
 export const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/rtkquery">
       <Provider store={store}>
         <Routing />
       </Provider>
