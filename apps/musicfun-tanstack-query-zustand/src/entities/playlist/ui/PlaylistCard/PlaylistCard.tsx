@@ -33,10 +33,10 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
         <img src={imageSrc} alt="" aria-hidden />
       </div>
       <Typography variant="h3" className={s.title}>
-        {VU.isValidString(title) && title}
+        {VU.isValid(title) && title}
       </Typography>
       <Typography variant="body3" className={s.description}>
-        {VU.isValidString(description) && description}
+        {VU.isValid(description) && description}
       </Typography>
       {VU.isValid(footer) && footer}
     </Card>

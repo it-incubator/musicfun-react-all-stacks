@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import { type ComponentProps, useState } from 'react'
+import { type ComponentProps } from 'react'
 
 import { usePlayerStore } from '@/player/model/player-store.ts'
 import {

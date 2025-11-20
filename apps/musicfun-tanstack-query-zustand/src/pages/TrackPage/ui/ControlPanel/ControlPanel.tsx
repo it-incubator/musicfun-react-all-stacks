@@ -18,11 +18,12 @@ export const ControlPanel = () => {
       </IconButton>
 
       <ReactionButtons
-        reaction={0}
+        onRemoveReaction={() => {}}
+        currentReaction={0}
         onLike={() => {}}
         onDislike={() => {}}
         size="large"
-        likesCount={438}
+        entityId={''}
       />
 
       <DropdownMenu>

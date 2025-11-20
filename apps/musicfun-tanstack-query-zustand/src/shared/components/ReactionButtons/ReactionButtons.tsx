@@ -47,7 +47,7 @@ export const ReactionButtons: React.FC<ReactionButtonsProps> = (props) => {
     (reaction: CurrentUserReaction) => {
       if (VU.isValid(entityId)) {
         switch (true) {
-          case currentReaction === reaction:
+          case reaction === currentReaction:
             return onRemoveReaction?.(entityId)
           case reaction === ReactionValue.Like:
             return onLike?.(entityId)
