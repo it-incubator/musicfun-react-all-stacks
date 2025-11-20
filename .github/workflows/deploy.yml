@@ -101,7 +101,7 @@ jobs:
           mkdir -p dist/reatom
           mkdir -p dist/effector
 
-          cp -r apps/musicfun-tanstack-query-zustand/dist/* dist/zustand/
+          cp -r apps/musicfun-tanstack-query-zustand/dist/* dist/tanstackquery/
           cp -r apps/musicfun-rtk-query/dist/* dist/rtkquery/
           cp -r apps/reatom/dist/* dist/reatom/
           cp -r apps/react-effector-fsd/dist/* dist/effector/
