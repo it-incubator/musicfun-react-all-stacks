@@ -34,7 +34,7 @@ jobs:
 
       # === Install ===
 
-      - name: Install deps for zustand (ex tanstack-query)
+      - name: Install deps for tanstack-query (folder renamed)
         working-directory: apps/musicfun-tanstack-query-zustand
         run: pnpm install --no-frozen-lockfile
 
@@ -52,7 +52,7 @@ jobs:
 
       # === Build ===
 
-      - name: Build zustand (ex tanstack-query)
+      - name: Build tanstack-query
         working-directory: apps/musicfun-tanstack-query-zustand
         run: pnpm build
 
@@ -76,7 +76,7 @@ jobs:
 
       # === SPA fallback ===
 
-      - name: SPA fallback for zustand
+      - name: SPA fallback for tanstack-query
         working-directory: apps/musicfun-tanstack-query-zustand/dist
         run: cp index.html 404.html
 
