@@ -4,10 +4,12 @@ import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { TracksTable } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { useTracksQuery } from '@/pages/TracksPage/model/useTracksQuery.tsx'
+import { useTracksInfinityQuery } from '@/pages/TracksPage/model/useTracksInfinityQuery.ts'
+//import { useTracksQuery } from '@/pages/TracksPage/model/useTracksQuery.tsx'
 import { usePlayerStore } from '@/player/model/player-store.ts'
 import {
   Autocomplete,
+  Button,
   DropdownMenu,
   DropdownMenuTrigger,
   ReactionButtons,
@@ -26,31 +28,37 @@ export const TracksPage = () => {
   // todo: task search tracks filter w/o trhotling/debounce
   // add sorting;
 
-  const { data, isPending, isError } = useTracksQuery({})
+  //const { data, isPending, isError } = useTracksQuery({})
+
+  const { data, isPending, isError, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+    useTracksInfinityQuery({})
+
   const { play } = usePlayerStore()
 
-  const tracksRows = React.useMemo(() => {
-    return VU.isValidArray(data?.data)
-      ? data.data.map((track, index) => ({
-          addedAt: track.attributes.addedAt,
-          artists: [], // track.attributes.artists?.map((artist) => artist.name) || [],
-          currentUserReaction: track.attributes.currentUserReaction,
-          dislikesCount: 0, // track.attributes.dislikesCount,
-          duration: 0, // track.attributes.duration,
-          id: track.id,
-          image: track.attributes.images.main?.[0]?.url,
+  const tracks = React.useMemo(() => {
+    return VU.isValidArray(data?.pages) ? data.pages.map((page) => page.data).flat() : []
+  }, [data?.pages])
+
+  const tracksRowsData = React.useMemo(() => {
+    return VU.isValidArray(tracks)
+      ? tracks.map((track, index) => ({
           index,
-          likesCount: track.attributes.likesCount,
+          id: track.id,
           title: track.attributes.title,
+          image: track.attributes.images.main?.[0]?.url,
+          addedAt: track.attributes.addedAt,
+          artists: [], //track.attributes.artists?.map((artist) => artist.name) || [],
+          duration: 0, //track.attributes.duration,
+          likesCount: track.attributes.likesCount,
+          dislikesCount: 0, // track.attributes.dislikesCount,
+          currentUserReaction: track.attributes.currentUserReaction,
         }))
       : []
-  }, [data?.data])
+  }, [tracks])
 
   const handleClickPlay = React.useCallback(
     (trackId: string) => {
-      const track = VU.isValidArray(data?.data)
-        ? data.data.find((track) => track.id === trackId)
-        : void 0
+      const track = VU.isValidArray(tracks) ? tracks.find((track) => track.id === trackId) : void 0
 
       if (track) {
         play({
@@ -62,7 +70,7 @@ export const TracksPage = () => {
         })
       }
     },
-    [data?.data, play]
+    [tracks, play]
   )
 
   if (isPending) {
@@ -107,10 +115,8 @@ export const TracksPage = () => {
           />
         </div>
       </div>
-
-      {/* todo:task add infinity scroll ( for first version add button Show More ) */}
       <TracksTable
-        trackRows={tracksRows}
+        trackRows={tracksRowsData}
         renderTrackRow={(trackRow) => (
           <TrackRow
             key={trackRow.id}
@@ -140,6 +146,16 @@ export const TracksPage = () => {
           />
         )}
       />
+      <Button
+        className={s.showMoreButton}
+        onClick={() => fetchNextPage()}
+        disabled={!hasNextPage || isFetching}>
+        {isFetchingNextPage
+          ? 'Loading more...'
+          : hasNextPage
+            ? 'Show More'
+            : 'Nothing more to show'}
+      </Button>
     </PageWrapper>
   )
 }

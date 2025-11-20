@@ -6,7 +6,7 @@ import { ImageUploadIcon } from '@/shared/icons'
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './ImageUploader.module.css'
-import { CoverImage } from '@/shared/components/CoverImage'
+import { CoverImage } from '@/shared/components'
 
 export type ImageUploaderProps = {
   onImageSelect: (file: File) => void

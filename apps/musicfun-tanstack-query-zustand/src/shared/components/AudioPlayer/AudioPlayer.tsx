@@ -16,7 +16,7 @@ import {
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './AudioPlayer.module.css'
-import { CoverImage } from '@/shared/components/CoverImage'
+import { CoverImage } from '@/shared/components'
 
 export type PlayerProps = {
   onNext: () => void

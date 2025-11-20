@@ -1,9 +1,14 @@
 import { Link } from 'react-router'
 
-import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
+import {
+  Card,
+  CoverImage,
+  ReactionButtons,
+  type ReactionButtonsProps,
+  Typography,
+} from '@/shared/components'
 
 import s from './TrackCard.module.css'
-import { CoverImage } from '@/shared/components/CoverImage'
 
 type Props = {
   id: string
