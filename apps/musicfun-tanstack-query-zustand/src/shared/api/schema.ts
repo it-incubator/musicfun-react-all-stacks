@@ -2691,7 +2691,7 @@ export enum ImageSizeType {
   medium = 'medium',
 }
 export enum ReactionValue {
-  Value0 = 0,
-  Value1 = 1,
-  ValueMinus1 = -1,
+  None = 0,
+  Like = 1,
+  Dislike = -1,
 }

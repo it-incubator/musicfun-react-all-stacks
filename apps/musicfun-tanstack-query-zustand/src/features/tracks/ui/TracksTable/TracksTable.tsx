@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/shared/components'
 import { ClockIcon } from '@/shared/icons'
+import { VU } from '@/shared/utils'
 
 type TableColumn = {
   title: ReactNode
@@ -71,6 +72,10 @@ export const TracksTable = <T extends TrackRowData>({
   trackRows,
   renderTrackRow,
 }: TracksTableProps<T>) => {
+  if (!VU.isValidArray(trackRows)) {
+    return null
+  }
+
   return (
     <Table>
       <TableHead>
