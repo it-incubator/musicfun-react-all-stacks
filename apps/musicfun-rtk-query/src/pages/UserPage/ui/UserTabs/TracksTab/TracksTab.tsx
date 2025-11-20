@@ -27,6 +27,7 @@ export const TracksTab = () => {
     includeDrafts: true,
   })
 
+  // FIXME: temporary build fix, need to add url
   return (
     <>
       <Button className={s.uploadTrackButton} onClick={handleOpenCreateTrackModal}>
@@ -49,6 +50,7 @@ export const TracksTab = () => {
               likesCount: 100,
               dislikesCount: 100,
               currentUserReaction: track.attributes.currentUserReaction,
+              url: '',
             }
           }) ?? []
         }

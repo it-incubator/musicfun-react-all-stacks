@@ -45,6 +45,7 @@ export type TrackRowData = {
   duration: number
 } & ReactionsProps
 
+// FIXME: temporary build fix, need to add url
 export const Default: Story = {
   args: {
     trackRows: MOCK_TRACKS.map((track, index) => ({
@@ -59,6 +60,7 @@ export const Default: Story = {
       dislikesCount: track.attributes.dislikesCount,
       currentUserReaction: track.attributes.currentUserReaction,
       duration: track.attributes.duration,
+      url: '',
     })),
     renderTrackRow: (trackRow) => (
       <TrackRow
@@ -97,6 +99,7 @@ export const Default: Story = {
   },
 }
 
+// FIXME: temporary build fix, need to add url
 export const WithoutReactions: Story = {
   args: {
     trackRows: MOCK_TRACKS.map((track, index) => ({
@@ -107,6 +110,7 @@ export const WithoutReactions: Story = {
       addedAt: track.attributes.addedAt,
       artists: track.attributes.artists?.map((artist) => artist.name) || [],
       duration: track.attributes.duration,
+      url: '',
     })),
     renderTrackRow: (trackRow) => (
       <TrackRow
