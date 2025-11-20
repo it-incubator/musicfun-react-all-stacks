@@ -14,7 +14,8 @@ export const useUploadTrackCover = () => {
       const res = await unwrap(
         getClient().POST('/playlists/tracks/{trackId}/cover', {
           params: { path: { trackId } },
-          body: formData,
+          // FIXME: temporary typescript fix
+          body: formData as unknown as { cover: string },
         })
       )
       return res.main

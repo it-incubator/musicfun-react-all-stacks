@@ -1,28 +1,30 @@
-import type { FC, ReactNode } from 'react'
+import * as React from 'react'
 import { Link } from 'react-router'
 
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
 import { Card, Typography } from '@/shared/components'
+import { VU } from '@/shared/utils'
 
 import s from './PlaylistCard.module.css'
-import { VU } from '@/shared/utils'
-import { CoverImage } from '@/shared/components/CoverImage'
 
-type PlaylistCardPropsBase = {
+interface PlaylistCardProps {
   id: string
-  title: string
-  images: SchemaPlaylistImagesOutputDto
+  title?: string
+  images?: SchemaPlaylistImagesOutputDto
   description: string | null
+  footer?: React.ReactNode
 }
 
-type PlaylistCardProps = PlaylistCardPropsBase & {
-  render?: () => ReactNode
-}
+export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
+  const { title, images, description, id, footer } = props
 
-export const PlaylistCard: FC<PlaylistCardProps> = (props) => {
-  const { title, images, description, id, render } = props
+  const imageSrc = React.useMemo(() => {
+    return VU.isValidArray(images?.main) ? images.main[0].url : void 0
+  }, [images?.main])
 
-  const imageSrc = images?.main?.length ? images.main[0].url : undefined
+  if (!VU.isValidString(id)) {
+    return null
+  }
 
   return (
     <Card as={Link} to={`/playlists/${id}`} className={s.card}>
@@ -30,12 +32,12 @@ export const PlaylistCard: FC<PlaylistCardProps> = (props) => {
         <CoverImage imageSrc={imageSrc} imageDescription={'cover'} aria-hidden />
       </div>
       <Typography variant="h3" className={s.title}>
-        {title}
+        {VU.isValid(title) && title}
       </Typography>
       <Typography variant="body3" className={s.description}>
-        {description}
+        {VU.isValid(description) && description}
       </Typography>
-      {VU.isFunction(render) && render()}
+      {VU.isValid(footer) && footer}
     </Card>
   )
 }

@@ -10,14 +10,15 @@ type Props = {
   image: string
   title: string
   artists: string
-} & Omit<ReactionButtonsProps, 'className'>
+} & Omit<ReactionButtonsProps, 'className' | 'entityId'>
 
 export const TrackCard = ({
   id,
   image,
   title,
   artists,
-  reaction,
+  currentReaction,
+  onRemoveReaction,
   onLike,
   onDislike,
   likesCount,
@@ -36,10 +37,12 @@ export const TrackCard = ({
         {artists}
       </Typography>
       <ReactionButtons
-        reaction={reaction}
-        onLike={onLike}
-        onDislike={onDislike}
+        currentReaction={currentReaction}
+        entityId={id}
         likesCount={likesCount}
+        onDislike={onDislike}
+        onLike={onLike}
+        onRemoveReaction={onRemoveReaction}
       />
     </Card>
   )

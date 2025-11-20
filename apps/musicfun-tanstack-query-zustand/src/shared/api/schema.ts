@@ -420,7 +420,8 @@ export interface paths {
     }
     /**
      * OAuth redirect
-     * @description The callback URL to redirect after granting access, <a target="_blank" href="https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid">https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid</a>
+     * @description The callback URL to redirect after granting access, <a target="_blank"
+     *   href="https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid">https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid</a>
      */
     get: operations['AuthController_OauthRedirect']
     put?: never
@@ -702,7 +703,8 @@ export interface components {
     ReorderPlaylistsRequestPayload: {
       /**
        * Format: uuid
-       * @description ID of the playlist after which the current playlist should be inserted. Send null to place the playlist at the beginning of the list.
+       * @description ID of the playlist after which the current playlist should be inserted. Send null to place the
+       *   playlist at the beginning of the list.
        */
       putAfterItemId: string | null
     }
@@ -1054,7 +1056,8 @@ export interface components {
     ReorderTracksRequestPayload: {
       /**
        * Format: uuid
-       * @description ID of the track after which the current track should be inserted. Send null to place the track at the beginning of the list.
+       * @description ID of the track after which the current track should be inserted. Send null to place the track at
+       *   the beginning of the list.
        * @example a1b2c3d4-e5f6-7890-abcd-1234567890ef
        */
       putAfterItemId: string | null
@@ -2402,7 +2405,8 @@ export interface operations {
     parameters: {
       query?: {
         /** @description The callback URL to redirect after grand access,
-         *          https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid */
+         *          https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid
+         * */
         callbackUrl?: string
       }
       header?: never
@@ -2690,8 +2694,9 @@ export enum ImageSizeType {
   thumbnail = 'thumbnail',
   medium = 'medium',
 }
+
 export enum ReactionValue {
-  Value0 = 0,
-  Value1 = 1,
-  ValueMinus1 = -1,
+  None = 0,
+  Like = 1,
+  Dislike = -1,
 }
