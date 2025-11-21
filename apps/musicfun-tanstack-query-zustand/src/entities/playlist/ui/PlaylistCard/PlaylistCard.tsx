@@ -1,7 +1,6 @@
 import type { FC, ReactNode } from 'react'
 import { Link } from 'react-router'
 
-import { useDeletePlaylist } from '@/pages/PlaylistsPage/model/useDeletePlaylist'
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
 import { Button, Card, Typography } from '@/shared/components'
 import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
