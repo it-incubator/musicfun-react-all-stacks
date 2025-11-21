@@ -6,8 +6,10 @@ import { ReactionButtons } from '@/shared/components'
 import { PageWrapper } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
+import { useParams } from 'react-router'
 
 export const PlaylistPage = () => {
+  const { id: playlistId } = useParams<{ id: string }>()
   const playlist = MOCK_PLAYLIST
 
   return (
@@ -19,7 +21,7 @@ export const PlaylistPage = () => {
         description={playlist.data.attributes.description.text}
         tags={playlist.data.attributes.tags}
       />
-      <ControlPanel />
+      <ControlPanel playlistId={playlistId!} />
       <TracksTable
         trackRows={MOCK_TRACKS.map((track, index) => ({
           index,
