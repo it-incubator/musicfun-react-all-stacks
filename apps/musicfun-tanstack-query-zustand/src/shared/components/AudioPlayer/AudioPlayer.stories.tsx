@@ -1,3 +1,4 @@
+import s from '@/widgets/Player/Player.module.css'
 import type { Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 
@@ -29,14 +30,13 @@ export const Basic = {
     return (
       <AudioPlayer
         {...track}
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
         onNext={() => {}}
         onPrevious={() => {}}
         isShuffle={isShuffle}
         isRepeat={isRepeat}
         onShuffle={() => setIsShuffle(!isShuffle)}
         onRepeat={() => setIsRepeat(!isRepeat)}
+        className={s.player}
       />
     )
   },

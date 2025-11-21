@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import * as React from 'react'
 
 import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { MOCK_HASHTAGS } from '@/features/tags'
@@ -14,34 +14,62 @@ import {
   Typography,
 } from '@/shared/components'
 import { MoreIcon } from '@/shared/icons'
+import { VU } from '@/shared/utils'
 
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
-  const [hashtags, setHashtags] = useState<string[]>([])
-  const [artists, setArtists] = useState<string[]>([])
+  const [hashtags, setHashtags] = React.useState<string[]>([])
+  const [artists, setArtists] = React.useState<string[]>([])
 
-  // todo:task search tracks filter w/o trhotling/debounce
+  // todo: task search tracks filter w/o trhotling/debounce
   // add sorting;
 
   const { data, isPending, isError } = useTracksQuery({})
-
   const { play } = usePlayerStore()
 
-  if (isPending) return <div>Loading...</div>
-  if (isError) return <div>Error...</div>
+  const tracksRows = React.useMemo(() => {
+    return VU.isValidArray(data?.data)
+      ? data.data.map((track, index) => ({
+          addedAt: track.attributes.addedAt,
+          artists: [], // track.attributes.artists?.map((artist) => artist.name) || [],
+          currentUserReaction: track.attributes.currentUserReaction,
+          dislikesCount: 0, // track.attributes.dislikesCount,
+          duration: 0, // track.attributes.duration,
+          id: track.id,
+          image: track.attributes.images.main?.[0]?.url,
+          index,
+          likesCount: track.attributes.likesCount,
+          title: track.attributes.title,
+        }))
+      : []
+  }, [data?.data])
 
-  const handleClickPlay = (trackId: string) => {
-    const track = data.data.find((track) => track.id === trackId)!
+  const handleClickPlay = React.useCallback(
+    (trackId: string) => {
+      const track = VU.isValidArray(data?.data)
+        ? data.data.find((track) => track.id === trackId)
+        : void 0
 
-    play({
-      src: track.attributes.attachments[0].url,
-      id: track.id,
-      title: track.attributes.title,
-      artist: 'artist',
-      coverSrc: track.attributes.images.main?.[0]?.url,
-    })
+      if (track) {
+        play({
+          artist: 'artist',
+          coverSrc: track.attributes.images.main?.[0]?.url,
+          id: track.id,
+          src: track.attributes.attachments[0].url,
+          title: track.attributes.title,
+        })
+      }
+    },
+    [data?.data, play]
+  )
+
+  if (isPending) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>Error...</div>
   }
 
   return (
@@ -82,18 +110,7 @@ export const TracksPage = () => {
 
       {/* todo:task add infinity scroll ( for first version add button Show More ) */}
       <TracksTable
-        trackRows={data?.data.map((track, index) => ({
-          index,
-          id: track.id,
-          title: track.attributes.title,
-          image: track.attributes.images.main?.[0]?.url,
-          addedAt: track.attributes.addedAt,
-          artists: [], //track.attributes.artists?.map((artist) => artist.name) || [],
-          duration: 0, //track.attributes.duration,
-          likesCount: track.attributes.likesCount,
-          dislikesCount: 0, // track.attributes.dislikesCount,
-          currentUserReaction: track.attributes.currentUserReaction,
-        }))}
+        trackRows={tracksRows}
         renderTrackRow={(trackRow) => (
           <TrackRow
             key={trackRow.id}
@@ -102,13 +119,15 @@ export const TracksPage = () => {
             playingTrackProgress={20}
             onPlayClick={handleClickPlay}
             renderActionsCell={() => (
-              // todo:task Implement like/dislike
+              // todo: task Implement like/dislike
               <>
                 <ReactionButtons
-                  reaction={trackRow.currentUserReaction}
-                  onLike={() => {}}
-                  onDislike={() => {}}
+                  entityId={trackRow.id}
+                  currentReaction={trackRow.currentUserReaction}
                   likesCount={trackRow.likesCount}
+                  onDislike={() => {}}
+                  onLike={() => {}}
+                  onRemoveReaction={() => {}}
                 />
                 <DropdownMenu>
                   <DropdownMenuTrigger>

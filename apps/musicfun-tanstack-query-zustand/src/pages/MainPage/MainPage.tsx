@@ -28,13 +28,14 @@ export const MainPage = () => {
         renderItem={(track) => (
           <TrackCard
             artists={track.attributes.artist}
-            title={track.attributes.title}
+            currentReaction={track.attributes.currentUserReaction}
             id={track.id}
             image={track.attributes.images.main[0].url}
-            reaction={track.attributes.currentUserReaction}
+            likesCount={track.attributes.likesCount}
             onDislike={() => {}}
             onLike={() => {}}
-            likesCount={track.attributes.likesCount}
+            onRemoveReaction={() => {}}
+            title={track.attributes.title}
           />
         )}
       />

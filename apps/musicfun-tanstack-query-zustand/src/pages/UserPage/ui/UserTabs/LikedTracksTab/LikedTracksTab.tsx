@@ -28,10 +28,11 @@ export const LikedTracksTab = () => {
           renderActionsCell={() => (
             <>
               <ReactionButtons
-                reaction={trackRow.currentUserReaction}
+                onRemoveReaction={() => {}}
+                currentReaction={0}
                 onLike={() => {}}
                 onDislike={() => {}}
-                likesCount={trackRow.likesCount}
+                entityId={''}
               />
               <DropdownMenu>
                 <DropdownMenuTrigger>

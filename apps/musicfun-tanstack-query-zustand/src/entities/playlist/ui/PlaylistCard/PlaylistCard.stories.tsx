@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { ImageSizeType, ReactionValue } from '@/shared/api/schema.ts'
+import { ImageSizeType } from '@/shared/api/schema.ts'
 
-import { CurrentUserReaction } from '../../../../features/playlists/api'
 import { PlaylistCard } from './PlaylistCard.tsx'
 
 const meta: Meta<typeof PlaylistCard> = {
@@ -49,7 +48,6 @@ export const WithReactions: Story = {
       ],
     },
     description: 'A playlist for relaxing and unwinding.',
-    render: () => <span>Like</span>,
   },
 }
 

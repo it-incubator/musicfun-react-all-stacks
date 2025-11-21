@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getClient } from '@/shared/api/client'
 import { unwrap } from '@/shared/api/utils/unwrap'
 
-
 export const useCreateTrack = () => {
   const queryClient = useQueryClient()
 
@@ -15,7 +14,8 @@ export const useCreateTrack = () => {
 
       const res = await unwrap(
         getClient().POST('/playlists/tracks/upload', {
-        body: formData,
+          // FIXME: temporary typescript fix
+          body: formData as unknown as { title: string; file: string },
         })
       )
       return res.data

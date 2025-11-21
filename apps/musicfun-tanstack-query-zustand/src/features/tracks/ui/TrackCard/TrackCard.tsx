@@ -3,20 +3,22 @@ import { Link } from 'react-router'
 import { Card, ReactionButtons, type ReactionButtonsProps, Typography } from '@/shared/components'
 
 import s from './TrackCard.module.css'
+import { CoverImage } from '@/shared/components/CoverImage'
 
 type Props = {
   id: string
   image: string
   title: string
   artists: string
-} & Omit<ReactionButtonsProps, 'className'>
+} & Omit<ReactionButtonsProps, 'className' | 'entityId'>
 
 export const TrackCard = ({
   id,
   image,
   title,
   artists,
-  reaction,
+  currentReaction,
+  onRemoveReaction,
   onLike,
   onDislike,
   likesCount,
@@ -24,7 +26,7 @@ export const TrackCard = ({
   return (
     <Card as={Link} to={`/tracks/${id}`} className={s.card}>
       <div className={s.image}>
-        <img src={image} alt={title} />
+        <CoverImage imageSrc={image} imageDescription={title} />
       </div>
 
       <Typography variant="h3" className={s.title}>
@@ -35,10 +37,12 @@ export const TrackCard = ({
         {artists}
       </Typography>
       <ReactionButtons
-        reaction={reaction}
-        onLike={onLike}
-        onDislike={onDislike}
+        currentReaction={currentReaction}
+        entityId={id}
         likesCount={likesCount}
+        onDislike={onDislike}
+        onLike={onLike}
+        onRemoveReaction={onRemoveReaction}
       />
     </Card>
   )

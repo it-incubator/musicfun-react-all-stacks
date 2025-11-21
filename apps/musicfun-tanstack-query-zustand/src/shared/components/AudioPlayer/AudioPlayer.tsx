@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import { type ComponentProps, useState } from 'react'
+import { type ComponentProps } from 'react'
 
 import { usePlayerStore } from '@/player/model/player-store.ts'
 import {
@@ -16,6 +16,7 @@ import {
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './AudioPlayer.module.css'
+import { CoverImage } from '@/shared/components/CoverImage'
 
 export type PlayerProps = {
   onNext: () => void
@@ -92,7 +93,7 @@ export const AudioPlayer = ({
 
       <div className={s.trackInfo}>
         <div className={s.cover}>
-          <img src={track.coverSrc} alt="cover" />
+          <CoverImage imageSrc={track.coverSrc} imageDescription={'cover'} />
         </div>
         <div className={s.info}>
           <Typography variant="body1" as="h3">

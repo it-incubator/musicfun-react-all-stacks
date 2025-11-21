@@ -110,7 +110,9 @@ export const PlaylistsPage = () => {
     return (
       <ContentList
         data={data.data.data}
-        renderItem={(playlist) => <PlaylistItem playlist={playlist} />}
+        renderItem={(playlist) => {
+          return <PlaylistItem playlist={playlist} />
+        }}
       />
     )
   }, [data?.data, isError, isPending])

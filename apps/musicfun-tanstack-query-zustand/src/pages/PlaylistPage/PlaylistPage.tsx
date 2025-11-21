@@ -43,10 +43,12 @@ export const PlaylistPage = () => {
             playingTrackProgress={20}
             renderActionsCell={(row) => (
               <ReactionButtons
-                reaction={row.currentUserReaction}
-                onLike={() => {}}
-                onDislike={() => {}}
+                currentReaction={row.currentUserReaction}
+                entityId={row.id}
                 likesCount={row.likesCount}
+                onDislike={() => {}}
+                onLike={() => {}}
+                onRemoveReaction={() => {}}
               />
             )}
           />

@@ -32,8 +32,10 @@ jobs:
         with:
           run_install: false
 
-      - name: Install deps for tanstack-query
-        working-directory: apps/musicfun-tanstack-query
+      # === Install ===
+
+      - name: Install deps for tanstack-query (folder renamed)
+        working-directory: apps/musicfun-tanstack-query-zustand
         run: pnpm install --no-frozen-lockfile
 
       - name: Install deps for rtk-query
@@ -48,8 +50,10 @@ jobs:
         working-directory: apps/react-effector-fsd
         run: pnpm install --no-frozen-lockfile
 
+      # === Build ===
+
       - name: Build tanstack-query
-        working-directory: apps/musicfun-tanstack-query
+        working-directory: apps/musicfun-tanstack-query-zustand
         run: pnpm build
 
       - name: Build rtk-query
@@ -64,12 +68,16 @@ jobs:
         working-directory: apps/react-effector-fsd
         run: pnpm build
 
+      # === Pages config ===
+
       - uses: actions/configure-pages@v5
         with:
           enablement: true
 
+      # === SPA fallback ===
+
       - name: SPA fallback for tanstack-query
-        working-directory: apps/musicfun-tanstack-query/dist
+        working-directory: apps/musicfun-tanstack-query-zustand/dist
         run: cp index.html 404.html
 
       - name: SPA fallback for rtk-query
@@ -84,17 +92,23 @@ jobs:
         working-directory: apps/react-effector-fsd/dist
         run: cp index.html 404.html
 
+      # === Prepare deploy folder ===
+
       - name: Prepare deployment folder
         run: |
           mkdir -p dist/tanstackquery
           mkdir -p dist/rtkquery
           mkdir -p dist/reatom
           mkdir -p dist/effector
-          cp -r apps/musicfun-tanstack-query/dist/* dist/tanstackquery/
+
+          cp -r apps/musicfun-tanstack-query-zustand/dist/* dist/tanstackquery/
           cp -r apps/musicfun-rtk-query/dist/* dist/rtkquery/
           cp -r apps/reatom/dist/* dist/reatom/
           cp -r apps/react-effector-fsd/dist/* dist/effector/
+
           touch dist/.nojekyll
+
+      # === Root pages ===
 
       - name: Copy root index.html
         run: cp public/index.html dist/index.html

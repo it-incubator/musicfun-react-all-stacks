@@ -6,6 +6,7 @@ import { ImageUploadIcon } from '@/shared/icons'
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './ImageUploader.module.css'
+import { CoverImage } from '@/shared/components/CoverImage'
 
 export type ImageUploaderProps = {
   onImageSelect: (file: File) => void
@@ -124,7 +125,11 @@ export const ImageUploader = ({
 
         {preview ? (
           <div className={s.previewContainer}>
-            <img src={preview} alt="Preview" className={s.previewImage} />
+            <CoverImage
+              imageSrc={preview}
+              imageDescription={'Preview'}
+              className={s.previewImage}
+            />
             <IconButton
               className={s.removeButton}
               onClick={handleRemoveImage}

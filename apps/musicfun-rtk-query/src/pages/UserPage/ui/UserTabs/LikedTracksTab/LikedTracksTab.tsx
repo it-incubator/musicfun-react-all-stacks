@@ -7,6 +7,7 @@ import { MoreIcon } from '@/shared/icons'
 
 export const LikedTracksTab = () => {
   return (
+    // FIXME: temporary build fix, need to add url
     <TracksTable
       trackRows={MOCK_TRACKS.map((track, index) => ({
         index,
@@ -19,6 +20,7 @@ export const LikedTracksTab = () => {
         likesCount: track.attributes.likesCount,
         dislikesCount: track.attributes.dislikesCount,
         currentUserReaction: track.attributes.currentUserReaction,
+        url: '',
       }))}
       renderTrackRow={(trackRow) => (
         <TrackRow
