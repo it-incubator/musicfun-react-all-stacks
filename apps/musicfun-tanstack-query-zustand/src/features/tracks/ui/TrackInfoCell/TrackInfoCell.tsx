@@ -2,10 +2,9 @@ import clsx from 'clsx'
 import { Link } from 'react-router'
 
 import { usePlayerStore } from '@/player/model/player-store.ts'
-import { TableCell, Typography } from '@/shared/components'
+import { CoverImage, TableCell, Typography } from '@/shared/components'
 
 import s from './TrackInfoCell.module.css'
-import { CoverImage } from '@/shared/components/CoverImage'
 
 export const TrackInfoCell = ({
   image,
