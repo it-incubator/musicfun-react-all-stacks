@@ -2,11 +2,12 @@ import * as React from 'react'
 import { Link } from 'react-router'
 
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
-import { Card, Typography } from '@/shared/components'
+import { Button, Card, Typography } from '@/shared/components'
 import { CoverImage } from '@/shared/components/CoverImage'
 import { VU } from '@/shared/utils'
 
 import s from './PlaylistCard.module.css'
+import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 
 interface PlaylistCardProps {
   id: string
@@ -18,6 +19,8 @@ interface PlaylistCardProps {
 
 export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
   const { title, images, description, id, footer } = props
+
+  const handleDeletePlaylist = useDeletePlaylistAction(id)
 
   const imageSrc = React.useMemo(() => {
     return VU.isValidArray(images?.main) ? images.main[0].url : void 0
@@ -38,6 +41,9 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
       <Typography variant="body3" className={s.description}>
         {VU.isValid(description) && description}
       </Typography>
+      <Button className={s.btnDelete} onClick={handleDeletePlaylist}>
+        Delete
+      </Button>
       {VU.isValid(footer) && footer}
     </Card>
   )
