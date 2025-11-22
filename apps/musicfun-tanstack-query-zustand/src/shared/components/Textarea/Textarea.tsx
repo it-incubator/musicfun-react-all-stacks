@@ -1,7 +1,7 @@
 import { clsx } from 'clsx'
 import type { ComponentProps, ReactNode } from 'react'
 
-import { useGetId } from '../../hooks/useGetId'
+import { useGetId } from '../../hooks'
 import { Typography } from '../Typography'
 import s from './Textarea.module.css'
 

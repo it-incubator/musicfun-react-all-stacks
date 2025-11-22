@@ -9,21 +9,26 @@ import { useTracksInfinityQuery } from '@/pages/TracksPage/model/useTracksInfini
 import { usePlayerStore } from '@/player/model/player-store.ts'
 import {
   Autocomplete,
-  Button,
   DropdownMenu,
   DropdownMenuTrigger,
   ReactionButtons,
   Typography,
 } from '@/shared/components'
+import { useInfiniteScroll } from '@/shared/hooks'
 import { MoreIcon } from '@/shared/icons'
 import { VU } from '@/shared/utils'
 
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import s from './TracksPage.module.css'
 
+const PAGE_SIZE = 20
+
 export const TracksPage = () => {
   const [hashtags, setHashtags] = React.useState<string[]>([])
   const [artists, setArtists] = React.useState<string[]>([])
+
+  const triggerRef = React.useRef<HTMLDivElement>(null)
+  const wrapperRef = React.useRef<HTMLDivElement>(null)
 
   // todo: task search tracks filter w/o trhotling/debounce
   // add sorting;
@@ -31,14 +36,12 @@ export const TracksPage = () => {
   //const { data, isPending, isError } = useTracksQuery({})
 
   const { data, isPending, isError, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-    useTracksInfinityQuery({})
-
+    useTracksInfinityQuery({ pageSize: PAGE_SIZE })
   const { play } = usePlayerStore()
 
   const tracks = React.useMemo(() => {
     return VU.isValidArray(data?.pages) ? data.pages.map((page) => page.data).flat() : []
   }, [data?.pages])
-
   const tracksRowsData = React.useMemo(() => {
     return VU.isValidArray(tracks)
       ? tracks.map((track, index) => ({
@@ -72,6 +75,18 @@ export const TracksPage = () => {
     },
     [tracks, play]
   )
+
+  useInfiniteScroll({
+    triggerRef,
+    wrapperRef,
+    callBack: () => {
+      if (!isFetching && hasNextPage && !isFetchingNextPage) {
+        void fetchNextPage()
+      }
+    },
+    rootMargin: '300px',
+    threshold: 0.1,
+  })
 
   if (isPending) {
     return <div>Loading...</div>
@@ -115,47 +130,45 @@ export const TracksPage = () => {
           />
         </div>
       </div>
-      <TracksTable
-        trackRows={tracksRowsData}
-        renderTrackRow={(trackRow) => (
-          <TrackRow
-            key={trackRow.id}
-            trackRow={trackRow}
-            playingTrackId={undefined}
-            playingTrackProgress={20}
-            onPlayClick={handleClickPlay}
-            renderActionsCell={() => (
-              // todo: task Implement like/dislike
-              <>
-                <ReactionButtons
-                  entityId={trackRow.id}
-                  currentReaction={trackRow.currentUserReaction}
-                  likesCount={trackRow.likesCount}
-                  onDislike={() => {}}
-                  onLike={() => {}}
-                  onRemoveReaction={() => {}}
-                />
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    {/* implement add to playlist (via popup, see figma) */}
-                    <MoreIcon />
-                  </DropdownMenuTrigger>
-                </DropdownMenu>
-              </>
-            )}
-          />
+      <div ref={wrapperRef} className={s.tableContainer}>
+        <TracksTable
+          trackRows={tracksRowsData}
+          renderTrackRow={(trackRow) => (
+            <TrackRow
+              key={trackRow.id}
+              trackRow={trackRow}
+              playingTrackId={undefined}
+              playingTrackProgress={20}
+              onPlayClick={handleClickPlay}
+              renderActionsCell={() => (
+                // todo: task Implement like/dislike
+                <>
+                  <ReactionButtons
+                    entityId={trackRow.id}
+                    currentReaction={trackRow.currentUserReaction}
+                    likesCount={trackRow.likesCount}
+                    onDislike={() => {}}
+                    onLike={() => {}}
+                    onRemoveReaction={() => {}}
+                  />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      {/* implement add to playlist (via popup, see figma) */}
+                      <MoreIcon />
+                    </DropdownMenuTrigger>
+                  </DropdownMenu>
+                </>
+              )}
+            />
+          )}
+        />
+        {hasNextPage && (
+          <div ref={triggerRef} className={s.trigger}>
+            {/* // Todo: change to little loader */}
+            <div>Loading...</div>
+          </div>
         )}
-      />
-      <Button
-        className={s.showMoreButton}
-        onClick={() => fetchNextPage()}
-        disabled={!hasNextPage || isFetching}>
-        {isFetchingNextPage
-          ? 'Loading more...'
-          : hasNextPage
-            ? 'Show More'
-            : 'Nothing more to show'}
-      </Button>
+      </div>
     </PageWrapper>
   )
 }
