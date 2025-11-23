@@ -3,7 +3,7 @@ import * as React from 'react'
 import type { IUseObserverInfiniteScroll } from './useObserverInfiniteScroll.types.ts'
 
 /**
- * Hook for implementing infinite scroll using the Intersection Observer API.
+ * Custom hook for implementing infinite scroll using the Intersection Observer API.
  *
  * @param {IUseObserverInfiniteScroll} props - An object containing configuration options for the observer.
  * @param {Function} [props.callBack] - The function to be called when the observed element enters the viewport or root
@@ -56,7 +56,7 @@ const useObserverInfiniteScroll = <T extends HTMLElement>(props: IUseObserverInf
 
       observer.current = new IntersectionObserver(async ([entry]) => {
         if (entry.isIntersecting) {
-          await callBack?.()
+          await callBack?.(entry)
         }
       }, options)
 

@@ -1,11 +1,11 @@
 import clsx from 'clsx'
-import type { ReactNode } from 'react'
+import * as React from 'react'
 
+import type { TrackRowData } from '@/features/tracks'
 import { Progress, TableCell, TableRow, Typography } from '@/shared/components'
 import { LiveWaveIcon } from '@/shared/icons'
 
 import { TrackInfoCell } from '../TrackInfoCell'
-import type { TrackRowData } from '../TracksTable/TracksTable.tsx'
 import s from './TrackRow.module.css'
 
 export const TrackRow = <T extends TrackRowData>({
@@ -15,17 +15,31 @@ export const TrackRow = <T extends TrackRowData>({
   renderActionsCell,
   onPlayClick,
 }: {
-  renderActionsCell: (trackRow: T) => ReactNode
+  renderActionsCell: (trackRow: T) => React.ReactNode
   trackRow: T
   playingTrackId?: string
   playingTrackProgress?: number
   onPlayClick?: (trackId: string) => void
 }) => {
-  // todo:task Implement this logic
   const isPlaying = playingTrackId === trackRow.id
 
+  const handleRowClick = (e: React.MouseEvent<HTMLTableRowElement>) => {
+    const target = e.target as HTMLElement
+    if (
+      target.closest('button') ||
+      target.closest('[role="button"]') ||
+      target.closest('svg') ||
+      target.closest('input') ||
+      target.closest('a')
+    ) {
+      return
+    }
+
+    onPlayClick?.(trackRow.id)
+  }
+
   return (
-    <TableRow>
+    <TableRow onClick={handleRowClick} className={s.tableRow}>
       <TableCell className={clsx(isPlaying && s.playing)}>
         {isPlaying ? <LiveWaveIcon /> : trackRow.index + 1}
       </TableCell>
@@ -40,7 +54,9 @@ export const TrackRow = <T extends TrackRowData>({
       <TableCell>
         {isPlaying && (
           <Progress
+            key={`${trackRow.id}-${playingTrackProgress}`}
             className={s.progress}
+            // Todo: add duration in tracksRow component for correct progress bar & duration visibility
             value={playingTrackProgress ?? 0}
             max={trackRow.duration}
           />
@@ -55,6 +71,7 @@ export const TrackRow = <T extends TrackRowData>({
         <div className={s.actions}>{renderActionsCell(trackRow)}</div>
       </TableCell>
       <TableCell>
+        {/* // Todo: add duration in tracksRow component for correct progress bar & duration visibility */}
         <Typography variant="body2">{trackRow.duration}</Typography>
       </TableCell>
     </TableRow>

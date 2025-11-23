@@ -5,5 +5,5 @@ export interface IUseObserverInfiniteScroll<T extends HTMLElement = HTMLElement>
   triggerRef: React.RefObject<T | null>
   wrapperRef?: React.RefObject<T | null>
 
-  callBack?(): Promise<void> | void
+  callBack?(entry: IntersectionObserverEntry): Promise<void> | void
 }

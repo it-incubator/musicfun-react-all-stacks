@@ -4,8 +4,6 @@ import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { TracksTable } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { useTracksInfinityQuery } from '@/pages/TracksPage/model/useTracksInfinityQuery.ts'
-//import { useTracksQuery } from '@/pages/TracksPage/model/useTracksQuery.tsx'
 import { usePlayerStore } from '@/player/model/player-store.ts'
 import {
   Autocomplete,
@@ -19,6 +17,7 @@ import { MoreIcon } from '@/shared/icons'
 import { VU } from '@/shared/utils'
 
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
+import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
 
 const PAGE_SIZE = 20
@@ -31,13 +30,11 @@ export const TracksPage = () => {
   const wrapperRef = React.useRef<HTMLDivElement>(null)
 
   // todo: task search tracks filter w/o trhotling/debounce
-  // add sorting;
-
-  //const { data, isPending, isError } = useTracksQuery({})
+  // todo: add sorting;
 
   const { data, isPending, isError, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     useTracksInfinityQuery({ pageSize: PAGE_SIZE })
-  const { play } = usePlayerStore()
+  const { play, currentTrack, currentTime } = usePlayerStore()
 
   const tracks = React.useMemo(() => {
     return VU.isValidArray(data?.pages) ? data.pages.map((page) => page.data).flat() : []
@@ -51,6 +48,7 @@ export const TracksPage = () => {
           image: track.attributes.images.main?.[0]?.url,
           addedAt: track.attributes.addedAt,
           artists: [], //track.attributes.artists?.map((artist) => artist.name) || [],
+          // Todo: add duration for correct progress bar & duration visibility
           duration: 0, //track.attributes.duration,
           likesCount: track.attributes.likesCount,
           dislikesCount: 0, // track.attributes.dislikesCount,
@@ -137,8 +135,8 @@ export const TracksPage = () => {
             <TrackRow
               key={trackRow.id}
               trackRow={trackRow}
-              playingTrackId={undefined}
-              playingTrackProgress={20}
+              playingTrackId={currentTrack?.id}
+              playingTrackProgress={currentTime}
               onPlayClick={handleClickPlay}
               renderActionsCell={() => (
                 // todo: task Implement like/dislike
