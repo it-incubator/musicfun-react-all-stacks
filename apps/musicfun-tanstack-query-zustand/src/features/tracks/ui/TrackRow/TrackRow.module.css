@@ -1,3 +1,8 @@
+.tableRow {
+  cursor: pointer;
+  user-select: none;
+}
+
 .playing {
   color: var(--color-accent);
 }
