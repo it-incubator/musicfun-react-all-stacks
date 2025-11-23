@@ -156,7 +156,7 @@ export const AudioPlayer = ({
           min={0}
           max={1}
           step={0.01}
-          value={isMuted ? 0 : volume}
+          value={volume}
           onChange={handleVolume}
           className={clsx(s.progress, s.volumeProgress)}
         />

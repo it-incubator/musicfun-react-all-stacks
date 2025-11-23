@@ -3,14 +3,28 @@
   flex-direction: column;
   gap: 4px;
   width: 264px;
+  min-height: 100%;
 }
 
 .image {
   overflow: hidden;
   height: 153px;
+  flex: 1;
   transition:
     opacity 0.2s,
     transform 0.4s;
+}
+
+.btnDelete {
+    width: 40px;
+    height: 30px;
+    border-radius: 10%;
+    background: rgba(241, 33, 33, 0.9);
+    border: none;
+    font-size: 12px;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .card:hover .image {

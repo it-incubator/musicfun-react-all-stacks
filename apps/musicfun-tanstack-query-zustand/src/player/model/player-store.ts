@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { toast } from 'react-toastify'
 
 type CurrentTrack = { id: string; title: string; artist: string; src: string; coverSrc?: string }
 
@@ -53,20 +54,26 @@ export const usePlayerStore = create<PlayerStore>((set, get) => {
       audio.currentTime = time
     },
     setVolume(volume) {
+      const { isMuted } = get()
       audio.volume = volume
+
+      if (volume > 0 && isMuted) {
+        audio.muted = false
+      }
       set({ volume, isMuted: volume === 0 })
     },
     toggleMute() {
       const { isMuted, volume } = get()
 
-      if (isMuted) {
-        const restoredVolume = volume || 0.5
-        audio.muted = false
-        audio.volume = restoredVolume
-        set({ isMuted: false, volume: restoredVolume })
-      } else {
+      if (!isMuted) {
         audio.muted = true
         set({ isMuted: true })
+      } else {
+        audio.muted = false
+        set({ isMuted: volume === 0 })
+      }
+      if (isMuted && volume === 0) {
+        toast('Selected 0 volume', { type: 'warning', theme: 'colored' })
       }
     },
   }
