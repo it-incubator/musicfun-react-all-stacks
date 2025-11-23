@@ -2,11 +2,11 @@ import * as React from 'react'
 import { Link } from 'react-router'
 
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
-import { Card, CoverImage, Typography } from '@/shared/components'
+import { Button, Card, CoverImage, Typography } from '@/shared/components'
+import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 import { VU } from '@/shared/utils'
 
 import s from './PlaylistCard.module.css'
-import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 
 interface PlaylistCardProps {
   id: string
