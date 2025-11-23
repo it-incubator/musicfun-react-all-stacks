@@ -1,7 +1,9 @@
 import { clsx } from 'clsx'
-import { type ComponentProps } from 'react'
+import * as React from 'react'
 
 import { usePlayerStore } from '@/player/model/player-store.ts'
+import { CoverImage } from '@/shared/components'
+import { useThrottleCallback } from '@/shared/hooks'
 import {
   PauseIcon,
   PlayIcon,
@@ -16,7 +18,6 @@ import {
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './AudioPlayer.module.css'
-import { CoverImage } from '@/shared/components'
 
 export type PlayerProps = {
   onNext: () => void
@@ -25,7 +26,7 @@ export type PlayerProps = {
   isRepeat: boolean
   onShuffle: () => void
   onRepeat: () => void
-} & ComponentProps<'div'>
+} & React.ComponentProps<'div'>
 
 export const AudioPlayer = ({
   onNext,
@@ -61,17 +62,25 @@ export const AudioPlayer = ({
     }
   }
 
+  const setThrottledTime = useThrottleCallback((time) => {
+    seek(time)
+  }, 15)
+
   const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = Number(e.target.value)
-    seek(time)
+    setThrottledTime(time)
     // if (audioRef.current) {
     //   audioRef.current.currentTime = time
     // }
   }
 
+  const setThrottledVolume = useThrottleCallback((newVolume) => {
+    setVolume(newVolume)
+  }, 15)
+
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(e.target.value)
-    setVolume(newVolume)
+    setThrottledVolume(newVolume)
   }
 
   const handleVolumeMute = () => {
