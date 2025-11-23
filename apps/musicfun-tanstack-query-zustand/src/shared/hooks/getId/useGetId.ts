@@ -8,8 +8,10 @@ import { useId } from 'react'
  * @param {string} [idFromComponentProps] - An optional ID passed from ComponentProps.
  * @returns {string} The ID from component props or a generated unique ID.
  */
-export const useGetId = (idFromComponentProps?: string) => {
+const useGetId = (idFromComponentProps?: string) => {
   const generatedId = useId()
 
   return idFromComponentProps || generatedId
 }
+
+export default useGetId

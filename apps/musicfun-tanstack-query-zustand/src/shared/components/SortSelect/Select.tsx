@@ -3,7 +3,7 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import { ArrowDownIcon } from '@/shared/icons'
 
-import { useGetId } from '../../hooks/useGetId'
+import { useGetId } from '../../hooks'
 import { Typography } from '../Typography'
 import s from './Select.module.css'
 

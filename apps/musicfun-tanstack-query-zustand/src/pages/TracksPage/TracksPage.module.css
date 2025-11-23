@@ -14,3 +14,12 @@
 
   margin-bottom: 32px;
 }
+
+.showMoreButton {
+  display: block;
+
+  width: 328px;
+  height: 54px;
+  margin: 0 auto;
+  margin-bottom: 24px;
+}

@@ -2,8 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router'
 
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
-import { Button, Card, Typography } from '@/shared/components'
-import { CoverImage } from '@/shared/components/CoverImage'
+import { Card, CoverImage, Typography } from '@/shared/components'
 import { VU } from '@/shared/utils'
 
 import s from './PlaylistCard.module.css'
