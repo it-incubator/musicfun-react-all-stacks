@@ -28,6 +28,8 @@ export type PlayerProps = {
   onRepeat: () => void
 } & React.ComponentProps<'div'>
 
+const durationSliderCoefficients = 10
+
 export const AudioPlayer = ({
   onNext,
   onPrevious,
@@ -67,7 +69,7 @@ export const AudioPlayer = ({
   }, 15)
 
   const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const time = Number(e.target.value)
+    const time = Number(e.target.value) / durationSliderCoefficients
     setThrottledTime(time)
     // if (audioRef.current) {
     //   audioRef.current.currentTime = time
@@ -138,8 +140,8 @@ export const AudioPlayer = ({
           <input
             type="range"
             min={0}
-            max={duration}
-            value={currentTime}
+            max={duration * durationSliderCoefficients}
+            value={currentTime * durationSliderCoefficients}
             onChange={handleChangeTime}
             className={clsx(s.progress, s.trackProgress)}
           />
