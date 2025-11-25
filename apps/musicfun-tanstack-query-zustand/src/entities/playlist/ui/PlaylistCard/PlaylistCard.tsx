@@ -43,7 +43,7 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
           {title}
         </Typography>
         {canEdit && (
-          <DropdownMenu className={s.test}>
+          <DropdownMenu>
             <DropdownMenuTrigger>
               <MoreIcon />
             </DropdownMenuTrigger>
