@@ -15,18 +15,6 @@
     transform 0.4s;
 }
 
-.btnDelete {
-    width: 40px;
-    height: 30px;
-    border-radius: 10%;
-    background: rgba(241, 33, 33, 0.9);
-    border: none;
-    font-size: 12px;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
 .card:hover .image {
   transform: scale(1.02);
   opacity: 0.92;
