@@ -3,6 +3,7 @@ import {
   type ComponentProps,
   createContext,
   type ElementType,
+  MouseEvent,
   type ReactNode,
   use,
   useEffect,
@@ -88,8 +89,13 @@ export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
     triggerRef,
   }
 
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    e.preventDefault()
+  }
+
   return (
-    <div className={clsx(s.container, className)}>
+    <div className={clsx(s.container, className)} onClick={handleClick}>
       <DropdownMenuContext value={contextValue}>{children}</DropdownMenuContext>
     </div>
   )
@@ -116,8 +122,6 @@ export const DropdownMenuTrigger = ({
 
   const handleClick = (e: React.MouseEvent) => {
     onToggle()
-    e.preventDefault()
-    e.stopPropagation()
     onClick?.(e)
   }
 

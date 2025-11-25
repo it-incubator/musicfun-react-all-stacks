@@ -5,5 +5,5 @@ export const playlistsKeys = {
   lists: () => [...playlistsKeys.all, 'list'] as const, //  playlists, list
   list: (filters: SchemaGetPlaylistsRequestPayload) => [...playlistsKeys.lists(), filters] as const, //  playlists, list, {:filter}
   details: () => [...playlistsKeys.all, 'detail'] as const, // playlists, detail
-  detail: (id: number) => [...playlistsKeys.details(), id] as const, // playlists, details, :id
+  detail: (id: string) => [...playlistsKeys.details(), id] as const, // playlists, details, :id
 }

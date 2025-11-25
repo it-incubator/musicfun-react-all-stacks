@@ -11,12 +11,13 @@ import {
   DropdownMenuTrigger,
   Typography,
 } from '@/shared/components'
+import { featuresFlags } from '@/shared/featureFlags.ts'
+import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
+import { DeleteIcon, EditIcon, MoreIcon } from '@/shared/icons'
+import shared from '@/shared/styles/shared.module.css'
 import { VU } from '@/shared/utils'
 
 import s from './PlaylistCard.module.css'
-import shared from '@/shared/styles/shared.module.css'
-import { DeleteIcon, EditIcon, MoreIcon } from '@/shared/icons'
-import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 
 interface PlaylistCardProps {
   id: string
@@ -63,10 +64,12 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
                 <EditIcon className={shared.menuIcon} />
                 <span>Edit</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDeletePlaylist} className={shared.deleteItem}>
-                <DeleteIcon className={shared.menuIcon} />
-                <span>Delete</span>
-              </DropdownMenuItem>
+              {featuresFlags.deletePlaylist && (
+                <DropdownMenuItem onClick={handleDeletePlaylist} className={shared.deleteItem}>
+                  <DeleteIcon className={shared.menuIcon} />
+                  <span>Delete</span>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         )}

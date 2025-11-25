@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { playlistsKeys } from '@/features/playlists/api/query-key-factory.ts'
 import { getClient } from '@/shared/api/client'
 import { unwrap } from '@/shared/api/utils/unwrap'
 
@@ -25,10 +26,10 @@ export function useUploadPlaylistCover() {
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['playlists', 'detail', variables.playlistId],
+        queryKey: playlistsKeys.detail(variables.playlistId),
       })
       queryClient.invalidateQueries({
-        queryKey: ['playlists', 'list'],
+        queryKey: playlistsKeys.lists(),
       })
     },
   })
