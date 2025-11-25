@@ -37,10 +37,10 @@ export const TracksPage = () => {
   const { play, currentTrack, currentTime } = usePlayerStore()
 
   const tracks = React.useMemo(() => {
-    return VU.isValidArray(data?.pages) ? data.pages.map((page) => page.data).flat() : []
+    return VU.isNotEmptyArray(data?.pages) ? data.pages.map((page) => page.data).flat() : []
   }, [data?.pages])
   const tracksRowsData = React.useMemo(() => {
-    return VU.isValidArray(tracks)
+    return VU.isNotEmptyArray(tracks)
       ? tracks.map((track, index) => ({
           index,
           id: track.id,
@@ -59,7 +59,9 @@ export const TracksPage = () => {
 
   const handleClickPlay = React.useCallback(
     (trackId: string) => {
-      const track = VU.isValidArray(tracks) ? tracks.find((track) => track.id === trackId) : void 0
+      const track = VU.isNotEmptyArray(tracks)
+        ? tracks.find((track) => track.id === trackId)
+        : void 0
 
       if (track) {
         play({

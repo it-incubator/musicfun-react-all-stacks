@@ -103,7 +103,7 @@ export const PlaylistsPage = () => {
       return <>Playlist loading error. Please try again later.</>
     }
 
-    if (!VU.isValidArray(data?.data?.data)) {
+    if (!VU.isNotEmptyArray(data?.data?.data)) {
       return <>No results found for your search.</>
     }
 

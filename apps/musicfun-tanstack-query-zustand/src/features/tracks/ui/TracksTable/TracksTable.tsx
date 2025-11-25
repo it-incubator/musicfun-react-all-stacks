@@ -72,7 +72,7 @@ export const TracksTable = <T extends TrackRowData>({
   trackRows,
   renderTrackRow,
 }: TracksTableProps<T>) => {
-  if (!VU.isValidArray(trackRows)) {
+  if (!VU.isNotEmptyArray(trackRows)) {
     return null
   }
 

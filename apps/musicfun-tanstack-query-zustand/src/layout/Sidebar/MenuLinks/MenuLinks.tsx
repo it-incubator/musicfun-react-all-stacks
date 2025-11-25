@@ -28,6 +28,7 @@ const mainLinks: MenuLink[] = [
     label: 'Home',
   },
   {
+    //todo:task go to current user page. If anonym - show Login popup
     to: '/user/1',
     icon: <LibraryIcon />,
     label: 'Your Library',

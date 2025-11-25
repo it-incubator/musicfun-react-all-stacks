@@ -33,13 +33,7 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
 
   const handleDeletePlaylist = useDeletePlaylistAction(id)
 
-  const imageSrc = React.useMemo(() => {
-    return VU.isValidArray(images?.main) ? images.main[0].url : void 0
-  }, [images?.main])
-
-  if (!VU.isValidString(id)) {
-    return null
-  }
+  const imageSrc = VU.isNotEmptyArray(images?.main) ? images.main[0].url : undefined
 
   return (
     <Card as={Link} to={`/playlists/${id}`} className={s.card}>
@@ -47,10 +41,10 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
         <CoverImage imageSrc={imageSrc} imageDescription={'cover'} aria-hidden />
       </div>
       <Typography variant="h3" className={s.title}>
-        {VU.isValid(title) && title}
+        {title}
       </Typography>
       <Typography variant="body3" className={s.description}>
-        {VU.isValid(description) && description}
+        {description}
       </Typography>
       <div>
         {canEdit && (
@@ -75,7 +69,7 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
         )}
       </div>
 
-      {VU.isValid(footer) && footer}
+      {footer}
     </Card>
   )
 }

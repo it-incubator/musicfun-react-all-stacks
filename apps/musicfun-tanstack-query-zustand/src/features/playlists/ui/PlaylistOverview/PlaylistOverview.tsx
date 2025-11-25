@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import { type ComponentProps } from 'react'
+
 import { TagsList } from '@/features/tags'
 import { CoverImage, Typography } from '@/shared/components'
 

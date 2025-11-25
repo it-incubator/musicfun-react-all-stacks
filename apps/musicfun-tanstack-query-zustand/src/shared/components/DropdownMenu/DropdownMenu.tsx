@@ -1,9 +1,8 @@
 import { clsx } from 'clsx'
-import {
+import React, {
   type ComponentProps,
   createContext,
   type ElementType,
-  MouseEvent,
   type ReactNode,
   use,
   useEffect,
@@ -89,7 +88,7 @@ export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
     triggerRef,
   }
 
-  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
     e.preventDefault()
   }
