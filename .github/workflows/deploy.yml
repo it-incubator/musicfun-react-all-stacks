@@ -117,7 +117,7 @@ jobs:
         run: cp public/404.html dist/404.html
 
       - name: Add CNAME
-        run: echo 'app.musicfun.dev' > dist/CNAME
+        run: echo 'stg.musicfun.dev' > dist/CNAME
 
       - uses: actions/upload-pages-artifact@v3
         with:
