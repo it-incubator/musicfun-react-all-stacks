@@ -9,17 +9,3 @@
   width: 80px;
   height: 80px;
 }
-
-.menuIcon {
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
-}
-
-.deleteItem {
-    color: #eb1616;
-
-    &:hover {
-        color: #ffeaea;
-    }
-}

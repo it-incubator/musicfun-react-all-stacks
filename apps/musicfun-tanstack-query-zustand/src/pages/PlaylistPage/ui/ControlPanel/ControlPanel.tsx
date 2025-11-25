@@ -9,6 +9,8 @@ import {
 import { DeleteIcon, EditIcon, MoreIcon, PlayIcon } from '@/shared/icons'
 
 import s from './ControlPanel.module.css'
+import shared from '@/shared/styles/shared.module.css'
+
 import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 
 export const ControlPanel = ({ playlistId }: { playlistId: string }) => {
@@ -36,11 +38,11 @@ export const ControlPanel = ({ playlistId }: { playlistId: string }) => {
 
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => {}}>
-            <EditIcon className={s.menuIcon} />
+            <EditIcon className={shared.menuIcon} />
             <span>Edit</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleDeletePlaylist} className={s.deleteItem}>
-            <DeleteIcon className={s.menuIcon} />
+          <DropdownMenuItem onClick={handleDeletePlaylist} className={shared.deleteItem}>
+            <DeleteIcon className={shared.menuIcon} />
             <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>

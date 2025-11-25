@@ -2,11 +2,21 @@ import * as React from 'react'
 import { Link } from 'react-router'
 
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
-import { Button, Card, CoverImage, Typography } from '@/shared/components'
-import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
+import {
+  Card,
+  CoverImage,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Typography,
+} from '@/shared/components'
 import { VU } from '@/shared/utils'
 
 import s from './PlaylistCard.module.css'
+import shared from '@/shared/styles/shared.module.css'
+import { DeleteIcon, EditIcon, MoreIcon } from '@/shared/icons'
+import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 
 interface PlaylistCardProps {
   id: string
@@ -14,10 +24,11 @@ interface PlaylistCardProps {
   images?: SchemaPlaylistImagesOutputDto
   description: string | null
   footer?: React.ReactNode
+  canEdit?: boolean
 }
 
 export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
-  const { title, images, description, id, footer } = props
+  const { title, images, description, id, footer, canEdit = false } = props
 
   const handleDeletePlaylist = useDeletePlaylistAction(id)
 
@@ -40,9 +51,27 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
       <Typography variant="body3" className={s.description}>
         {VU.isValid(description) && description}
       </Typography>
-      <Button className={s.btnDelete} onClick={handleDeletePlaylist}>
-        Delete
-      </Button>
+      <div>
+        {canEdit && (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MoreIcon />
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem>
+                <EditIcon className={shared.menuIcon} />
+                <span>Edit</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDeletePlaylist} className={shared.deleteItem}>
+                <DeleteIcon className={shared.menuIcon} />
+                <span>Delete</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+
       {VU.isValid(footer) && footer}
     </Card>
   )

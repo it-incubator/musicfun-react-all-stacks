@@ -103,20 +103,29 @@ export type DropdownMenuTriggerProps = {
   children: ReactNode
   className?: string
   asChild?: boolean
+  onClick?: (e: React.MouseEvent) => void
 }
 
 export const DropdownMenuTrigger = ({
   children,
   className,
   asChild = false,
+  onClick,
 }: DropdownMenuTriggerProps) => {
   const { onToggle, triggerRef } = useDropdownMenuContext()
+
+  const handleClick = (e: React.MouseEvent) => {
+    onToggle()
+    e.preventDefault()
+    e.stopPropagation()
+    onClick?.(e)
+  }
 
   if (asChild) {
     return (
       <div
         ref={triggerRef as React.RefObject<HTMLDivElement>}
-        onClick={onToggle}
+        onClick={handleClick}
         className={className}>
         {children}
       </div>
@@ -127,7 +136,7 @@ export const DropdownMenuTrigger = ({
     <button
       ref={triggerRef as React.RefObject<HTMLButtonElement>}
       type="button"
-      onClick={onToggle}
+      onClick={handleClick}
       className={clsx(s.trigger, className)}>
       {children}
     </button>
