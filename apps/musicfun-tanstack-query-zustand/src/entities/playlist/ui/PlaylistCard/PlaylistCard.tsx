@@ -11,13 +11,11 @@ import {
   DropdownMenuTrigger,
   Typography,
 } from '@/shared/components'
-import { featuresFlags } from '@/shared/featureFlags.ts'
 import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 import { DeleteIcon, EditIcon, MoreIcon } from '@/shared/icons'
-import shared from '@/shared/styles/shared.module.css'
 import { VU } from '@/shared/utils'
 
-import s from './PlaylistCard.module.css'
+import s from './PlaylistCard.module.scss'
 
 interface PlaylistCardProps {
   id: string
@@ -33,43 +31,45 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
 
   const handleDeletePlaylist = useDeletePlaylistAction(id)
 
-  const imageSrc = VU.isNotEmptyArray(images?.main) ? images.main[0].url : undefined
+  const imageSrc = React.useMemo(() => {
+    return VU.isNotEmptyArray(images?.main) ? images.main[0].url : void 0
+  }, [images?.main])
+
+  if (!VU.isValidString(id)) {
+    return null
+  }
 
   return (
     <Card as={Link} to={`/playlists/${id}`} className={s.card}>
       <div className={s.image}>
         <CoverImage imageSrc={imageSrc} imageDescription={'cover'} aria-hidden />
       </div>
-      <Typography variant="h3" className={s.title}>
-        {title}
-      </Typography>
-      <Typography variant="body3" className={s.description}>
-        {description}
-      </Typography>
-      <div>
+      <div className={s.titleWrapper}>
+        <Typography variant="h3" className={s.title}>
+          {VU.isValid(title) && title}
+        </Typography>
         {canEdit && (
-          <DropdownMenu>
+          <DropdownMenu className={s.test}>
             <DropdownMenuTrigger>
               <MoreIcon />
             </DropdownMenuTrigger>
-
             <DropdownMenuContent align="start">
               <DropdownMenuItem>
-                <EditIcon className={shared.menuIcon} />
+                <EditIcon className={s.menuIcon} />
                 <span>Edit</span>
               </DropdownMenuItem>
-              {featuresFlags.deletePlaylist && (
-                <DropdownMenuItem onClick={handleDeletePlaylist} className={shared.deleteItem}>
-                  <DeleteIcon className={shared.menuIcon} />
-                  <span>Delete</span>
-                </DropdownMenuItem>
-              )}
+              <DropdownMenuItem onClick={handleDeletePlaylist} className={s.deleteItem}>
+                <DeleteIcon className={s.menuIcon} />
+                <span>Delete</span>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
       </div>
-
-      {footer}
+      <Typography variant="body3" className={s.description}>
+        {VU.isValid(description) && description}
+      </Typography>
+      {VU.isValid(footer) && footer}
     </Card>
   )
 }
