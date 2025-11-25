@@ -39,7 +39,9 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
         <CoverImage imageSrc={imageSrc} imageDescription={'cover'} aria-hidden />
       </div>
       <div className={s.titleWrapper}>
-        <Typography variant="h3">{VU.isValid(title) && title}</Typography>
+        <Typography variant="h3" className={s.title}>
+          {title}
+        </Typography>
         {canEdit && (
           <DropdownMenu className={s.test}>
             <DropdownMenuTrigger>
@@ -59,9 +61,9 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
         )}
       </div>
       <Typography variant="body3" className={s.description}>
-        {VU.isValid(description) && description}
+        {description}
       </Typography>
-      {VU.isValid(footer) && footer}
+      {footer}
     </Card>
   )
 }
