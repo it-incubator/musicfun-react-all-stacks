@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
   Typography,
 } from '@/shared/components'
+import { featuresFlags } from '@/shared/featureFlags.ts'
 import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 import { DeleteIcon, EditIcon, MoreIcon } from '@/shared/icons'
 import { VU } from '@/shared/utils'
@@ -52,10 +53,12 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
                 <EditIcon className={s.menuIcon} />
                 <span>Edit</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDeletePlaylist} className={s.deleteItem}>
-                <DeleteIcon className={s.menuIcon} />
-                <span>Delete</span>
-              </DropdownMenuItem>
+              {featuresFlags.deletePlaylist && (
+                <DropdownMenuItem onClick={handleDeletePlaylist} className={s.deleteItem}>
+                  <DeleteIcon className={s.menuIcon} />
+                  <span>Delete</span>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         )}
