@@ -1,4 +1,4 @@
-import { isNotEmptyArray } from './isNotEmptyArray.ts'
+import isNotEmptyArray from './isNotEmptyArray'
 import isValid from './isValid'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
