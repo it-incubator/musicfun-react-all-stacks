@@ -83,4 +83,8 @@ pnpm build:sdk:simple
 | **Services**          | `kebab-case`       | `auth-service.ts`, `user-service.ts`  |
 | **Mocks (mock data)** | `kebab-case`       | `user-mocks.ts`, `playlist-mocks.ts`  |
 
+## Contributing
+
+Please refer to our [Contributing guide](CONTRIBUTING.md) to learn about our development process, how to propose bugfixes 
+
 ### Happy hacking 🚀

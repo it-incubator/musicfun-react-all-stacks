@@ -1,18 +1,19 @@
 import { useCallback, useMemo, useState } from 'react'
+import { useParams } from 'react-router'
 
 import { PlaylistCard } from '@/entities/playlist'
+import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 import { CreatePlaylistModal } from '@/features/playlists'
+import { usePlaylists } from '@/features/playlists/api/use-playlists.query'
+import { ContentList } from '@/pages/common'
 import {
   PathsPlaylistsGetParametersQuerySortBy,
   PathsPlaylistsGetParametersQuerySortDirection,
   type SchemaGetPlaylistsRequestPayload,
 } from '@/shared/api/schema'
-import { ContentList } from '@/pages/common'
 import { Button, Pagination } from '@/shared/components'
 
 import s from './PlaylistsTab.module.css'
-import { useParams } from 'react-router'
-import { usePlaylists } from '@/features/playlists/api/use-playlists.query'
 
 const PAGE_SIZE = 8
 const DEFAULT_PAGE = 1
@@ -21,6 +22,7 @@ export const PlaylistsTab = () => {
   const [isCreatePlaylistModalOpen, setIsCreatePlaylistModalOpen] = useState(false) // STATE FOR TESTING
   const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
   const { id: userId } = useParams<{ id: string }>()
+  const { data: me } = useMeQuery()
 
   // todo:task load user playlists
 
@@ -37,6 +39,7 @@ export const PlaylistsTab = () => {
   const { data, isLoading, isError } = usePlaylists(queryParams)
   const playlists = data?.data?.data ?? []
   const totalPages = data?.data?.meta.pagesCount ?? 1
+  const canEditPlaylist = me?.userId === userId
 
   const openCreatePlaylistModal = () => {
     setIsCreatePlaylistModalOpen(true)
@@ -64,11 +67,13 @@ export const PlaylistsTab = () => {
           data={playlists}
           renderItem={(playlist) => (
             <PlaylistCard
-              key={playlist.id}
-              id={playlist.id}
-              title={playlist.attributes.title}
-              images={playlist.attributes.images || { main: [] }}
+              //Todo: playlist editing will work when the data is not mock.
+              canEdit={canEditPlaylist}
               description={playlist.attributes.description}
+              id={playlist.id}
+              images={playlist.attributes.images || { main: [] }}
+              key={playlist.id}
+              title={playlist.attributes.title}
             />
           )}
         />

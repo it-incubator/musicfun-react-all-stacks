@@ -13,7 +13,7 @@ import s from './TracksPage.module.css'
 import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackRowContainer.tsx'
 import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10
 
 export const TracksPage = () => {
   const { data: me, isLoading: isMeLoading } = useMeQuery()
@@ -132,7 +132,7 @@ export const TracksPage = () => {
           />
         </div>
       </div>
-      <div ref={wrapperRef} className={s.tableContainer}>
+      <div ref={wrapperRef}>
         <TracksTable
           trackRows={tracksRowsData}
           renderTrackRow={(trackRow) => {
@@ -148,7 +148,7 @@ export const TracksPage = () => {
           }}
         />
         {hasNextPage && (
-          <div ref={triggerRef} className={s.trigger}>
+          <div ref={triggerRef}>
             {/* // Todo: change to little loader */}
             <div>Loading...</div>
           </div>
