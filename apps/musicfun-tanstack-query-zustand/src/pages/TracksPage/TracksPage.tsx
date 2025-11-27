@@ -20,7 +20,7 @@ import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10
 
 export const TracksPage = () => {
   const [hashtags, setHashtags] = React.useState<string[]>([])
@@ -130,7 +130,7 @@ export const TracksPage = () => {
           />
         </div>
       </div>
-      <div ref={wrapperRef} className={s.tableContainer}>
+      <div ref={wrapperRef}>
         <TracksTable
           trackRows={tracksRowsData}
           renderTrackRow={(trackRow) => (
@@ -163,7 +163,7 @@ export const TracksPage = () => {
           )}
         />
         {hasNextPage && (
-          <div ref={triggerRef} className={s.trigger}>
+          <div ref={triggerRef}>
             {/* // Todo: change to little loader */}
             <div>Loading...</div>
           </div>

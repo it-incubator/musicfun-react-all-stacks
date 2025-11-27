@@ -14,10 +14,9 @@ import {
 import { featuresFlags } from '@/shared/featureFlags.ts'
 import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 import { DeleteIcon, EditIcon, MoreIcon } from '@/shared/icons'
-import shared from '@/shared/styles/shared.module.css'
 import { VU } from '@/shared/utils'
 
-import s from './PlaylistCard.module.css'
+import s from './PlaylistCard.module.scss'
 
 interface PlaylistCardProps {
   id: string
@@ -40,27 +39,23 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
       <div className={s.image}>
         <CoverImage imageSrc={imageSrc} imageDescription={'cover'} aria-hidden />
       </div>
-      <Typography variant="h3" className={s.title}>
-        {title}
-      </Typography>
-      <Typography variant="body3" className={s.description}>
-        {description}
-      </Typography>
-      <div>
+      <div className={s.titleWrapper}>
+        <Typography variant="h3" className={s.title}>
+          {title}
+        </Typography>
         {canEdit && (
           <DropdownMenu>
             <DropdownMenuTrigger>
               <MoreIcon />
             </DropdownMenuTrigger>
-
             <DropdownMenuContent align="start">
               <DropdownMenuItem>
-                <EditIcon className={shared.menuIcon} />
+                <EditIcon className={s.menuIcon} />
                 <span>Edit</span>
               </DropdownMenuItem>
               {featuresFlags.deletePlaylist && (
-                <DropdownMenuItem onClick={handleDeletePlaylist} className={shared.deleteItem}>
-                  <DeleteIcon className={shared.menuIcon} />
+                <DropdownMenuItem onClick={handleDeletePlaylist} className={s.deleteItem}>
+                  <DeleteIcon className={s.menuIcon} />
                   <span>Delete</span>
                 </DropdownMenuItem>
               )}
@@ -68,7 +63,9 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
           </DropdownMenu>
         )}
       </div>
-
+      <Typography variant="body3" className={s.description}>
+        {description}
+      </Typography>
       {footer}
     </Card>
   )

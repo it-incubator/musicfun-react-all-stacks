@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import React, {
+import {
   type ComponentProps,
   createContext,
   type ElementType,
@@ -11,7 +11,7 @@ import React, {
 } from 'react'
 import { createPortal } from 'react-dom'
 
-import s from './DropdownMenu.module.css'
+import s from './DropdownMenu.module.scss'
 
 type DropdownMenuContextType = {
   isOpen: boolean

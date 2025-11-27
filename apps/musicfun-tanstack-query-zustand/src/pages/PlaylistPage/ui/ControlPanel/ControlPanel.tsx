@@ -6,12 +6,10 @@ import {
   IconButton,
   ReactionButtons,
 } from '@/shared/components'
+import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
 import { DeleteIcon, EditIcon, MoreIcon, PlayIcon } from '@/shared/icons'
 
-import s from './ControlPanel.module.css'
-import shared from '@/shared/styles/shared.module.css'
-
-import { useDeletePlaylistAction } from '@/shared/hooks/useDeletePlaylistAction'
+import s from './ControlPanel.module.scss'
 
 export const ControlPanel = ({ playlistId }: { playlistId: string }) => {
   const handleDeletePlaylist = useDeletePlaylistAction(playlistId)
@@ -35,14 +33,13 @@ export const ControlPanel = ({ playlistId }: { playlistId: string }) => {
         <DropdownMenuTrigger>
           <MoreIcon />
         </DropdownMenuTrigger>
-
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => {}}>
-            <EditIcon className={shared.menuIcon} />
+            <EditIcon className={s.menuIcon} />
             <span>Edit</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleDeletePlaylist} className={shared.deleteItem}>
-            <DeleteIcon className={shared.menuIcon} />
+          <DropdownMenuItem onClick={handleDeletePlaylist} className={s.deleteItem}>
+            <DeleteIcon className={s.menuIcon} />
             <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
