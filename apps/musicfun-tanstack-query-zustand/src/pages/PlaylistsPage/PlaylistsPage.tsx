@@ -16,6 +16,7 @@ import { VU } from '@/shared/utils'
 import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
 import s from './PlaylistsPage.module.css'
 import type { ISortConfig, SortOption } from './PlaylistsPage.types.ts'
+import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 
 const PAGE_SIZE = 5
 const DEFAULT_PAGE = 1
@@ -40,6 +41,7 @@ const sortConfig: Record<SortOption, ISortConfig> = {
 } as const
 
 export const PlaylistsPage = () => {
+  const { data: me, isPending: isMeLoading } = useMeQuery   ()
   const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
   const [search, setSearch] = useState<string>('')
   const [sort, setSort] = useState<SortOption>('newest')
@@ -61,7 +63,7 @@ export const PlaylistsPage = () => {
     [debouncedSearch, pageNumber, sortBy, sortDirection, hashtags]
   )
 
-  const { data, isPending, isError } = usePlaylists(queryParams)
+  const { data, isPending, isError } = usePlaylists(queryParams, {enabled: !isMeLoading && !!me}) 
   const { data: tagsData, isPending: isTagsLoading } = useTags('')
 
   const handleSortChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {

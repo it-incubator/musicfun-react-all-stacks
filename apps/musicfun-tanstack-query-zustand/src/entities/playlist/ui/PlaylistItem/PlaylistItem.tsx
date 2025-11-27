@@ -1,18 +1,19 @@
 import type { FC } from 'react'
 
 import type { PlaylistItemProps } from '@/entities/playlist/ui/PlaylistItem/PlaylistItem.types.ts'
-import { usePlaylistReactions } from '@/features/playlists/api/use-playlists.query.ts'
 import { ReactionButtons } from '@/shared/components'
 
 import { PlaylistCard } from '../PlaylistCard'
 import { useMeQuery } from '@/features/auth/api/use-me.query'
+import { usePlaylistReactions } from '@/features/playlists/model/usePlaylistReactions'
 
 export const PlaylistItem: FC<PlaylistItemProps> = (props) => {
   const { playlist } = props
   const { data: me } = useMeQuery()
 
   const { currentUserReaction, title, images, description, likesCount } = playlist.attributes
-  const { handleLike, handleDislike, handleRemoveReaction } = usePlaylistReactions(playlist.id)
+  const { handleLike, handleDislike, handleRemoveReaction } =
+  usePlaylistReactions(playlist.id)
 
   const isMyPlaylist = me?.userId === playlist.attributes.user.id
 

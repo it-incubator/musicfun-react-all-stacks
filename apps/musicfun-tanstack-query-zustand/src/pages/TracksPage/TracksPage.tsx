@@ -4,20 +4,20 @@ import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { TracksTable } from '@/features/tracks'
 import { usePlayerStore } from '@/player/model/player-store.ts'
-import {
-  Autocomplete,
-  Typography,
-} from '@/shared/components'
+import { Autocomplete, Typography } from '@/shared/components'
 import { useInfiniteScroll } from '@/shared/hooks'
 import { VU } from '@/shared/utils'
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
 import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackRowContainer.tsx'
+import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 
 const PAGE_SIZE = 20
 
 export const TracksPage = () => {
+  const { data: me, isLoading: isMeLoading } = useMeQuery()
+
   const [hashtags, setHashtags] = React.useState<string[]>([])
   const [artists, setArtists] = React.useState<string[]>([])
 
@@ -28,7 +28,12 @@ export const TracksPage = () => {
   // todo: add sorting;
 
   const { data, isPending, isError, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-    useTracksInfinityQuery({ pageSize: PAGE_SIZE })
+    useTracksInfinityQuery(
+      { pageSize: PAGE_SIZE },
+      {
+        enabled: !isMeLoading && !!me, // запрос пойдёт ТОЛЬКО когда me готов
+      }
+    )
   const { play, currentTrack, currentTime } = usePlayerStore()
 
   const tracks = React.useMemo(() => {
@@ -83,6 +88,8 @@ export const TracksPage = () => {
     threshold: 0.1,
   })
 
+  if (isMeLoading) return <>Loading user…</>
+  if (!me) return <>You must login</>
   if (isPending) {
     return <div>Loading...</div>
   }
@@ -131,12 +138,12 @@ export const TracksPage = () => {
           renderTrackRow={(trackRow) => {
             return (
               <TrackRowContainer
-              key={trackRow.id}
-              trackRow={trackRow}
-              currentTrack={currentTrack}
-              currentTime={currentTime}
-              onPlayClick={handleClickPlay}
-            />
+                key={trackRow.id}
+                trackRow={trackRow}
+                currentTrack={currentTrack}
+                currentTime={currentTime}
+                onPlayClick={handleClickPlay}
+              />
             )
           }}
         />

@@ -2,8 +2,8 @@ import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { ReactionButtons } from '@/shared/components'
 import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components'
 import { MoreIcon } from '@/shared/icons'
-import { useTrackReactions } from '@/features/tracks/model/use-tracks-reactions'
 import type { TrackRowData } from '..'
+import { useTrackReactions } from '../../model/useTrackReactions'
 export interface TrackRowContainerProps {
   trackRow: TrackRowData
   currentTrack: { id: string } | null

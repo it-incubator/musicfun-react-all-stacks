@@ -7,10 +7,11 @@ import {
 } from '@/shared/api/schema.ts'
 import { unwrap } from '@/shared/api/utils/unwrap.ts'
 import type { Strict } from '@/shared/types/strict.tsx'
+import { tracksKeys } from '@/features/tracks/api/query-key-factory'
 
 type TracksParams = Partial<SchemaGetTracksRequestPayload>
 
-export function useTracksInfinityQuery<P extends TracksParams>(params: Strict<TracksParams, P>) {
+export function useTracksInfinityQuery<P extends TracksParams>(params: Strict<TracksParams, P>, opts?: { enabled?: boolean }) {
   return useInfiniteQuery({
     queryFn: ({ pageParam }) =>
       unwrap(
@@ -24,9 +25,10 @@ export function useTracksInfinityQuery<P extends TracksParams>(params: Strict<Tr
           },
         })
       ),
-    queryKey: ['tracks', 'list', params],
+    queryKey: tracksKeys.infinite(params),
     initialPageParam: '0',
     getNextPageParam: (lastPage) => lastPage.meta.nextCursor,
     placeholderData: keepPreviousData,
+    enabled: opts?.enabled ?? true,
   })
 }
