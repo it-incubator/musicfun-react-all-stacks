@@ -1,5 +1,26 @@
 import { ReactionValue, type SchemaReactionValue } from '@/shared/api/schema.ts'
 
+import { getClient } from '@/shared/api/client'
+
+export const tracksApi = {
+  likeTrack: (trackId: string) =>
+    getClient().POST('/playlists/tracks/{trackId}/likes', {
+      params: { path: { trackId } },
+    }),
+
+  dislikeTrack: (trackId: string) =>
+    getClient().POST('/playlists/tracks/{trackId}/dislikes', {
+      params: { path: { trackId } },
+    }),
+
+  removeTrackReaction: (trackId: string) =>
+    getClient().DELETE('/playlists/tracks/{trackId}/reactions', {
+      params: { path: { trackId } },
+    }),
+}
+
+
+
 export const MOCK_TRACKS = [
   {
     id: '1',

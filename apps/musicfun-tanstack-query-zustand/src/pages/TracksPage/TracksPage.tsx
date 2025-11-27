@@ -3,22 +3,17 @@ import * as React from 'react'
 import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { TracksTable } from '@/features/tracks'
-import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { usePlayerStore } from '@/player/model/player-store.ts'
 import {
   Autocomplete,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  ReactionButtons,
   Typography,
 } from '@/shared/components'
 import { useInfiniteScroll } from '@/shared/hooks'
-import { MoreIcon } from '@/shared/icons'
 import { VU } from '@/shared/utils'
-
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
+import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackRowContainer.tsx'
 
 const PAGE_SIZE = 20
 
@@ -133,34 +128,17 @@ export const TracksPage = () => {
       <div ref={wrapperRef} className={s.tableContainer}>
         <TracksTable
           trackRows={tracksRowsData}
-          renderTrackRow={(trackRow) => (
-            <TrackRow
+          renderTrackRow={(trackRow) => {
+            return (
+              <TrackRowContainer
               key={trackRow.id}
               trackRow={trackRow}
-              playingTrackId={currentTrack?.id}
-              playingTrackProgress={currentTime}
+              currentTrack={currentTrack}
+              currentTime={currentTime}
               onPlayClick={handleClickPlay}
-              renderActionsCell={() => (
-                // todo: task Implement like/dislike
-                <>
-                  <ReactionButtons
-                    entityId={trackRow.id}
-                    currentReaction={trackRow.currentUserReaction}
-                    likesCount={trackRow.likesCount}
-                    onDislike={() => {}}
-                    onLike={() => {}}
-                    onRemoveReaction={() => {}}
-                  />
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      {/* implement add to playlist (via popup, see figma) */}
-                      <MoreIcon />
-                    </DropdownMenuTrigger>
-                  </DropdownMenu>
-                </>
-              )}
             />
-          )}
+            )
+          }}
         />
         {hasNextPage && (
           <div ref={triggerRef} className={s.trigger}>
