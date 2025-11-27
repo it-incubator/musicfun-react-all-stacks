@@ -3,10 +3,6 @@ import { tracksApi } from '../api/tracksApi'
 import { tracksKeys } from '../api/query-key-factory'
 import type { SchemaReactionOutput } from '@/shared/api/schema'
 
-/* ------------------------------
-   LIKE
------------------------------- */
-
 export const useLikeTrack = () => {
   const queryClient = useQueryClient()
 
@@ -20,10 +16,6 @@ export const useLikeTrack = () => {
     },
   })
 }
-
-/* ------------------------------
-   DISLIKE
------------------------------- */
 
 export const useDislikeTrack = () => {
   const queryClient = useQueryClient()
@@ -39,9 +31,6 @@ export const useDislikeTrack = () => {
   })
 }
 
-/* ------------------------------
-   REMOVE REACTION
------------------------------- */
 
 export const useRemoveTrackReaction = () => {
   const queryClient = useQueryClient()
@@ -57,9 +46,6 @@ export const useRemoveTrackReaction = () => {
   })
 }
 
-/* ------------------------------
-   HOOK FOR UI
------------------------------- */
 
 export const useTrackReactions = (trackId: SchemaReactionOutput['objectId']) => {
   const like = useLikeTrack()

@@ -11,7 +11,8 @@ export interface TrackRowContainerProps {
   onPlayClick: (id: string) => void
 }
 export const TrackRowContainer = ({ trackRow, currentTrack, currentTime, onPlayClick }: TrackRowContainerProps) => {
-  const { handleLike, handleDislike, handleRemoveReaction } = useTrackReactions(trackRow.id)
+
+    const { handleLike, handleDislike, handleRemoveReaction } = useTrackReactions(trackRow.id)
 
   return (
     <TrackRow
