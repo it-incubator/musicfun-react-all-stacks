@@ -41,7 +41,11 @@ const sortConfig: Record<SortOption, ISortConfig> = {
 } as const
 
 export const PlaylistsPage = () => {
-  const { data: me, isPending: isMeLoading } = useMeQuery   ()
+  const hasTokens =
+  !!localStorage.getItem('accessToken') ||
+  !!localStorage.getItem('refreshToken')
+  const { data: me, isPending: isMeLoading } = useMeQuery({enabled: hasTokens})
+  const playlistsEnabled = !hasTokens || (!isMeLoading && !!me)
   const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
   const [search, setSearch] = useState<string>('')
   const [sort, setSort] = useState<SortOption>('newest')
@@ -63,7 +67,7 @@ export const PlaylistsPage = () => {
     [debouncedSearch, pageNumber, sortBy, sortDirection, hashtags]
   )
 
-  const { data, isPending, isError } = usePlaylists(queryParams, {enabled: !isMeLoading && !!me}) 
+  const { data, isPending, isError } = usePlaylists(queryParams, { enabled: playlistsEnabled }) 
   const { data: tagsData, isPending: isTagsLoading } = useTags('')
 
   const handleSortChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {

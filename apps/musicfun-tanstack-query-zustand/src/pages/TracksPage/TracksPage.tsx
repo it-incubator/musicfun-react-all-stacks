@@ -16,7 +16,9 @@ import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 const PAGE_SIZE = 10
 
 export const TracksPage = () => {
-  const { data: me, isLoading: isMeLoading } = useMeQuery()
+  const hasTokens = !!localStorage.getItem('accessToken') || !!localStorage.getItem('refreshToken')
+  const { data: me, isLoading: isMeLoading } = useMeQuery({ enabled: hasTokens })
+  const isAuthReady = hasTokens ? !isMeLoading : true
 
   const [hashtags, setHashtags] = React.useState<string[]>([])
   const [artists, setArtists] = React.useState<string[]>([])
@@ -31,7 +33,7 @@ export const TracksPage = () => {
     useTracksInfinityQuery(
       { pageSize: PAGE_SIZE },
       {
-        enabled: !isMeLoading && !!me, // запрос пойдёт ТОЛЬКО когда me готов
+        enabled: isAuthReady,
       }
     )
   const { play, currentTrack, currentTime } = usePlayerStore()
@@ -88,8 +90,7 @@ export const TracksPage = () => {
     threshold: 0.1,
   })
 
-  if (isMeLoading) return <>Loading user…</>
-  if (!me) return <>You must login</>
+  if (hasTokens && isMeLoading) return <>Loading user…</>
   if (isPending) {
     return <div>Loading...</div>
   }
