@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { type ChangeEvent, useState } from 'react'
 
 import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { MOCK_HASHTAGS } from '@/features/tags'
@@ -13,25 +12,19 @@ import {
   ReactionButtons,
   Typography,
 } from '@/shared/components'
-import { useDebounceValue, useInfiniteScroll } from '@/shared/hooks'
+import { useInfiniteScroll } from '@/shared/hooks'
 import { MoreIcon } from '@/shared/icons'
 import { VU } from '@/shared/utils'
 
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
-import { tracksSortFunction } from '@/pages/TracksPage/TracksSortFunction.ts'
 
 const PAGE_SIZE = 10
 
 export const TracksPage = () => {
   const [hashtags, setHashtags] = React.useState<string[]>([])
   const [artists, setArtists] = React.useState<string[]>([])
-  const [search, setSearch] = useState('')
-  const [debouncedValue] = useDebounceValue(search)
-  const [sort, setSort] = useState('newest')
-
-  const { sortBy, sortDirection } = tracksSortFunction(sort)
 
   const triggerRef = React.useRef<HTMLDivElement>(null)
   const wrapperRef = React.useRef<HTMLDivElement>(null)
@@ -40,12 +33,7 @@ export const TracksPage = () => {
   // todo: add sorting;
 
   const { data, isPending, isError, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-    useTracksInfinityQuery({
-      pageSize: PAGE_SIZE,
-      search: debouncedValue,
-      sortBy,
-      sortDirection,
-    })
+    useTracksInfinityQuery({ pageSize: PAGE_SIZE })
   const { play, currentTrack, currentTime } = usePlayerStore()
 
   const tracks = React.useMemo(() => {
@@ -68,14 +56,6 @@ export const TracksPage = () => {
         }))
       : []
   }, [tracks])
-
-  const handleSearchTrack = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.currentTarget.value)
-  }
-
-  const handleSortTracks = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSort(e.currentTarget.value)
-  }
 
   const handleClickPlay = React.useCallback(
     (trackId: string) => {
@@ -122,8 +102,8 @@ export const TracksPage = () => {
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField placeholder="Search tracks" onChange={handleSearchTrack} />
-          <SortSelect onChange={handleSortTracks} value={sort} />
+          <SearchTextField placeholder="Search tracks" onChange={() => {}} />
+          <SortSelect onChange={() => {}} />
         </div>
         <div className={s.controlsRow}>
           <Autocomplete
@@ -182,8 +162,6 @@ export const TracksPage = () => {
             />
           )}
         />
-
-        {tracks.length === 0 && <div>No tracks found</div>}
         {hasNextPage && (
           <div ref={triggerRef}>
             {/* // Todo: change to little loader */}
