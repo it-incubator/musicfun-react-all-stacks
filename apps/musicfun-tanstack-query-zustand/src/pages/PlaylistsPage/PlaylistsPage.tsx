@@ -66,6 +66,7 @@ export const PlaylistsPage = () => {
 
   const handleSortChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value as SortOption
+
     setSort(value)
     setPageNumber(DEFAULT_PAGE)
   }, [])
