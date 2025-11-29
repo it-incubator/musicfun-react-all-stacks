@@ -2,6 +2,8 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { NavLink } from 'react-router'
 
+import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
+import { LoginModal } from '@/features/auth/ui/LoginModal'
 import { CreatePlaylistModal } from '@/features/playlists'
 import { CreateTrackModal } from '@/features/tracks/ui/CreateTrackForm/CreateTrackModal'
 import { HomeIcon, LibraryIcon, PlaylistIcon, TrackIcon, UploadIcon } from '@/shared/icons'
@@ -21,20 +23,6 @@ type MenuButton = {
   label: string
 }
 
-const mainLinks: MenuLink[] = [
-  {
-    to: '/',
-    icon: <HomeIcon width={32} height={32} />,
-    label: 'Home',
-  },
-  {
-    //todo:task go to current user page. If anonym - show Login popup
-    to: '/user/1',
-    icon: <LibraryIcon />,
-    label: 'Your Library',
-  },
-]
-
 const createLinks: MenuLink[] = [
   {
     to: '/tracks',
@@ -51,17 +39,20 @@ const createLinks: MenuLink[] = [
 export const MenuLinks = () => {
   const [isCreatePlaylistOpen, setIsCreatePlaylistOpen] = useState<boolean>(false)
   const [isCreateTrackOpen, setIsCreateTrackOpen] = useState<boolean>(false)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
+
+  const { data: user } = useMeQuery()
 
   const actionButtons: MenuButton[] = [
     {
       // todo:task, implement upload track
-      onClick: () => setIsCreateTrackOpen(true),
+      onClick: user ? () => setIsCreateTrackOpen(true) : () => setIsLoginModalOpen(true),
       icon: <UploadIcon />,
       label: 'Upload Track',
     },
     {
       // todo:task, implement upload playlist
-      onClick: () => setIsCreatePlaylistOpen(true),
+      onClick: user ? () => setIsCreatePlaylistOpen(true) : () => setIsLoginModalOpen(true),
       icon: <CreateIcon />,
       label: 'Create Playlist',
     },
@@ -71,11 +62,26 @@ export const MenuLinks = () => {
     <>
       <nav className={s.column} aria-label="Main navigation">
         <ul className={s.list}>
-          {mainLinks.map((props) => (
-            <li key={props.to}>
-              <SidebarLink {...props} />
+          <li>
+            <SidebarLink to={'/'} icon={<HomeIcon width={32} height={32} />} label={'Home'} />
+          </li>
+          {user ? (
+            <li>
+              <SidebarLink
+                to={`/user/${user.userId}`}
+                icon={<LibraryIcon />}
+                label={'Your Library'}
+              />
             </li>
-          ))}
+          ) : (
+            <li>
+              <SidebarButton
+                onClick={() => setIsLoginModalOpen(true)}
+                icon={<LibraryIcon />}
+                label={'Your Library'}
+              />
+            </li>
+          )}
         </ul>
         <ul className={s.list}>
           {actionButtons.map((props) => (
@@ -96,6 +102,7 @@ export const MenuLinks = () => {
         <CreatePlaylistModal onClose={() => setIsCreatePlaylistOpen(false)} />
       )}
       {isCreateTrackOpen && <CreateTrackModal onClose={() => setIsCreateTrackOpen(false)} />}
+      {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
     </>
   )
 }
