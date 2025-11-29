@@ -1,6 +1,7 @@
 import { getClient } from '@/shared/api/client.ts'
 import type { SchemaReactionOutput } from '@/shared/api/schema.ts'
 import { ImageSizeType, ReactionValue, type SchemaGetPlaylistOutput } from '@/shared/api/schema.ts'
+import { CurrentUserReaction } from './types'
 
 export const playlistsApi = {
   likePlaylist: (playlistId: SchemaReactionOutput['objectId']) => {
@@ -34,11 +35,6 @@ export const playlistsApi = {
   },
 }
 
-export enum CurrentUserReaction {
-  None = 0,
-  Like = 1,
-  Dislike = 2,
-}
 
 export const MOCK_PLAYLISTS: SchemaGetPlaylistOutput[] = [
   {

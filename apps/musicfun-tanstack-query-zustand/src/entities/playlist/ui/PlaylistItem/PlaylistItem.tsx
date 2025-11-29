@@ -1,16 +1,18 @@
 import * as React from 'react'
 
 import type { PlaylistItemProps } from '@/entities/playlist/ui/PlaylistItem/PlaylistItem.types.ts'
-import { usePlaylistReactions } from '@/features/playlists/api/use-playlists.query.ts'
 import { ReactionButtons } from '@/shared/components'
 
 import { PlaylistCard } from '../PlaylistCard'
+import { usePlaylistReactions } from '@/features/playlists/model/usePlaylistReactions'
 
 export const PlaylistItem: React.FC<PlaylistItemProps> = (props) => {
   const { playlist } = props
 
   const { currentUserReaction, title, images, description, likesCount } = playlist.attributes
-  const { handleLike, handleDislike, handleRemoveReaction } = usePlaylistReactions(playlist.id)
+  const { handleLike, handleDislike, handleRemoveReaction } =
+  usePlaylistReactions(playlist.id)
+
 
   return (
     <PlaylistCard

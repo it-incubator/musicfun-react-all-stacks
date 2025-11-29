@@ -4,6 +4,7 @@ import { getClient } from '@/shared/api/client.ts'
 import type { SchemaGetTracksRequestPayload } from '@/shared/api/schema.ts'
 import { unwrap } from '@/shared/api/utils/unwrap.ts'
 import type { Strict } from '@/shared/types/strict.tsx'
+import { tracksKeys } from '@/features/tracks/api/query-key-factory'
 
 type TracksParams = Partial<SchemaGetTracksRequestPayload>
 
@@ -17,7 +18,7 @@ export function useTracksQuery<P extends TracksParams>(params: Strict<TracksPara
           },
         })
       ),
-    queryKey: ['tracks', 'list', params],
+    queryKey: tracksKeys.list(params),
     placeholderData: keepPreviousData,
   })
 }

@@ -3,26 +3,23 @@ import * as React from 'react'
 import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { TracksTable } from '@/features/tracks'
-import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { usePlayerStore } from '@/player/model/player-store.ts'
-import {
-  Autocomplete,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  ReactionButtons,
-  Typography,
-} from '@/shared/components'
+import { Autocomplete, Typography } from '@/shared/components'
 import { useInfiniteScroll } from '@/shared/hooks'
-import { MoreIcon } from '@/shared/icons'
 import { VU } from '@/shared/utils'
-
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
+import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackRowContainer.tsx'
+import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 
 const PAGE_SIZE = 10
 
 export const TracksPage = () => {
+  const hasTokens = !!localStorage.getItem('accessToken') || !!localStorage.getItem('refreshToken')
+  const { data: me, isLoading: isMeLoading } = useMeQuery({ enabled: hasTokens })
+  const isAuthReady = hasTokens ? !isMeLoading : true
+
   const [hashtags, setHashtags] = React.useState<string[]>([])
   const [artists, setArtists] = React.useState<string[]>([])
 
@@ -33,7 +30,12 @@ export const TracksPage = () => {
   // todo: add sorting;
 
   const { data, isPending, isError, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-    useTracksInfinityQuery({ pageSize: PAGE_SIZE })
+    useTracksInfinityQuery(
+      { pageSize: PAGE_SIZE },
+      {
+        enabled: isAuthReady,
+      }
+    )
   const { play, currentTrack, currentTime } = usePlayerStore()
 
   const tracks = React.useMemo(() => {
@@ -88,6 +90,7 @@ export const TracksPage = () => {
     threshold: 0.1,
   })
 
+  if (hasTokens && isMeLoading) return <>Loading user…</>
   if (isPending) {
     return <div>Loading...</div>
   }
@@ -133,34 +136,17 @@ export const TracksPage = () => {
       <div ref={wrapperRef}>
         <TracksTable
           trackRows={tracksRowsData}
-          renderTrackRow={(trackRow) => (
-            <TrackRow
-              key={trackRow.id}
-              trackRow={trackRow}
-              playingTrackId={currentTrack?.id}
-              playingTrackProgress={currentTime}
-              onPlayClick={handleClickPlay}
-              renderActionsCell={() => (
-                // todo: task Implement like/dislike
-                <>
-                  <ReactionButtons
-                    entityId={trackRow.id}
-                    currentReaction={trackRow.currentUserReaction}
-                    likesCount={trackRow.likesCount}
-                    onDislike={() => {}}
-                    onLike={() => {}}
-                    onRemoveReaction={() => {}}
-                  />
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      {/* implement add to playlist (via popup, see figma) */}
-                      <MoreIcon />
-                    </DropdownMenuTrigger>
-                  </DropdownMenu>
-                </>
-              )}
-            />
-          )}
+          renderTrackRow={(trackRow) => {
+            return (
+              <TrackRowContainer
+                key={trackRow.id}
+                trackRow={trackRow}
+                currentTrack={currentTrack}
+                currentTime={currentTime}
+                onPlayClick={handleClickPlay}
+              />
+            )
+          }}
         />
         {hasNextPage && (
           <div ref={triggerRef}>
