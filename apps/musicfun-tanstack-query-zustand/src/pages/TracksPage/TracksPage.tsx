@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
+import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 import { MOCK_HASHTAGS } from '@/features/tags'
 import { TracksTable } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
@@ -36,6 +37,9 @@ export const TracksPage = () => {
     useTracksInfinityQuery({ pageSize: PAGE_SIZE })
   const { play, currentTrack, currentTime } = usePlayerStore()
 
+  const { data: me } = useMeQuery()
+  const currentUserId = me?.userId
+
   const tracks = React.useMemo(() => {
     return VU.isNotEmptyArray(data?.pages) ? data.pages.map((page) => page.data).flat() : []
   }, [data?.pages])
@@ -53,6 +57,7 @@ export const TracksPage = () => {
           likesCount: track.attributes.likesCount,
           dislikesCount: 0, // track.attributes.dislikesCount,
           currentUserReaction: track.attributes.currentUserReaction,
+          ownerId: track.id,
         }))
       : []
   }, [tracks])
@@ -151,12 +156,15 @@ export const TracksPage = () => {
                     onLike={() => {}}
                     onRemoveReaction={() => {}}
                   />
+
+                  {trackRow.ownerId === currentUserId && (
                   <DropdownMenu>
                     <DropdownMenuTrigger>
                       {/* implement add to playlist (via popup, see figma) */}
                       <MoreIcon />
                     </DropdownMenuTrigger>
                   </DropdownMenu>
+                  )}
                 </>
               )}
             />
