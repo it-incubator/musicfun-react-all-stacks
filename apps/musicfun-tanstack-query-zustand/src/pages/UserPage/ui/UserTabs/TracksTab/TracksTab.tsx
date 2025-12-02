@@ -1,9 +1,17 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { useParams } from 'react-router'
 
-import { MOCK_TRACKS, TracksTable } from '@/features/tracks'
+import { TracksTable } from '@/features/tracks'
+import { useTracks } from '@/features/tracks/api/use-tracks.query.ts'
 import { CreateTrackModal } from '@/features/tracks/ui/CreateTrackForm/CreateTrackModal'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { Button } from '@/shared/components'
+import {
+  PathsPlaylistsGetParametersQuerySortDirection,
+  PathsPlaylistsTracksGetParametersQueryPaginationType,
+  PathsPlaylistsTracksGetParametersQuerySortBy,
+  type SchemaGetTracksRequestPayload,
+} from '@/shared/api/schema.ts'
+import { Button, Pagination } from '@/shared/components'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,12 +22,46 @@ import { MoreIcon } from '@/shared/icons'
 
 import s from './TracksTab.module.css'
 
+const PAGE_SIZE = 10
+const DEFAULT_PAGE = 1
+
 export const TracksTab = () => {
   const [isUploadTrackModalOpen, setIsUploadTrackModalOpen] = useState(false) // STATE FOR TESTING
+
+
+  const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
+  const { id: userId } = useParams<{ id: string }>()
+
+  const queryParams = useMemo<SchemaGetTracksRequestPayload>(
+    () => ({
+      pageNumber,
+      pageSize: PAGE_SIZE,
+      sortBy: PathsPlaylistsTracksGetParametersQuerySortBy.publishedAt,
+      sortDirection: PathsPlaylistsGetParametersQuerySortDirection.desc,
+      search: undefined,
+      tagsIds: undefined,
+      artistsIds: undefined,
+      userId: userId || undefined,
+      includeDrafts: true,
+      paginationType: PathsPlaylistsTracksGetParametersQueryPaginationType.offset,
+      cursor: undefined,
+    }),
+    [pageNumber, userId]
+  )
+
+
+  const { data, isLoading, isError } = useTracks(queryParams)
+  const tracks = data?.data?.data ?? []
+  const totalPages = data?.data?.meta.pagesCount ?? 1
 
   const openUploadTrackModal = () => {
     setIsUploadTrackModalOpen(true)
   }
+
+  const handlePageChange = useCallback((page: SchemaGetTracksRequestPayload['pageNumber']) => {
+    setPageNumber(page)
+  }, [])
+
 
   // todo:task load user tracks
 
@@ -31,12 +73,17 @@ export const TracksTab = () => {
       {isUploadTrackModalOpen && (
         <CreateTrackModal onClose={() => setIsUploadTrackModalOpen(false)} />
       )}
+
+      {isLoading && <div>Loading tracks...</div>}
+      {isError && <div>Failed to load tracks</div>}
+      {!isLoading && !isError && tracks.length > 0 && (
+
       <TracksTable
-        trackRows={MOCK_TRACKS.map((track, index) => ({
+        trackRows={tracks.map((track, index) => ({
           index,
           id: track.id,
           title: track.attributes.title,
-          image: track.attributes.images.main[0].url,
+          image: track.attributes.images.main?.[0]?.url,
           addedAt: track.attributes.addedAt,
           artists: track.attributes.artists?.map((artist) => artist.name) || [],
           duration: track.attributes.duration,
@@ -68,6 +115,16 @@ export const TracksTab = () => {
           />
         )}
       />
+        )}
+
+
+      {totalPages > 1 && (
+        <Pagination
+          page={pageNumber}
+          pagesCount={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </>
   )
 }

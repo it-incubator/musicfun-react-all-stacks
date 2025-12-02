@@ -87,4 +87,4 @@ pnpm build:sdk:simple
 
 Please refer to our [Contributing guide](CONTRIBUTING.md) to learn about our development process, how to propose bugfixes 
 
-### Happy hacking 🚀
+### Happy hacking 🚀 🚀🚀
