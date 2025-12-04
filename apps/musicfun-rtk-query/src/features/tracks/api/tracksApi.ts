@@ -1,5 +1,5 @@
 import { baseApi } from '@/app/api/base-api.ts'
-import type { Nullable, ReactionResponse } from '@/shared/types'
+import { CurrentUserReaction, type Nullable, type ReactionResponse } from '@/shared/types'
 import { buildQueryString } from '@/shared/utils'
 
 import type {
@@ -204,10 +204,23 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        // debugger
+        const patchResult = dispatch(
+          tracksAPI.util.updateQueryData('fetchTracks', {}, (state) => {
+            // todo: Скорее всего из за Того что 2 параметром пустой объект оно и не работает. В TracksPage.tsx вы вызываете useFetchTracksQuery с динамическими параметрами.RTK Query сопоставляет запросы по их имени конечной точки и их аргументам. Чтобы оптимистичное обновление сработало, параметры, переданные в updateQueryData, должны точно совпадать с параметрами активного (подписанного) запроса.
+            // Find the track and update the like counter and isLiked status
+            const track = state.data.find((t) => t.id === trackId);
+            if (track) {
+              track.attributes.likesCount += 1
+              track.attributes.currentUserReaction = CurrentUserReaction.Like
+            }
+          })
+        );
         try {
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
+          patchResult.undo();
           // При ошибке кеш не трогаем
         }
       },
@@ -219,10 +232,23 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          tracksAPI.util.updateQueryData('fetchTracks', {}, (state) => {
+            const track = state.data.find((t) => t.id === trackId);
+            if (track) {
+              if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                track.attributes.likesCount -= 1
+              }
+              track.attributes.dislikesCount += 1
+              track.attributes.currentUserReaction = CurrentUserReaction.Dislike
+            }
+          })
+        );
         try {
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
+          patchResult.undo();
           // При ошибке кеш не трогаем
         }
       },
@@ -234,10 +260,24 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'DELETE',
       }),
       async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          tracksAPI.util.updateQueryData('fetchTracks', {}, (state) => {
+            const track = state.data.find((t) => t.id === trackId);
+            if (track) {
+              if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                track.attributes.likesCount -= 1
+              } else if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+                track.attributes.dislikesCount -= 1
+              }
+              track.attributes.currentUserReaction = CurrentUserReaction.None
+            }
+          })
+        );
         try {
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
+          patchResult.undo();
           // При ошибке кеш не трогаем
         }
       },
