@@ -145,23 +145,6 @@ export const playlistsAPI = baseApi.injectEndpoints({
           playlistAttrs.currentUserReaction = CurrentUserReaction.Dislike
         })
 
-        // playlistsArgs.forEach((arg) => {
-        //   patchResults.push(
-        //     dispatch(
-        //       playlistsAPI.util.updateQueryData('fetchPlaylists', arg, (state) => {
-        //         const index = state.data.findIndex((playlist) => playlist.id === id)
-        //         if (index !== -1) {
-        //           const playlistAttrs = state.data[index].attributes
-        //           if (playlistAttrs.currentUserReaction === CurrentUserReaction.Like) {
-        //             playlistAttrs.likesCount -= 1
-        //           }
-        //           playlistAttrs.dislikesCount += 1
-        //           playlistAttrs.currentUserReaction = CurrentUserReaction.Dislike
-        //         }
-        //       })
-        //     )
-        //   )
-        // })
         patchCachedQueries('fetchPlaylistById', (state) => {
           const playlistAttributes = (state as { data: Playlist }).data.attributes
           if (playlistAttributes.currentUserReaction === CurrentUserReaction.Like) {
@@ -170,23 +153,6 @@ export const playlistsAPI = baseApi.injectEndpoints({
           playlistAttributes.dislikesCount += 1
           playlistAttributes.currentUserReaction = CurrentUserReaction.Dislike
         })
-
-        // if (byIdArgs.length) {
-        //   byIdArgs.forEach((arg) => {
-        //     patchResults.push(
-        //       dispatch(
-        //         playlistsAPI.util.updateQueryData('fetchPlaylistById', arg, (state) => {
-        //           const playlistAttrs = state.data.attributes
-        //           if (playlistAttrs.currentUserReaction === CurrentUserReaction.Like) {
-        //             playlistAttrs.likesCount -= 1
-        //           }
-        //           playlistAttrs.dislikesCount += 1
-        //           playlistAttrs.currentUserReaction = CurrentUserReaction.Dislike
-        //         })
-        //       )
-        //     )
-        //   })
-        // }
 
         try {
           await queryFulfilled
@@ -223,23 +189,6 @@ export const playlistsAPI = baseApi.injectEndpoints({
           }
           playlistAttributes.currentUserReaction = CurrentUserReaction.None
         })
-
-        // playlistsArgs.forEach((arg) => {
-        //   patchResults.push(
-        //     dispatch(
-        //       playlistsAPI.util.updateQueryData('fetchPlaylists', arg, (state) => {
-        //         const index = state.data.findIndex((playlist) => playlist.id === id)
-        //         if (index !== -1) {
-        //           const playlistAttrs = state.data[index].attributes
-        //           if (playlistAttrs.currentUserReaction === CurrentUserReaction.Like) {
-        //             playlistAttrs.likesCount -= 1
-        //           }
-        //           playlistAttrs.currentUserReaction = CurrentUserReaction.None
-        //         }
-        //       })
-        //     )
-        //   )
-        // })
 
         patchCachedQueries('fetchPlaylistById', (state) => {
           const playlistAttributes = (state as { data: Playlist }).data.attributes
