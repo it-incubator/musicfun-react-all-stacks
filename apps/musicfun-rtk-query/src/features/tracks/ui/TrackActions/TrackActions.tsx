@@ -9,6 +9,7 @@ import {
   useLikeTrackMutation,
   useRemoveTrackFromPlaylistMutation,
   useUnReactionTrackMutation,
+  type FetchTracksArgs,
 } from '@/features/tracks'
 import {
   DropdownMenuContent,
@@ -41,9 +42,14 @@ type TrackActionsPropsWithoutReactions = TrackActionsPropsBase & {
   sizeReactionButtons?: undefined
 }
 
-type TrackActionsProps = TrackActionsPropsWithReactions | TrackActionsPropsWithoutReactions
+type TrackActionsProps = (TrackActionsPropsWithReactions | TrackActionsPropsWithoutReactions) & {
+  fetchTracksArgs?: FetchTracksArgs
+  // trackByIdArgs?: { trackId: string }
+}
 
 export const TrackActions = ({
+  fetchTracksArgs,
+  // trackByIdArgs,
   reaction,
   likesCount,
   trackId,
@@ -77,14 +83,14 @@ export const TrackActions = ({
   return (
     <>
       {reaction !== undefined && (
-        <ReactionButtons
-          reaction={reaction}
-          onLike={() => like({ trackId })}
-          onDislike={() => dislike({ trackId })}
-          likesCount={likesCount}
-          onUnReaction={() => unReaction({ trackId })}
-          size={sizeReactionButtons}
-        />
+         <ReactionButtons
+         reaction={reaction}
+         onLike={() => like({ trackId, fetchTracksArgs })}
+         onDislike={() => dislike({ trackId, fetchTracksArgs })}
+         likesCount={likesCount}
+         onUnReaction={() => unReaction({ trackId, fetchTracksArgs })}
+         size={sizeReactionButtons}
+       />
       )}
       <DropdownMenu>
         <DropdownMenuTrigger>

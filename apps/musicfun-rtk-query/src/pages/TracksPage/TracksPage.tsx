@@ -21,14 +21,16 @@ export const TracksPage = () => {
   const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
     usePageSearchParams()
 
-  const { data: tracks } = useFetchTracksQuery({
-    pageNumber,
-    sortBy,
-    sortDirection,
-    search: debouncedSearch,
-    ...(tagsIds.length > 0 && { tagsIds }),
-    ...(artistsIds.length > 0 && { artistsIds }),
-  })
+    const fetchTracksArgs = {
+      pageNumber,
+      sortBy,
+      sortDirection,
+      search: debouncedSearch,
+      ...(tagsIds.length > 0 && { tagsIds }),
+      ...(artistsIds.length > 0 && { artistsIds }),
+    };
+  
+    const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs);
 
   const { data: me } = useMeQuery()
 
@@ -88,7 +90,7 @@ export const TracksPage = () => {
               artists: ['Artist 1', 'Artist 2'],
               duration: 100,
               likesCount: track.attributes.likesCount,
-              dislikesCount: track.attributes.likesCount,
+              dislikesCount: track.attributes.dislikesCount,
               currentUserReaction: track.attributes.currentUserReaction,
               url: track.attributes.attachments[0].url,
               isOwner,
@@ -108,6 +110,7 @@ export const TracksPage = () => {
                 likesCount={trackRow.likesCount}
                 trackId={trackRow.id}
                 isOwner={trackRow.isOwner}
+                fetchTracksArgs={fetchTracksArgs}
               />
             )}
           />

@@ -198,17 +198,15 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Track'],
     }),
-    likeTrack: build.mutation<ReactionResponse, { trackId: string }>({
+    likeTrack: build.mutation<ReactionResponse, { trackId: string, fetchTracksArgs?: FetchTracksArgs }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/likes`,
         method: 'POST',
       }),
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ trackId, fetchTracksArgs }, { dispatch, queryFulfilled }) {
         // debugger
         const patchResult = dispatch(
-          tracksAPI.util.updateQueryData('fetchTracks', {}, (state) => {
-            // todo: Скорее всего из за Того что 2 параметром пустой объект оно и не работает. В TracksPage.tsx вы вызываете useFetchTracksQuery с динамическими параметрами.RTK Query сопоставляет запросы по их имени конечной точки и их аргументам. Чтобы оптимистичное обновление сработало, параметры, переданные в updateQueryData, должны точно совпадать с параметрами активного (подписанного) запроса.
-            // Find the track and update the like counter and isLiked status
+          tracksAPI.util.updateQueryData('fetchTracks', fetchTracksArgs || {}, (state) => {
             const track = state.data.find((t) => t.id === trackId);
             if (track) {
               track.attributes.likesCount += 1
@@ -216,24 +214,36 @@ export const tracksAPI = baseApi.injectEndpoints({
             }
           })
         );
+
+        // это для обновления кэша fetchTrackById
+        const patchResultSingleTrack = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            // draft здесь - это отдельный объект трека, а не массив
+            state.data.attributes.likesCount += 1;
+            state.data.attributes.currentUserReaction = CurrentUserReaction.Like;
+          })
+        );
+
+
         try {
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResult.undo();
+          patchResultSingleTrack.undo();
           // При ошибке кеш не трогаем
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
-    dislikeTrack: build.mutation<ReactionResponse, { trackId: string }>({
+    dislikeTrack: build.mutation<ReactionResponse, { trackId: string, fetchTracksArgs?: FetchTracksArgs }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/dislikes`,
         method: 'POST',
       }),
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ trackId, fetchTracksArgs }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          tracksAPI.util.updateQueryData('fetchTracks', {}, (state) => {
+          tracksAPI.util.updateQueryData('fetchTracks', fetchTracksArgs || {}, (state) => {
             const track = state.data.find((t) => t.id === trackId);
             if (track) {
               if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
@@ -244,24 +254,35 @@ export const tracksAPI = baseApi.injectEndpoints({
             }
           })
         );
+
+        const patchResultSingleTrack = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+              state.data.attributes.likesCount -= 1;
+            }
+            state.data.attributes.dislikesCount += 1;
+            state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike;
+          })
+        );
+
         try {
-          await queryFulfilled
+          await queryFulfilled;
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResult.undo();
-          // При ошибке кеш не трогаем
+          patchResultSingleTrack.undo();
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
-    unReactionTrack: build.mutation<ReactionResponse, { trackId: string }>({
+    unReactionTrack: build.mutation<ReactionResponse, { trackId: string, fetchTracksArgs?: FetchTracksArgs }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/reactions`,
         method: 'DELETE',
       }),
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ trackId, fetchTracksArgs }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          tracksAPI.util.updateQueryData('fetchTracks', {}, (state) => {
+          tracksAPI.util.updateQueryData('fetchTracks', fetchTracksArgs || {}, (state) => {
             const track = state.data.find((t) => t.id === trackId);
             if (track) {
               if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
@@ -273,12 +294,24 @@ export const tracksAPI = baseApi.injectEndpoints({
             }
           })
         );
+
+        const patchResultSingleTrack = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+              state.data.attributes.likesCount -= 1;
+            } else if (state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+              state.data.attributes.dislikesCount -= 1;
+            }
+            state.data.attributes.currentUserReaction = CurrentUserReaction.None;
+          })
+        );
+
         try {
-          await queryFulfilled
+          await queryFulfilled;
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResult.undo();
-          // При ошибке кеш не трогаем
+          patchResultSingleTrack.undo();
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
