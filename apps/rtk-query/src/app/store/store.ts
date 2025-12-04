@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { authSlice } from '@/features/auth'
 import { playlistsSlice } from '@/features/playlists'
 import { tracksSlice } from '@/features/tracks'
-import { playerSlice, playerMiddleware } from '@/player'
+import { playerMiddleware, playerSlice } from '@/player'
 
 import { baseApi } from '../api'
 

@@ -1,7 +1,13 @@
 import type { SVGProps } from 'react'
 
 export const LikeIconFill = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 28" width={29} height={28} fill="none" {...props}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 29 28"
+    width={29}
+    height={28}
+    fill="none"
+    {...props}>
     <g clipPath="url(#a)">
       <path
         fill="currentColor"

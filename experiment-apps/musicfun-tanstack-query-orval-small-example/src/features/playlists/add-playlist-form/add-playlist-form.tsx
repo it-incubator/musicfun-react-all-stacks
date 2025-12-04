@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+
 import type { components } from '@/shared/api'
 import { getClient } from '@/shared/api'
 import { requestWrapper } from '@/shared/api/request-wrapper.ts'
+
 import styles from './add-playlist-form.module.css'
-import { type SubmitHandler, useForm } from 'react-hook-form'
 
 export type CreatePlaylistRequestPayload = components['schemas']['CreatePlaylistRequestPayload']
 
@@ -20,7 +22,8 @@ export const AddPlaylistForm = () => {
   })
 
   const { mutate } = useMutation({
-    mutationFn: (body: CreatePlaylistRequestPayload) => requestWrapper(getClient().POST('/playlists', { body })),
+    mutationFn: (body: CreatePlaylistRequestPayload) =>
+      requestWrapper(getClient().POST('/playlists', { body })),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['playlists'] })
       reset()
@@ -42,7 +45,11 @@ export const AddPlaylistForm = () => {
       <h2>Add a New Playlist</h2>
 
       <p>
-        <input {...register('title', { required: true })} placeholder="Title" disabled={isSubmitting} />
+        <input
+          {...register('title', { required: true })}
+          placeholder="Title"
+          disabled={isSubmitting}
+        />
       </p>
 
       <div>

@@ -1,13 +1,14 @@
+import { Redirect, SplashScreen, Tabs, useRootNavigationState, useRouter } from 'expo-router'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+import { useMeQuery } from '@/features/auth/model/api/hooks/use-me.query'
+import { useAuthContext } from '@/features/auth/model/context/AuthContext'
 import { COLORS } from '@/shared/styles/tokens'
 import { IcAllPlaylist } from '@/shared/ui/Icons/navigation/IcAllPlaylist'
 import { IcAllTracks } from '@/shared/ui/Icons/navigation/IcAllTracks'
 import { IcHome } from '@/shared/ui/Icons/navigation/IcHome'
 import { IcYourLibrary } from '@/shared/ui/Icons/navigation/IcYourLibrary'
-import { useRootNavigationState, useRouter, SplashScreen, Tabs, Redirect } from 'expo-router'
-import { ActivityIndicator, View, StyleSheet } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { useAuthContext } from '@/features/auth/model/context/AuthContext'
-import { useMeQuery } from '@/features/auth/model/api/hooks/use-me.query'
 
 export default function AppLayout() {
   const rootState = useRootNavigationState()
@@ -32,8 +33,7 @@ export default function AppLayout() {
           tabBarActiveTintColor: 'white',
 
           tabBarInactiveTintColor: 'gray',
-        }}
-      >
+        }}>
         <Tabs.Screen
           name="index"
           options={{
@@ -48,7 +48,10 @@ export default function AppLayout() {
             tabBarIcon: () => <IcAllPlaylist />,
           }}
         />
-        <Tabs.Screen name="tracks/tracks" options={{ title: 'Tracks', tabBarIcon: () => <IcAllTracks /> }} />
+        <Tabs.Screen
+          name="tracks/tracks"
+          options={{ title: 'Tracks', tabBarIcon: () => <IcAllTracks /> }}
+        />
         <Tabs.Screen
           name="library/library"
           options={{

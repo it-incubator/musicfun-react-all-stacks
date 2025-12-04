@@ -22,7 +22,6 @@ export interface UserOutputDTO {
  */
 export type ImageSizeType = (typeof ImageSizeType)[keyof typeof ImageSizeType]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageSizeType = {
   original: 'original',
   thumbnail: 'thumbnail',
@@ -59,7 +58,6 @@ export interface GetTagOutput {
  */
 export type ReactionValue = (typeof ReactionValue)[keyof typeof ReactionValue]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ReactionValue = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -204,7 +202,6 @@ export interface GetImagesOutput {
 export type GetTracksRequestPayloadSortBy =
   (typeof GetTracksRequestPayloadSortBy)[keyof typeof GetTracksRequestPayloadSortBy]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTracksRequestPayloadSortBy = {
   publishedAt: 'publishedAt',
   likesCount: 'likesCount',
@@ -216,7 +213,6 @@ export const GetTracksRequestPayloadSortBy = {
 export type GetTracksRequestPayloadSortDirection =
   (typeof GetTracksRequestPayloadSortDirection)[keyof typeof GetTracksRequestPayloadSortDirection]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTracksRequestPayloadSortDirection = {
   asc: 'asc',
   desc: 'desc',
@@ -228,7 +224,6 @@ export const GetTracksRequestPayloadSortDirection = {
 export type GetTracksRequestPayloadPaginationType =
   (typeof GetTracksRequestPayloadPaginationType)[keyof typeof GetTracksRequestPayloadPaginationType]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTracksRequestPayloadPaginationType = {
   offset: 'offset',
   cursor: 'cursor',
@@ -338,7 +333,6 @@ export interface AttachmentDto {
 export type TrackListItemOutputAttributesCurrentUserReaction =
   (typeof TrackListItemOutputAttributesCurrentUserReaction)[keyof typeof TrackListItemOutputAttributesCurrentUserReaction]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TrackListItemOutputAttributesCurrentUserReaction = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -423,7 +417,6 @@ export type PlaylistTrackAttributesCurrentUserReaction =
   | (typeof PlaylistTrackAttributesCurrentUserReaction)[keyof typeof PlaylistTrackAttributesCurrentUserReaction]
   | null
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlaylistTrackAttributesCurrentUserReaction = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -480,7 +473,6 @@ export interface GetArtistOutput {
 export type TrackDetailsAttributesCurrentUserReaction =
   (typeof TrackDetailsAttributesCurrentUserReaction)[keyof typeof TrackDetailsAttributesCurrentUserReaction]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TrackDetailsAttributesCurrentUserReaction = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -553,7 +545,6 @@ export interface GetTrackDetailsOutput {
 
 export type ReactionOutputValue = (typeof ReactionOutputValue)[keyof typeof ReactionOutputValue]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ReactionOutputValue = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -573,7 +564,6 @@ export interface ReactionOutput {
 export type GetPlaylistsRequestPayloadSortBy =
   (typeof GetPlaylistsRequestPayloadSortBy)[keyof typeof GetPlaylistsRequestPayloadSortBy]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetPlaylistsRequestPayloadSortBy = {
   addedAt: 'addedAt',
   likesCount: 'likesCount',
@@ -585,7 +575,6 @@ export const GetPlaylistsRequestPayloadSortBy = {
 export type GetPlaylistsRequestPayloadSortDirection =
   (typeof GetPlaylistsRequestPayloadSortDirection)[keyof typeof GetPlaylistsRequestPayloadSortDirection]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetPlaylistsRequestPayloadSortDirection = {
   asc: 'asc',
   desc: 'desc',
@@ -675,7 +664,6 @@ export interface UpdateTrackRequestPayload {
 export type TrackOutputAttributesCurrentUserReaction =
   (typeof TrackOutputAttributesCurrentUserReaction)[keyof typeof TrackOutputAttributesCurrentUserReaction]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TrackOutputAttributesCurrentUserReaction = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -852,7 +840,6 @@ export type PlaylistsPublicControllerGetPlaylistsParams = {
 export type PlaylistsPublicControllerGetPlaylistsSortBy =
   (typeof PlaylistsPublicControllerGetPlaylistsSortBy)[keyof typeof PlaylistsPublicControllerGetPlaylistsSortBy]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlaylistsPublicControllerGetPlaylistsSortBy = {
   addedAt: 'addedAt',
   likesCount: 'likesCount',
@@ -861,7 +848,6 @@ export const PlaylistsPublicControllerGetPlaylistsSortBy = {
 export type PlaylistsPublicControllerGetPlaylistsSortDirection =
   (typeof PlaylistsPublicControllerGetPlaylistsSortDirection)[keyof typeof PlaylistsPublicControllerGetPlaylistsSortDirection]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlaylistsPublicControllerGetPlaylistsSortDirection = {
   asc: 'asc',
   desc: 'desc',
@@ -929,7 +915,6 @@ export type TracksPublicControllerGetAllTracksParams = {
 export type TracksPublicControllerGetAllTracksSortBy =
   (typeof TracksPublicControllerGetAllTracksSortBy)[keyof typeof TracksPublicControllerGetAllTracksSortBy]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TracksPublicControllerGetAllTracksSortBy = {
   publishedAt: 'publishedAt',
   likesCount: 'likesCount',
@@ -938,7 +923,6 @@ export const TracksPublicControllerGetAllTracksSortBy = {
 export type TracksPublicControllerGetAllTracksSortDirection =
   (typeof TracksPublicControllerGetAllTracksSortDirection)[keyof typeof TracksPublicControllerGetAllTracksSortDirection]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TracksPublicControllerGetAllTracksSortDirection = {
   asc: 'asc',
   desc: 'desc',
@@ -947,7 +931,6 @@ export const TracksPublicControllerGetAllTracksSortDirection = {
 export type TracksPublicControllerGetAllTracksPaginationType =
   (typeof TracksPublicControllerGetAllTracksPaginationType)[keyof typeof TracksPublicControllerGetAllTracksPaginationType]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TracksPublicControllerGetAllTracksPaginationType = {
   offset: 'offset',
   cursor: 'cursor',
@@ -987,7 +970,9 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
  * @deprecated
  * @summary Get my playlists
  */
-export const playlistsControllerGetMyPlaylists = (options?: SecondParameter<typeof customInstance>) => {
+export const playlistsControllerGetMyPlaylists = (
+  options?: SecondParameter<typeof customInstance>
+) => {
   return customInstance<GetMyPlaylistsOutput>({ url: `/playlists/my`, method: 'GET' }, options)
 }
 
@@ -996,7 +981,7 @@ export const playlistsControllerGetMyPlaylists = (options?: SecondParameter<type
  */
 export const playlistsControllerCreatePlaylist = (
   createPlaylistRequestPayload: CreatePlaylistRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<GetPlaylistOutput>(
     {
@@ -1005,7 +990,7 @@ export const playlistsControllerCreatePlaylist = (
       headers: { 'Content-Type': 'application/json' },
       data: createPlaylistRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1015,7 +1000,7 @@ export const playlistsControllerCreatePlaylist = (
  */
 export const playlistsPublicControllerGetPlaylists = (
   params?: PlaylistsPublicControllerGetPlaylistsParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<GetPlaylistsOutput>({ url: `/playlists`, method: 'GET', params }, options)
 }
@@ -1026,7 +1011,7 @@ export const playlistsPublicControllerGetPlaylists = (
 export const playlistsControllerUpdatePlaylist = (
   playlistId: string,
   updatePlaylistRequestPayload: UpdatePlaylistRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>(
     {
@@ -1035,7 +1020,7 @@ export const playlistsControllerUpdatePlaylist = (
       headers: { 'Content-Type': 'application/json' },
       data: updatePlaylistRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1044,7 +1029,7 @@ export const playlistsControllerUpdatePlaylist = (
  */
 export const playlistsControllerDeletePlaylist = (
   playlistId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>({ url: `/playlists/${playlistId}`, method: 'DELETE' }, options)
 }
@@ -1054,9 +1039,12 @@ export const playlistsControllerDeletePlaylist = (
  */
 export const playlistsPublicControllerGetPlaylistById = (
   playlistId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<GetPlaylistOutput>({ url: `/playlists/${playlistId}`, method: 'GET' }, options)
+  return customInstance<GetPlaylistOutput>(
+    { url: `/playlists/${playlistId}`, method: 'GET' },
+    options
+  )
 }
 
 /**
@@ -1065,7 +1053,7 @@ export const playlistsPublicControllerGetPlaylistById = (
 export const playlistsControllerReorderPlaylist = (
   playlistId: string,
   reorderPlaylistsRequestPayload: ReorderPlaylistsRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>(
     {
@@ -1074,7 +1062,7 @@ export const playlistsControllerReorderPlaylist = (
       headers: { 'Content-Type': 'application/json' },
       data: reorderPlaylistsRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1085,7 +1073,7 @@ export const playlistsControllerReorderPlaylist = (
 export const playlistsControllerUploadMainImage = (
   playlistId: string,
   playlistsControllerUploadMainImageBody: PlaylistsControllerUploadMainImageBody,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   const formData = new FormData()
   formData.append(`file`, playlistsControllerUploadMainImageBody.file)
@@ -1097,7 +1085,7 @@ export const playlistsControllerUploadMainImage = (
       headers: { 'Content-Type': 'multipart/form-data' },
       data: formData,
     },
-    options,
+    options
   )
 }
 
@@ -1106,9 +1094,12 @@ export const playlistsControllerUploadMainImage = (
  */
 export const playlistsControllerDeleteTrackCover = (
   playlistId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<null>({ url: `/playlists/${playlistId}/images/main`, method: 'DELETE' }, options)
+  return customInstance<null>(
+    { url: `/playlists/${playlistId}/images/main`, method: 'DELETE' },
+    options
+  )
 }
 
 /**
@@ -1116,9 +1107,12 @@ export const playlistsControllerDeleteTrackCover = (
  */
 export const tracksPublicControllerGetAllTracks = (
   params?: TracksPublicControllerGetAllTracksParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<GetTrackListOutput>({ url: `/playlists/tracks`, method: 'GET', params }, options)
+  return customInstance<GetTrackListOutput>(
+    { url: `/playlists/tracks`, method: 'GET', params },
+    options
+  )
 }
 
 /**
@@ -1126,9 +1120,12 @@ export const tracksPublicControllerGetAllTracks = (
  */
 export const tracksPublicControllerGetPlaylistTracks = (
   playlistId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<GetPlaylistTrackListOutput>({ url: `/playlists/${playlistId}/tracks`, method: 'GET' }, options)
+  return customInstance<GetPlaylistTrackListOutput>(
+    { url: `/playlists/${playlistId}/tracks`, method: 'GET' },
+    options
+  )
 }
 
 /**
@@ -1136,9 +1133,12 @@ export const tracksPublicControllerGetPlaylistTracks = (
  */
 export const tracksPublicControllerGetTrackDetails = (
   trackId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<GetTrackDetailsOutput>({ url: `/playlists/tracks/${trackId}`, method: 'GET' }, options)
+  return customInstance<GetTrackDetailsOutput>(
+    { url: `/playlists/tracks/${trackId}`, method: 'GET' },
+    options
+  )
 }
 
 /**
@@ -1147,7 +1147,7 @@ export const tracksPublicControllerGetTrackDetails = (
 export const tracksControllerUpdateTrack = (
   trackId: string,
   updateTrackRequestPayload: UpdateTrackRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<GetTrackOutput>(
     {
@@ -1156,7 +1156,7 @@ export const tracksControllerUpdateTrack = (
       headers: { 'Content-Type': 'application/json' },
       data: updateTrackRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1165,7 +1165,7 @@ export const tracksControllerUpdateTrack = (
  */
 export const tracksControllerDeleteTrackCompletely = (
   trackId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>({ url: `/playlists/tracks/${trackId}`, method: 'DELETE' }, options)
 }
@@ -1173,8 +1173,14 @@ export const tracksControllerDeleteTrackCompletely = (
 /**
  * @summary Like or toggle like on a track
  */
-export const tracksPublicControllerLikeTrack = (trackId: string, options?: SecondParameter<typeof customInstance>) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/tracks/${trackId}/likes`, method: 'POST' }, options)
+export const tracksPublicControllerLikeTrack = (
+  trackId: string,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/tracks/${trackId}/likes`, method: 'POST' },
+    options
+  )
 }
 
 /**
@@ -1182,9 +1188,12 @@ export const tracksPublicControllerLikeTrack = (trackId: string, options?: Secon
  */
 export const tracksPublicControllerDislikeTrack = (
   trackId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/tracks/${trackId}/dislikes`, method: 'POST' }, options)
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/tracks/${trackId}/dislikes`, method: 'POST' },
+    options
+  )
 }
 
 /**
@@ -1192,9 +1201,12 @@ export const tracksPublicControllerDislikeTrack = (
  */
 export const tracksPublicControllerRemoveTrackReaction = (
   trackId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/tracks/${trackId}/reactions`, method: 'DELETE' }, options)
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/tracks/${trackId}/reactions`, method: 'DELETE' },
+    options
+  )
 }
 
 /**
@@ -1202,9 +1214,12 @@ export const tracksPublicControllerRemoveTrackReaction = (
  */
 export const playlistsPublicControllerLikePlaylist = (
   playlistId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/${playlistId}/likes`, method: 'POST' }, options)
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/${playlistId}/likes`, method: 'POST' },
+    options
+  )
 }
 
 /**
@@ -1212,9 +1227,12 @@ export const playlistsPublicControllerLikePlaylist = (
  */
 export const playlistsPublicControllerDislikePlaylist = (
   playlistId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/${playlistId}/dislikes`, method: 'POST' }, options)
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/${playlistId}/dislikes`, method: 'POST' },
+    options
+  )
 }
 
 /**
@@ -1222,9 +1240,12 @@ export const playlistsPublicControllerDislikePlaylist = (
  */
 export const playlistsPublicControllerRemovePlaylistReaction = (
   playlistId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/${playlistId}/reactions`, method: 'DELETE' }, options)
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/${playlistId}/reactions`, method: 'DELETE' },
+    options
+  )
 }
 
 /**
@@ -1234,7 +1255,7 @@ export const tracksControllerReorderTrack = (
   playlistId: string,
   trackId: string,
   reorderTracksRequestPayload: ReorderTracksRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>(
     {
@@ -1243,7 +1264,7 @@ export const tracksControllerReorderTrack = (
       headers: { 'Content-Type': 'application/json' },
       data: reorderTracksRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1253,7 +1274,7 @@ export const tracksControllerReorderTrack = (
 export const tracksControllerAddTrackToPlaylist = (
   playlistId: string,
   addTrackToPlaylistRequestPayload: AddTrackToPlaylistRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>(
     {
@@ -1262,7 +1283,7 @@ export const tracksControllerAddTrackToPlaylist = (
       headers: { 'Content-Type': 'application/json' },
       data: addTrackToPlaylistRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1272,19 +1293,25 @@ export const tracksControllerAddTrackToPlaylist = (
 export const tracksControllerUnbindTrackFromPlaylist = (
   playlistId: string,
   trackId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>(
     { url: `/playlists/${playlistId}/relationships/tracks/${trackId}`, method: 'DELETE' },
-    options,
+    options
   )
 }
 
 /**
  * @summary Publish a track (make it publicly available)
  */
-export const tracksControllerPublishTrack = (trackId: string, options?: SecondParameter<typeof customInstance>) => {
-  return customInstance<null>({ url: `/playlists/tracks/${trackId}/actions/publish`, method: 'POST' }, options)
+export const tracksControllerPublishTrack = (
+  trackId: string,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<null>(
+    { url: `/playlists/tracks/${trackId}/actions/publish`, method: 'POST' },
+    options
+  )
 }
 
 /**
@@ -1293,7 +1320,7 @@ export const tracksControllerPublishTrack = (trackId: string, options?: SecondPa
 export const tracksControllerUploadTrackCover = (
   trackId: string,
   tracksControllerUploadTrackCoverBody: TracksControllerUploadTrackCoverBody,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   const formData = new FormData()
   formData.append(`cover`, tracksControllerUploadTrackCoverBody.cover)
@@ -1305,15 +1332,21 @@ export const tracksControllerUploadTrackCover = (
       headers: { 'Content-Type': 'multipart/form-data' },
       data: formData,
     },
-    options,
+    options
   )
 }
 
 /**
  * @summary Delete track cover
  */
-export const tracksControllerDeleteTrackCover = (trackId: string, options?: SecondParameter<typeof customInstance>) => {
-  return customInstance<null>({ url: `/playlists/tracks/${trackId}/cover`, method: 'DELETE' }, options)
+export const tracksControllerDeleteTrackCover = (
+  trackId: string,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<null>(
+    { url: `/playlists/tracks/${trackId}/cover`, method: 'DELETE' },
+    options
+  )
 }
 
 /**
@@ -1321,7 +1354,7 @@ export const tracksControllerDeleteTrackCover = (trackId: string, options?: Seco
  */
 export const tracksControllerUploadTrackMp3 = (
   tracksControllerUploadTrackMp3Body: TracksControllerUploadTrackMp3Body,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   const formData = new FormData()
   formData.append(`title`, tracksControllerUploadTrackMp3Body.title)
@@ -1334,7 +1367,7 @@ export const tracksControllerUploadTrackMp3 = (
       headers: { 'Content-Type': 'multipart/form-data' },
       data: formData,
     },
-    options,
+    options
   )
 }
 
@@ -1343,7 +1376,7 @@ export const tracksControllerUploadTrackMp3 = (
  */
 export const artistsControllerCreateArtist = (
   createArtistRequestPayload: CreateArtistRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<GetArtistOutput>(
     {
@@ -1352,7 +1385,7 @@ export const artistsControllerCreateArtist = (
       headers: { 'Content-Type': 'application/json' },
       data: createArtistRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1361,15 +1394,21 @@ export const artistsControllerCreateArtist = (
  */
 export const artistsControllerSearchArtist = (
   params: ArtistsControllerSearchArtistParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<GetArtistOutput[]>({ url: `/artists/search`, method: 'GET', params }, options)
+  return customInstance<GetArtistOutput[]>(
+    { url: `/artists/search`, method: 'GET', params },
+    options
+  )
 }
 
 /**
  * @summary Delete an artist by ID
  */
-export const artistsControllerDeleteArtist = (id: string, options?: SecondParameter<typeof customInstance>) => {
+export const artistsControllerDeleteArtist = (
+  id: string,
+  options?: SecondParameter<typeof customInstance>
+) => {
   return customInstance<null>({ url: `/artists/${id}`, method: 'DELETE' }, options)
 }
 
@@ -1379,7 +1418,7 @@ export const artistsControllerDeleteArtist = (id: string, options?: SecondParame
  */
 export const authControllerOauthRedirect = (
   params: AuthControllerOauthRedirectParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>({ url: `/auth/oauth-redirect`, method: 'GET', params }, options)
 }
@@ -1389,11 +1428,16 @@ export const authControllerOauthRedirect = (
  */
 export const authControllerLogin = (
   loginRequestPayload: LoginRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<RefreshOutput>(
-    { url: `/auth/login`, method: 'POST', headers: { 'Content-Type': 'application/json' }, data: loginRequestPayload },
-    options,
+    {
+      url: `/auth/login`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: loginRequestPayload,
+    },
+    options
   )
 }
 
@@ -1402,7 +1446,7 @@ export const authControllerLogin = (
  */
 export const authControllerRefresh = (
   refreshRequestPayload: RefreshRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<RefreshOutput>(
     {
@@ -1411,7 +1455,7 @@ export const authControllerRefresh = (
       headers: { 'Content-Type': 'application/json' },
       data: refreshRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1420,7 +1464,7 @@ export const authControllerRefresh = (
  */
 export const authControllerLogout = (
   logoutRequestPayload: LogoutRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>(
     {
@@ -1429,7 +1473,7 @@ export const authControllerLogout = (
       headers: { 'Content-Type': 'application/json' },
       data: logoutRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -1445,11 +1489,16 @@ export const authControllerGetMe = (options?: SecondParameter<typeof customInsta
  */
 export const tagsControllerCreateTag = (
   createTagRequestPayload: CreateTagRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<GetTagOutput>(
-    { url: `/tags`, method: 'POST', headers: { 'Content-Type': 'application/json' }, data: createTagRequestPayload },
-    options,
+    {
+      url: `/tags`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: createTagRequestPayload,
+    },
+    options
   )
 }
 
@@ -1458,7 +1507,7 @@ export const tagsControllerCreateTag = (
  */
 export const tagsControllerSearchTags = (
   params: TagsControllerSearchTagsParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<GetTagOutput[]>({ url: `/tags/search`, method: 'GET', params }, options)
 }
@@ -1466,7 +1515,10 @@ export const tagsControllerSearchTags = (
 /**
  * @summary Delete a tag by ID
  */
-export const tagsControllerDeleteTag = (id: string, options?: SecondParameter<typeof customInstance>) => {
+export const tagsControllerDeleteTag = (
+  id: string,
+  options?: SecondParameter<typeof customInstance>
+) => {
   return customInstance<null>({ url: `/tags/${id}`, method: 'DELETE' }, options)
 }
 
@@ -1506,7 +1558,9 @@ export type TracksPublicControllerGetPlaylistTracksResult = NonNullable<
 export type TracksPublicControllerGetTrackDetailsResult = NonNullable<
   Awaited<ReturnType<typeof tracksPublicControllerGetTrackDetails>>
 >
-export type TracksControllerUpdateTrackResult = NonNullable<Awaited<ReturnType<typeof tracksControllerUpdateTrack>>>
+export type TracksControllerUpdateTrackResult = NonNullable<
+  Awaited<ReturnType<typeof tracksControllerUpdateTrack>>
+>
 export type TracksControllerDeleteTrackCompletelyResult = NonNullable<
   Awaited<ReturnType<typeof tracksControllerDeleteTrackCompletely>>
 >
@@ -1528,14 +1582,18 @@ export type PlaylistsPublicControllerDislikePlaylistResult = NonNullable<
 export type PlaylistsPublicControllerRemovePlaylistReactionResult = NonNullable<
   Awaited<ReturnType<typeof playlistsPublicControllerRemovePlaylistReaction>>
 >
-export type TracksControllerReorderTrackResult = NonNullable<Awaited<ReturnType<typeof tracksControllerReorderTrack>>>
+export type TracksControllerReorderTrackResult = NonNullable<
+  Awaited<ReturnType<typeof tracksControllerReorderTrack>>
+>
 export type TracksControllerAddTrackToPlaylistResult = NonNullable<
   Awaited<ReturnType<typeof tracksControllerAddTrackToPlaylist>>
 >
 export type TracksControllerUnbindTrackFromPlaylistResult = NonNullable<
   Awaited<ReturnType<typeof tracksControllerUnbindTrackFromPlaylist>>
 >
-export type TracksControllerPublishTrackResult = NonNullable<Awaited<ReturnType<typeof tracksControllerPublishTrack>>>
+export type TracksControllerPublishTrackResult = NonNullable<
+  Awaited<ReturnType<typeof tracksControllerPublishTrack>>
+>
 export type TracksControllerUploadTrackCoverResult = NonNullable<
   Awaited<ReturnType<typeof tracksControllerUploadTrackCover>>
 >
@@ -1545,14 +1603,32 @@ export type TracksControllerDeleteTrackCoverResult = NonNullable<
 export type TracksControllerUploadTrackMp3Result = NonNullable<
   Awaited<ReturnType<typeof tracksControllerUploadTrackMp3>>
 >
-export type ArtistsControllerCreateArtistResult = NonNullable<Awaited<ReturnType<typeof artistsControllerCreateArtist>>>
-export type ArtistsControllerSearchArtistResult = NonNullable<Awaited<ReturnType<typeof artistsControllerSearchArtist>>>
-export type ArtistsControllerDeleteArtistResult = NonNullable<Awaited<ReturnType<typeof artistsControllerDeleteArtist>>>
-export type AuthControllerOauthRedirectResult = NonNullable<Awaited<ReturnType<typeof authControllerOauthRedirect>>>
+export type ArtistsControllerCreateArtistResult = NonNullable<
+  Awaited<ReturnType<typeof artistsControllerCreateArtist>>
+>
+export type ArtistsControllerSearchArtistResult = NonNullable<
+  Awaited<ReturnType<typeof artistsControllerSearchArtist>>
+>
+export type ArtistsControllerDeleteArtistResult = NonNullable<
+  Awaited<ReturnType<typeof artistsControllerDeleteArtist>>
+>
+export type AuthControllerOauthRedirectResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerOauthRedirect>>
+>
 export type AuthControllerLoginResult = NonNullable<Awaited<ReturnType<typeof authControllerLogin>>>
-export type AuthControllerRefreshResult = NonNullable<Awaited<ReturnType<typeof authControllerRefresh>>>
-export type AuthControllerLogoutResult = NonNullable<Awaited<ReturnType<typeof authControllerLogout>>>
+export type AuthControllerRefreshResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerRefresh>>
+>
+export type AuthControllerLogoutResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerLogout>>
+>
 export type AuthControllerGetMeResult = NonNullable<Awaited<ReturnType<typeof authControllerGetMe>>>
-export type TagsControllerCreateTagResult = NonNullable<Awaited<ReturnType<typeof tagsControllerCreateTag>>>
-export type TagsControllerSearchTagsResult = NonNullable<Awaited<ReturnType<typeof tagsControllerSearchTags>>>
-export type TagsControllerDeleteTagResult = NonNullable<Awaited<ReturnType<typeof tagsControllerDeleteTag>>>
+export type TagsControllerCreateTagResult = NonNullable<
+  Awaited<ReturnType<typeof tagsControllerCreateTag>>
+>
+export type TagsControllerSearchTagsResult = NonNullable<
+  Awaited<ReturnType<typeof tagsControllerSearchTags>>
+>
+export type TagsControllerDeleteTagResult = NonNullable<
+  Awaited<ReturnType<typeof tagsControllerDeleteTag>>
+>

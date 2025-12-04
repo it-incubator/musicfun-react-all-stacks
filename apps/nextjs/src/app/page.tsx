@@ -1,6 +1,7 @@
-import styles from './page.module.css'
-import { tracksApi } from '@/shared/api/tracks/tracksApi'
 import { UserBlock } from '@/features/auth/ui/UserBlock'
+import { tracksApi } from '@/shared/api/tracks/tracksApi'
+
+import styles from './page.module.css'
 
 export default async function Home() {
   const tracks = await tracksApi.fetchTracks({ pageNumber: 1, pageSize: 5 })

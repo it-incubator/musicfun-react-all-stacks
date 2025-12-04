@@ -1,6 +1,11 @@
 import type { FieldValues, Path, UseFormSetError } from 'react-hook-form'
-import { isJsonApiErrorDocument, type JsonApiErrorDocument, parseJsonApiErrors } from '../../util/json-api-error.ts'
 import { toast } from 'react-toastify'
+
+import {
+  isJsonApiErrorDocument,
+  type JsonApiErrorDocument,
+  parseJsonApiErrors,
+} from '../../util/json-api-error.ts'
 
 export const queryErrorHandlerForRHFFactory = <T extends FieldValues>({
   setError,
@@ -28,7 +33,12 @@ export const queryErrorHandlerForRHFFactory = <T extends FieldValues>({
   }
 }
 
-export const mutationGlobalErrorHandler = (error: Error, _: unknown, __: unknown, mutation: unknown) => {
+export const mutationGlobalErrorHandler = (
+  error: Error,
+  _: unknown,
+  __: unknown,
+  mutation: unknown
+) => {
   // @ts-expect-error look at MutationMeta type
   if (mutation.meta.globalErrorHandler === 'off') {
     return

@@ -1,6 +1,11 @@
-import { httpApiInterceptor } from '@/shared/api/api-root/api-root-instanse'
+import {
+  RequestLoginT,
+  RequestLogoutT,
+  ResMeT,
+  ResponseLoginT,
+} from '@/features/auth/model/types/api.types'
 import { API_PREFIX_ROOT } from '@/shared/api/api-root/api-root'
-import { RequestLoginT, RequestLogoutT, ResMeT, ResponseLoginT } from '@/features/auth/model/types/api.types'
+import { httpApiInterceptor } from '@/shared/api/api-root/api-root-instanse'
 
 export default class apiAuthInstance {
   private static api = httpApiInterceptor(API_PREFIX_ROOT.AUTH)

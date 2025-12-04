@@ -9,9 +9,15 @@
 🔈: https://musicfun.it-incubator.app/api/samurai-way-soundtrack-instrumental.mp3
  * OpenAPI spec version: 1.0
  */
+import type {
+  MutationFunction,
+  QueryClient,
+  UseMutationOptions,
+  UseMutationResult,
+} from '@tanstack/react-query'
 import { useMutation } from '@tanstack/react-query'
-import type { MutationFunction, QueryClient, UseMutationOptions, UseMutationResult } from '@tanstack/react-query'
 
+import { customInstance } from '.././custom-instance'
 import type {
   AddTrackToPlaylistRequestPayload,
   GetImagesOutput,
@@ -22,8 +28,6 @@ import type {
   UpdateTrackRequestPayload,
 } from '../musicfun.schemas'
 
-import { customInstance } from '.././custom-instance'
-
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
 /**
@@ -32,7 +36,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 export const tracksControllerUpdateTrack = (
   trackId: string,
   updateTrackRequestPayload: UpdateTrackRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<GetTrackOutput>(
     {
@@ -41,7 +45,7 @@ export const tracksControllerUpdateTrack = (
       headers: { 'Content-Type': 'application/json' },
       data: updateTrackRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -100,7 +104,7 @@ export const useTracksControllerUpdateTrack = <TError = null | null | null, TCon
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerUpdateTrack>>,
   TError,
@@ -116,7 +120,7 @@ export const useTracksControllerUpdateTrack = <TError = null | null | null, TCon
  */
 export const tracksControllerDeleteTrackCompletely = (
   trackId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>({ url: `/playlists/tracks/${trackId}`, method: 'DELETE' }, options)
 }
@@ -176,7 +180,7 @@ export const useTracksControllerDeleteTrackCompletely = <TError = null | null, T
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerDeleteTrackCompletely>>,
   TError,
@@ -194,7 +198,7 @@ export const tracksControllerReorderTrack = (
   playlistId: string,
   trackId: string,
   reorderTracksRequestPayload: ReorderTracksRequestPayload,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>(
     {
@@ -203,7 +207,7 @@ export const tracksControllerReorderTrack = (
       headers: { 'Content-Type': 'application/json' },
       data: reorderTracksRequestPayload,
     },
-    options,
+    options
   )
 }
 
@@ -262,7 +266,7 @@ export const useTracksControllerReorderTrack = <TError = null | null | null, TCo
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerReorderTrack>>,
   TError,
@@ -280,7 +284,7 @@ export const tracksControllerAddTrackToPlaylist = (
   playlistId: string,
   addTrackToPlaylistRequestPayload: AddTrackToPlaylistRequestPayload,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<null>(
     {
@@ -290,7 +294,7 @@ export const tracksControllerAddTrackToPlaylist = (
       data: addTrackToPlaylistRequestPayload,
       signal,
     },
-    options,
+    options
   )
 }
 
@@ -349,7 +353,7 @@ export const useTracksControllerAddTrackToPlaylist = <TError = null | null, TCon
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerAddTrackToPlaylist>>,
   TError,
@@ -366,11 +370,11 @@ export const useTracksControllerAddTrackToPlaylist = <TError = null | null, TCon
 export const tracksControllerUnbindTrackFromPlaylist = (
   playlistId: string,
   trackId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
   return customInstance<null>(
     { url: `/playlists/${playlistId}/relationships/tracks/${trackId}`, method: 'DELETE' },
-    options,
+    options
   )
 }
 
@@ -419,7 +423,10 @@ export type TracksControllerUnbindTrackFromPlaylistMutationError = null | null
 /**
  * @summary Remove a track from your playlist
  */
-export const useTracksControllerUnbindTrackFromPlaylist = <TError = null | null, TContext = unknown>(
+export const useTracksControllerUnbindTrackFromPlaylist = <
+  TError = null | null,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof tracksControllerUnbindTrackFromPlaylist>>,
@@ -429,7 +436,7 @@ export const useTracksControllerUnbindTrackFromPlaylist = <TError = null | null,
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerUnbindTrackFromPlaylist>>,
   TError,
@@ -446,9 +453,12 @@ export const useTracksControllerUnbindTrackFromPlaylist = <TError = null | null,
 export const tracksControllerPublishTrack = (
   trackId: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
-  return customInstance<null>({ url: `/playlists/tracks/${trackId}/actions/publish`, method: 'POST', signal }, options)
+  return customInstance<null>(
+    { url: `/playlists/tracks/${trackId}/actions/publish`, method: 'POST', signal },
+    options
+  )
 }
 
 export const getTracksControllerPublishTrackMutationOptions = <
@@ -475,9 +485,10 @@ export const getTracksControllerPublishTrackMutationOptions = <
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof tracksControllerPublishTrack>>, { trackId: string }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof tracksControllerPublishTrack>>,
+    { trackId: string }
+  > = (props) => {
     const { trackId } = props ?? {}
 
     return tracksControllerPublishTrack(trackId, requestOptions)
@@ -505,7 +516,7 @@ export const useTracksControllerPublishTrack = <TError = null | null | null, TCo
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerPublishTrack>>,
   TError,
@@ -523,7 +534,7 @@ export const tracksControllerUploadTrackCover = (
   trackId: string,
   tracksControllerUploadTrackCoverBody: TracksControllerUploadTrackCoverBody,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const formData = new FormData()
   formData.append(`cover`, tracksControllerUploadTrackCoverBody.cover)
@@ -536,7 +547,7 @@ export const tracksControllerUploadTrackCover = (
       data: formData,
       signal,
     },
-    options,
+    options
   )
 }
 
@@ -585,7 +596,10 @@ export type TracksControllerUploadTrackCoverMutationError = null | null | null
 /**
  * @summary Upload track cover
  */
-export const useTracksControllerUploadTrackCover = <TError = null | null | null, TContext = unknown>(
+export const useTracksControllerUploadTrackCover = <
+  TError = null | null | null,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof tracksControllerUploadTrackCover>>,
@@ -595,7 +609,7 @@ export const useTracksControllerUploadTrackCover = <TError = null | null | null,
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerUploadTrackCover>>,
   TError,
@@ -609,11 +623,20 @@ export const useTracksControllerUploadTrackCover = <TError = null | null | null,
 /**
  * @summary Delete track cover
  */
-export const tracksControllerDeleteTrackCover = (trackId: string, options?: SecondParameter<typeof customInstance>) => {
-  return customInstance<null>({ url: `/playlists/tracks/${trackId}/cover`, method: 'DELETE' }, options)
+export const tracksControllerDeleteTrackCover = (
+  trackId: string,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<null>(
+    { url: `/playlists/tracks/${trackId}/cover`, method: 'DELETE' },
+    options
+  )
 }
 
-export const getTracksControllerDeleteTrackCoverMutationOptions = <TError = null | null, TContext = unknown>(options?: {
+export const getTracksControllerDeleteTrackCoverMutationOptions = <
+  TError = null | null,
+  TContext = unknown,
+>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof tracksControllerDeleteTrackCover>>,
     TError,
@@ -665,7 +688,7 @@ export const useTracksControllerDeleteTrackCover = <TError = null | null, TConte
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerDeleteTrackCover>>,
   TError,
@@ -682,7 +705,7 @@ export const useTracksControllerDeleteTrackCover = <TError = null | null, TConte
 export const tracksControllerUploadTrackMp3 = (
   tracksControllerUploadTrackMp3Body: TracksControllerUploadTrackMp3Body,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const formData = new FormData()
   formData.append(`title`, tracksControllerUploadTrackMp3Body.title)
@@ -696,11 +719,14 @@ export const tracksControllerUploadTrackMp3 = (
       data: formData,
       signal,
     },
-    options,
+    options
   )
 }
 
-export const getTracksControllerUploadTrackMp3MutationOptions = <TError = null | null, TContext = unknown>(options?: {
+export const getTracksControllerUploadTrackMp3MutationOptions = <
+  TError = null | null,
+  TContext = unknown,
+>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof tracksControllerUploadTrackMp3>>,
     TError,
@@ -752,7 +778,7 @@ export const useTracksControllerUploadTrackMp3 = <TError = null | null, TContext
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tracksControllerUploadTrackMp3>>,
   TError,

@@ -1,6 +1,7 @@
-import { Button } from '@/shared/ui/Button/Button'
-import { useAuthContext } from '@/features/auth/model/context/AuthContext'
 import { useRouter } from 'expo-router'
+
+import { useAuthContext } from '@/features/auth/model/context/AuthContext'
+import { Button } from '@/shared/ui/Button/Button'
 
 export const LogoutButton = () => {
   const { logout, isLogoutPending } = useAuthContext()

@@ -76,8 +76,7 @@ export const Interactive = {
           gap: '24px',
           alignItems: 'center',
           width: '500px',
-        }}
-      >
+        }}>
         <Card style={{ padding: '20px', textAlign: 'center' }}>
           <Typography variant="h3" style={{ marginBottom: '12px' }}>
             Interactive Pagination
@@ -112,8 +111,7 @@ export const AllStates = {
         gap: '32px',
         alignItems: 'center',
         width: '600px',
-      }}
-    >
+      }}>
       <div>
         <Typography variant="h3" style={{ marginBottom: '12px', textAlign: 'center' }}>
           First Page (3 pages total)

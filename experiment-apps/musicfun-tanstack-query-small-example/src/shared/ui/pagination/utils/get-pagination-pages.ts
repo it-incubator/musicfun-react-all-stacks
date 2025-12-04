@@ -1,7 +1,11 @@
 /**
  * Генерирует массив страниц для отображения пагинации с учётом троеточий
  */
-export const getPaginationPages = (current: number, pagesCount: number, siblingCount: number): (number | '...')[] => {
+export const getPaginationPages = (
+  current: number,
+  pagesCount: number,
+  siblingCount: number
+): (number | '...')[] => {
   if (pagesCount <= 1) return []
 
   const pages: (number | '...')[] = []

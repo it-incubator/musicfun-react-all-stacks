@@ -1,6 +1,7 @@
-import s from '@/widgets/Player/Player.module.css'
 import type { Meta } from '@storybook/react-vite'
 import { useState } from 'react'
+
+import s from '@/widgets/Player/Player.module.css'
 
 import { AudioPlayer } from './AudioPlayer.tsx'
 

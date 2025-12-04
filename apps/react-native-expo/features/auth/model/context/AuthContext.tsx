@@ -1,8 +1,9 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { tokenStorage } from '@/shared/storage/tokenStorage'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+
 import { useLoginMutation } from '@/features/auth/model/api/hooks/use-login-mutatuion'
 import { useLogoutMutation } from '@/features/auth/model/api/hooks/use-logout-mutation'
+import { tokenStorage } from '@/shared/storage/tokenStorage'
 
 type LoginParams = { code: string; redirectUri: string }
 type AuthContextT = {
@@ -58,8 +59,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         logout,
         isPending,
         isLogoutPending,
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   )

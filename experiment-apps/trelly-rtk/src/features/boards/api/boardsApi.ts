@@ -1,4 +1,5 @@
 import { baseApi } from "@/app/api/baseApi.ts"
+
 import type { Board, BoardsResponse, DomainBoardResponse, UpdateBoardArgs } from "./boardsApi.types.ts"
 
 export const boardsApi = baseApi.injectEndpoints({

@@ -1,10 +1,10 @@
 import * as React from 'react'
 
 import type { PlaylistItemProps } from '@/entities/playlist/ui/PlaylistItem/PlaylistItem.types.ts'
+import { usePlaylistReactions } from '@/features/playlists/model/usePlaylistReactions'
 import { ReactionButtons } from '@/shared/components'
 
 import { PlaylistCard } from '../PlaylistCard'
-import { usePlaylistReactions } from '@/features/playlists/model/usePlaylistReactions'
 
 export const PlaylistItem: React.FC<PlaylistItemProps> = (props) => {
   const { playlist } = props

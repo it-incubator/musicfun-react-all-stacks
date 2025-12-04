@@ -1,9 +1,11 @@
-import { baseApi } from "@/app/api/baseApi.ts"
-import { isTokens } from "@/common/utils/isTokens.ts"
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
 import { Mutex } from "async-mutex"
+
+import { baseApi } from "@/app/api/baseApi.ts"
 import { LOCALSTORAGE_KEYS } from "@/common/constants"
 import { handleError } from "@/common/utils"
+import { isTokens } from "@/common/utils/isTokens.ts"
+
 import { baseQuery } from "./baseQuery.ts"
 
 const mutex = new Mutex()

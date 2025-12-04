@@ -1,10 +1,11 @@
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+
 import { useAppDispatch } from "@/common/hooks"
 import { containerSx } from "@/common/styles"
 import { boardsApi } from "@/features/boards/api/boardsApi.ts"
-import type { DomainBoard, FilterValues } from "../../../../api/boardsApi.types.ts"
 
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
+import type { DomainBoard, FilterValues } from "../../../../api/boardsApi.types.ts"
 
 type Props = {
   board: DomainBoard

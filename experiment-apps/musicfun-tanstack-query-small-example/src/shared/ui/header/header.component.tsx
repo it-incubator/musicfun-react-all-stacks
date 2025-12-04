@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
-import styles from './header.module.css'
 import type { ReactNode } from 'react'
+
+import styles from './header.module.css'
 
 type Props = {
   renderAccountBar: () => ReactNode

@@ -1,8 +1,10 @@
-import { EditableSpan } from "@/common/components"
-import { useRemoveBoardMutation, useUpdateBoardTitleMutation } from "@/features/boards/api/boardsApi.ts"
-import type { DomainBoard, UpdateBoardArgs } from "../../../../api/boardsApi.types.ts"
 import DeleteIcon from "@mui/icons-material/Delete"
 import IconButton from "@mui/material/IconButton"
+
+import { EditableSpan } from "@/common/components"
+import { useRemoveBoardMutation, useUpdateBoardTitleMutation } from "@/features/boards/api/boardsApi.ts"
+
+import type { DomainBoard, UpdateBoardArgs } from "../../../../api/boardsApi.types.ts"
 import s from "./BoardTitle.module.css"
 
 type Props = {

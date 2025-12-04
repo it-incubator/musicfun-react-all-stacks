@@ -1,14 +1,13 @@
-import { View, StyleSheet, Text } from 'react-native'
-import { Button } from '@/shared/ui/Button/Button'
-import { SafeAreaView } from 'react-native-safe-area-context'
-
-import { COLORS, GAPS } from '@/shared/styles/tokens'
+import { router } from 'expo-router'
 import * as WebBrowser from 'expo-web-browser'
+import { useEffect } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { LoginButton } from '@/features/auth/components/LoginButton/LoginButton'
 import { useAuthContext } from '@/features/auth/model/context/AuthContext'
-import { useEffect } from 'react'
-import { router } from 'expo-router'
+import { COLORS, GAPS } from '@/shared/styles/tokens'
+import { Button } from '@/shared/ui/Button/Button'
 import { IcSmile } from '@/shared/ui/Icons/screens/login/IcSmile'
 
 export default function Login() {
@@ -51,7 +50,12 @@ export default function Login() {
           </View>
           <View style={styles.buttonContainer}>
             <LoginButton />
-            <Button variant={'gray'} isFull onPress={onPressSignUp} title="Continue without Sign In" />
+            <Button
+              variant={'gray'}
+              isFull
+              onPress={onPressSignUp}
+              title="Continue without Sign In"
+            />
           </View>
         </View>
       </View>

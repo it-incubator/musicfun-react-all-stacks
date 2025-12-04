@@ -1,5 +1,6 @@
-import { LOCALSTORAGE_KEYS } from "@/common/constants"
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+
+import { LOCALSTORAGE_KEYS } from "@/common/constants"
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,

@@ -95,8 +95,7 @@ export const TabsTrigger = ({ children, value, className, disabled }: TabsTrigge
       className={clsx(s.tabsTrigger, isActive && s.active, disabled && s.disabled, className)}
       onClick={handleClick}
       disabled={disabled}
-      type="button"
-    >
+      type="button">
       {children}
     </button>
   )

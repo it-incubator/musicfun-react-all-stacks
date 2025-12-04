@@ -1,9 +1,11 @@
-import s from './playlist-cover.module.css'
-import noCover from '../../../assets/img/no-cover.png'
-import type { components } from '@/shared/api'
-import type { ChangeEvent } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { ChangeEvent } from 'react'
+
+import type { components } from '@/shared/api'
 import { getClient } from '@/shared/api'
+
+import noCover from '../../../assets/img/no-cover.png'
+import s from './playlist-cover.module.css'
 
 type PlaylistImagesOutputDTO = components['schemas']['PlaylistImagesOutputDTO']
 
@@ -38,10 +40,18 @@ export const PlaylistCover = ({ images, playlistId, editable = false }: Props) =
 
   return (
     <div className={s.container}>
-      <img src={originalCover ? originalCover.url : noCover} alt={'no cover image'} className={s.cover} />
+      <img
+        src={originalCover ? originalCover.url : noCover}
+        alt={'no cover image'}
+        className={s.cover}
+      />
       {editable && (
         <div>
-          <input type="file" accept="image/jpeg,image/png,image/gif" onChange={uploadCoverHandler} />
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/gif"
+            onChange={uploadCoverHandler}
+          />
         </div>
       )}
     </div>

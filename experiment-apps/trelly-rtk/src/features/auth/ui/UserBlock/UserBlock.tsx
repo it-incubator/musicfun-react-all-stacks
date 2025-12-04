@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router"
+
 import { NavButton } from "@/common/components"
 import { Path } from "@/common/routing"
 import { useLogoutMutation, useMeQuery } from "@/features/auth/api/authApi"

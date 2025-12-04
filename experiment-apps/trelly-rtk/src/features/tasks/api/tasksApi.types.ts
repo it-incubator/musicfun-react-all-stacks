@@ -1,6 +1,7 @@
+import { z } from "zod"
+
 import { TaskPriority, TaskStatus } from "@/common/enums"
 import type { Meta } from "@/common/types"
-import { z } from "zod"
 
 export type GetBoardTasksResponse = {
   data: Task[]

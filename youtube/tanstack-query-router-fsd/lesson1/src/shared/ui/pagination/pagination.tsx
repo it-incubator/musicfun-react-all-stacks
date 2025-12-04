@@ -1,5 +1,5 @@
-import { PaginationNav } from './pagination-nav/pagination-nav.tsx'
 import s from './Pagination.module.css'
+import { PaginationNav } from './pagination-nav/pagination-nav.tsx'
 
 type Props = {
   currentPage: number

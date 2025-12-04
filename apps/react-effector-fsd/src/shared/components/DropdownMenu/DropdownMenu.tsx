@@ -68,7 +68,11 @@ export const DropdownMenu = ({ children, className }: DropdownMenuProps) => {
 
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Element
-      if (triggerRef.current && !triggerRef.current.contains(target) && !target.closest('[data-dropdown-content]')) {
+      if (
+        triggerRef.current &&
+        !triggerRef.current.contains(target) &&
+        !target.closest('[data-dropdown-content]')
+      ) {
         onClose()
       }
     }
@@ -101,12 +105,19 @@ export type DropdownMenuTriggerProps = {
   asChild?: boolean
 }
 
-export const DropdownMenuTrigger = ({ children, className, asChild = false }: DropdownMenuTriggerProps) => {
+export const DropdownMenuTrigger = ({
+  children,
+  className,
+  asChild = false,
+}: DropdownMenuTriggerProps) => {
   const { onToggle, triggerRef } = useDropdownMenuContext()
 
   if (asChild) {
     return (
-      <div ref={triggerRef as React.RefObject<HTMLDivElement>} onClick={onToggle} className={className}>
+      <div
+        ref={triggerRef as React.RefObject<HTMLDivElement>}
+        onClick={onToggle}
+        className={className}>
         {children}
       </div>
     )
@@ -117,8 +128,7 @@ export const DropdownMenuTrigger = ({ children, className, asChild = false }: Dr
       ref={triggerRef as React.RefObject<HTMLButtonElement>}
       type="button"
       onClick={onToggle}
-      className={clsx(s.trigger, className)}
-    >
+      className={clsx(s.trigger, className)}>
       {children}
     </button>
   )
@@ -204,8 +214,7 @@ export const DropdownMenuContent = ({
       className={clsx(s.content, s[`align-${align}`], s[`side-${side}`], className)}
       style={{ top: position.top, left: position.left }}
       data-dropdown-content
-      role="menu"
-    >
+      role="menu">
       {children}
     </div>
   )
@@ -250,8 +259,7 @@ export const DropdownMenuItem = <T extends ElementType = 'button'>({
       onClick={handleClick}
       {...(isButton && { disabled })}
       role="menuitem"
-      {...props}
-    >
+      {...props}>
       {children}
     </Component>
   )

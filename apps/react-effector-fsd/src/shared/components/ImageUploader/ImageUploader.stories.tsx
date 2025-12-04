@@ -72,8 +72,7 @@ export const Interactive: Story = {
         flexDirection: 'column',
         gap: '24px',
         width: '400px',
-      }}
-    >
+      }}>
       <div>
         <h3 style={{ color: 'var(--color-text-primary)', marginBottom: '12px' }}>Profile Avatar</h3>
         <ImageUploader

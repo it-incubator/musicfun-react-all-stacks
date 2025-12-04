@@ -20,14 +20,26 @@ export type SelectProps = {
   placeholder?: string
 } & ComponentProps<'select'>
 
-export const Select = ({ className, errorMessage, id, label, options, placeholder, ...props }: SelectProps) => {
+export const Select = ({
+  className,
+  errorMessage,
+  id,
+  label,
+  options,
+  placeholder,
+  ...props
+}: SelectProps) => {
   const showError = Boolean(errorMessage)
   const selectId = useGetId(id)
 
   return (
     <div className={clsx(s.container, className)}>
       {label && (
-        <Typography variant="label" as="label" htmlFor={selectId} className={clsx(s.label, showError && s.error)}>
+        <Typography
+          variant="label"
+          as="label"
+          htmlFor={selectId}
+          className={clsx(s.label, showError && s.error)}>
           {label}
         </Typography>
       )}

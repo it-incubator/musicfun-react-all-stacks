@@ -1,7 +1,8 @@
-import { authApi } from '@/shared/api/auth-api'
-import { redirectAfterOauthUri } from '@/shared/api/base'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+
+import { authApi } from '@/shared/api/auth-api'
+import { redirectAfterOauthUri } from '@/shared/api/base'
 import { createAccessTokenCookie, createRefreshTokenCookie } from '@/shared/utils/cookieHelpers'
 
 export async function GET(request: Request) {

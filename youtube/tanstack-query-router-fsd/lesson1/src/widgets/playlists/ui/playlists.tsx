@@ -1,6 +1,7 @@
-import { Pagination } from '../../../shared/ui/pagination/pagination.tsx'
 import { useState } from 'react'
+
 import { DeletePlaylist } from '../../../features/playlists/delete-playlist/ui/delete-playlist.tsx'
+import { Pagination } from '../../../shared/ui/pagination/pagination.tsx'
 import { usePlaylistsQuery } from '../api/use-playlists-query.ts'
 
 type Props = {
@@ -10,7 +11,12 @@ type Props = {
   isSearchActive?: boolean
 }
 
-export const Playlists = ({ userId, onPlaylistSelected, onPlaylistDeleted, isSearchActive }: Props) => {
+export const Playlists = ({
+  userId,
+  onPlaylistSelected,
+  onPlaylistDeleted,
+  isSearchActive,
+}: Props) => {
   const [pageNumber, setPageNumber] = useState(1)
   const [search, setSearch] = useState('')
 
@@ -32,7 +38,11 @@ export const Playlists = ({ userId, onPlaylistSelected, onPlaylistDeleted, isSea
       {isSearchActive && (
         <>
           <div>
-            <input value={search} onChange={(e) => setSearch(e.currentTarget.value)} placeholder={'search...'} />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.currentTarget.value)}
+              placeholder={'search...'}
+            />
           </div>
           <hr />
         </>
@@ -47,7 +57,9 @@ export const Playlists = ({ userId, onPlaylistSelected, onPlaylistDeleted, isSea
       <ul>
         {query.data.data.map((playlist) => (
           <li key={playlist.id}>
-            <span onClick={() => handleSelectPlaylistClick(playlist.id)}>{playlist.attributes.title}</span>{' '}
+            <span onClick={() => handleSelectPlaylistClick(playlist.id)}>
+              {playlist.attributes.title}
+            </span>{' '}
             <DeletePlaylist playlistId={playlist.id} onDeleted={handleDeletePlaylist} />
           </li>
         ))}

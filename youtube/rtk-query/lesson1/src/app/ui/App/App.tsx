@@ -1,7 +1,9 @@
+import { ToastContainer } from 'react-toastify'
+
 import { Header, LinearProgress } from '@/common/components'
 import { useGlobalLoading } from '@/common/hooks'
 import { Routing } from '@/common/routing'
-import { ToastContainer } from 'react-toastify'
+
 import s from './App.module.css'
 
 export const App = () => {

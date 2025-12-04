@@ -1,10 +1,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
+import { tracksKeys } from '@/features/tracks/api/query-key-factory'
 import { getClient } from '@/shared/api/client.ts'
 import type { SchemaGetTracksRequestPayload } from '@/shared/api/schema.ts'
 import { unwrap } from '@/shared/api/utils/unwrap.ts'
 import type { Strict } from '@/shared/types/strict.tsx'
-import { tracksKeys } from '@/features/tracks/api/query-key-factory'
 
 type TracksParams = Partial<SchemaGetTracksRequestPayload>
 

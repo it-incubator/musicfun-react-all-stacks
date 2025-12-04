@@ -1,7 +1,9 @@
+import { Link, NavLink } from 'react-router'
+
 import { Path } from '@/common/routing'
 import { useGetMeQuery, useLogoutMutation } from '@/features/auth/api/authApi.ts'
 import { Login } from '@/features/auth/ui/Login/Login.tsx'
-import { Link, NavLink } from 'react-router'
+
 import s from './Header.module.css'
 
 const navItems = [

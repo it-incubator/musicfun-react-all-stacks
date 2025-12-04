@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+
 import { reauthMiddleware } from '@/reauth-middleware'
 
 export async function middleware(request: NextRequest) {

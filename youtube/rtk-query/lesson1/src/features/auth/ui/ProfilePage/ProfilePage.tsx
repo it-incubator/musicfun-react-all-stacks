@@ -1,9 +1,11 @@
+import { Navigate } from 'react-router'
+
 import { Path } from '@/common/routing'
 import { useGetMeQuery } from '@/features/auth/api/authApi.ts'
 import { useFetchPlaylistsQuery } from '@/features/playlists/api/playlistsApi.ts'
 import { CreatePlaylistForm } from '@/features/playlists/ui/CreatePlaylistForm/CreatePlaylistForm.tsx'
 import { PlaylistsList } from '@/features/playlists/ui/PlaylistsList/PlaylistsList.tsx'
-import { Navigate } from 'react-router'
+
 import s from './ProfilePage.module.css'
 
 export const ProfilePage = () => {

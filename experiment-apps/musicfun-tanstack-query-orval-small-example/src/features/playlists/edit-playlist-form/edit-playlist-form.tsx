@@ -1,11 +1,11 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { getClient } from '../../../shared/api/client'
-import type { components } from '../../../shared/api/schema'
-import { requestWrapper } from '../../../shared/api/request-wrapper.ts'
 import { queryErrorHandlerForRHFFactory } from '../../../shared/api/query-error-handler-for-rhf-factory.ts'
+import { requestWrapper } from '../../../shared/api/request-wrapper.ts'
+import type { components } from '../../../shared/api/schema'
 
 type Props = {
   classNames: string
@@ -55,7 +55,7 @@ export const EditPlaylistForm = ({ playlistId, onCancelEditing, classNames }: Pr
         getClient().PUT('/playlists/{playlistId}', {
           body: { ...body, tagIds: [] },
           params: { path: { playlistId: playlistId! } },
-        }),
+        })
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -80,7 +80,11 @@ export const EditPlaylistForm = ({ playlistId, onCancelEditing, classNames }: Pr
 
       <p>
         <label>
-          <input {...register('title')} placeholder="Title" disabled={isPending || isPlaylistPending || isSubmitting} />
+          <input
+            {...register('title')}
+            placeholder="Title"
+            disabled={isPending || isPlaylistPending || isSubmitting}
+          />
         </label>
       </p>
       {errors.title && <p>{errors.title.message}</p>}

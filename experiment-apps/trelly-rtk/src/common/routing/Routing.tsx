@@ -1,8 +1,10 @@
+import { Route, Routes } from "react-router"
+
 import { Main } from "@/app/ui/Main.tsx"
 import { PageNotFound, ProtectedRoute } from "@/common/components"
 import { useMeQuery } from "@/features/auth/api/authApi.ts"
 import { Login } from "@/features/auth/ui/Login/Login"
-import { Route, Routes } from "react-router"
+
 import { OAuthCallback } from "../../features/auth/ui/OAuthCallback/OAuthCallback.tsx"
 
 export const Path = {

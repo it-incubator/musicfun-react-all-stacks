@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store'
+
 import { KEY_STORAGE } from '@/shared/consts/key-storage/key-storage'
 
 export type Tokens = { accessToken: string; refreshToken: string }
