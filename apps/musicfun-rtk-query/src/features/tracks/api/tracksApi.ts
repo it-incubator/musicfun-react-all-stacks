@@ -215,15 +215,14 @@ export const tracksAPI = baseApi.injectEndpoints({
           })
         );
 
-        // это для обновления кэша fetchTrackById
+        // this is for updating the cache fetchTrackById
         const patchResultSingleTrack = dispatch(
           tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-            // draft здесь - это отдельный объект трека, а не массив
+            // draft here is a separate track object, not an array
             state.data.attributes.likesCount += 1;
             state.data.attributes.currentUserReaction = CurrentUserReaction.Like;
           })
         );
-
 
         try {
           await queryFulfilled
