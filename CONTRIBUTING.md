@@ -10,19 +10,21 @@ If you want to report a bug, create a reproduction using StackBlitz or CodeSandb
 ## Sending a Pull Request
 
 1. fork and clone the repository
-> [!NOTE]
-> You can just clone the repository if you are a collaborator 
+   > [!NOTE]
+   > You can just clone the repository if you are a collaborator
 2. create a development branch from `main`
 3. run the following command in the project root (this will install dependencies for all apps and packages)
-> [!NOTE]
-> It is recommended to create a branch from the issue  
+   > [!NOTE]
+   > It is recommended to create a branch from the issue
 4. [make changes](#coding-guide) and [commit them](#commit-messages)
 5. upload feature branch and create a [Pull Request](https://github.com/it-incubator/musicfun-react-all-stacks/compare) to merge changes to `main`
 6. link your PR to the issue using a [closing keyword](https://help.github.com/en/articles/closing-issues-using-keywords) or provide changes description with motivation and explanation in the comment (example: `fix #74`)
 7. wait until a team member responds
 
 ## Coding guide
+
 <!-- - always use `@ts-expect-error` instead of `@ts-ignore` -->
+
 - use `// @ts-ignore` if you not sure why error appears or you think it could be better, use `// @ts-expect-error` if you sure that error is a mistake <!-- ??? -->
 
 ## Commit messages

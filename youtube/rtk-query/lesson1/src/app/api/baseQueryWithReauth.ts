@@ -1,9 +1,10 @@
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { Mutex } from 'async-mutex'
+
 import { baseApi } from '@/app/api/baseApi.ts'
 import { baseQuery } from '@/app/api/baseQuery.ts'
 import { AUTH_KEYS } from '@/common/constants'
 import { handleErrors, isTokens } from '@/common/utils'
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { Mutex } from 'async-mutex'
 
 // create a new mutex
 const mutex = new Mutex()

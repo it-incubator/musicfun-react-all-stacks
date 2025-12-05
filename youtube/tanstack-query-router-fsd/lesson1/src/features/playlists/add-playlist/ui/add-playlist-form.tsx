@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form'
+
 import type { SchemaCreatePlaylistRequestPayload } from '../../../../shared/api/schema.ts'
-import { useAddPlaylistMutation } from '../api/use-add-playlist-mutation.ts'
-import { type JsonApiErrorDocument } from '../../../../shared/util/json-api-error.ts'
 import { queryErrorHandlerForRHFFactory } from '../../../../shared/ui/util/query-error-handler-for-rhf-factory.ts'
+import { type JsonApiErrorDocument } from '../../../../shared/util/json-api-error.ts'
+import { useAddPlaylistMutation } from '../api/use-add-playlist-mutation.ts'
 
 export const AddPlaylistForm = () => {
   const {

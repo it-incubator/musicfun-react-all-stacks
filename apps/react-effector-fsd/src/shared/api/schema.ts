@@ -1146,12 +1146,15 @@ export type SchemaTagRef = components['schemas']['TagRef']
 export type SchemaPlaylistListItemAttributes = components['schemas']['PlaylistListItemAttributes']
 export type SchemaPlaylistListItemResource = components['schemas']['PlaylistListItemResource']
 export type SchemaGetMyPlaylistsOutput = components['schemas']['GetMyPlaylistsOutput']
-export type SchemaCreatePlaylistRequestPayload = components['schemas']['CreatePlaylistRequestPayload']
+export type SchemaCreatePlaylistRequestPayload =
+  components['schemas']['CreatePlaylistRequestPayload']
 export type SchemaPlaylistAttributes = components['schemas']['PlaylistAttributes']
 export type SchemaPlaylistResource = components['schemas']['PlaylistResource']
 export type SchemaGetPlaylistOutput = components['schemas']['GetPlaylistOutput']
-export type SchemaUpdatePlaylistRequestPayload = components['schemas']['UpdatePlaylistRequestPayload']
-export type SchemaReorderPlaylistsRequestPayload = components['schemas']['ReorderPlaylistsRequestPayload']
+export type SchemaUpdatePlaylistRequestPayload =
+  components['schemas']['UpdatePlaylistRequestPayload']
+export type SchemaReorderPlaylistsRequestPayload =
+  components['schemas']['ReorderPlaylistsRequestPayload']
 export type SchemaTrackImages = components['schemas']['TrackImages']
 export type SchemaGetTracksRequestPayload = components['schemas']['GetTracksRequestPayload']
 export type SchemaJsonApiErrorSource = components['schemas']['JsonApiErrorSource']
@@ -1163,12 +1166,15 @@ export type SchemaArtistRelationship = components['schemas']['ArtistRelationship
 export type SchemaArtistsRelationship = components['schemas']['ArtistsRelationship']
 export type SchemaTrackRelationships = components['schemas']['TrackRelationships']
 export type SchemaTrackListItemResource = components['schemas']['TrackListItemResource']
-export type SchemaJsonApiMetaWithPagingAndCursor = components['schemas']['JsonApiMetaWithPagingAndCursor']
+export type SchemaJsonApiMetaWithPagingAndCursor =
+  components['schemas']['JsonApiMetaWithPagingAndCursor']
 export type SchemaOmitTypeClass = components['schemas']['OmitTypeClass']
 export type SchemaIncludedArtistOutput = components['schemas']['IncludedArtistOutput']
 export type SchemaGetTrackListOutput = components['schemas']['GetTrackListOutput']
-export type SchemaTrackListItemAttributesForPlaylist = components['schemas']['TrackListItemAttributesForPlaylist']
-export type SchemaTrackListItemResourceForPlaylist = components['schemas']['TrackListItemResourceForPlaylist']
+export type SchemaTrackListItemAttributesForPlaylist =
+  components['schemas']['TrackListItemAttributesForPlaylist']
+export type SchemaTrackListItemResourceForPlaylist =
+  components['schemas']['TrackListItemResourceForPlaylist']
 export type SchemaJsonApiMeta = components['schemas']['JsonApiMeta']
 export type SchemaGetTracksForPlaylistOutput = components['schemas']['GetTracksForPlaylistOutput']
 export type SchemaArtistRef = components['schemas']['ArtistRef']
@@ -1181,7 +1187,8 @@ export type SchemaJsonApiMetaWithPaging = components['schemas']['JsonApiMetaWith
 export type SchemaGetPlaylistsOutput = components['schemas']['GetPlaylistsOutput']
 export type SchemaReorderTracksRequestPayload = components['schemas']['ReorderTracksRequestPayload']
 export type SchemaUpdateTrackRequestPayload = components['schemas']['UpdateTrackRequestPayload']
-export type SchemaAddTrackToPlaylistRequestPayload = components['schemas']['AddTrackToPlaylistRequestPayload']
+export type SchemaAddTrackToPlaylistRequestPayload =
+  components['schemas']['AddTrackToPlaylistRequestPayload']
 export type SchemaCreateArtistRequestPayload = components['schemas']['CreateArtistRequestPayload']
 export type SchemaLoginRequestPayload = components['schemas']['LoginRequestPayload']
 export type SchemaRefreshOutput = components['schemas']['RefreshOutput']

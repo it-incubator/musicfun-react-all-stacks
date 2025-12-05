@@ -3,18 +3,17 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      // Плагін Router-а має бути ПЕРШИМ
       'expo-router/babel',
 
-      // далі — react-native-dotenv
       [
-        'module:react-native-dotenv',
+        'module-resolver',
         {
-          moduleName: '@env',
-          path: '.env',
-          allowUndefined: true,
+          root: ['.'],
+          alias: { '@': './' },
+          extensions: ['.tsx', '.ts', '.js', '.json'],
         },
       ],
+      'react-native-reanimated/plugin',
     ],
   }
 }

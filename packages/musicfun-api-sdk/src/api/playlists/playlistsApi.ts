@@ -1,8 +1,13 @@
-import type { CreatePlaylistArgs, Playlist, PlaylistsResponse, UpdatePlaylistArgs } from './playlistsApi.types.ts'
 import { playlistsEndpoint } from '../../common/apiEntities/apiEntities'
-import { Images } from '../../common/types/playlists-tracks.types'
 import { Nullable } from '../../common/types/common.types'
+import { Images } from '../../common/types/playlists-tracks.types'
 import { getApiClient } from '../../v2/request'
+import type {
+  CreatePlaylistArgs,
+  Playlist,
+  PlaylistsResponse,
+  UpdatePlaylistArgs,
+} from './playlistsApi.types.ts'
 
 export const playlistsApi = {
   fetchPlaylists: (params: { pageSize?: number; pageNumber: number; search: string }) => {
@@ -30,7 +35,15 @@ export const playlistsApi = {
   fetchPlaylistById: (playlistId: string) => {
     return getApiClient().get<{ data: Playlist }>(`${playlistsEndpoint}/${playlistId}`)
   },
-  reorderPlaylist: ({ playlistId, putAfterItemId }: { playlistId: string; putAfterItemId: Nullable<string> }) => {
-    return getApiClient().put<void>(`${playlistsEndpoint}/${playlistId}/reorder`, { putAfterItemId })
+  reorderPlaylist: ({
+    playlistId,
+    putAfterItemId,
+  }: {
+    playlistId: string
+    putAfterItemId: Nullable<string>
+  }) => {
+    return getApiClient().put<void>(`${playlistsEndpoint}/${playlistId}/reorder`, {
+      putAfterItemId,
+    })
   },
 }

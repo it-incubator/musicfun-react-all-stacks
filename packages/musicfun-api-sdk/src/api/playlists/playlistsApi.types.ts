@@ -1,5 +1,5 @@
-import { Images, User } from '../../common/types/playlists-tracks.types'
 import { Meta } from '../../common/types/common.types'
+import { Images, User } from '../../common/types/playlists-tracks.types'
 
 export type Playlist = {
   id: string

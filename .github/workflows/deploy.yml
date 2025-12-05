@@ -35,11 +35,11 @@ jobs:
       # === Install ===
 
       - name: Install deps for tanstack-query (folder renamed)
-        working-directory: apps/musicfun-tanstack-query-zustand
+        working-directory: apps/tanstack-query-zustand
         run: pnpm install --no-frozen-lockfile
 
       - name: Install deps for rtk-query
-        working-directory: apps/musicfun-rtk-query
+        working-directory: apps/rtk-query
         run: pnpm install --no-frozen-lockfile
 
       - name: Install deps for reatom
@@ -53,11 +53,11 @@ jobs:
       # === Build ===
 
       - name: Build tanstack-query
-        working-directory: apps/musicfun-tanstack-query-zustand
+        working-directory: apps/tanstack-query-zustand
         run: pnpm build
 
       - name: Build rtk-query
-        working-directory: apps/musicfun-rtk-query
+        working-directory: apps/rtk-query
         run: pnpm build
 
       - name: Build reatom
@@ -77,11 +77,11 @@ jobs:
       # === SPA fallback ===
 
       - name: SPA fallback for tanstack-query
-        working-directory: apps/musicfun-tanstack-query-zustand/dist
+        working-directory: apps/tanstack-query-zustand/dist
         run: cp index.html 404.html
 
       - name: SPA fallback for rtk-query
-        working-directory: apps/musicfun-rtk-query/dist
+        working-directory: apps/rtk-query/dist
         run: cp index.html 404.html
 
       - name: SPA fallback for reatom
@@ -101,8 +101,8 @@ jobs:
           mkdir -p dist/reatom
           mkdir -p dist/effector
 
-          cp -r apps/musicfun-tanstack-query-zustand/dist/* dist/tanstackquery/
-          cp -r apps/musicfun-rtk-query/dist/* dist/rtkquery/
+          cp -r apps/tanstack-query-zustand/dist/* dist/tanstackquery/
+          cp -r apps/rtk-query/dist/* dist/rtkquery/
           cp -r apps/reatom/dist/* dist/reatom/
           cp -r apps/react-effector-fsd/dist/* dist/effector/
 

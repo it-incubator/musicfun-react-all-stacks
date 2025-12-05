@@ -1,6 +1,7 @@
-import { errorToast } from '@/common/utils/errorToast.ts'
 import { type FetchBaseQueryError, NamedSchemaError } from '@reduxjs/toolkit/query/react'
 import type { ZodType } from 'zod'
+
+import { errorToast } from '@/common/utils/errorToast.ts'
 
 export const withZodCatch = <T extends ZodType>(schema: T) => ({
   responseSchema: schema,

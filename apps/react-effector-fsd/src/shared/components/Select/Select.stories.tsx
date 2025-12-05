@@ -41,8 +41,7 @@ export const AllVariants = {
         flexDirection: 'column',
         gap: '24px',
         width: '350px',
-      }}
-    >
+      }}>
       <Select label="Basic Select" placeholder="Choose option" options={commonOptions} />
 
       <Select label="With Default Value" options={commonOptions} defaultValue="react" />
@@ -154,8 +153,7 @@ export const Controlled = {
             borderRadius: '4px',
             fontSize: 'var(--font-size-s)',
             color: 'var(--color-text-secondary)',
-          }}
-        >
+          }}>
           Selected value: <strong>{value || 'None'}</strong>
         </div>
       </div>

@@ -104,11 +104,15 @@ export const ImageUploader = ({
   return (
     <div className={clsx(s.container, className)}>
       <label
-        className={clsx(s.dropZone, isDragOver && s.dragOver, preview && s.hasPreview, error && s.error)}
+        className={clsx(
+          s.dropZone,
+          isDragOver && s.dragOver,
+          preview && s.hasPreview,
+          error && s.error
+        )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
+        onDrop={handleDrop}>
         <input
           ref={fileInputRef}
           type="file"
@@ -121,7 +125,11 @@ export const ImageUploader = ({
         {preview ? (
           <div className={s.previewContainer}>
             <img src={preview} alt="Preview" className={s.previewImage} />
-            <IconButton className={s.removeButton} onClick={handleRemoveImage} aria-label="Remove image" type="button">
+            <IconButton
+              className={s.removeButton}
+              onClick={handleRemoveImage}
+              aria-label="Remove image"
+              type="button">
               ✕
             </IconButton>
           </div>

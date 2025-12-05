@@ -1,7 +1,13 @@
 import type { SVGProps } from 'react'
 
 export const PlayIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={72} height={72} viewBox="0 0 72 72" fill="none" {...props}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={72}
+    height={72}
+    viewBox="0 0 72 72"
+    fill="none"
+    {...props}>
     <circle cx={36} cy={36} r={36} fill="#FF38B6" />
     <path
       fill="#000"

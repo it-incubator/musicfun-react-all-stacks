@@ -1,39 +1,60 @@
 {
-  "name": "musicfun-reactnative",
+  "name": "musicfun-react-native-expo",
+  "license": "0BSD",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
+    "start_clear": "pnpm run start:dev -- --clear",
     "start": "expo start",
+    "start:dev": "cross-env APP_ENV=development expo start",
+    "start:prod": "cross-env APP_ENV=production expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
-    "generate:api": "pnpm openapi-typescript https://musicfun.it-incubator.app/api-json -o ./src/shared/api/schema.ts"
+    "web": "expo start --web"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "2.1.2",
-    "@tanstack/react-query": "^5.83.0",
-    "expo": "~53.0.17",
-    "expo-auth-session": "~6.2.1",
-    "expo-crypto": "~14.1.5",
-    "expo-linking": "~7.1.7",
-    "expo-router": "^5.1.3",
-    "expo-secure-store": "~14.2.3",
-    "expo-status-bar": "~2.2.3",
-    "expo-web-browser": "~14.1.1",
-    "openapi-fetch": "^0.14.0",
-    "openapi-typescript": "^7.8.0",
-    "react": "19.0.0",
-    "react-native": "0.79.5",
-    "react-native-gesture-handler": "~2.24.0",
-    "react-native-safe-area-context": "5.4.0",
-    "react-native-screens": "~4.11.1"
+    "@expo/metro-runtime": "~6.1.2",
+    "@react-buoy/core": "^0.1.12",
+    "@react-buoy/react-query": "^0.1.12",
+    "@react-buoy/shared-ui": "^0.1.12",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-community/netinfo": "^11.4.1",
+    "@tanstack/query-async-storage-persister": "^5.90.2",
+    "@tanstack/react-query": "^5.90.2",
+    "@tanstack/react-query-persist-client": "^5.90.2",
+    "axios": "^1.12.2",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "dotenv": "^17.2.3",
+    "expo": "~54.0.12",
+    "expo-auth-session": "^7.0.8",
+    "expo-constants": "~18.0.9",
+    "expo-font": "^14.0.8",
+    "expo-linking": "~8.0.8",
+    "expo-router": "~6.0.10",
+    "expo-secure-store": "^15.0.7",
+    "expo-status-bar": "~3.0.8",
+    "expo-web-browser": "^15.0.8",
+    "react": "19.1.0",
+    "react-native": "0.81.4",
+    "react-native-gesture-handler": "^2.28.0",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "~5.6.1",
+    "react-native-screens": "~4.16.0",
+    "react-native-svg": "^15.12.1",
+    "react-native-svg-transformer": "^1.5.1",
+    "react-native-worklets": "0.5.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@types/react": "~19.0.10",
-    "@types/react-native": "^0.73.0",
-    "react-native-dotenv": "^3.4.11",
-    "typescript": "~5.8.3"
+    "@types/react": "~19.1.0",
+    "cross-env": "^10.1.0",
+    "typescript": "~5.9.2"
   },
-  "private": true
+  "pnpm": {
+    "overrides": {
+      "@babel/core": "7.28.4",
+      "@babel/parser": "7.28.4",
+      "@babel/types": "7.28.4",
+      "babel-preset-expo": "54.0.3"
+    }
+  }
 }

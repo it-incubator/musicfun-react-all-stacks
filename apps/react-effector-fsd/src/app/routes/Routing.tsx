@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router'
 
-import { Layout } from '@/widgets/layout'
-import { UserPage } from '@/pages/user'
-import { Home } from '@/pages/home'
 import { OAuthCallback } from '@/pages/auth/OAuthRedirect/OAuthCallback.tsx'
+import { Home } from '@/pages/home'
+import { UserPage } from '@/pages/user'
+import { Layout } from '@/widgets/layout'
 
 export const Routing = () => (
   <Routes>

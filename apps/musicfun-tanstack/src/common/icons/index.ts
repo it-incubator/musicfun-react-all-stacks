@@ -1,7 +1,0 @@
-export { ReactionIcon } from './ReactionIcon/ReactionIcon'
-export { PauseIcon } from './PauseIcon/PauseIcon.tsx'
-export { PlayIcon } from './PlayIcon/PlayIcon.tsx'
-export { SoundIcon } from './SoundIcon/SoundIcon.tsx'
-export { NextTrackIcon } from './NextTrackIcon/NextTrackIcon.tsx'
-export { LikeIcon } from './LikeIcon/LikeIcon.tsx'
-export { DislikeIcon } from './DislikeIcon/DislikeIcon.tsx'

@@ -1,3 +1,5 @@
+import * as z from 'zod'
+
 import {
   fetchTracksResponseSchema,
   trackAttachmentSchema,
@@ -7,7 +9,6 @@ import {
   tracksIncludedSchema,
   tracksMetaSchema,
 } from '@/features/tracks/model/tracks.schemas.ts'
-import * as z from 'zod'
 
 export type TrackAttachment = z.infer<typeof trackAttachmentSchema>
 export type TrackRelationships = z.infer<typeof trackRelationshipsSchema>
