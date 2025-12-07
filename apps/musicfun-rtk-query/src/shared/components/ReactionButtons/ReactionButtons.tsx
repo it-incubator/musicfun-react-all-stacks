@@ -4,7 +4,6 @@ import { DislikeIcon, LikeIcon, LikeIconFill } from '@/shared/icons'
 
 import { IconButton } from '../IconButton'
 import s from './ReactionButtons.module.css'
-import type { FetchTracksArgs } from '@/features/tracks'
 
 // duplication of the CurrentUserReaction type to decouple the shared layer from the features layer
 export enum CurrentUserReaction {
@@ -21,7 +20,6 @@ export type ReactionButtonsProps = {
   likesCount?: number
   className?: string
   size?: ReactionButtonsSize
-  // fetchTracksArgs?: FetchTracksArgs
 }
 
 const SIZE_MAP = {
@@ -34,7 +32,6 @@ export type ReactionButtonsSize = keyof typeof SIZE_MAP
 export const ReactionButtons = ({
   reaction = CurrentUserReaction.None,
   onLike,
-  // fetchTracksArgs,
   onDislike,
   onUnReaction,
   likesCount,
