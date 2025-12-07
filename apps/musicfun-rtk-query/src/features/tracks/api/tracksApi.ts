@@ -199,6 +199,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       invalidatesTags: ['Track'],
     }),
     likeTrack: build.mutation<ReactionResponse, { trackId: string, fetchTracksArgs?: FetchTracksArgs }>({
+      // todo: переписать selectCachedArgsForQuery, fetchTracksArgs?: FetchTracksArgs - не передавать
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/likes`,
         method: 'POST',
