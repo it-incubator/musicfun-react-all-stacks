@@ -35,15 +35,17 @@ export const MainPage = () => {
         renderItem={(playlist) => {
           const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
           return (
-            <PlaylistCard
-              id={playlist.id}
-              title={playlist.attributes.title}
-              imageSrc={image?.url}
-              description={playlist.attributes.description}
-              isShowReactionButtons={true}
-              reaction={playlist.attributes.currentUserReaction}
-              likesCount={playlist.attributes.likesCount}
-            />
+              <PlaylistCard
+                  id={playlist.id}
+                  title={playlist.attributes.title}
+                  imageSrc={image?.url}
+                  isShowReactionButtons={true}
+                  reaction={playlist.attributes.currentUserReaction}
+                  likesCount={playlist.attributes.likesCount}
+                  userName={playlist.attributes.user.name}
+                  userId={playlist.attributes.user.id}
+                  addedAt={playlist.attributes.addedAt}
+              />
           )
         }}
       />

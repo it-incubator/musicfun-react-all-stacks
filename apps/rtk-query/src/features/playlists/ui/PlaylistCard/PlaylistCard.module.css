@@ -51,3 +51,36 @@
 .reactionButtons {
   margin-top: auto;
 }
+
+.detailsRow {
+  display: flex;
+  gap: 1px;
+}
+
+.dot::before {
+  content: '•';
+  margin: 0 4px;
+  font-size: 17px;
+  opacity: 0.7;
+}
+
+.userButton {
+  background: none;
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-block;
+  line-height: inherit;
+  transition: transform 150ms ease;
+}
+
+.userButton:hover {
+  transform: scale(1.03);
+}
+
+.userButton:active {
+  transform: scale(1.02);
+}
+
+
+

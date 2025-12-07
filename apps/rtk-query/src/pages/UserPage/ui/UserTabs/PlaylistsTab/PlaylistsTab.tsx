@@ -49,7 +49,9 @@ export const PlaylistsTab = () => {
                 id={playlist.id}
                 title={playlist.attributes.title}
                 imageSrc={image?.url}
-                description={playlist.attributes.description}
+                userName={playlist.attributes.user.name}
+                userId={playlist.attributes.user.id}
+                addedAt={playlist.attributes.addedAt}
                 actions={
                   <DropdownMenu>
                     <DropdownMenuTrigger>
