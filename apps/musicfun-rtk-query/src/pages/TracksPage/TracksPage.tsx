@@ -21,16 +21,21 @@ export const TracksPage = () => {
   const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
     usePageSearchParams()
 
-    const fetchTracksArgs = {
-      pageNumber,
-      sortBy,
-      sortDirection,
-      search: debouncedSearch,
-      ...(tagsIds.length > 0 && { tagsIds }),
-      ...(artistsIds.length > 0 && { artistsIds }),
-    };
-  
-    const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs);
+  const fetchTracksArgs = {
+    pageNumber,
+    sortBy,
+    sortDirection,
+    search: debouncedSearch,
+    ...(tagsIds.length > 0 && { tagsIds }),
+    ...(artistsIds.length > 0 && { artistsIds }),
+  }
+
+  const {
+    currentData: currentTracks,
+    data: tracks,
+    isLoading,
+  } = useFetchTracksQuery(fetchTracksArgs)
+  const actualTracks = currentTracks ?? tracks
 
   const { data: me } = useMeQuery()
 
@@ -38,7 +43,7 @@ export const TracksPage = () => {
 
   const handleTrackPlayClick = (trackId: string) => {
     // TODO: Update to pass full track array with url, title, artist, duration, albumArt
-    const tracksForRedux = tracks!.data.map((t) => ({
+    const tracksForRedux = actualTracks!.data.map((t) => ({
       id: t.id,
       title: t.attributes.title,
       artist: 'artist',
@@ -76,7 +81,7 @@ export const TracksPage = () => {
 
       <TracksTable
         trackRows={
-          tracks?.data?.map((track, index) => {
+          actualTracks?.data?.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
             const userId = track.attributes.user.id
             const isOwner = userId === me?.userId
