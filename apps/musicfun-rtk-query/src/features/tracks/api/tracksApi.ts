@@ -198,118 +198,143 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Track'],
     }),
-    likeTrack: build.mutation<ReactionResponse, { trackId: string, fetchTracksArgs?: FetchTracksArgs }>({
-      // todo: переписать selectCachedArgsForQuery, fetchTracksArgs?: FetchTracksArgs - не передавать
+    likeTrack: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/likes`,
         method: 'POST',
       }),
-      async onQueryStarted({ trackId, fetchTracksArgs }, { dispatch, queryFulfilled }) {
-        const patchResults = [
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTracks', fetchTracksArgs || {}, (state) => {
-              const track = state.data.find((t) => t.id === trackId);
-              if (track) {
-                track.attributes.likesCount += 1
-                track.attributes.currentUserReaction = CurrentUserReaction.Like
-              }
-            })
-          ),
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-              // draft here is a separate track object, not an array
-              state.data.attributes.likesCount += 1;
-              state.data.attributes.currentUserReaction = CurrentUserReaction.Like;
-            })
-          ),
-        ];
+      async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+
+        const patchResults: any[] = []
+
+        args.forEach((arg: FetchTracksArgs) => {
+          patchResults.push(
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
+                const track = state.data.find((t) => t.id === trackId)
+                if (track) {
+                  track.attributes.likesCount += 1
+                  track.attributes.currentUserReaction = CurrentUserReaction.Like
+                }
+              })
+            ),
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+                // draft here is a separate track object, not an array
+                state.data.attributes.likesCount += 1
+                state.data.attributes.currentUserReaction = CurrentUserReaction.Like
+              })
+            )
+          )
+        })
 
         try {
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          patchResults.forEach((p) => p.undo());
+          patchResults.forEach((p) => p.undo())
           // При ошибке кеш не трогаем
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
-    dislikeTrack: build.mutation<ReactionResponse, { trackId: string, fetchTracksArgs?: FetchTracksArgs }>({
+    dislikeTrack: build.mutation<
+      ReactionResponse,
+      { trackId: string; fetchTracksArgs?: FetchTracksArgs }
+    >({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/dislikes`,
         method: 'POST',
       }),
-      async onQueryStarted({ trackId, fetchTracksArgs }, { dispatch, queryFulfilled }) {
-        const patchResults = [
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTracks', fetchTracksArgs || {}, (state) => {
-              const track = state.data.find((t) => t.id === trackId);
-              if (track) {
-                if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                  track.attributes.likesCount -= 1
+      async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+
+        const patchResults: any[] = []
+
+        args.forEach((arg: FetchTracksArgs) => {
+          patchResults.push(
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
+                const track = state.data.find((t) => t.id === trackId)
+                if (track) {
+                  if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                    track.attributes.likesCount -= 1
+                  }
+                  track.attributes.dislikesCount += 1
+                  track.attributes.currentUserReaction = CurrentUserReaction.Dislike
                 }
-                track.attributes.dislikesCount += 1
-                track.attributes.currentUserReaction = CurrentUserReaction.Dislike
-              }
-            })
-          ),
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-              if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                state.data.attributes.likesCount -= 1;
-              }
-              state.data.attributes.dislikesCount += 1;
-              state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike;
-            })
-          ),
-        ];
+              })
+            ),
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+                if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                  state.data.attributes.likesCount -= 1
+                }
+                state.data.attributes.dislikesCount += 1
+                state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike
+              })
+            )
+          )
+        })
 
         try {
-          await queryFulfilled;
+          await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          patchResults.forEach((p) => p.undo());
+          patchResults.forEach((p) => p.undo())
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
-    unReactionTrack: build.mutation<ReactionResponse, { trackId: string, fetchTracksArgs?: FetchTracksArgs }>({
+    unReactionTrack: build.mutation<
+      ReactionResponse,
+      { trackId: string; fetchTracksArgs?: FetchTracksArgs }
+    >({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/reactions`,
         method: 'DELETE',
       }),
-      async onQueryStarted({ trackId, fetchTracksArgs }, { dispatch, queryFulfilled }) {
-        const patchResults = [
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTracks', fetchTracksArgs || {}, (state) => {
-              const track = state.data.find((t) => t.id === trackId);
-              if (track) {
-                if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                  track.attributes.likesCount -= 1
-                } else if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
-                  track.attributes.dislikesCount -= 1
+      async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+
+        const patchResults: any[] = []
+
+        args.forEach((arg: FetchTracksArgs) => {
+          patchResults.push(
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
+                const track = state.data.find((t) => t.id === trackId)
+                if (track) {
+                  if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                    track.attributes.likesCount -= 1
+                  } else if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+                    track.attributes.dislikesCount -= 1
+                  }
+                  track.attributes.currentUserReaction = CurrentUserReaction.None
                 }
-                track.attributes.currentUserReaction = CurrentUserReaction.None
-              }
-            })
-          ),
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-              if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                state.data.attributes.likesCount -= 1;
-              } else if (state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
-                state.data.attributes.dislikesCount -= 1;
-              }
-              state.data.attributes.currentUserReaction = CurrentUserReaction.None;
-            })
-          ),
-        ];
+              })
+            ),
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+                if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                  state.data.attributes.likesCount -= 1
+                } else if (
+                  state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike
+                ) {
+                  state.data.attributes.dislikesCount -= 1
+                }
+                state.data.attributes.currentUserReaction = CurrentUserReaction.None
+              })
+            )
+          )
+        })
 
         try {
-          await queryFulfilled;
+          await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          patchResults.forEach((p) => p.undo());
+          patchResults.forEach((p) => p.undo())
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
