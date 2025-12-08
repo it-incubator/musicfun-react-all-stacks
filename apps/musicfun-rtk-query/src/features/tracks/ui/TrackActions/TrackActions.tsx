@@ -44,12 +44,12 @@ type TrackActionsPropsWithoutReactions = TrackActionsPropsBase & {
 
 type TrackActionsProps = (TrackActionsPropsWithReactions | TrackActionsPropsWithoutReactions) & {
   fetchTracksArgs?: FetchTracksArgs
-  // trackByIdArgs?: { trackId: string }
 }
+
+// todo: почистить проспы
 
 export const TrackActions = ({
   fetchTracksArgs,
-  // trackByIdArgs,
   reaction,
   likesCount,
   trackId,
@@ -85,10 +85,10 @@ export const TrackActions = ({
       {reaction !== undefined && (
          <ReactionButtons
          reaction={reaction}
-         onLike={() => like({ trackId, fetchTracksArgs })}
-         onDislike={() => dislike({ trackId, fetchTracksArgs })}
+         onLike={() => like({ trackId })}
+         onDislike={() => dislike({ trackId })}
          likesCount={likesCount}
-         onUnReaction={() => unReaction({ trackId, fetchTracksArgs })}
+         onUnReaction={() => unReaction({ trackId })}
          size={sizeReactionButtons}
        />
       )}
