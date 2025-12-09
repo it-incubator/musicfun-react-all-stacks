@@ -28,14 +28,9 @@ export const TracksPage = () => {
     search: debouncedSearch,
     ...(tagsIds.length > 0 && { tagsIds }),
     ...(artistsIds.length > 0 && { artistsIds }),
-  }
+  };
 
-  const {
-    currentData: currentTracks,
-    data: tracks,
-    isLoading,
-  } = useFetchTracksQuery(fetchTracksArgs)
-  const actualTracks = currentTracks ?? tracks
+  const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs);
 
   const { data: me } = useMeQuery()
 
@@ -43,7 +38,7 @@ export const TracksPage = () => {
 
   const handleTrackPlayClick = (trackId: string) => {
     // TODO: Update to pass full track array with url, title, artist, duration, albumArt
-    const tracksForRedux = actualTracks!.data.map((t) => ({
+    const tracksForRedux = tracks!.data.map((t) => ({
       id: t.id,
       title: t.attributes.title,
       artist: 'artist',
@@ -81,7 +76,7 @@ export const TracksPage = () => {
 
       <TracksTable
         trackRows={
-          actualTracks?.data?.map((track, index) => {
+          tracks?.data?.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
             const userId = track.attributes.user.id
             const isOwner = userId === me?.userId
@@ -115,7 +110,6 @@ export const TracksPage = () => {
                 likesCount={trackRow.likesCount}
                 trackId={trackRow.id}
                 isOwner={trackRow.isOwner}
-                fetchTracksArgs={fetchTracksArgs}
               />
             )}
           />
