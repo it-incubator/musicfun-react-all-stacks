@@ -221,7 +221,6 @@ export const tracksAPI = baseApi.injectEndpoints({
             ),
             dispatch(
               tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-                // draft here is a separate track object, not an array
                 state.data.attributes.likesCount += 1
                 state.data.attributes.currentUserReaction = CurrentUserReaction.Like
               })
@@ -234,15 +233,11 @@ export const tracksAPI = baseApi.injectEndpoints({
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResults.forEach((p) => p.undo())
-          // При ошибке кеш не трогаем
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
-    dislikeTrack: build.mutation<
-      ReactionResponse,
-      { trackId: string; fetchTracksArgs?: FetchTracksArgs }
-    >({
+    dislikeTrack: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/dislikes`,
         method: 'POST',
@@ -287,10 +282,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
-    unReactionTrack: build.mutation<
-      ReactionResponse,
-      { trackId: string; fetchTracksArgs?: FetchTracksArgs }
-    >({
+    unReactionTrack: build.mutation<ReactionResponse, { trackId: string }>({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}/reactions`,
         method: 'DELETE',
