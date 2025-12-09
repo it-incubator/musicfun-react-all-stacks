@@ -42,14 +42,9 @@ type TrackActionsPropsWithoutReactions = TrackActionsPropsBase & {
   sizeReactionButtons?: undefined
 }
 
-type TrackActionsProps = (TrackActionsPropsWithReactions | TrackActionsPropsWithoutReactions) & {
-  fetchTracksArgs?: FetchTracksArgs
-}
-
-// todo: почистить проспы
+type TrackActionsProps = TrackActionsPropsWithReactions | TrackActionsPropsWithoutReactions
 
 export const TrackActions = ({
-  fetchTracksArgs,
   reaction,
   likesCount,
   trackId,
@@ -83,14 +78,14 @@ export const TrackActions = ({
   return (
     <>
       {reaction !== undefined && (
-         <ReactionButtons
-         reaction={reaction}
-         onLike={() => like({ trackId })}
-         onDislike={() => dislike({ trackId })}
-         likesCount={likesCount}
-         onUnReaction={() => unReaction({ trackId })}
-         size={sizeReactionButtons}
-       />
+        <ReactionButtons
+          reaction={reaction}
+          onLike={() => like({ trackId })}
+          onDislike={() => dislike({ trackId })}
+          likesCount={likesCount}
+          onUnReaction={() => unReaction({ trackId })}
+          size={sizeReactionButtons}
+        />
       )}
       <DropdownMenu>
         <DropdownMenuTrigger>
