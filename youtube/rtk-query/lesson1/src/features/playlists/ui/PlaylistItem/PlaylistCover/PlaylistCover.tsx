@@ -1,3 +1,5 @@
+import type { ChangeEvent } from 'react'
+
 import defaultCover from '@/assets/images/default-playlist-cover.png'
 import type { Images } from '@/common/types'
 import { errorToast } from '@/common/utils'
@@ -5,7 +7,7 @@ import {
   useDeletePlaylistCoverMutation,
   useUploadPlaylistCoverMutation,
 } from '@/features/playlists/api/playlistsApi.ts'
-import type { ChangeEvent } from 'react'
+
 import s from './PlaylistCover.module.css'
 
 type Props = {

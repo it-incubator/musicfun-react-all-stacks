@@ -1,4 +1,5 @@
 import { getPaginationPages } from '@/common/utils'
+
 import s from './Pagination.module.css'
 
 type Props = {

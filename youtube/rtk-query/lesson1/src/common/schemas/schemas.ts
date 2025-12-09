@@ -1,5 +1,6 @@
-import { CurrentUserReaction } from '@/common/enums'
 import * as z from 'zod'
+
+import { CurrentUserReaction } from '@/common/enums'
 
 export const tagSchema = z.object({
   id: z.string(),

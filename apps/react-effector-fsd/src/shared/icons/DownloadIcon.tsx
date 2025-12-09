@@ -1,7 +1,13 @@
 import type { SVGProps } from 'react'
 
 export const DownloadIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 22 22" fill="none" {...props}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={22}
+    height={22}
+    viewBox="0 0 22 22"
+    fill="none"
+    {...props}>
     <path
       fill="currentColor"
       fillRule="evenodd"

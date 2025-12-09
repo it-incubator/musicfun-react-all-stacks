@@ -1,12 +1,14 @@
 import { createEffect, createStore, sample } from 'effector'
-import { localStorageKeys, type LoginRequestPayload, type RefreshOutput } from './auth-api.types'
-import type { User } from './user.types'
-import { meApi } from '../api/me'
-import { loginApi } from '../api/login'
-import { logoutApi } from '../api/logout'
+import { toast } from 'react-toastify'
+
 import { setClientConfig } from '@/shared/api/client.ts'
 import { API_BASE_URL, API_KEY } from '@/shared/config/config.ts'
-import { toast } from 'react-toastify'
+
+import { loginApi } from '../api/login'
+import { logoutApi } from '../api/logout'
+import { meApi } from '../api/me'
+import { localStorageKeys, type LoginRequestPayload, type RefreshOutput } from './auth-api.types'
+import type { User } from './user.types'
 
 export const initApiClientFx = createEffect(() => {
   setClientConfig({

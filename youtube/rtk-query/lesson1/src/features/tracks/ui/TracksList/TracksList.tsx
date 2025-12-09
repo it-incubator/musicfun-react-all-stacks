@@ -1,4 +1,5 @@
 import type { TrackData } from '@/features/tracks/api/tracksApi.types.ts'
+
 import s from './TracksList.module.css'
 
 type Props = {

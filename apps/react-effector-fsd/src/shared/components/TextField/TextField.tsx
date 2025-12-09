@@ -14,7 +14,15 @@ export type TextFieldProps = {
   inputSize?: TextFieldSize
 } & ComponentProps<'input'>
 
-export const TextField = ({ className, errorMessage, id, icon, label, inputSize = 'm', ...props }: TextFieldProps) => {
+export const TextField = ({
+  className,
+  errorMessage,
+  id,
+  icon,
+  label,
+  inputSize = 'm',
+  ...props
+}: TextFieldProps) => {
   const showError = Boolean(errorMessage)
   const inputId = useGetId(id)
 
@@ -29,7 +37,12 @@ export const TextField = ({ className, errorMessage, id, icon, label, inputSize 
       <div className={s.inputWrapper}>
         {icon && <span className={s.icon}>{icon}</span>}
         <input
-          className={clsx(s.input, showError && s.error, icon && s.withIcon, inputSize === 'l' && s.large)}
+          className={clsx(
+            s.input,
+            showError && s.error,
+            icon && s.withIcon,
+            inputSize === 'l' && s.large
+          )}
           id={inputId}
           type={'text'}
           {...props}

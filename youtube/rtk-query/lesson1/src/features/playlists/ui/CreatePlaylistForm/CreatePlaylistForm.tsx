@@ -1,8 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+
 import { useCreatePlaylistMutation } from '@/features/playlists/api/playlistsApi.ts'
 import type { CreatePlaylistArgs } from '@/features/playlists/api/playlistsApi.types.ts'
 import { createPlaylistSchema } from '@/features/playlists/model/playlists.schemas.ts'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+
 import s from './CreatePlaylistForm.module.css'
 
 export const CreatePlaylistForm = () => {

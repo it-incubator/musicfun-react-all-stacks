@@ -86,14 +86,17 @@ export const Pagination = ({
   const pageNumbers = generatePageNumbers()
 
   return (
-    <div className={clsx(s.pagination, className)} role="navigation" aria-label="Pagination" {...props}>
+    <div
+      className={clsx(s.pagination, className)}
+      role="navigation"
+      aria-label="Pagination"
+      {...props}>
       {/* Previous button */}
       <IconButton
         onClick={handlePrevious}
         disabled={page === 1}
         aria-label="Go to previous page"
-        className={s.navButton}
-      >
+        className={s.navButton}>
         <KeyboardArrowLeftIcon />
       </IconButton>
 
@@ -117,8 +120,7 @@ export const Pagination = ({
               className={clsx(s.pageButton, isActive && s.active)}
               aria-label={`Go to page ${pageNumber}`}
               aria-current={isActive ? 'page' : undefined}
-              type="button"
-            >
+              type="button">
               {pageNumber}
             </button>
           )
@@ -130,8 +132,7 @@ export const Pagination = ({
         onClick={handleNext}
         disabled={page === pagesCount}
         aria-label="Go to next page"
-        className={s.navButton}
-      >
+        className={s.navButton}>
         <KeyboardArrowRightIcon />
       </IconButton>
     </div>

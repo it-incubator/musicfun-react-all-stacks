@@ -17,7 +17,10 @@ export interface RequestOptions {
   nextOptions?: { revalidate?: number; tags?: string[] }
 }
 
-type RequestInterceptor = (input: RequestInfo, init: RequestInit) => Promise<[RequestInfo, RequestInit]>
+type RequestInterceptor = (
+  input: RequestInfo,
+  init: RequestInit
+) => Promise<[RequestInfo, RequestInit]>
 
 type ResponseInterceptor = (response: Response, retry: () => Promise<Response>) => Promise<Response>
 
@@ -52,14 +55,21 @@ export class ApiClient {
     this.responseInterceptors.push(fn)
   }
 
-  private async authRequestInterceptor(input: RequestInfo, init: RequestInit): Promise<[RequestInfo, RequestInit]> {
+  private async authRequestInterceptor(
+    input: RequestInfo,
+    init: RequestInit
+  ): Promise<[RequestInfo, RequestInit]> {
     const token = this.config.getAccessToken()
     if (token) init.headers = { ...(init.headers ?? {}), Authorization: `Bearer ${token}` }
-    if (this.config.apiKey) init.headers = { ...(init.headers ?? {}), 'API-KEY': this.config.apiKey }
+    if (this.config.apiKey)
+      init.headers = { ...(init.headers ?? {}), 'API-KEY': this.config.apiKey }
     return [input, init]
   }
 
-  private async tokenRefreshInterceptor(response: Response, retry: () => Promise<Response>): Promise<Response> {
+  private async tokenRefreshInterceptor(
+    response: Response,
+    retry: () => Promise<Response>
+  ): Promise<Response> {
     if (response.status !== 401) return response
     if (!this.refreshPromise) this.refreshPromise = this.handleRefresh()
     await this.refreshPromise
@@ -102,7 +112,11 @@ export class ApiClient {
     return url.toString()
   }
 
-  private async sendRequest(method: string, path: string, opts: RequestOptions = {}): Promise<Response> {
+  private async sendRequest(
+    method: string,
+    path: string,
+    opts: RequestOptions = {}
+  ): Promise<Response> {
     const baseInput: RequestInfo = this.buildUrl(path, opts.params)
 
     const headers: Record<string, string> = {}
@@ -113,7 +127,12 @@ export class ApiClient {
     const baseInit: RequestInit = {
       method,
       headers: headers,
-      body: opts.body instanceof FormData ? opts.body : opts.body ? JSON.stringify(opts.body) : undefined,
+      body:
+        opts.body instanceof FormData
+          ? opts.body
+          : opts.body
+            ? JSON.stringify(opts.body)
+            : undefined,
       signal: opts.signal,
       ...(opts.nextOptions ? { next: opts.nextOptions } : {}),
     }
@@ -123,7 +142,10 @@ export class ApiClient {
       let reqInit: RequestInit = { ...baseInit }
 
       for (const interceptor of this.requestInterceptors) {
-        const [nextInput, nextInit]: [RequestInfo, RequestInit] = await interceptor(reqInput, reqInit)
+        const [nextInput, nextInit]: [RequestInfo, RequestInit] = await interceptor(
+          reqInput,
+          reqInit
+        )
 
         reqInput = nextInput
         reqInit = nextInit
@@ -139,7 +161,11 @@ export class ApiClient {
     return response
   }
 
-  private async request<T>(method: string, path: string, opts?: RequestOptions): Promise<ApiResponse<T>> {
+  private async request<T>(
+    method: string,
+    path: string,
+    opts?: RequestOptions
+  ): Promise<ApiResponse<T>> {
     const response = await this.sendRequest(method, path, opts)
 
     if (!response.ok) {

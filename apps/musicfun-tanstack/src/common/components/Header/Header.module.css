@@ -1,9 +1,0 @@
-.wrapper {
-  border-bottom: 1px solid black;
-  padding: 0 100px;
-}
-
-.list {
-  display: flex;
-  gap: 40px;
-}

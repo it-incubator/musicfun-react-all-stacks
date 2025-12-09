@@ -81,8 +81,7 @@ export const TagEditor = ({
                 className={s.deleteButton}
                 disabled={disabled}
                 aria-label={`Remove tag ${tag}`}
-                type="button"
-              >
+                type="button">
                 <DeleteIcon />
               </IconButton>
             </li>

@@ -1,8 +1,10 @@
+import { type ChangeEvent, useState } from 'react'
+
 import { Pagination } from '@/common/components'
 import { useDebounceValue } from '@/common/hooks'
 import { useFetchPlaylistsQuery } from '@/features/playlists/api/playlistsApi.ts'
 import { PlaylistsList } from '@/features/playlists/ui/PlaylistsList/PlaylistsList.tsx'
-import { type ChangeEvent, useState } from 'react'
+
 import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {

@@ -23,8 +23,7 @@ export const AllButtons: Story = {
         flexDirection: 'column',
         alignItems: 'center',
         width: '250px',
-      }}
-    >
+      }}>
       <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
       <Button fullWidth>Full Width</Button>

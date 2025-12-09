@@ -1,6 +1,6 @@
-import { LoginButton } from './login-button.tsx'
-import { CurrentUser } from './current-user/current-user.tsx'
 import { useMeQuery } from '../api/use-me-query.ts'
+import { CurrentUser } from './current-user/current-user.tsx'
+import { LoginButton } from './login-button.tsx'
 
 export const AccountBar = () => {
   const query = useMeQuery()

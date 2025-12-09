@@ -1,9 +1,10 @@
-import { Playlists } from '../widgets/playlists/ui/playlists.tsx'
-import { useMeQuery } from '../features/auth/api/use-me-query.ts'
 import { Navigate } from '@tanstack/react-router'
+import { useState } from 'react'
+
+import { useMeQuery } from '../features/auth/api/use-me-query.ts'
 import { AddPlaylistForm } from '../features/playlists/add-playlist/ui/add-playlist-form.tsx'
 import { EditPlaylistForm } from '../features/playlists/edit-playlist/ui/edit-playlist-form.tsx'
-import { useState } from 'react'
+import { Playlists } from '../widgets/playlists/ui/playlists.tsx'
 
 export function MyPlaylistsPage() {
   const { data, isPending } = useMeQuery()
@@ -33,7 +34,10 @@ export function MyPlaylistsPage() {
         onPlaylistDeleted={handlePlaylistDelete}
       />
       <hr />
-      <EditPlaylistForm playlistId={editingPlaylistId} onCancelEditing={() => setEditingPlaylistId(null)} />
+      <EditPlaylistForm
+        playlistId={editingPlaylistId}
+        onCancelEditing={() => setEditingPlaylistId(null)}
+      />
     </div>
   )
 }

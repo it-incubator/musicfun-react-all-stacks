@@ -1,7 +1,7 @@
-import { AuthTokensResponse, MeResponseResponse, RefreshTokensRequest } from './authApi.types'
 import { authEndpoint } from '../../common/apiEntities/apiEntities'
-import { getApiClient } from '../../v2/request'
 import { joinUrl } from '../../common/utils/urlHelper'
+import { getApiClient } from '../../v2/request'
+import { AuthTokensResponse, MeResponseResponse, RefreshTokensRequest } from './authApi.types'
 
 export const authApi = {
   login: (payload: OAuthLoginRequest) => {
@@ -13,7 +13,7 @@ export const authApi = {
   oauthUrl: (redirectUrl: string): string => {
     const url = joinUrl(
       getApiClient().getConfig().baseURL,
-      `/auth/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`,
+      `/auth/oauth-redirect?callbackUrl=${encodeURIComponent(redirectUrl)}`
     )
     return url
   },

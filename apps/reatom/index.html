@@ -7,24 +7,24 @@
     <title>Musicfun Reatom</title>
     <!-- SPA redirect handler for GitHub Pages -->
     <script>
-      (function() {
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
+      ;(function () {
+        var redirect = sessionStorage.redirect
+        delete sessionStorage.redirect
         if (redirect && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
+          history.replaceState(null, null, redirect)
         }
 
         // Check for spa_redirect query parameter
-        var searchParams = new URLSearchParams(window.location.search);
-        var spaRedirect = searchParams.get('spa_redirect');
+        var searchParams = new URLSearchParams(window.location.search)
+        var spaRedirect = searchParams.get('spa_redirect')
         if (spaRedirect) {
-          searchParams.delete('spa_redirect');
-          var newSearch = searchParams.toString();
-          var newUrl = decodeURIComponent(spaRedirect);
-          sessionStorage.redirect = newUrl;
-          window.location.replace(window.location.pathname + (newSearch ? '?' + newSearch : ''));
+          searchParams.delete('spa_redirect')
+          var newSearch = searchParams.toString()
+          var newUrl = decodeURIComponent(spaRedirect)
+          sessionStorage.redirect = newUrl
+          window.location.replace(window.location.pathname + (newSearch ? '?' + newSearch : ''))
         }
-      })();
+      })()
     </script>
   </head>
   <body>

@@ -118,7 +118,8 @@ export function assertApiConfig() {
     throw new Error(msg)
   }
   if (isLocalClient() && !config.apiKey) {
-    const msg = 'apiKey is required when running client on localhost. Call setClientConfig({ apiKey })'
+    const msg =
+      'apiKey is required when running client on localhost. Call setClientConfig({ apiKey })'
     console.error(msg)
     throw new Error(msg)
   }

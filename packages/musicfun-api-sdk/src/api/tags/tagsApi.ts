@@ -1,6 +1,6 @@
-import type { Tag } from './tagsApi.types.ts'
 import { tagsEndpoint } from '../../common/apiEntities/apiEntities'
 import { getApiClient } from '../../v2/request'
+import type { Tag } from './tagsApi.types.ts'
 
 export const tagsApi = {
   findTags: (value: string) => {
