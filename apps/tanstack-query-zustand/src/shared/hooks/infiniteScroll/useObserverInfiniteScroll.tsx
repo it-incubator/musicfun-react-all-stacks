@@ -4,6 +4,7 @@ import type { IUseObserverInfiniteScroll } from './useObserverInfiniteScroll.typ
 
 /**
  * Custom hook for implementing infinite scroll using the Intersection Observer API.
+ * https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
  *
  * @param {IUseObserverInfiniteScroll} props - An object containing configuration options for the observer.
  * @param {Function} [props.callBack] - The function to be called when the observed element enters the viewport or root
@@ -46,7 +47,7 @@ const useObserverInfiniteScroll = (props: IUseObserverInfiniteScroll) => {
   React.useEffect(() => {
     if (callBack && targetElement.current) {
       const options: IntersectionObserverInit = {
-        root: rootElement?.current,
+        root: rootElement?.current, // Tracking relative to the browser window (viewport). null = entire screen
         rootMargin,
         threshold,
       }
@@ -57,15 +58,19 @@ const useObserverInfiniteScroll = (props: IUseObserverInfiniteScroll) => {
         }
       }, options)
 
+      // starts observing the element
       observerRef.current.observe(targetElement.current)
     }
 
+    // Cleanup function - stops observing when component unmounts
     return () => {
       if (observerRef.current && targetElement.current) {
         observerRef.current.unobserve(targetElement.current)
       }
     }
   }, [targetElement, rootElement, callBack])
+  // `callBack` is included in dependencies to ensure the latest function is always called
+  // Without it, a stale closure would be used if the callback identity changes
 }
 
 export default useObserverInfiniteScroll
