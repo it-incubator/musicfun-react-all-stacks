@@ -16,7 +16,7 @@ import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
 
-const PAGE_SIZE = 1
+const PAGE_SIZE = 1 // PAGE_SIZE reduced to 1 for demo purposes only
 
 export const TracksPage = () => {
   const [hashtags, setHashtags] = React.useState<string[]>([])
@@ -27,7 +27,7 @@ export const TracksPage = () => {
 
   const { sortBy, sortDirection } = tracksSortFunction(sort)
 
-  const targetElement = React.useRef<HTMLDivElement | null>(null)
+  const targetRef = React.useRef<HTMLDivElement | null>(null)
 
   // todo: task search tracks filter w/o trhotling/debounce
   // todo: add sorting;
@@ -95,7 +95,7 @@ export const TracksPage = () => {
   }
 
   useInfiniteScroll({
-    targetElement,
+    targetRef,
     callBack: infinityFetchNextPage,
     rootMargin: '300px',
     threshold: 0.1,
@@ -161,7 +161,7 @@ export const TracksPage = () => {
 
         {tracks.length === 0 && <div>No tracks found</div>}
         {hasNextPage && (
-          <div ref={targetElement}>
+          <div ref={targetRef}>
             {/* // Todo: change to little loader */}
             <div>Loading...</div>
           </div>

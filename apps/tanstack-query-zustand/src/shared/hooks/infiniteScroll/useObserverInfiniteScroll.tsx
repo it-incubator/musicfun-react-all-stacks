@@ -4,14 +4,14 @@ import type { IUseObserverInfiniteScroll } from './useObserverInfiniteScroll.typ
 
 /**
  * Custom hook for implementing infinite scroll using the Intersection Observer API.
- * https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API IntersectionObserver API}.
  *
  * @param {IUseObserverInfiniteScroll} props - An object containing configuration options for the observer.
  * @param {Function} [props.callBack] - The function to be called when the observed element enters the viewport or root
  *   element.
- * @param {React.RefObject<HTMLDivElement>} props.targetElement - The element that triggers the callback when it
+ * @param {React.RefObject<HTMLDivElement | null>} props.targetRef - The element that triggers the callback when it
  *   intersects with the root.
- * @param {React.RefObject<HTMLDivElement>} [props.rootElement] - The root element for the Intersection Observer.
+ * @param {React.RefObject<HTMLDivElement | null>} [props.rootRef] - The root element for the Intersection Observer.
  *   If not provided, the browser viewport is used as the root.
  * @param {string} [props.rootMargin='100px 0px'] - Margin around the root. For example, "100px 0px" means the callback
  *   will fire when the trigger element is 100px below the root and 0px from the sides.
@@ -20,36 +20,38 @@ import type { IUseObserverInfiniteScroll } from './useObserverInfiniteScroll.typ
  *
  * @example
  * const MyComponent = () => {
- *   const targetElement = React.useRef<HTMLDivElement>(null);
- *   const rootElement = React.useRef<HTMLDivElement>(null);
+ *   const targetRef = React.useRef<HTMLDivElement | null>(null);
+ *   const rootRef = React.useRef<HTMLElement | null>(null);
  *
  *   useObserverInfiniteScroll({
  *     callBack: () => console.log('Element is visible!'),
- *     targetElement,
- *     rootElement,
+ *     targetRef,
+ *     rootRef,
  *     rootMargin: '100px 0px',
  *     threshold: 0.5
  *   });
  *
  *   return (
- *     <div ref={rootElement}>
- *       <div ref={targetElement}>Scroll down to see the magic happen!</div>
+ *     <div ref={rootRef}>
+ *       <div ref={targetRef}>Scroll down to see the magic happen!</div>
  *     </div>
  *   );
  * };
  */
 
 const useObserverInfiniteScroll = (props: IUseObserverInfiniteScroll) => {
-  const { callBack, rootMargin = '100px 0px', threshold = 1.0, targetElement, rootElement } = props
+  const { callBack, rootMargin = '100px 0px', threshold = 1.0, targetRef, rootRef } = props
 
   const observerRef = React.useRef<IntersectionObserver | null>(null)
 
   React.useEffect(() => {
-    if (callBack && targetElement.current) {
+    const targetElement = targetRef.current
+
+    if (callBack && targetElement) {
       const options: IntersectionObserverInit = {
-        root: rootElement?.current, // Tracking relative to the browser window (viewport). null = entire screen
-        rootMargin,
-        threshold,
+        root: rootRef?.current, // Tracking relative to the browser window (viewport). null = entire screen
+        rootMargin, // Start loading before the element appears
+        threshold, // Trigger when % of the element becomes visible
       }
 
       observerRef.current = new IntersectionObserver(([entry]) => {
@@ -59,16 +61,16 @@ const useObserverInfiniteScroll = (props: IUseObserverInfiniteScroll) => {
       }, options)
 
       // starts observing the element
-      observerRef.current.observe(targetElement.current)
+      observerRef.current.observe(targetElement)
     }
 
     // Cleanup function - stops observing when component unmounts
     return () => {
-      if (observerRef.current && targetElement.current) {
-        observerRef.current.unobserve(targetElement.current)
+      if (observerRef.current && targetElement) {
+        observerRef.current.unobserve(targetElement)
       }
     }
-  }, [targetElement, rootElement, callBack])
+  }, [targetRef, rootRef, callBack])
   // `callBack` is included in dependencies to ensure the latest function is always called
   // Without it, a stale closure would be used if the callback identity changes
 }
