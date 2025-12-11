@@ -30,7 +30,7 @@ export default defineConfig({
 
         // Указываем как импортировать external модули
         paths: {
-          'react': 'react',
+          react: 'react',
           'react-dom': 'react-dom',
           'react-dom/client': 'react-dom/client',
           'react/jsx-runtime': 'react/jsx-runtime',
