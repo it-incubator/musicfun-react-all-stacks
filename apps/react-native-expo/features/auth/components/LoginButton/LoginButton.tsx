@@ -1,10 +1,11 @@
-import { Button } from '@/shared/ui/Button/Button'
-import { Fragment } from 'react'
-import * as WebBrowser from 'expo-web-browser'
-import { API_ROOT, VERSION_ROOT } from '@/shared/api/api-root/api-root'
 import * as AuthSession from 'expo-auth-session'
-import { useAuthContext } from '@/features/auth/model/context/AuthContext'
+import * as WebBrowser from 'expo-web-browser'
+import { Fragment } from 'react'
+
 import { REDIRECT_URI_EXPO } from '@/features/auth/model/config/oauth'
+import { useAuthContext } from '@/features/auth/model/context/AuthContext'
+import { API_ROOT, VERSION_ROOT } from '@/shared/api/api-root/api-root'
+import { Button } from '@/shared/ui/Button/Button'
 
 type LoginButtonPropsT = {}
 

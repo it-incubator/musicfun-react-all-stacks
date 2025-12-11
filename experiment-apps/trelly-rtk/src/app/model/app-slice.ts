@@ -1,7 +1,8 @@
+import { createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit"
+
 import type { RequestStatus } from "@/common/types"
 import { boardsApi } from "@/features/boards/api/boardsApi.ts"
 import { tasksApi } from "@/features/tasks/api/tasksApi.ts"
-import { createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit"
 
 export const appSlice = createSlice({
   name: "app",

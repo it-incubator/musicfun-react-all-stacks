@@ -1,9 +1,10 @@
 import { CreateItemForm } from "@/common/components/CreateItemForm/CreateItemForm.tsx"
 import type { DomainBoard } from "@/features/boards/api/boardsApi.types.ts"
+import { BoardTitle } from "@/features/boards/ui/Boards/BoardItem/BoardTitle/BoardTitle.tsx"
 import { FilterButtons } from "@/features/boards/ui/Boards/BoardItem/FilterButtons/FilterButtons.tsx"
 import { useAddTaskMutation } from "@/features/tasks/api/tasksApi.ts"
+
 import { Tasks } from "../../../../tasks/ui/Tasks/Tasks.tsx"
-import { BoardTitle } from "@/features/boards/ui/Boards/BoardItem/BoardTitle/BoardTitle.tsx"
 
 type Props = {
   board: DomainBoard

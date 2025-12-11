@@ -21,7 +21,6 @@ export interface UserOutputDTO {
  */
 export type ImageSizeType = (typeof ImageSizeType)[keyof typeof ImageSizeType]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageSizeType = {
   original: 'original',
   thumbnail: 'thumbnail',
@@ -58,7 +57,6 @@ export interface GetTagOutput {
  */
 export type ReactionValue = (typeof ReactionValue)[keyof typeof ReactionValue]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ReactionValue = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -203,7 +201,6 @@ export interface GetImagesOutput {
 export type GetTracksRequestPayloadSortBy =
   (typeof GetTracksRequestPayloadSortBy)[keyof typeof GetTracksRequestPayloadSortBy]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTracksRequestPayloadSortBy = {
   publishedAt: 'publishedAt',
   likesCount: 'likesCount',
@@ -215,7 +212,6 @@ export const GetTracksRequestPayloadSortBy = {
 export type GetTracksRequestPayloadSortDirection =
   (typeof GetTracksRequestPayloadSortDirection)[keyof typeof GetTracksRequestPayloadSortDirection]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTracksRequestPayloadSortDirection = {
   asc: 'asc',
   desc: 'desc',
@@ -227,7 +223,6 @@ export const GetTracksRequestPayloadSortDirection = {
 export type GetTracksRequestPayloadPaginationType =
   (typeof GetTracksRequestPayloadPaginationType)[keyof typeof GetTracksRequestPayloadPaginationType]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTracksRequestPayloadPaginationType = {
   offset: 'offset',
   cursor: 'cursor',
@@ -337,7 +332,6 @@ export interface AttachmentDto {
 export type TrackListItemOutputAttributesCurrentUserReaction =
   (typeof TrackListItemOutputAttributesCurrentUserReaction)[keyof typeof TrackListItemOutputAttributesCurrentUserReaction]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TrackListItemOutputAttributesCurrentUserReaction = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -422,7 +416,6 @@ export type PlaylistTrackAttributesCurrentUserReaction =
   | (typeof PlaylistTrackAttributesCurrentUserReaction)[keyof typeof PlaylistTrackAttributesCurrentUserReaction]
   | null
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlaylistTrackAttributesCurrentUserReaction = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -479,7 +472,6 @@ export interface GetArtistOutput {
 export type TrackDetailsAttributesCurrentUserReaction =
   (typeof TrackDetailsAttributesCurrentUserReaction)[keyof typeof TrackDetailsAttributesCurrentUserReaction]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TrackDetailsAttributesCurrentUserReaction = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -552,7 +544,6 @@ export interface GetTrackDetailsOutput {
 
 export type ReactionOutputValue = (typeof ReactionOutputValue)[keyof typeof ReactionOutputValue]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ReactionOutputValue = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -572,7 +563,6 @@ export interface ReactionOutput {
 export type GetPlaylistsRequestPayloadSortBy =
   (typeof GetPlaylistsRequestPayloadSortBy)[keyof typeof GetPlaylistsRequestPayloadSortBy]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetPlaylistsRequestPayloadSortBy = {
   addedAt: 'addedAt',
   likesCount: 'likesCount',
@@ -584,7 +574,6 @@ export const GetPlaylistsRequestPayloadSortBy = {
 export type GetPlaylistsRequestPayloadSortDirection =
   (typeof GetPlaylistsRequestPayloadSortDirection)[keyof typeof GetPlaylistsRequestPayloadSortDirection]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetPlaylistsRequestPayloadSortDirection = {
   asc: 'asc',
   desc: 'desc',
@@ -674,7 +663,6 @@ export interface UpdateTrackRequestPayload {
 export type TrackOutputAttributesCurrentUserReaction =
   (typeof TrackOutputAttributesCurrentUserReaction)[keyof typeof TrackOutputAttributesCurrentUserReaction]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TrackOutputAttributesCurrentUserReaction = {
   NUMBER_0: 0,
   NUMBER_1: 1,
@@ -851,7 +839,6 @@ export type PlaylistsPublicControllerGetPlaylistsParams = {
 export type PlaylistsPublicControllerGetPlaylistsSortBy =
   (typeof PlaylistsPublicControllerGetPlaylistsSortBy)[keyof typeof PlaylistsPublicControllerGetPlaylistsSortBy]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlaylistsPublicControllerGetPlaylistsSortBy = {
   addedAt: 'addedAt',
   likesCount: 'likesCount',
@@ -860,7 +847,6 @@ export const PlaylistsPublicControllerGetPlaylistsSortBy = {
 export type PlaylistsPublicControllerGetPlaylistsSortDirection =
   (typeof PlaylistsPublicControllerGetPlaylistsSortDirection)[keyof typeof PlaylistsPublicControllerGetPlaylistsSortDirection]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlaylistsPublicControllerGetPlaylistsSortDirection = {
   asc: 'asc',
   desc: 'desc',
@@ -928,7 +914,6 @@ export type TracksPublicControllerGetAllTracksParams = {
 export type TracksPublicControllerGetAllTracksSortBy =
   (typeof TracksPublicControllerGetAllTracksSortBy)[keyof typeof TracksPublicControllerGetAllTracksSortBy]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TracksPublicControllerGetAllTracksSortBy = {
   publishedAt: 'publishedAt',
   likesCount: 'likesCount',
@@ -937,7 +922,6 @@ export const TracksPublicControllerGetAllTracksSortBy = {
 export type TracksPublicControllerGetAllTracksSortDirection =
   (typeof TracksPublicControllerGetAllTracksSortDirection)[keyof typeof TracksPublicControllerGetAllTracksSortDirection]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TracksPublicControllerGetAllTracksSortDirection = {
   asc: 'asc',
   desc: 'desc',
@@ -946,7 +930,6 @@ export const TracksPublicControllerGetAllTracksSortDirection = {
 export type TracksPublicControllerGetAllTracksPaginationType =
   (typeof TracksPublicControllerGetAllTracksPaginationType)[keyof typeof TracksPublicControllerGetAllTracksPaginationType]
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TracksPublicControllerGetAllTracksPaginationType = {
   offset: 'offset',
   cursor: 'cursor',

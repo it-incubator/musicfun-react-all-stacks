@@ -69,8 +69,7 @@ export const FormDialog = {
                 flexDirection: 'column',
                 gap: '16px',
                 minWidth: '320px',
-              }}
-            >
+              }}>
               <TextField label="Email or username" placeholder="Enter email or username" />
               <TextField label="Password" type="password" placeholder="Enter password" />
             </div>
@@ -119,8 +118,7 @@ export const WithoutCloseButton = {
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '24px',
-                }}
-              >
+                }}>
                 😊
               </div>
             </div>
@@ -133,8 +131,7 @@ export const WithoutCloseButton = {
                 flexDirection: 'column',
                 gap: '12px',
                 width: '100%',
-              }}
-            >
+              }}>
               <Button variant="primary" fullWidth onClick={() => setOpen(false)}>
                 Sign up with API/HUB
               </Button>
@@ -166,9 +163,9 @@ export const LongContent = {
             <div style={{ maxWidth: '500px' }}>
               {Array.from({ length: 20 }, (_, i) => (
                 <Typography key={i} variant="body2" style={{ marginBottom: '12px' }}>
-                  This is paragraph number {i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris.
+                  This is paragraph number {i + 1}. Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                  aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
                 </Typography>
               ))}
             </div>

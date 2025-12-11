@@ -15,7 +15,9 @@ if (!extra.API_BASE_URL) {
 }
 
 if (!extra.API_API_KEY) {
-  console.warn(`Отсутствует API_API_KEY, получите его на ресурсе https://apihub.it-incubator.io/en/2`)
+  console.warn(
+    `Отсутствует API_API_KEY, получите его на ресурсе https://apihub.it-incubator.io/en/2`
+  )
 } else {
   console.log('API_API_KEY обнаружен: ********************' /** extra.API_API_KEY */)
 }

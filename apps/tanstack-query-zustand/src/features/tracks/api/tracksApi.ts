@@ -1,6 +1,5 @@
-import { ReactionValue, type SchemaReactionValue } from '@/shared/api/schema.ts'
-
 import { getClient } from '@/shared/api/client'
+import { ReactionValue, type SchemaReactionValue } from '@/shared/api/schema.ts'
 
 export const tracksApi = {
   likeTrack: (trackId: string) =>

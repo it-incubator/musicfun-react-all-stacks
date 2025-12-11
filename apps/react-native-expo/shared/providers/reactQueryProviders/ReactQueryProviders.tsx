@@ -1,9 +1,10 @@
+import NetInfo from '@react-native-community/netinfo'
+import { focusManager, onlineManager, QueryClientProvider } from '@tanstack/react-query'
 import { PropsWithChildren, useEffect } from 'react'
 import { AppState } from 'react-native'
-import NetInfo from '@react-native-community/netinfo'
-import { QueryClientProvider, focusManager, onlineManager } from '@tanstack/react-query'
-import { setupQueryPersist } from '@/shared/api/query-persist/query-presist'
+
 import { queryClient } from '@/shared/api/query-client/queryClient'
+import { setupQueryPersist } from '@/shared/api/query-persist/query-presist'
 
 setupQueryPersist()
 
@@ -35,7 +36,7 @@ export function ReactQueryProvider({ children }: PropsWithChildren) {
           isInternetReachable: s.isInternetReachable,
         })
         setOnline(online)
-      }),
+      })
     )
   }, [])
 

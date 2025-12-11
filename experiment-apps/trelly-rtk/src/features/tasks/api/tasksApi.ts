@@ -1,5 +1,6 @@
 import { baseApi } from "@/app/api/baseApi.ts"
 import { PAGE_SIZE } from "@/common/constants"
+
 import type { AddTaskResponse, GetBoardTasksResponse, UpdateTaskModel, UpdateTaskResponse } from "./tasksApi.types.ts"
 
 export const tasksApi = baseApi.injectEndpoints({

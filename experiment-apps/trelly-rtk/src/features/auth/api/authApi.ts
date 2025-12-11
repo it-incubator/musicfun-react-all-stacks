@@ -1,5 +1,6 @@
 import { baseApi } from "@/app/api/baseApi.ts"
 import { LOCALSTORAGE_KEYS } from "@/common/constants"
+
 import type { LoginArgs, OAuthResponse } from "./authApi.types.ts"
 
 export const authApi = baseApi.injectEndpoints({

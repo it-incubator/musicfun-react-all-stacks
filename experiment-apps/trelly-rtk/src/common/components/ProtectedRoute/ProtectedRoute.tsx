@@ -1,6 +1,7 @@
-import { Path } from "@/common/routing"
 import type { ReactNode } from "react"
 import { Navigate, Outlet } from "react-router"
+
+import { Path } from "@/common/routing"
 
 type Props = {
   isAllowed: boolean

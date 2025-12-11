@@ -2,7 +2,6 @@ import clsx from 'clsx'
 import { Outlet } from 'react-router'
 
 // import { Player } from '@/widgets/Player'
-
 import { Header } from './Header/Header.tsx'
 import s from './Layout.module.css'
 import { Sidebar } from './Sidebar/Sidebar.tsx'

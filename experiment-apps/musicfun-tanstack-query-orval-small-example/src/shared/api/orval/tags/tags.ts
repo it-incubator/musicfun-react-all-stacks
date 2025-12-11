@@ -9,7 +9,6 @@
 🔈: https://musicfun.it-incubator.app/api/samurai-way-soundtrack-instrumental.mp3
  * OpenAPI spec version: 1.0
  */
-import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -24,10 +23,14 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
-
-import type { CreateTagRequestPayload, GetTagOutput, TagsControllerSearchTagsParams } from '../musicfun.schemas'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { customInstance } from '.././custom-instance'
+import type {
+  CreateTagRequestPayload,
+  GetTagOutput,
+  TagsControllerSearchTagsParams,
+} from '../musicfun.schemas'
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
@@ -37,7 +40,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 export const tagsControllerCreateTag = (
   createTagRequestPayload: CreateTagRequestPayload,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<GetTagOutput>(
     {
@@ -47,7 +50,7 @@ export const tagsControllerCreateTag = (
       data: createTagRequestPayload,
       signal,
     },
-    options,
+    options
   )
 }
 
@@ -87,7 +90,9 @@ export const getTagsControllerCreateTagMutationOptions = <
   return { mutationFn, ...mutationOptions }
 }
 
-export type TagsControllerCreateTagMutationResult = NonNullable<Awaited<ReturnType<typeof tagsControllerCreateTag>>>
+export type TagsControllerCreateTagMutationResult = NonNullable<
+  Awaited<ReturnType<typeof tagsControllerCreateTag>>
+>
 export type TagsControllerCreateTagMutationBody = CreateTagRequestPayload
 export type TagsControllerCreateTagMutationError = null | null | null | null
 
@@ -104,7 +109,7 @@ export const useTagsControllerCreateTag = <TError = null | null | null | null, T
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof tagsControllerCreateTag>>,
   TError,
@@ -121,9 +126,12 @@ export const useTagsControllerCreateTag = <TError = null | null | null | null, T
 export const tagsControllerSearchTags = (
   params: TagsControllerSearchTagsParams,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
-  return customInstance<GetTagOutput[]>({ url: `/tags/search`, method: 'GET', params, signal }, options)
+  return customInstance<GetTagOutput[]>(
+    { url: `/tags/search`, method: 'GET', params, signal },
+    options
+  )
 }
 
 export const getTagsControllerSearchTagsQueryKey = (params?: TagsControllerSearchTagsParams) => {
@@ -136,16 +144,19 @@ export const getTagsControllerSearchTagsQueryOptions = <
 >(
   params: TagsControllerSearchTagsParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
-  },
+  }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {}
 
   const queryKey = queryOptions?.queryKey ?? getTagsControllerSearchTagsQueryKey(params)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof tagsControllerSearchTags>>> = ({ signal }) =>
-    tagsControllerSearchTags(params, requestOptions, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof tagsControllerSearchTags>>> = ({
+    signal,
+  }) => tagsControllerSearchTags(params, requestOptions, signal)
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof tagsControllerSearchTags>>,
@@ -154,7 +165,9 @@ export const getTagsControllerSearchTagsQueryOptions = <
   > & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type TagsControllerSearchTagsQueryResult = NonNullable<Awaited<ReturnType<typeof tagsControllerSearchTags>>>
+export type TagsControllerSearchTagsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof tagsControllerSearchTags>>
+>
 export type TagsControllerSearchTagsQueryError = null
 
 export function useTagsControllerSearchTags<
@@ -163,7 +176,9 @@ export function useTagsControllerSearchTags<
 >(
   params: TagsControllerSearchTagsParams,
   options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>> &
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>
+    > &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof tagsControllerSearchTags>>,
@@ -174,7 +189,7 @@ export function useTagsControllerSearchTags<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useTagsControllerSearchTags<
   TData = Awaited<ReturnType<typeof tagsControllerSearchTags>>,
@@ -182,7 +197,9 @@ export function useTagsControllerSearchTags<
 >(
   params: TagsControllerSearchTagsParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>> &
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>
+    > &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof tagsControllerSearchTags>>,
@@ -193,7 +210,7 @@ export function useTagsControllerSearchTags<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useTagsControllerSearchTags<
   TData = Awaited<ReturnType<typeof tagsControllerSearchTags>>,
@@ -201,10 +218,12 @@ export function useTagsControllerSearchTags<
 >(
   params: TagsControllerSearchTagsParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Search tags by substring
@@ -216,10 +235,12 @@ export function useTagsControllerSearchTags<
 >(
   params: TagsControllerSearchTagsParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof tagsControllerSearchTags>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getTagsControllerSearchTagsQueryOptions(params, options)
 
@@ -235,14 +256,30 @@ export function useTagsControllerSearchTags<
 /**
  * @summary Delete a tag by ID
  */
-export const tagsControllerDeleteTag = (id: string, options?: SecondParameter<typeof customInstance>) => {
+export const tagsControllerDeleteTag = (
+  id: string,
+  options?: SecondParameter<typeof customInstance>
+) => {
   return customInstance<null>({ url: `/tags/${id}`, method: 'DELETE' }, options)
 }
 
-export const getTagsControllerDeleteTagMutationOptions = <TError = null | null | null, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof tagsControllerDeleteTag>>, TError, { id: string }, TContext>
+export const getTagsControllerDeleteTagMutationOptions = <
+  TError = null | null | null,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof tagsControllerDeleteTag>>,
+    TError,
+    { id: string },
+    TContext
+  >
   request?: SecondParameter<typeof customInstance>
-}): UseMutationOptions<Awaited<ReturnType<typeof tagsControllerDeleteTag>>, TError, { id: string }, TContext> => {
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof tagsControllerDeleteTag>>,
+  TError,
+  { id: string },
+  TContext
+> => {
   const mutationKey = ['tagsControllerDeleteTag']
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -250,7 +287,10 @@ export const getTagsControllerDeleteTagMutationOptions = <TError = null | null |
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof tagsControllerDeleteTag>>, { id: string }> = (props) => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof tagsControllerDeleteTag>>,
+    { id: string }
+  > = (props) => {
     const { id } = props ?? {}
 
     return tagsControllerDeleteTag(id, requestOptions)
@@ -259,7 +299,9 @@ export const getTagsControllerDeleteTagMutationOptions = <TError = null | null |
   return { mutationFn, ...mutationOptions }
 }
 
-export type TagsControllerDeleteTagMutationResult = NonNullable<Awaited<ReturnType<typeof tagsControllerDeleteTag>>>
+export type TagsControllerDeleteTagMutationResult = NonNullable<
+  Awaited<ReturnType<typeof tagsControllerDeleteTag>>
+>
 
 export type TagsControllerDeleteTagMutationError = null | null | null
 
@@ -268,11 +310,21 @@ export type TagsControllerDeleteTagMutationError = null | null | null
  */
 export const useTagsControllerDeleteTag = <TError = null | null | null, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof tagsControllerDeleteTag>>, TError, { id: string }, TContext>
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof tagsControllerDeleteTag>>,
+      TError,
+      { id: string },
+      TContext
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof tagsControllerDeleteTag>>, TError, { id: string }, TContext> => {
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof tagsControllerDeleteTag>>,
+  TError,
+  { id: string },
+  TContext
+> => {
   const mutationOptions = getTagsControllerDeleteTagMutationOptions(options)
 
   return useMutation(mutationOptions, queryClient)

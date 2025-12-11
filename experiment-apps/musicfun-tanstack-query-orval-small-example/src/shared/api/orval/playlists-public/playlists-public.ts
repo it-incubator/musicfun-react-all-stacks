@@ -9,7 +9,6 @@
 🔈: https://musicfun.it-incubator.app/api/samurai-way-soundtrack-instrumental.mp3
  * OpenAPI spec version: 1.0
  */
-import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -24,15 +23,15 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { customInstance } from '.././custom-instance'
 import type {
   GetPlaylistOutput,
   GetPlaylistsOutput,
   PlaylistsPublicControllerGetPlaylistsParams,
   ReactionOutput,
 } from '../musicfun.schemas'
-
-import { customInstance } from '.././custom-instance'
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
@@ -43,13 +42,16 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 export const playlistsPublicControllerGetPlaylists = (
   params?: PlaylistsPublicControllerGetPlaylistsParams,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
-  return customInstance<GetPlaylistsOutput>({ url: `/playlists`, method: 'GET', params, signal }, options)
+  return customInstance<GetPlaylistsOutput>(
+    { url: `/playlists`, method: 'GET', params, signal },
+    options
+  )
 }
 
 export const getPlaylistsPublicControllerGetPlaylistsQueryKey = (
-  params?: PlaylistsPublicControllerGetPlaylistsParams,
+  params?: PlaylistsPublicControllerGetPlaylistsParams
 ) => {
   return [`/playlists`, ...(params ? [params] : [])] as const
 }
@@ -60,16 +62,24 @@ export const getPlaylistsPublicControllerGetPlaylistsQueryOptions = <
 >(
   params?: PlaylistsPublicControllerGetPlaylistsParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
+        TError,
+        TData
+      >
+    >
     request?: SecondParameter<typeof customInstance>
-  },
+  }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getPlaylistsPublicControllerGetPlaylistsQueryKey(params)
+  const queryKey =
+    queryOptions?.queryKey ?? getPlaylistsPublicControllerGetPlaylistsQueryKey(params)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>> = ({ signal }) =>
-    playlistsPublicControllerGetPlaylists(params, requestOptions, signal)
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>
+  > = ({ signal }) => playlistsPublicControllerGetPlaylists(params, requestOptions, signal)
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
@@ -89,7 +99,13 @@ export function usePlaylistsPublicControllerGetPlaylists<
 >(
   params: undefined | PlaylistsPublicControllerGetPlaylistsParams,
   options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>, TError, TData>> &
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
+        TError,
+        TData
+      >
+    > &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
@@ -100,7 +116,7 @@ export function usePlaylistsPublicControllerGetPlaylists<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function usePlaylistsPublicControllerGetPlaylists<
   TData = Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
@@ -108,7 +124,13 @@ export function usePlaylistsPublicControllerGetPlaylists<
 >(
   params?: PlaylistsPublicControllerGetPlaylistsParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>, TError, TData>> &
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
+        TError,
+        TData
+      >
+    > &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
@@ -119,7 +141,7 @@ export function usePlaylistsPublicControllerGetPlaylists<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function usePlaylistsPublicControllerGetPlaylists<
   TData = Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
@@ -127,10 +149,16 @@ export function usePlaylistsPublicControllerGetPlaylists<
 >(
   params?: PlaylistsPublicControllerGetPlaylistsParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
+        TError,
+        TData
+      >
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieve all playlists
@@ -142,10 +170,16 @@ export function usePlaylistsPublicControllerGetPlaylists<
 >(
   params?: PlaylistsPublicControllerGetPlaylistsParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylists>>,
+        TError,
+        TData
+      >
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getPlaylistsPublicControllerGetPlaylistsQueryOptions(params, options)
 
@@ -164,9 +198,12 @@ export function usePlaylistsPublicControllerGetPlaylists<
 export const playlistsPublicControllerGetPlaylistById = (
   playlistId: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
-  return customInstance<GetPlaylistOutput>({ url: `/playlists/${playlistId}`, method: 'GET', signal }, options)
+  return customInstance<GetPlaylistOutput>(
+    { url: `/playlists/${playlistId}`, method: 'GET', signal },
+    options
+  )
 }
 
 export const getPlaylistsPublicControllerGetPlaylistByIdQueryKey = (playlistId?: string) => {
@@ -180,17 +217,23 @@ export const getPlaylistsPublicControllerGetPlaylistByIdQueryOptions = <
   playlistId: string,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>,
+        TError,
+        TData
+      >
     >
     request?: SecondParameter<typeof customInstance>
-  },
+  }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getPlaylistsPublicControllerGetPlaylistByIdQueryKey(playlistId)
+  const queryKey =
+    queryOptions?.queryKey ?? getPlaylistsPublicControllerGetPlaylistByIdQueryKey(playlistId)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>> = ({ signal }) =>
-    playlistsPublicControllerGetPlaylistById(playlistId, requestOptions, signal)
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>
+  > = ({ signal }) => playlistsPublicControllerGetPlaylistById(playlistId, requestOptions, signal)
 
   return { queryKey, queryFn, enabled: !!playlistId, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>,
@@ -211,7 +254,11 @@ export function usePlaylistsPublicControllerGetPlaylistById<
   playlistId: string,
   options: {
     query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>,
+        TError,
+        TData
+      >
     > &
       Pick<
         DefinedInitialDataOptions<
@@ -223,7 +270,7 @@ export function usePlaylistsPublicControllerGetPlaylistById<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function usePlaylistsPublicControllerGetPlaylistById<
   TData = Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>,
@@ -232,7 +279,11 @@ export function usePlaylistsPublicControllerGetPlaylistById<
   playlistId: string,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>,
+        TError,
+        TData
+      >
     > &
       Pick<
         UndefinedInitialDataOptions<
@@ -244,7 +295,7 @@ export function usePlaylistsPublicControllerGetPlaylistById<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function usePlaylistsPublicControllerGetPlaylistById<
   TData = Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>,
@@ -253,11 +304,15 @@ export function usePlaylistsPublicControllerGetPlaylistById<
   playlistId: string,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>,
+        TError,
+        TData
+      >
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get a single playlist by ID
@@ -270,11 +325,15 @@ export function usePlaylistsPublicControllerGetPlaylistById<
   playlistId: string,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof playlistsPublicControllerGetPlaylistById>>,
+        TError,
+        TData
+      >
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getPlaylistsPublicControllerGetPlaylistByIdQueryOptions(playlistId, options)
 
@@ -293,9 +352,12 @@ export function usePlaylistsPublicControllerGetPlaylistById<
 export const playlistsPublicControllerLikePlaylist = (
   playlistId: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/${playlistId}/likes`, method: 'POST', signal }, options)
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/${playlistId}/likes`, method: 'POST', signal },
+    options
+  )
 }
 
 export const getPlaylistsPublicControllerLikePlaylistMutationOptions = <
@@ -343,7 +405,10 @@ export type PlaylistsPublicControllerLikePlaylistMutationError = null | null | n
 /**
  * @summary Like a playlist
  */
-export const usePlaylistsPublicControllerLikePlaylist = <TError = null | null | null, TContext = unknown>(
+export const usePlaylistsPublicControllerLikePlaylist = <
+  TError = null | null | null,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof playlistsPublicControllerLikePlaylist>>,
@@ -353,7 +418,7 @@ export const usePlaylistsPublicControllerLikePlaylist = <TError = null | null | 
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof playlistsPublicControllerLikePlaylist>>,
   TError,
@@ -370,9 +435,12 @@ export const usePlaylistsPublicControllerLikePlaylist = <TError = null | null | 
 export const playlistsPublicControllerDislikePlaylist = (
   playlistId: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/${playlistId}/dislikes`, method: 'POST', signal }, options)
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/${playlistId}/dislikes`, method: 'POST', signal },
+    options
+  )
 }
 
 export const getPlaylistsPublicControllerDislikePlaylistMutationOptions = <
@@ -420,7 +488,10 @@ export type PlaylistsPublicControllerDislikePlaylistMutationError = null | null 
 /**
  * @summary Dislike a playlist
  */
-export const usePlaylistsPublicControllerDislikePlaylist = <TError = null | null | null, TContext = unknown>(
+export const usePlaylistsPublicControllerDislikePlaylist = <
+  TError = null | null | null,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof playlistsPublicControllerDislikePlaylist>>,
@@ -430,7 +501,7 @@ export const usePlaylistsPublicControllerDislikePlaylist = <TError = null | null
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof playlistsPublicControllerDislikePlaylist>>,
   TError,
@@ -446,9 +517,12 @@ export const usePlaylistsPublicControllerDislikePlaylist = <TError = null | null
  */
 export const playlistsPublicControllerRemovePlaylistReaction = (
   playlistId: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof customInstance>
 ) => {
-  return customInstance<ReactionOutput>({ url: `/playlists/${playlistId}/reactions`, method: 'DELETE' }, options)
+  return customInstance<ReactionOutput>(
+    { url: `/playlists/${playlistId}/reactions`, method: 'DELETE' },
+    options
+  )
 }
 
 export const getPlaylistsPublicControllerRemovePlaylistReactionMutationOptions = <
@@ -496,7 +570,10 @@ export type PlaylistsPublicControllerRemovePlaylistReactionMutationError = null 
 /**
  * @summary Remove user reaction from a playlist
  */
-export const usePlaylistsPublicControllerRemovePlaylistReaction = <TError = null | null, TContext = unknown>(
+export const usePlaylistsPublicControllerRemovePlaylistReaction = <
+  TError = null | null,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof playlistsPublicControllerRemovePlaylistReaction>>,
@@ -506,7 +583,7 @@ export const usePlaylistsPublicControllerRemovePlaylistReaction = <TError = null
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof playlistsPublicControllerRemovePlaylistReaction>>,
   TError,

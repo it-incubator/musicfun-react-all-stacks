@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Svg, { SvgProps, Circle, Ellipse, Path } from 'react-native-svg'
+import Svg, { Circle, Ellipse, Path, SvgProps } from 'react-native-svg'
 
 export const IcSmile = ({ width = 89, height = 89, ...props }: SvgProps) => (
   <Svg width={width} height={height} viewBox="0 0 89 89" fill="none" {...props}>

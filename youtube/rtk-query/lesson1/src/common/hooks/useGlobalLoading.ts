@@ -1,7 +1,8 @@
+import { useSelector } from 'react-redux'
+
 import type { RootState } from '@/app/model/store.ts'
 import { playlistsApi } from '@/features/playlists/api/playlistsApi.ts'
 import { tracksApi } from '@/features/tracks/api/tracksApi.ts'
-import { useSelector } from 'react-redux'
 
 // List of endpoints to exclude from the global indicator
 const excludedEndpoints = [playlistsApi.endpoints.fetchPlaylists.name, tracksApi.endpoints.fetchTracks.name]

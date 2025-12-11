@@ -1,4 +1,5 @@
 import { api } from '@/shared/api/client'
+
 import type { User } from '../model/user.types'
 
 export const meApi = async (): Promise<User> => {

@@ -4,7 +4,7 @@ export const joinUrl = (...parts: (string | number | undefined | null)[]): strin
     .map((p, i) =>
       i === 0
         ? String(p).replace(/\/+$/, '') // у первого убираем хвостовые /
-        : String(p).replace(/^\/+|\/+$/g, ''),
+        : String(p).replace(/^\/+|\/+$/g, '')
     )
     .join('/')
 }

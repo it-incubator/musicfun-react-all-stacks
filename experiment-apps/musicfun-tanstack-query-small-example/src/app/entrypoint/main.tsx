@@ -1,11 +1,13 @@
-import { createRoot } from 'react-dom/client'
 import '../styles/reset.css'
 import '../styles/index.css'
-import { setClientConfig } from '@/shared/api/client.ts'
-import { localStorageKeys } from '@/shared/db/localstorage-keys.ts'
+
 import { createRouter, RouterProvider } from '@tanstack/react-router'
+import { createRoot } from 'react-dom/client'
+
 import { routeTree } from '@/app/routes/routeTree.gen.ts'
+import { setClientConfig } from '@/shared/api/client.ts'
 import { apiBaseUrl, apiKey } from '@/shared/config/api.config.ts'
+import { localStorageKeys } from '@/shared/db/localstorage-keys.ts'
 
 const router = createRouter({ routeTree })
 

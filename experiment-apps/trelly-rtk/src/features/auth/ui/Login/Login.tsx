@@ -1,6 +1,8 @@
+import Button from "@mui/material/Button"
+
 import { Path } from "@/common/routing"
 import { useLoginMutation } from "@/features/auth/api/authApi"
-import Button from "@mui/material/Button"
+
 import s from "./Login.module.css"
 
 export const Login = () => {

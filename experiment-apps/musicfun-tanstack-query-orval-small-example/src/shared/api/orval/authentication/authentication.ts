@@ -9,7 +9,6 @@
 🔈: https://musicfun.it-incubator.app/api/samurai-way-soundtrack-instrumental.mp3
  * OpenAPI spec version: 1.0
  */
-import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -24,7 +23,9 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { customInstance } from '.././custom-instance'
 import type {
   AuthControllerOauthRedirectParams,
   BadRequestException,
@@ -36,8 +37,6 @@ import type {
   UnauthorizedException,
 } from '../musicfun.schemas'
 
-import { customInstance } from '.././custom-instance'
-
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
 /**
@@ -47,12 +46,17 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 export const authControllerOauthRedirect = (
   params: AuthControllerOauthRedirectParams,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
-  return customInstance<null>({ url: `/auth/oauth-redirect`, method: 'GET', params, signal }, options)
+  return customInstance<null>(
+    { url: `/auth/oauth-redirect`, method: 'GET', params, signal },
+    options
+  )
 }
 
-export const getAuthControllerOauthRedirectQueryKey = (params?: AuthControllerOauthRedirectParams) => {
+export const getAuthControllerOauthRedirectQueryKey = (
+  params?: AuthControllerOauthRedirectParams
+) => {
   return [`/auth/oauth-redirect`, ...(params ? [params] : [])] as const
 }
 
@@ -62,16 +66,19 @@ export const getAuthControllerOauthRedirectQueryOptions = <
 >(
   params: AuthControllerOauthRedirectParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
-  },
+  }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {}
 
   const queryKey = queryOptions?.queryKey ?? getAuthControllerOauthRedirectQueryKey(params)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof authControllerOauthRedirect>>> = ({ signal }) =>
-    authControllerOauthRedirect(params, requestOptions, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof authControllerOauthRedirect>>> = ({
+    signal,
+  }) => authControllerOauthRedirect(params, requestOptions, signal)
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof authControllerOauthRedirect>>,
@@ -91,7 +98,9 @@ export function useAuthControllerOauthRedirect<
 >(
   params: AuthControllerOauthRedirectParams,
   options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>> &
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>
+    > &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof authControllerOauthRedirect>>,
@@ -102,7 +111,7 @@ export function useAuthControllerOauthRedirect<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthControllerOauthRedirect<
   TData = Awaited<ReturnType<typeof authControllerOauthRedirect>>,
@@ -110,7 +119,9 @@ export function useAuthControllerOauthRedirect<
 >(
   params: AuthControllerOauthRedirectParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>> &
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>
+    > &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof authControllerOauthRedirect>>,
@@ -121,7 +132,7 @@ export function useAuthControllerOauthRedirect<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthControllerOauthRedirect<
   TData = Awaited<ReturnType<typeof authControllerOauthRedirect>>,
@@ -129,10 +140,12 @@ export function useAuthControllerOauthRedirect<
 >(
   params: AuthControllerOauthRedirectParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary OAuth redirect
@@ -144,10 +157,12 @@ export function useAuthControllerOauthRedirect<
 >(
   params: AuthControllerOauthRedirectParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof authControllerOauthRedirect>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getAuthControllerOauthRedirectQueryOptions(params, options)
 
@@ -166,7 +181,7 @@ export function useAuthControllerOauthRedirect<
 export const authControllerLogin = (
   loginRequestPayload: LoginRequestPayload,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<RefreshOutput>(
     {
@@ -176,7 +191,7 @@ export const authControllerLogin = (
       data: loginRequestPayload,
       signal,
     },
-    options,
+    options
   )
 }
 
@@ -204,9 +219,10 @@ export const getAuthControllerLoginMutationOptions = <
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerLogin>>, { data: LoginRequestPayload }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    { data: LoginRequestPayload }
+  > = (props) => {
     const { data } = props ?? {}
 
     return authControllerLogin(data, requestOptions)
@@ -215,14 +231,19 @@ export const getAuthControllerLoginMutationOptions = <
   return { mutationFn, ...mutationOptions }
 }
 
-export type AuthControllerLoginMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerLogin>>>
+export type AuthControllerLoginMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerLogin>>
+>
 export type AuthControllerLoginMutationBody = LoginRequestPayload
 export type AuthControllerLoginMutationError = BadRequestException | UnauthorizedException
 
 /**
  * @summary Log in using the code received after OAuth authorization redirect
  */
-export const useAuthControllerLogin = <TError = BadRequestException | UnauthorizedException, TContext = unknown>(
+export const useAuthControllerLogin = <
+  TError = BadRequestException | UnauthorizedException,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof authControllerLogin>>,
@@ -232,7 +253,7 @@ export const useAuthControllerLogin = <TError = BadRequestException | Unauthoriz
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof authControllerLogin>>,
   TError,
@@ -249,7 +270,7 @@ export const useAuthControllerLogin = <TError = BadRequestException | Unauthoriz
 export const authControllerRefresh = (
   refreshRequestPayload: RefreshRequestPayload,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<RefreshOutput>(
     {
@@ -259,11 +280,14 @@ export const authControllerRefresh = (
       data: refreshRequestPayload,
       signal,
     },
-    options,
+    options
   )
 }
 
-export const getAuthControllerRefreshMutationOptions = <TError = UnauthorizedException, TContext = unknown>(options?: {
+export const getAuthControllerRefreshMutationOptions = <
+  TError = UnauthorizedException,
+  TContext = unknown,
+>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof authControllerRefresh>>,
     TError,
@@ -296,7 +320,9 @@ export const getAuthControllerRefreshMutationOptions = <TError = UnauthorizedExc
   return { mutationFn, ...mutationOptions }
 }
 
-export type AuthControllerRefreshMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerRefresh>>>
+export type AuthControllerRefreshMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerRefresh>>
+>
 export type AuthControllerRefreshMutationBody = RefreshRequestPayload
 export type AuthControllerRefreshMutationError = UnauthorizedException
 
@@ -313,7 +339,7 @@ export const useAuthControllerRefresh = <TError = UnauthorizedException, TContex
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof authControllerRefresh>>,
   TError,
@@ -330,7 +356,7 @@ export const useAuthControllerRefresh = <TError = UnauthorizedException, TContex
 export const authControllerLogout = (
   logoutRequestPayload: LogoutRequestPayload,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<null>(
     {
@@ -340,11 +366,14 @@ export const authControllerLogout = (
       data: logoutRequestPayload,
       signal,
     },
-    options,
+    options
   )
 }
 
-export const getAuthControllerLogoutMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const getAuthControllerLogoutMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof authControllerLogout>>,
     TError,
@@ -377,7 +406,9 @@ export const getAuthControllerLogoutMutationOptions = <TError = unknown, TContex
   return { mutationFn, ...mutationOptions }
 }
 
-export type AuthControllerLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerLogout>>>
+export type AuthControllerLogoutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerLogout>>
+>
 export type AuthControllerLogoutMutationBody = LogoutRequestPayload
 export type AuthControllerLogoutMutationError = unknown
 
@@ -394,7 +425,7 @@ export const useAuthControllerLogout = <TError = unknown, TContext = unknown>(
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof authControllerLogout>>,
   TError,
@@ -408,7 +439,10 @@ export const useAuthControllerLogout = <TError = unknown, TContext = unknown>(
 /**
  * @summary Get current user by access token
  */
-export const authControllerGetMe = (options?: SecondParameter<typeof customInstance>, signal?: AbortSignal) => {
+export const authControllerGetMe = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal
+) => {
   return customInstance<GetMeOutput>({ url: `/auth/me`, method: 'GET', signal }, options)
 }
 
@@ -437,12 +471,19 @@ export const getAuthControllerGetMeQueryOptions = <
   > & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type AuthControllerGetMeQueryResult = NonNullable<Awaited<ReturnType<typeof authControllerGetMe>>>
+export type AuthControllerGetMeQueryResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerGetMe>>
+>
 export type AuthControllerGetMeQueryError = null
 
-export function useAuthControllerGetMe<TData = Awaited<ReturnType<typeof authControllerGetMe>>, TError = null>(
+export function useAuthControllerGetMe<
+  TData = Awaited<ReturnType<typeof authControllerGetMe>>,
+  TError = null,
+>(
   options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGetMe>>, TError, TData>> &
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof authControllerGetMe>>, TError, TData>
+    > &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof authControllerGetMe>>,
@@ -453,11 +494,16 @@ export function useAuthControllerGetMe<TData = Awaited<ReturnType<typeof authCon
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useAuthControllerGetMe<TData = Awaited<ReturnType<typeof authControllerGetMe>>, TError = null>(
+export function useAuthControllerGetMe<
+  TData = Awaited<ReturnType<typeof authControllerGetMe>>,
+  TError = null,
+>(
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGetMe>>, TError, TData>> &
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof authControllerGetMe>>, TError, TData>
+    > &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof authControllerGetMe>>,
@@ -468,25 +514,31 @@ export function useAuthControllerGetMe<TData = Awaited<ReturnType<typeof authCon
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useAuthControllerGetMe<TData = Awaited<ReturnType<typeof authControllerGetMe>>, TError = null>(
+export function useAuthControllerGetMe<
+  TData = Awaited<ReturnType<typeof authControllerGetMe>>,
+  TError = null,
+>(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGetMe>>, TError, TData>>
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get current user by access token
  */
 
-export function useAuthControllerGetMe<TData = Awaited<ReturnType<typeof authControllerGetMe>>, TError = null>(
+export function useAuthControllerGetMe<
+  TData = Awaited<ReturnType<typeof authControllerGetMe>>,
+  TError = null,
+>(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGetMe>>, TError, TData>>
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getAuthControllerGetMeQueryOptions(options)
 

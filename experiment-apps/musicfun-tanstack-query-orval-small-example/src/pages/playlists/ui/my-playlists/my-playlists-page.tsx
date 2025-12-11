@@ -1,9 +1,11 @@
-import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
-import { useState } from 'react'
 import { Navigate } from '@tanstack/react-router'
+import { useState } from 'react'
+
+import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 import { AddPlaylistForm } from '@/features/playlists/add-playlist-form/add-playlist-form.tsx'
 import { EditPlaylistForm } from '@/features/playlists/edit-playlist-form/edit-playlist-form.tsx'
 import { PaginatedPlaylists } from '@/features/playlists/list/paginated-playlists.tsx'
+
 import styles from './my-playlists-page.module.css'
 
 export function MyPlaylistsPage() {

@@ -1,4 +1,5 @@
 import { baseApi } from '@/app/api/base-api.ts'
+import { CurrentUserReaction } from '@/shared/components'
 import type { Images, Nullable, ReactionResponse } from '@/shared/types'
 
 import type {
@@ -81,6 +82,38 @@ export const playlistsAPI = baseApi.injectEndpoints({
         url: `playlists/${id}/likes`,
         method: 'POST',
       }),
+      onQueryStarted: async ({ id }, { dispatch, queryFulfilled, getState }) => {
+        const patchResults: { undo: () => void }[] = []
+
+        const patchCachedQueries = (
+          endpoint: 'fetchPlaylists' | 'fetchPlaylistById',
+          recipe: (state: PlaylistsResponse | { data: Playlist }) => void
+        ) => {
+          const args = playlistsAPI.util.selectCachedArgsForQuery(getState(), endpoint)
+          args.forEach((arg) => {
+            patchResults.push(dispatch(playlistsAPI.util.updateQueryData(endpoint, arg, recipe)))
+          })
+        }
+
+        patchCachedQueries('fetchPlaylists', (state) => {
+          const playlist = (state as PlaylistsResponse).data.find((x) => x.id === id)
+          if (!playlist) return
+          playlist.attributes.likesCount += 1
+          playlist.attributes.currentUserReaction = CurrentUserReaction.Like
+        })
+
+        patchCachedQueries('fetchPlaylistById', (state) => {
+          const playlistAttributes = (state as { data: Playlist }).data.attributes
+          playlistAttributes.likesCount += 1
+          playlistAttributes.currentUserReaction = CurrentUserReaction.Like
+        })
+
+        try {
+          await queryFulfilled
+        } catch {
+          patchResults.forEach((p) => p.undo())
+        }
+      },
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
     }),
     dislikePlaylist: build.mutation<ReactionResponse, { id: string }>({
@@ -88,6 +121,45 @@ export const playlistsAPI = baseApi.injectEndpoints({
         url: `playlists/${id}/dislikes`,
         method: 'POST',
       }),
+      onQueryStarted: async ({ id }, { dispatch, queryFulfilled, getState }) => {
+        const patchResults: { undo: () => void }[] = []
+
+        const patchCachedQueries = (
+          endpoint: 'fetchPlaylists' | 'fetchPlaylistById',
+          recipe: (state: PlaylistsResponse | { data: Playlist }) => void
+        ) => {
+          const args = playlistsAPI.util.selectCachedArgsForQuery(getState(), endpoint)
+          args.forEach((arg) => {
+            patchResults.push(dispatch(playlistsAPI.util.updateQueryData(endpoint, arg, recipe)))
+          })
+        }
+
+        patchCachedQueries('fetchPlaylists', (state) => {
+          const playlist = (state as PlaylistsResponse).data.find((x) => x.id === id)
+          if (!playlist) return
+          const playlistAttrs = playlist.attributes
+          if (playlistAttrs.currentUserReaction === CurrentUserReaction.Like) {
+            playlistAttrs.likesCount -= 1
+          }
+          playlistAttrs.dislikesCount += 1
+          playlistAttrs.currentUserReaction = CurrentUserReaction.Dislike
+        })
+
+        patchCachedQueries('fetchPlaylistById', (state) => {
+          const playlistAttributes = (state as { data: Playlist }).data.attributes
+          if (playlistAttributes.currentUserReaction === CurrentUserReaction.Like) {
+            playlistAttributes.likesCount -= 1
+          }
+          playlistAttributes.dislikesCount += 1
+          playlistAttributes.currentUserReaction = CurrentUserReaction.Dislike
+        })
+
+        try {
+          await queryFulfilled
+        } catch {
+          patchResults.forEach((p) => p.undo())
+        }
+      },
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
     }),
     unReactionPlaylist: build.mutation<ReactionResponse, { id: string }>({
@@ -95,6 +167,59 @@ export const playlistsAPI = baseApi.injectEndpoints({
         url: `playlists/${id}/reactions`,
         method: 'DELETE',
       }),
+      onQueryStarted: async ({ id }, { dispatch, queryFulfilled, getState }) => {
+        const patchResults: { undo: () => void }[] = []
+
+        const patchCachedQueries = (
+          endpoint: 'fetchPlaylists' | 'fetchPlaylistById',
+          recipe: (state: PlaylistsResponse | { data: Playlist }) => void
+        ) => {
+          const args = playlistsAPI.util.selectCachedArgsForQuery(getState(), endpoint)
+          args.forEach((arg) => {
+            patchResults.push(dispatch(playlistsAPI.util.updateQueryData(endpoint, arg, recipe)))
+          })
+        }
+
+        patchCachedQueries('fetchPlaylists', (state) => {
+          const playlist = (state as PlaylistsResponse).data.find((x) => x.id === id)
+          if (!playlist) return
+          const playlistAttributes = playlist.attributes
+          if (playlistAttributes.currentUserReaction === CurrentUserReaction.Like) {
+            playlistAttributes.likesCount -= 1
+          }
+          playlistAttributes.currentUserReaction = CurrentUserReaction.None
+        })
+
+        patchCachedQueries('fetchPlaylistById', (state) => {
+          const playlistAttributes = (state as { data: Playlist }).data.attributes
+          if (playlistAttributes.currentUserReaction === CurrentUserReaction.Like) {
+            playlistAttributes.likesCount -= 1
+          }
+          playlistAttributes.currentUserReaction = CurrentUserReaction.None
+        })
+
+        // if (byIdArgs.length) {
+        //   byIdArgs.forEach((arg) => {
+        //     patchResults.push(
+        //       dispatch(
+        //         playlistsAPI.util.updateQueryData('fetchPlaylistById', arg, (state) => {
+        //           const playlistAttrs = state.data.attributes
+        //           if (playlistAttrs.currentUserReaction === CurrentUserReaction.Like) {
+        //             playlistAttrs.likesCount -= 1
+        //           }
+        //           playlistAttrs.currentUserReaction = CurrentUserReaction.None
+        //         })
+        //       )
+        //     )
+        //   })
+        // }
+
+        try {
+          await queryFulfilled
+        } catch {
+          patchResults.forEach((p) => p.undo())
+        }
+      },
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Playlist', id }, 'Playlist'],
     }),
   }),

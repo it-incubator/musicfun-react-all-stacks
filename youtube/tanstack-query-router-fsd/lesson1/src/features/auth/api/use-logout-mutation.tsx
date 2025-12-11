@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+
 import { client } from '../../../shared/api/client.ts'
 
 export const useLogoutMutation = () => {

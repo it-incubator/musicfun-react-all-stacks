@@ -1,14 +1,15 @@
 import axios, {
-  AxiosInstance,
-  AxiosResponse,
-  AxiosHeaders,
-  InternalAxiosRequestConfig,
-  AxiosRequestConfig,
   AxiosError, // CHANGED: добавил для нормализации ошибок
+  AxiosHeaders,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
 } from 'axios'
+
 import { API_KEY, API_PREFIX_ROOT, API_ROOT, VERSION_ROOT } from '@/shared/api/api-root/api-root'
-import { tokenStorage } from '@/shared/storage/tokenStorage'
 import { RETRY_HEADER_CONST } from '@/shared/consts/consts'
+import { tokenStorage } from '@/shared/storage/tokenStorage'
 import { makeFullUrl } from '@/shared/utils/makeFullUrl'
 
 type ApiPrefixT = (typeof API_PREFIX_ROOT)[keyof typeof API_PREFIX_ROOT]
@@ -48,7 +49,7 @@ const ensureRefresh = (): Promise<void> => {
             ...(API_KEY ? { 'api-key': API_KEY } : {}),
             Origin: 'http://localhost:3000',
           },
-        },
+        }
       )
 
       const data = res.data as { accessToken?: string; refreshToken?: string }
@@ -110,7 +111,7 @@ export const httpApiInterceptor = (prefix: ApiPrefixT, version = VERSION_ROOT): 
     (error) => {
       console.log('REQUEST ERROR:', error?.message)
       return Promise.reject(normalizeAxiosError(error)) // CHANGED
-    },
+    }
   )
 
   instance.interceptors.response.use(
@@ -167,7 +168,7 @@ export const httpApiInterceptor = (prefix: ApiPrefixT, version = VERSION_ROOT): 
         console.error('refresh failed:', rfErr.message)
         return Promise.reject(err)
       }
-    },
+    }
   )
 
   return instance

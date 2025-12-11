@@ -1,8 +1,8 @@
 import clsx from 'clsx'
-import { useState } from 'react'
 import { useUnit } from 'effector-react'
+import { useState } from 'react'
 
-import { loginFx, getOauthRedirectUrl } from '@/features/auth'
+import { getOauthRedirectUrl, loginFx } from '@/features/auth'
 import { Button } from '@/shared/components/Button'
 import { Dialog, DialogContent, DialogHeader } from '@/shared/components/Dialog'
 import { Typography } from '@/shared/components/Typography'
@@ -68,8 +68,7 @@ export const LoginButtonAndModal = () => {
             variant="primary"
             fullWidth
             onClick={loginHandler}
-            disabled={loginPending}
-          >
+            disabled={loginPending}>
             {loginPending ? 'Signing in...' : 'Sign in with APIHub'}
           </Button>
         </DialogContent>

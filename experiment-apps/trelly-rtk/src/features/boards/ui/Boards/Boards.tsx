@@ -1,8 +1,9 @@
-import { containerSx } from "@/common/styles"
-import { useGetBoardsQuery } from "@/features/boards/api/boardsApi.ts"
 import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid2"
 import Paper from "@mui/material/Paper"
+
+import { containerSx } from "@/common/styles"
+import { useGetBoardsQuery } from "@/features/boards/api/boardsApi.ts"
 import { BoardItem } from "@/features/boards/ui/Boards/BoardItem/BoardItem.tsx"
 import { BoardSkeleton } from "@/features/boards/ui/Boards/BoardSkeleton/BoardSkeleton.tsx"
 

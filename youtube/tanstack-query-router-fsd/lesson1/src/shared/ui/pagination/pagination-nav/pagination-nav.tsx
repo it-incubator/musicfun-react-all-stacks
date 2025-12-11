@@ -1,5 +1,5 @@
-import s from './pagination-nav.module.css'
 import { getPaginationPages } from '../utils/get-pagination-pages.ts'
+import s from './pagination-nav.module.css'
 
 type Props = {
   current: number
@@ -26,11 +26,10 @@ export const PaginationNav = ({ current, pagesCount, onChange }: Props) => {
             className={item === current ? `${s.pageButton} ${s.pageButtonActive}` : s.pageButton}
             onClick={() => item !== current && onChange(Number(item))}
             disabled={item === current}
-            type="button"
-          >
+            type="button">
             {item}
           </button>
-        ),
+        )
       )}
     </div>
   )

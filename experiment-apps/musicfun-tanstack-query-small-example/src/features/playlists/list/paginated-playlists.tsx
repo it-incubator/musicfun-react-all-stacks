@@ -1,12 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getClient } from '../../../shared/api/client.ts'
 import { useEffect, useState } from 'react'
+
 import { Pagination } from '@/shared/ui/pagination/pagination.tsx'
-import { useMeQuery } from '../../auth/api/use-me.query.ts'
-import { PlaylistCover } from '../playlist-cover/playlist-cover.tsx'
-import { playlistListKey, usePlaylistsQuery } from '../api/use-playlists-query.tsx'
-import type { SchemaGetPlaylistOutput, SchemaGetPlaylistsOutput } from '../../../shared/api/schema.ts'
+
+import { getClient } from '../../../shared/api/client.ts'
+import type {
+  SchemaGetPlaylistOutput,
+  SchemaGetPlaylistsOutput,
+} from '../../../shared/api/schema.ts'
 import { getSharedSocket } from '../../../shared/api/socket.ts'
+import { useMeQuery } from '../../auth/api/use-me.query.ts'
+import { playlistListKey, usePlaylistsQuery } from '../api/use-playlists-query.tsx'
+import { PlaylistCover } from '../playlist-cover/playlist-cover.tsx'
 import styles from './paginated-playlists.module.css'
 
 type Props = {
@@ -39,8 +44,11 @@ export const PaginatedPlaylists = ({ userId, onPlaylistSelected, classNames }: P
       queryClient.setQueryData(
         playlistListKey({ search, pageNumber: 1, userId: undefined }),
         (oldData: SchemaGetPlaylistsOutput) => {
-          return { data: [data.payload.data, ...oldData.data], meta: oldData.meta } as SchemaGetPlaylistsOutput
-        },
+          return {
+            data: [data.payload.data, ...oldData.data],
+            meta: oldData.meta,
+          } as SchemaGetPlaylistsOutput
+        }
       )
     })
   }, [])
@@ -74,7 +82,11 @@ export const PaginatedPlaylists = ({ userId, onPlaylistSelected, classNames }: P
   return (
     <div className={classNames}>
       <div>
-        <input value={search} onChange={(e) => setSearch(e.currentTarget.value)} placeholder={'search...'} />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.currentTarget.value)}
+          placeholder={'search...'}
+        />
       </div>
       <hr />
       <Pagination
@@ -93,8 +105,7 @@ export const PaginatedPlaylists = ({ userId, onPlaylistSelected, classNames }: P
               if (e.target === e.currentTarget) {
                 onPlaylistSelected?.(playlist.id)
               }
-            }}
-          >
+            }}>
             <div className={styles.row}>
               <PlaylistCover
                 images={playlist.attributes.images}
@@ -106,8 +117,7 @@ export const PaginatedPlaylists = ({ userId, onPlaylistSelected, classNames }: P
                   className={styles.deletePlaylistButton}
                   onClick={() => deletePlaylist(playlist.id)}
                   title={'Delete playlist'}
-                  aria-label={'Delete playlist'}
-                >
+                  aria-label={'Delete playlist'}>
                   🗑️
                 </button>
               )}

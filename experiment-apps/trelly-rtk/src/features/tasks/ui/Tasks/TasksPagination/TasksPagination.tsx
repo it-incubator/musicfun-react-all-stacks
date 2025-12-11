@@ -1,7 +1,9 @@
-import { PAGE_SIZE } from "@/common/constants"
 import Pagination from "@mui/material/Pagination"
 import Typography from "@mui/material/Typography"
 import { ChangeEvent } from "react"
+
+import { PAGE_SIZE } from "@/common/constants"
+
 import styles from "./TasksPagination.module.css"
 
 type Props = {

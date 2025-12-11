@@ -1,6 +1,7 @@
 import { getClient } from '@/shared/api/client.ts'
 import type { SchemaReactionOutput } from '@/shared/api/schema.ts'
 import { ImageSizeType, ReactionValue, type SchemaGetPlaylistOutput } from '@/shared/api/schema.ts'
+
 import { CurrentUserReaction } from './types'
 
 export const playlistsApi = {

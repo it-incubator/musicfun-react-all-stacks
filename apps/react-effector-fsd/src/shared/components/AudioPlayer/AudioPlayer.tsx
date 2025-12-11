@@ -148,7 +148,9 @@ export const AudioPlayer = ({
       </div>
 
       <div className={s.volumeColumn}>
-        <IconButton onClick={handleVolumeMute}>{volume > 0 ? <VolumeIcon /> : <VolumeMuteIcon />}</IconButton>
+        <IconButton onClick={handleVolumeMute}>
+          {volume > 0 ? <VolumeIcon /> : <VolumeMuteIcon />}
+        </IconButton>
         <input
           type="range"
           min={0}

@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+
 import type { SchemaReactionOutput } from '@/shared/api/schema'
 
 interface UseEntityReactionsConfig {

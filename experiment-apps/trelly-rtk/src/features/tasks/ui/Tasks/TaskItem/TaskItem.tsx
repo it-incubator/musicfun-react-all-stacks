@@ -1,14 +1,16 @@
+import DeleteIcon from "@mui/icons-material/Delete"
+import Checkbox from "@mui/material/Checkbox"
+import IconButton from "@mui/material/IconButton"
+import ListItem from "@mui/material/ListItem"
+import type { ChangeEvent } from "react"
+
 import { EditableSpan } from "@/common/components"
 import { TaskStatus } from "@/common/enums"
 import type { DomainBoard } from "@/features/boards/api/boardsApi.types.ts"
 import { createTaskModel } from "@/features/boards/lib/utils"
 import { useRemoveTaskMutation, useUpdateTaskMutation } from "@/features/tasks/api/tasksApi.ts"
 import type { Task } from "@/features/tasks/api/tasksApi.types.ts"
-import DeleteIcon from "@mui/icons-material/Delete"
-import Checkbox from "@mui/material/Checkbox"
-import IconButton from "@mui/material/IconButton"
-import ListItem from "@mui/material/ListItem"
-import type { ChangeEvent } from "react"
+
 import { getListItemSx } from "./TaskItem.styles.ts"
 
 type Props = {

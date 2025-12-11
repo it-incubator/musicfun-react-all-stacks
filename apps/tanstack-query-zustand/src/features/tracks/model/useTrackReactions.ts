@@ -1,6 +1,7 @@
 import { useEntityReactions } from '@/shared/hooks/useEntityReactions'
-import { tracksApi } from '../api/tracksApi'
+
 import { tracksKeys } from '../api/query-key-factory'
+import { tracksApi } from '../api/tracksApi'
 
 export const useTrackReactions = (trackId: string) =>
   useEntityReactions({

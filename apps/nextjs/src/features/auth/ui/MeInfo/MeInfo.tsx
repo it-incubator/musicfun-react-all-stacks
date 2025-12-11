@@ -1,8 +1,8 @@
-import { authApi } from '@/shared/api/auth-api'
 import { Logout } from '@/features/auth/ui/Logout/Logout'
+import { authApi } from '@/shared/api/auth-api'
 
 export const MeInfo = async () => {
-  let meData = await authApi.getMe()
+  const meData = await authApi.getMe()
 
   return (
     <div>

@@ -1,5 +1,5 @@
-import { Link } from 'react-router'
 import { useUnit } from 'effector-react'
+import { Link } from 'react-router'
 
 import { $me, logoutFx } from '@/features/auth'
 import {

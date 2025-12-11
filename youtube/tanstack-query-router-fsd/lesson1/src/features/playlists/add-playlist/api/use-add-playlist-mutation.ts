@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { SchemaCreatePlaylistRequestPayload } from '../../../../shared/api/schema.ts'
+
 import { client } from '../../../../shared/api/client.ts'
 import { playlistsKeys } from '../../../../shared/api/keys-factories/playlists-keys-factory.ts'
+import type { SchemaCreatePlaylistRequestPayload } from '../../../../shared/api/schema.ts'
 
 export const useAddPlaylistMutation = () => {
   const queryClient = useQueryClient()

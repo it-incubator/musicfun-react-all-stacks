@@ -1,6 +1,7 @@
-import { containerSx } from "@/common/styles"
 import Box from "@mui/material/Box"
 import Skeleton from "@mui/material/Skeleton"
+
+import { containerSx } from "@/common/styles"
 
 export const TasksSkeleton = () => (
   <Box style={{ padding: "8px 0" }}>

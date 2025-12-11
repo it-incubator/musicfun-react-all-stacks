@@ -1,7 +1,9 @@
-import { Path } from "@/common/routing"
 import Button from "@mui/material/Button"
 import Container from "@mui/material/Container"
 import { Link } from "react-router"
+
+import { Path } from "@/common/routing"
+
 import styles from "./PageNotFound.module.css"
 
 export const PageNotFound = () => (

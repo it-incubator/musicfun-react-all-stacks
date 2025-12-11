@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+
 import type { PlayerState, RepeatMode, Track } from './types/player.types'
 import { shuffle, shuffleWithCurrentItem } from './utils'
 

@@ -1,3 +1,3 @@
-export { shuffle, shuffleWithCurrentItem } from './shuffle'
 export { formatTime, parseTime } from './formatTime'
-export { throttle, debounce } from './throttle'
+export { shuffle, shuffleWithCurrentItem } from './shuffle'
+export { debounce, throttle } from './throttle'

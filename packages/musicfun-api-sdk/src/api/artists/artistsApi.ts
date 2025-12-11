@@ -1,6 +1,6 @@
-import type { Artist } from './artistsApi.types.ts'
 import { artistsEndpoint } from '../../common/apiEntities/apiEntities'
 import { getApiClient } from '../../v2/request'
+import type { Artist } from './artistsApi.types.ts'
 
 export const artistsApi = {
   findArtists: (name: string) => {

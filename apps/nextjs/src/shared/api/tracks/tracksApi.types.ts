@@ -1,8 +1,8 @@
-import { Tag } from '../tags/tagsApi.types'
-import { Artist } from '../artists/artistsApi.types'
-import { CurrentUserReaction } from '../../common/types/enums'
 import { Meta, Nullable } from '../../common/types/common.types'
+import { CurrentUserReaction } from '../../common/types/enums'
 import { Images, User } from '../../common/types/playlists-tracks.types'
+import { Artist } from '../artists/artistsApi.types'
+import { Tag } from '../tags/tagsApi.types'
 
 export type TrackDetails<T> = {
   id: string

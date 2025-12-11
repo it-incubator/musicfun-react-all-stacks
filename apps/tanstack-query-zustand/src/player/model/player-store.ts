@@ -1,5 +1,5 @@
-import { create } from 'zustand'
 import { toast } from 'react-toastify'
+import { create } from 'zustand'
 
 type CurrentTrack = { id: string; title: string; artist: string; src: string; coverSrc?: string }
 

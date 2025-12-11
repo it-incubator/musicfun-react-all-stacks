@@ -1,6 +1,13 @@
-import type { AuthTokensResponse, MeResponseResponse, OAuthLoginArgs, RefreshTokensArgs } from './authApi.types'
-import { baseUrl, jsonHeaders } from '@/shared/api/base'
 import { cookies } from 'next/headers'
+
+import { baseUrl, jsonHeaders } from '@/shared/api/base'
+
+import type {
+  AuthTokensResponse,
+  MeResponseResponse,
+  OAuthLoginArgs,
+  RefreshTokensArgs,
+} from './authApi.types'
 
 /**
  * Обёртка над fetch, которая проверяет response.ok

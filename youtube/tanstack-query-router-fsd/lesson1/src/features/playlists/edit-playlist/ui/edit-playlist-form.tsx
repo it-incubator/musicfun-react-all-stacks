@@ -1,9 +1,10 @@
-import { useForm } from 'react-hook-form'
-import type { SchemaUpdatePlaylistRequestPayload } from '../../../../shared/api/schema.ts'
 import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+
+import type { SchemaUpdatePlaylistRequestPayload } from '../../../../shared/api/schema.ts'
+import { queryErrorHandlerForRHFFactory } from '../../../../shared/ui/util/query-error-handler-for-rhf-factory.ts'
 import { usePlaylistQuery } from '../api/use-playlist-query.tsx'
 import { useUpdatePlaylistMutation } from '../api/use-update-playlist-mutation.ts'
-import { queryErrorHandlerForRHFFactory } from '../../../../shared/ui/util/query-error-handler-for-rhf-factory.ts'
 
 type Props = {
   playlistId: string | null
@@ -52,7 +53,9 @@ export const EditPlaylistForm = ({ playlistId, onCancelEditing }: Props) => {
       </p>
       {errors.title && <p>{errors.title.message}</p>}
       <p>
-        <textarea {...register('description')} defaultValue={data.data.attributes.description!}></textarea>
+        <textarea
+          {...register('description')}
+          defaultValue={data.data.attributes.description!}></textarea>
       </p>
       {errors.description && <p>{errors.description.message}</p>}
       <button type={'submit'}>Save</button>

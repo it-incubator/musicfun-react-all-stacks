@@ -10,7 +10,11 @@ export type SearchFieldProps = {
   placeholder?: string
 } & ComponentProps<'input'>
 
-export const SearchField = ({ className, placeholder = 'Search...', ...props }: SearchFieldProps) => {
+export const SearchField = ({
+  className,
+  placeholder = 'Search...',
+  ...props
+}: SearchFieldProps) => {
   return (
     <div className={clsx(s.inputWrapper, className)}>
       <SearchIcon className={s.searchIcon} />

@@ -1,4 +1,5 @@
 import createClient, { type Middleware } from 'openapi-fetch'
+
 import type { paths } from './schema.ts'
 
 const config = {

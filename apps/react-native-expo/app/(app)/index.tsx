@@ -1,10 +1,9 @@
-import { COLORS, GAPS } from '@/shared/styles/tokens'
-
 import { StyleSheet, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { LogoutButton } from '@/features/auth/components/LogoutButton/LogoutButton'
 import { useMeQuery } from '@/features/auth/model/api/hooks/use-me.query'
+import { COLORS, GAPS } from '@/shared/styles/tokens'
 
 export default function Home() {
   const { data, isPending } = useMeQuery()

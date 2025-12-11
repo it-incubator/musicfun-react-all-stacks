@@ -10,7 +10,7 @@ import { type ExtractError } from './json-api-error.ts'
 export type ExtractData<T> = T extends { data?: infer D } ? NonNullable<D> : never
 
 export async function requestWrapper<P extends Promise<{ data?: unknown; error?: unknown }>>(
-  promise: P,
+  promise: P
 ): Promise<ExtractData<Awaited<P>>> {
   const res = (await promise) as Awaited<P>
   if ((res as { error?: unknown }).error) {

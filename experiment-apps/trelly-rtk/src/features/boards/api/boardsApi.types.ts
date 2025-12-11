@@ -1,5 +1,6 @@
-import type { Meta } from "@/common/types"
 import { z } from "zod"
+
+import type { Meta } from "@/common/types"
 
 export type FilterValues = "all" | "active" | "completed"
 

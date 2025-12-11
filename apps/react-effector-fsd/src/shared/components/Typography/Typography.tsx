@@ -15,7 +15,16 @@ const VARIANT_DEFAULT_COMPONENT: Record<string, ElementType> = {
   label: 'label',
 }
 
-type TypographyVariant = 'h1' | 'h2' | 'h3' | 'body1' | 'body2' | 'body3' | 'caption' | 'label' | 'error'
+type TypographyVariant =
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'body1'
+  | 'body2'
+  | 'body3'
+  | 'caption'
+  | 'label'
+  | 'error'
 
 type Props<T extends ElementType> = {
   variant?: TypographyVariant

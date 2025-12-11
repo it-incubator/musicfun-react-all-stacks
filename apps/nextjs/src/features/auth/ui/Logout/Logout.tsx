@@ -1,5 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
+
 import { logout } from '@/app/actions/auth/logout.action'
 
 export const Logout = () => {

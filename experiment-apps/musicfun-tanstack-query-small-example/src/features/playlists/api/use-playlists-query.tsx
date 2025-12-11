@@ -1,7 +1,8 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
+
 import { getClient } from '../../../shared/api/client.ts'
-import type { SchemaGetPlaylistsRequestPayload } from '../../../shared/api/schema.ts'
 import { requestWrapper } from '../../../shared/api/request-wrapper.ts'
+import type { SchemaGetPlaylistsRequestPayload } from '../../../shared/api/schema.ts'
 
 export const playlistListKey = (p: Partial<SchemaGetPlaylistsRequestPayload> = {}) => {
   const {
@@ -48,7 +49,7 @@ export function usePlaylistsQuery(search: string, pageNumber: number, userId: st
               userId,
             },
           },
-        }),
+        })
       )
     },
     placeholderData: keepPreviousData,

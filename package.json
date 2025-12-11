@@ -19,17 +19,34 @@
     "start:musicfun-ui-vanilla": "pnpm --filter musicfun-ui-vanilla run dev",
     "start:musicfun-rtk-query": "pnpm --filter musicfun-rtk-query run dev",
     "prepare": "husky install",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "15.3.3",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-storybook": "9.0.8",
+    "globals": "^16.5.0",
     "husky": "9.1.7",
     "lint-staged": "16.1.2",
-    "prettier": "3.5.3"
+    "prettier": "3.5.3",
+    "typescript-eslint": "^8.46.4"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
+    "**/*.{js,jsx,ts,tsx}": [
+      "prettier --check"
+    ],
+    "**/*.{json,css,scss,md}": [
+      "prettier --check"
     ]
   },
   "dependencies": {}

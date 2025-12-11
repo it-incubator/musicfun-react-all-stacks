@@ -9,7 +9,6 @@
 🔈: https://musicfun.it-incubator.app/api/samurai-way-soundtrack-instrumental.mp3
  * OpenAPI spec version: 1.0
  */
-import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -24,14 +23,14 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { customInstance } from '.././custom-instance'
 import type {
   ArtistsControllerSearchArtistParams,
   CreateArtistRequestPayload,
   GetArtistOutput,
 } from '../musicfun.schemas'
-
-import { customInstance } from '.././custom-instance'
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
@@ -41,7 +40,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 export const artistsControllerCreateArtist = (
   createArtistRequestPayload: CreateArtistRequestPayload,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   return customInstance<GetArtistOutput>(
     {
@@ -51,7 +50,7 @@ export const artistsControllerCreateArtist = (
       data: createArtistRequestPayload,
       signal,
     },
-    options,
+    options
   )
 }
 
@@ -100,7 +99,10 @@ export type ArtistsControllerCreateArtistMutationError = null | null | null | nu
 /**
  * @summary Create a new artist
  */
-export const useArtistsControllerCreateArtist = <TError = null | null | null | null, TContext = unknown>(
+export const useArtistsControllerCreateArtist = <
+  TError = null | null | null | null,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof artistsControllerCreateArtist>>,
@@ -110,7 +112,7 @@ export const useArtistsControllerCreateArtist = <TError = null | null | null | n
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseMutationResult<
   Awaited<ReturnType<typeof artistsControllerCreateArtist>>,
   TError,
@@ -127,12 +129,17 @@ export const useArtistsControllerCreateArtist = <TError = null | null | null | n
 export const artistsControllerSearchArtist = (
   params: ArtistsControllerSearchArtistParams,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
-  return customInstance<GetArtistOutput[]>({ url: `/artists/search`, method: 'GET', params, signal }, options)
+  return customInstance<GetArtistOutput[]>(
+    { url: `/artists/search`, method: 'GET', params, signal },
+    options
+  )
 }
 
-export const getArtistsControllerSearchArtistQueryKey = (params?: ArtistsControllerSearchArtistParams) => {
+export const getArtistsControllerSearchArtistQueryKey = (
+  params?: ArtistsControllerSearchArtistParams
+) => {
   return [`/artists/search`, ...(params ? [params] : [])] as const
 }
 
@@ -142,16 +149,19 @@ export const getArtistsControllerSearchArtistQueryOptions = <
 >(
   params: ArtistsControllerSearchArtistParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
-  },
+  }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {}
 
   const queryKey = queryOptions?.queryKey ?? getArtistsControllerSearchArtistQueryKey(params)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof artistsControllerSearchArtist>>> = ({ signal }) =>
-    artistsControllerSearchArtist(params, requestOptions, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof artistsControllerSearchArtist>>> = ({
+    signal,
+  }) => artistsControllerSearchArtist(params, requestOptions, signal)
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof artistsControllerSearchArtist>>,
@@ -171,7 +181,9 @@ export function useArtistsControllerSearchArtist<
 >(
   params: ArtistsControllerSearchArtistParams,
   options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>> &
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>
+    > &
       Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof artistsControllerSearchArtist>>,
@@ -182,7 +194,7 @@ export function useArtistsControllerSearchArtist<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useArtistsControllerSearchArtist<
   TData = Awaited<ReturnType<typeof artistsControllerSearchArtist>>,
@@ -190,7 +202,9 @@ export function useArtistsControllerSearchArtist<
 >(
   params: ArtistsControllerSearchArtistParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>> &
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>
+    > &
       Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof artistsControllerSearchArtist>>,
@@ -201,7 +215,7 @@ export function useArtistsControllerSearchArtist<
       >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useArtistsControllerSearchArtist<
   TData = Awaited<ReturnType<typeof artistsControllerSearchArtist>>,
@@ -209,10 +223,12 @@ export function useArtistsControllerSearchArtist<
 >(
   params: ArtistsControllerSearchArtistParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Search artists by substring
@@ -224,10 +240,12 @@ export function useArtistsControllerSearchArtist<
 >(
   params: ArtistsControllerSearchArtistParams,
   options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>>
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof artistsControllerSearchArtist>>, TError, TData>
+    >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
+  queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getArtistsControllerSearchArtistQueryOptions(params, options)
 
@@ -243,11 +261,17 @@ export function useArtistsControllerSearchArtist<
 /**
  * @summary Delete an artist by ID
  */
-export const artistsControllerDeleteArtist = (id: string, options?: SecondParameter<typeof customInstance>) => {
+export const artistsControllerDeleteArtist = (
+  id: string,
+  options?: SecondParameter<typeof customInstance>
+) => {
   return customInstance<null>({ url: `/artists/${id}`, method: 'DELETE' }, options)
 }
 
-export const getArtistsControllerDeleteArtistMutationOptions = <TError = null | null, TContext = unknown>(options?: {
+export const getArtistsControllerDeleteArtistMutationOptions = <
+  TError = null | null,
+  TContext = unknown,
+>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof artistsControllerDeleteArtist>>,
     TError,
@@ -255,7 +279,12 @@ export const getArtistsControllerDeleteArtistMutationOptions = <TError = null | 
     TContext
   >
   request?: SecondParameter<typeof customInstance>
-}): UseMutationOptions<Awaited<ReturnType<typeof artistsControllerDeleteArtist>>, TError, { id: string }, TContext> => {
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof artistsControllerDeleteArtist>>,
+  TError,
+  { id: string },
+  TContext
+> => {
   const mutationKey = ['artistsControllerDeleteArtist']
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -263,9 +292,10 @@ export const getArtistsControllerDeleteArtistMutationOptions = <TError = null | 
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof artistsControllerDeleteArtist>>, { id: string }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof artistsControllerDeleteArtist>>,
+    { id: string }
+  > = (props) => {
     const { id } = props ?? {}
 
     return artistsControllerDeleteArtist(id, requestOptions)
@@ -293,8 +323,13 @@ export const useArtistsControllerDeleteArtist = <TError = null | null, TContext 
     >
     request?: SecondParameter<typeof customInstance>
   },
-  queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof artistsControllerDeleteArtist>>, TError, { id: string }, TContext> => {
+  queryClient?: QueryClient
+): UseMutationResult<
+  Awaited<ReturnType<typeof artistsControllerDeleteArtist>>,
+  TError,
+  { id: string },
+  TContext
+> => {
   const mutationOptions = getArtistsControllerDeleteArtistMutationOptions(options)
 
   return useMutation(mutationOptions, queryClient)

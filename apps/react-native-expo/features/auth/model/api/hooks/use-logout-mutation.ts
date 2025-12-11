@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import apiAuthInstance from '@/features/auth/model/api/auth-instanse/auth-instanse'
-import { tokenStorage } from '@/shared/storage/tokenStorage'
 
+import apiAuthInstance from '@/features/auth/model/api/auth-instanse/auth-instanse'
 import { REDIRECT_URI_EXPO } from '@/features/auth/model/config/oauth'
+import { tokenStorage } from '@/shared/storage/tokenStorage'
 
 export const useLogoutMutation = () => {
   const queryClient = useQueryClient()

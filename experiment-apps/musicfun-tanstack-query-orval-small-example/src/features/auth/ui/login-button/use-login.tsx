@@ -1,5 +1,5 @@
-import { useLoginMutation } from '../../api/use-login.mutation.ts'
 import { getOauthRedirectUrl } from '../../api/auth-api.types.ts'
+import { useLoginMutation } from '../../api/use-login.mutation.ts'
 
 const currentDomain = import.meta.env.VITE_CURRENT_DOMAIN
 

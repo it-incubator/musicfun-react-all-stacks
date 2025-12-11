@@ -209,8 +209,7 @@ export const Interactive = {
           display: 'flex',
           flexDirection: 'column',
           gap: '24px',
-        }}
-      >
+        }}>
         <div>
           <Typography variant="h3" style={{ marginBottom: '16px' }}>
             Developer Profile Setup
@@ -251,10 +250,12 @@ export const Interactive = {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Typography variant="body2">
-              <strong>Frontend:</strong> {frontendSkills.length > 0 ? frontendSkills.join(', ') : 'None'}
+              <strong>Frontend:</strong>{' '}
+              {frontendSkills.length > 0 ? frontendSkills.join(', ') : 'None'}
             </Typography>
             <Typography variant="body2">
-              <strong>Backend:</strong> {backendSkills.length > 0 ? backendSkills.join(', ') : 'None'}
+              <strong>Backend:</strong>{' '}
+              {backendSkills.length > 0 ? backendSkills.join(', ') : 'None'}
             </Typography>
             <Typography variant="body2">
               <strong>Music:</strong> {genres.length > 0 ? genres.join(', ') : 'None'}
@@ -280,8 +281,7 @@ export const AllStates = {
           display: 'flex',
           flexDirection: 'column',
           gap: '32px',
-        }}
-      >
+        }}>
         <div>
           <Typography variant="h3" style={{ marginBottom: '12px' }}>
             Empty State
@@ -376,8 +376,7 @@ export const InDialog = {
                 flexDirection: 'column',
                 gap: '24px',
                 minWidth: '400px',
-              }}
-            >
+              }}>
               <Autocomplete
                 label="Technical Skills"
                 placeholder="Search and select your skills..."

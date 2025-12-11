@@ -1,3 +1,6 @@
+import { baseUrl, formHeaders, jsonHeaders } from '@/shared/api/base'
+import { Nullable } from '@/shared/common.types'
+
 import type {
   FetchPlaylistsTracksResponse,
   FetchTracksArgs,
@@ -7,8 +10,6 @@ import type {
   TrackDetails,
   UpdateTrackArgs,
 } from './tracksApi.types.ts'
-import { baseUrl, formHeaders, jsonHeaders } from '@/shared/api/base'
-import { Nullable } from '@/shared/common.types'
 
 export const tracksApi = {
   async fetchTracks({ pageSize = 3, pageNumber, search = '' }: FetchTracksArgs) {

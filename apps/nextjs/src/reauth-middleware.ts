@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
+
 import { authApi } from '@/shared/api/auth-api'
-import { getJwtExpirationMaxAge, getSecondsToExpiration } from '@/shared/utils/jwt-util'
 import { createAccessTokenCookie, createRefreshTokenCookie } from '@/shared/utils/cookieHelpers'
+import { getJwtExpirationMaxAge, getSecondsToExpiration } from '@/shared/utils/jwt-util'
 
 const refreshTokens = async (refreshToken: string) => {
   try {
-    const { accessToken, refreshToken: newRefreshToken } = await authApi.refreshToken({ refreshToken })
+    const { accessToken, refreshToken: newRefreshToken } = await authApi.refreshToken({
+      refreshToken,
+    })
     return { accessToken, refreshToken: newRefreshToken }
   } catch {
     return null

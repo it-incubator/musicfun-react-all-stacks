@@ -1,5 +1,5 @@
-import type { SchemaLoginRequestPayload } from '@/shared/api/schema.ts'
 import { getClientConfig } from '@/shared/api/client.ts'
+import type { SchemaLoginRequestPayload } from '@/shared/api/schema.ts'
 
 export type LoginRequestPayload = SchemaLoginRequestPayload
 

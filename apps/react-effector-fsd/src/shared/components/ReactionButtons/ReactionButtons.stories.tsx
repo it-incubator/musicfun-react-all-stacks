@@ -76,7 +76,9 @@ export const Interactive = {
           <ReactionButtons reaction={reaction} onLike={handleLike} onDislike={handleDislike} />
         </div>
 
-        <Typography variant="caption" style={{ marginTop: '16px', textAlign: 'center', display: 'block' }}>
+        <Typography
+          variant="caption"
+          style={{ marginTop: '16px', textAlign: 'center', display: 'block' }}>
           Status: {reaction === 1 ? '👍 Liked' : reaction === -1 ? '👎 Disliked' : '😐 Neutral'}
         </Typography>
       </Card>

@@ -1,7 +1,9 @@
-import { containerSx } from "@/common/styles"
 import Box from "@mui/material/Box"
 import Paper from "@mui/material/Paper"
 import Skeleton from "@mui/material/Skeleton"
+
+import { containerSx } from "@/common/styles"
+
 import styles from "./BoardSkeleton.module.css"
 
 export const BoardSkeleton = () => (

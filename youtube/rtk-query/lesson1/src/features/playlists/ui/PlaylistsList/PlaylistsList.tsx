@@ -1,9 +1,11 @@
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+
 import { useDeletePlaylistMutation } from '@/features/playlists/api/playlistsApi.ts'
 import type { PlaylistData, UpdatePlaylistArgs } from '@/features/playlists/api/playlistsApi.types.ts'
 import { EditPlaylistForm } from '@/features/playlists/ui/EditPlaylistForm/EditPlaylistForm.tsx'
 import { PlaylistItem } from '@/features/playlists/ui/PlaylistItem/PlaylistItem.tsx'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+
 import s from './PlaylistsList.module.css'
 
 type Props = {

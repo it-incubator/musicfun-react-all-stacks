@@ -1,9 +1,11 @@
+import List from "@mui/material/List"
+import { useState } from "react"
+
 import { TaskStatus } from "@/common/enums"
 import type { DomainBoard } from "@/features/boards/api/boardsApi.types.ts"
 import { useGetBoardTasksQuery } from "@/features/tasks/api/tasksApi.ts"
 import { TasksPagination } from "@/features/tasks/ui/Tasks/TasksPagination/TasksPagination.tsx"
-import List from "@mui/material/List"
-import { useState } from "react"
+
 import { TaskItem } from "./TaskItem/TaskItem.tsx"
 import { TasksSkeleton } from "./TasksSkeleton/TasksSkeleton.tsx"
 
