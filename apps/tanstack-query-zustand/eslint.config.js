@@ -9,11 +9,11 @@ import storybook from 'eslint-plugin-storybook'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
+export default [
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
     files: ['**/*.{ts,tsx}'],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -32,5 +32,5 @@ export default tseslint.config(
       'simple-import-sort/exports': 'error',
     },
   },
-  storybook.configs['flat/recommended']
-)
+  ...storybook.configs['flat/recommended'],
+]
