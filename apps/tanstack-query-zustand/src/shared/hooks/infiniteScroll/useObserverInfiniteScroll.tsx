@@ -26,7 +26,7 @@ import type { IUseObserverInfiniteScroll } from './useObserverInfiniteScroll.typ
  *   useObserverInfiniteScroll({
  *     callBack: () => console.log('Element is visible!'),
  *     targetRef,
- *     rootRef,
+ *     rootRef, // if null = entire screen
  *     rootMargin: '100px 0px',
  *     threshold: 0.5
  *   });
