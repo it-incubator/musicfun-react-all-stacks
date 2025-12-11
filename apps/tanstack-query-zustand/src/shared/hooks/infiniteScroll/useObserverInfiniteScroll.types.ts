@@ -1,6 +1,8 @@
-export interface IUseObserverInfiniteScroll extends Partial<IntersectionObserverInit> {
-  targetElement: HTMLElement | null
-  rootElement?: HTMLElement | null
+import * as React from 'react'
 
-  callBack?(entry: IntersectionObserverEntry): Promise<void> | void
+export interface IUseObserverInfiniteScroll extends Partial<IntersectionObserverInit> {
+  targetElement: React.RefObject<Element | null>
+  rootElement?: React.RefObject<Element | null>
+
+  callBack?(): void
 }
