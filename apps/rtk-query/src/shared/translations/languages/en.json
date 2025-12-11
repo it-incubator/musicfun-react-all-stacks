@@ -95,5 +95,24 @@
       "edit": "Edit Track",
       "new_tracks": "New tracks"
     }
+  },
+  "profile": {
+    "title": {
+      "edit_profile": "Edit profile",
+      "max_value_name": "Name must be less than {{ quantity }} characters",
+      "min_value_name": "Name must be at least {{ quantity }} characters",
+      "max_value_surname": "Surname must be less than {{ quantity }} characters",
+      "min_value_surname": "Surname must be at least {{ quantity }} characters",
+      "required_name": "Name is required",
+      "required_surname": "Surname is required"
+    },
+    "placeholder": {
+      "enter_profile_name": "Enter profile name",
+      "enter_profile_surname": "Enter profile surname"
+    },
+    "label": {
+      "name": "Name",
+      "surname": "Surname"
+    }
   }
 }

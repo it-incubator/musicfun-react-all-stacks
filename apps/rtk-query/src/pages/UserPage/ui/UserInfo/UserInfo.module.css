@@ -6,9 +6,11 @@
 }
 
 .avatar {
-  overflow: hidden;
   width: 192px;
   height: 192px;
+}
+
+.avatar > img {
   border-radius: 50%;
 }
 
@@ -31,4 +33,9 @@
 .descriptionItem dt {
   font-size: var(--font-size-s);
   text-transform: uppercase;
+}
+
+.editButton {
+  border-radius: 4px;
+  font-size: 14px;
 }

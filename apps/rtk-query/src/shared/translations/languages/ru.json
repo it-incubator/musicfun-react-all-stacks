@@ -95,5 +95,20 @@
       "edit": "Редактировать трек",
       "new_tracks": "Новые треки"
     }
+  },
+  "profile": {
+    "title": {
+      "edit_profile": "Редактировать профиль",
+      "required_name": "Имя обязательно",
+      "required_surname": "Фамилия обязательна",
+      "max_value_name": "Имя должно быть меньше {{ quantity }} символов",
+      "min_value_name": "Имя должно содержать не менее {{ quantity }} символов",
+      "max_value_surname": "Фамилия должна быть меньше {{ quantity }} символов",
+      "min_value_surname": "Фамилия должна содержать не менее {{ quantity }} символов"
+    },
+    "placeholder": {
+      "enter_profile_name": "Введите имя профиля",
+      "enter_profile_surname": "Введите фамилию профиля"
+    }
   }
 }
