@@ -28,9 +28,9 @@ export const TracksPage = () => {
     search: debouncedSearch,
     ...(tagsIds.length > 0 && { tagsIds }),
     ...(artistsIds.length > 0 && { artistsIds }),
-  };
+  }
 
-  const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs);
+  const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs)
 
   const { data: me } = useMeQuery()
 
