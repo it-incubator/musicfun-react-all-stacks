@@ -17,7 +17,8 @@ type Story = StoryObj<typeof ProfileDropdownMenu>
 export const Default: Story = {
   args: {
     avatar: 'https://unsplash.it/182/182',
-    name: 'Kanye West',
+    fullName: { name: 'Kanye', surname: 'West' },
+    login: 'kanye',
     id: '1',
   },
 }

@@ -24,12 +24,9 @@ export const Header = () => {
 
       {isAuth ? (
         <ProfileDropdownMenu
-          avatar={profileAvatarUrl ? `${profileAvatarUrl}` : 'https://unsplash.it/192/192'}
-          name={
-            profileFullName?.name
-              ? `${profileFullName.name} ${profileFullName.surname}`
-              : user.login
-          }
+          avatar={profileAvatarUrl}
+          fullName={profileFullName}
+          login={user.login}
           id={user.userId}
         />
       ) : isLoading ? null : (

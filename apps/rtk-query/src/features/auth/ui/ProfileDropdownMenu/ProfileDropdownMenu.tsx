@@ -1,7 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
+import type { FullName } from '@/features/profile'
 import {
+  Avatar,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -16,26 +18,28 @@ import s from './ProfileDropdownMenu.module.css'
 
 export const ProfileDropdownMenu = ({
   avatar,
-  name,
+  fullName,
+  login,
   id,
 }: {
-  avatar: string
-  name: string
+  avatar: string | null
+  fullName: FullName
+  login: string
   id: string
 }) => {
   const { t } = useTranslation()
 
   const [logout] = useLogoutMutation()
 
+  const displayName = fullName?.name ? `${fullName.name} ${fullName.surname}` : login
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className={s.trigger}>
-        <div className={s.avatar}>
-          <img src={avatar} alt={''} />
-        </div>
+        <Avatar className={s.avatar} src={avatar} fullName={fullName} login={login} />
 
         <Typography className={s.name} variant="body2">
-          {name}
+          {displayName}
         </Typography>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

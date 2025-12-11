@@ -1,7 +1,7 @@
 import { setIsAuthModalOpen, useMeQuery } from '@/features/auth'
 import { selectProfileAvatar, selectProfileFullName } from '@/features/profile'
 import { useEditProfileModal } from '@/features/profile'
-import { Button, Typography } from '@/shared/components'
+import { Avatar, Button, Typography } from '@/shared/components'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks'
 import { EditIcon } from '@/shared/icons'
 
@@ -23,12 +23,7 @@ export const UserInfo = () => {
 
   return (
     <div className={s.box}>
-      <div className={s.avatar}>
-        <img
-          src={profileAvatarUrl ? `${profileAvatarUrl}` : 'https://unsplash.it/192/192'}
-          alt="User avatar"
-        />
-      </div>
+      <Avatar src={profileAvatarUrl} fullName={profileFullName} login={data?.login} />
       <Typography variant="h2">
         {profileFullName?.name ? `${profileFullName.name} ${profileFullName.surname}` : data?.login}
       </Typography>
