@@ -44,8 +44,6 @@
   border-radius: 50%;
 
   font-size: var(--font-size-xxxs);
-
-  background-color: rgb(255 255 255 / 30%);
 }
 
 .name {
