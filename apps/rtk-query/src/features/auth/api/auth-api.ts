@@ -1,5 +1,6 @@
 import { baseApi } from '@/app/api/base-api.ts'
 import { localStorageKeys } from '@/app/api/base-query-with-refresh-token-flow-api'
+import { clearProfileState, PROFILE_STORAGE_KEY } from '@/features/profile'
 
 import type { AuthTokensResponse, GetMeResponse, OAuthLoginArgs } from './auth-api.types'
 
@@ -39,6 +40,8 @@ export const authApi = baseApi.injectEndpoints({
           await queryFulfilled
           localStorage.removeItem(localStorageKeys.accessToken)
           localStorage.removeItem(localStorageKeys.refreshToken)
+          localStorage.removeItem(PROFILE_STORAGE_KEY)
+          dispatch(clearProfileState())
           await dispatch(authApi.util.resetApiState())
         } catch {}
       },
