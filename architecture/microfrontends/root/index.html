@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>root</title>
+
+    <!-- Import Map для shared dependencies между микрофронтендами -->
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19.2.0",
+          "react-dom": "https://esm.sh/react-dom@19.2.0",
+          "react-dom/client": "https://esm.sh/react-dom@19.2.0/client",
+          "react/jsx-runtime": "https://esm.sh/react@19.2.0/jsx-runtime",
+          "react/jsx-dev-runtime": "https://esm.sh/react@19.2.0/jsx-dev-runtime"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

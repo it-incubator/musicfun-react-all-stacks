@@ -10,7 +10,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
+export default [
   // Global ignores
   {
     ignores: [
@@ -25,8 +25,8 @@ export default tseslint.config(
 
   // Base configuration for all JS/TS files
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
     files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
@@ -55,5 +55,5 @@ export default tseslint.config(
         },
       ],
     },
-  }
-)
+  },
+]

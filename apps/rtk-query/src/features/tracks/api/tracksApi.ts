@@ -1,5 +1,5 @@
 import { baseApi } from '@/app/api/base-api.ts'
-import type { Nullable, ReactionResponse } from '@/shared/types'
+import { CurrentUserReaction, type Nullable, type ReactionResponse } from '@/shared/types'
 import { buildQueryString } from '@/shared/utils'
 
 import type {
@@ -203,12 +203,36 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/tracks/${trackId}/likes`,
         method: 'POST',
       }),
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+
+        const patchResults: any[] = []
+
+        args.forEach((arg: FetchTracksArgs) => {
+          patchResults.push(
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
+                const track = state.data.find((t) => t.id === trackId)
+                if (track) {
+                  track.attributes.likesCount += 1
+                  track.attributes.currentUserReaction = CurrentUserReaction.Like
+                }
+              })
+            ),
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+                state.data.attributes.likesCount += 1
+                state.data.attributes.currentUserReaction = CurrentUserReaction.Like
+              })
+            )
+          )
+        })
+
         try {
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          // При ошибке кеш не трогаем
+          patchResults.forEach((p) => p.undo())
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
@@ -218,12 +242,42 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/tracks/${trackId}/dislikes`,
         method: 'POST',
       }),
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+
+        const patchResults: any[] = []
+
+        args.forEach((arg: FetchTracksArgs) => {
+          patchResults.push(
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
+                const track = state.data.find((t) => t.id === trackId)
+                if (track) {
+                  if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                    track.attributes.likesCount -= 1
+                  }
+                  track.attributes.dislikesCount += 1
+                  track.attributes.currentUserReaction = CurrentUserReaction.Dislike
+                }
+              })
+            ),
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+                if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                  state.data.attributes.likesCount -= 1
+                }
+                state.data.attributes.dislikesCount += 1
+                state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike
+              })
+            )
+          )
+        })
+
         try {
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          // При ошибке кеш не трогаем
+          patchResults.forEach((p) => p.undo())
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
@@ -233,12 +287,46 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/tracks/${trackId}/reactions`,
         method: 'DELETE',
       }),
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+
+        const patchResults: any[] = []
+
+        args.forEach((arg: FetchTracksArgs) => {
+          patchResults.push(
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
+                const track = state.data.find((t) => t.id === trackId)
+                if (track) {
+                  if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                    track.attributes.likesCount -= 1
+                  } else if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+                    track.attributes.dislikesCount -= 1
+                  }
+                  track.attributes.currentUserReaction = CurrentUserReaction.None
+                }
+              })
+            ),
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+                if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                  state.data.attributes.likesCount -= 1
+                } else if (
+                  state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike
+                ) {
+                  state.data.attributes.dislikesCount -= 1
+                }
+                state.data.attributes.currentUserReaction = CurrentUserReaction.None
+              })
+            )
+          )
+        })
+
         try {
           await queryFulfilled
           dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
-          // При ошибке кеш не трогаем
+          patchResults.forEach((p) => p.undo())
         }
       },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
