@@ -95,5 +95,13 @@
       "edit": "Edit Track",
       "new_tracks": "New tracks"
     }
+  },
+  "date": {
+    "today": "today",
+    "dayAgo": "{{addedAt}} day ago",
+    "daysAgo": "{{addedAt}} days ago",
+    "monthAgo": "{{addedAt}} month ago",
+    "monthsAgo": "{{addedAt}} months ago",
+    "created": "Created"
   }
 }

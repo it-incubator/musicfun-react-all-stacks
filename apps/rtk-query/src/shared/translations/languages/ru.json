@@ -95,5 +95,16 @@
       "edit": "Редактировать трек",
       "new_tracks": "Новые треки"
     }
+  },
+  "date": {
+    "today": "сегодня",
+    "yesterday": "вчера",
+    "dayAgo": "{{addedAt}} день назад",
+    "fewDaysAgo": "{{addedAt}} дня назад",
+    "daysAgo": "{{addedAt}} дней назад",
+    "monthAgo": "{{addedAt}} месяц назад",
+    "fewMonthAgo": "{{addedAt}} месяца назад",
+    "monthsAgo": "{{addedAt}} месяцев назад",
+    "created": "Создан"
   }
 }

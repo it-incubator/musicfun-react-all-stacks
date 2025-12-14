@@ -27,7 +27,7 @@
 
 .card:hover .image {
   transform: scale(1.02);
-  opacity: 0.92;
+  opacity: 0.80;
 }
 
 .image img {
@@ -54,7 +54,9 @@
 
 .detailsRow {
   display: flex;
-  gap: 1px;
+  gap: 4px;
+  min-width: 0
+
 }
 
 .dot::before {
@@ -64,23 +66,32 @@
   opacity: 0.7;
 }
 
-.userButton {
-  background: none;
+.userLink {
   color: white;
-  text-decoration: underline;
+
+  background: none;
   cursor: pointer;
+  text-decoration: underline;
   display: inline-block;
   line-height: inherit;
-  transition: transform 150ms ease;
+  transition: transform 0.4s;
 }
 
-.userButton:hover {
-  transform: scale(1.03);
+.userLink:hover {
+  transform: scale(1.04);
 }
 
-.userButton:active {
-  transform: scale(1.02);
+.userLink:active {
+  transform: scale(1.005)
 }
 
+.created {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
+.tracks {
+  flex-shrink: 0;
+}
 
