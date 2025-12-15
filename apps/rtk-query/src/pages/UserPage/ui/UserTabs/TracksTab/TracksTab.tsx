@@ -14,6 +14,7 @@ import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import s from './TracksTab.module.css'
+import { t } from 'i18next'
 
 export const TracksTab = () => {
   const { userId } = useParams()
@@ -31,7 +32,7 @@ export const TracksTab = () => {
   return (
     <>
       <Button className={s.uploadTrackButton} onClick={handleOpenCreateTrackModal}>
-        Upload Track
+        {t('tracks.button.upload_track')}
       </Button>
       <TracksTable
         trackRows={

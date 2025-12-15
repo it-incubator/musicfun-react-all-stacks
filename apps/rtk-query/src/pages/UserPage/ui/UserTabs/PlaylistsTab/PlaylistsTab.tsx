@@ -36,7 +36,7 @@ export const PlaylistsTab = () => {
   return (
     <>
       <Button className={s.createPlaylistButton} onClick={handleOpenCreatePlaylistModal}>
-        Create Playlist
+        {t('playlists.button.create_playlist')}
       </Button>
 
       {playlists?.data && (

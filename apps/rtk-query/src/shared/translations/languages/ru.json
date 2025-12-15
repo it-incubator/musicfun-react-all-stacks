@@ -17,7 +17,10 @@
   "button": {
     "choose": "Выбрать",
     "create": "Создать",
-    "edit": "Редактировать"
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "cancel": "Отмена",
+    "update": "Обновить"
   },
   "description": {
     "label": {
@@ -29,7 +32,8 @@
   },
   "playlists": {
     "button": {
-      "choose_playlist": "Выбрать плейлист"
+      "choose_playlist": "Выбрать плейлист",
+      "create_playlist": "Создать плейлист"
     },
     "placeholder": {
       "enter_playlist_description": "Введите описание плейлиста",
@@ -78,11 +82,14 @@
       "save": "Сохранить",
       "show_text_song": "Показать текст песни",
       "tracks_not_found": "Треки не найдены",
-      "upload": "Загрузить"
+      "upload": "Загрузить",
+      "choose_track": "Выбрать трек",
+      "upload_track": "Загрузить трек"
     },
     "label": {
       "lyrics": "Текст песни",
-      "title": "Название"
+      "title": "Название",
+      "no_tracks": "Нет треков"
     },
     "placeholder": {
       "lyrics": "Введите текст песни",
@@ -94,7 +101,28 @@
       "create": "Создать трек",
       "edit": "Редактировать трек",
       "new_tracks": "Новые треки"
+    },
+    "table": {
+      "track": "Трек",
+      "date_added": "Дата добавления",
+      "actions": "Действия",
+      "duration": "Длительность"
     }
+  },
+  "sort": {
+    "label": "Сортировать по",
+    "newest_first": "Сначала новые",
+    "oldest_first": "Сначала старые",
+    "most_liked": "Самые популярные",
+    "least_liked": "Наименее популярные"
+  },
+  "placeholder": {
+    "upload_cover_image": "Загрузить обложку",
+    "search_and_select": "Найти и выбрать...",
+    "selected": "выбрано",
+    "no_options_found": "Ничего не найдено",
+    "all_options_selected": "Выбраны все",
+    "which_playlist": "В каком плейлисте находится трек?"
   },
   "profile": {
     "title": {
