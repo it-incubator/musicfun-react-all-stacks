@@ -1,2 +1,2 @@
-export { emptyProfile } from './emptyProfile'
+export { emptyProfile } from './empty-profile'
 export * from './storage'
