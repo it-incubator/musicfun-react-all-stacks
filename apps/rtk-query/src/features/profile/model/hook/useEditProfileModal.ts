@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { openEditProfileModal, selectIsEditProfileModalOpen } from '@/features/profile'
+import { selectIsEditProfileModalOpen, setEditProfileModalOpen } from '@/features/profile'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks'
 
 export const useEditProfileModal = () => {
@@ -9,7 +9,7 @@ export const useEditProfileModal = () => {
   const isEditProfileOpen = useAppSelector(selectIsEditProfileModalOpen)
 
   const handleOpenEditProfileModal = useCallback(() => {
-    dispatch(openEditProfileModal())
+    dispatch(setEditProfileModalOpen(true))
   }, [dispatch])
 
   return {

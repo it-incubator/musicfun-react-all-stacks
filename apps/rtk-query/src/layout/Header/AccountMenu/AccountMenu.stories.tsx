@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { ProfileDropdownMenu } from './ProfileDropdownMenu'
+import { AccountMenu } from './AccountMenu'
 
-const meta: Meta<typeof ProfileDropdownMenu> = {
-  title: 'entities/ProfileDropdownMenu',
-  component: ProfileDropdownMenu,
+const meta: Meta<typeof AccountMenu> = {
+  title: 'entities/AccountMenu',
+  component: AccountMenu,
   parameters: {
     layout: 'centered',
   },
@@ -12,7 +12,7 @@ const meta: Meta<typeof ProfileDropdownMenu> = {
 
 export default meta
 
-type Story = StoryObj<typeof ProfileDropdownMenu>
+type Story = StoryObj<typeof AccountMenu>
 
 export const Default: Story = {
   args: {

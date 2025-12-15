@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import type { Profile } from '@/features/profile'
-import { PROFILE_STORAGE_KEY } from '@/features/profile'
+import { PROFILE_STORAGE_KEY, setEditProfileModalOpen } from '@/features/profile'
 import {
-  closeEditProfileModal,
   selectProfileAvatar,
   selectProfileFullName,
   setProfileAvatar,
   setProfileFullName,
 } from '@/features/profile'
-import { fileToBase64 } from '@/features/profile/utils'
 import {
   Button,
   Dialog,
@@ -23,7 +21,7 @@ import {
   Typography,
 } from '@/shared/components'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks'
-import { showErrorToast } from '@/shared/utils'
+import { convertFileToBase64, showErrorToast } from '@/shared/utils'
 
 import s from './EditProfileModal.module.css'
 
@@ -44,25 +42,17 @@ export const EditProfileModal = () => {
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({
     defaultValues: {
-      name: '',
-      surname: '',
+      name: profileFullName?.name || '',
+      surname: profileFullName?.surname || '',
     },
+    mode: 'onChange',
   })
 
-  // Initial values
-  useEffect(() => {
-    reset({
-      name: profileFullName?.name,
-      surname: profileFullName?.surname,
-    })
-  }, [profileFullName, reset])
-
-  const handleClose = () => {
-    dispatch(closeEditProfileModal())
+  const handleClose = async () => {
+    dispatch(setEditProfileModalOpen(false))
   }
 
   const handleImageSelect = (file: File) => {
@@ -71,14 +61,16 @@ export const EditProfileModal = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const avatarBase64 = selectedImage ? await fileToBase64(selectedImage) : profileAvatarUrl
+      const avatarBase64 = selectedImage
+        ? await convertFileToBase64(selectedImage)
+        : profileAvatarUrl
       const fullName = data
 
       localStorage.setItem(
         PROFILE_STORAGE_KEY,
         JSON.stringify({ fullName, avatar: avatarBase64 } as Profile)
       )
-
+      await new Promise((res) => setTimeout(res, 500))
       dispatch(setProfileAvatar(avatarBase64))
       dispatch(setProfileFullName(fullName))
 
@@ -101,7 +93,7 @@ export const EditProfileModal = () => {
             className={s.imageUploader}
             onImageSelect={handleImageSelect}
             initialImageUrl={profileAvatarUrl || undefined}
-            placeholder="Upload Avatar"
+            placeholder={t('profile.placeholder.upload_avatar')}
           />
 
           <TextField
@@ -141,10 +133,10 @@ export const EditProfileModal = () => {
 
         <DialogFooter>
           <Button variant="secondary" onClick={handleClose} type="button" disabled={isSubmitting}>
-            Cancel
+            {t('button.cancel')}
           </Button>
-          <Button variant="primary" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : 'Save Changes'}
+          <Button variant="primary" type="submit" disabled={isSubmitting || !isValid}>
+            {isSubmitting ? t('button.saving') : t('button.save_changes')}
           </Button>
         </DialogFooter>
       </form>

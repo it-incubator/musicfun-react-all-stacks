@@ -31,6 +31,6 @@ export const ProfileImage: Story = {
   args: {
     src: 'https://unsplash.it/192/192',
     fullName: { name: 'james', surname: 'allen' },
-    login: 'james',
+    userLogin: 'james',
   },
 }

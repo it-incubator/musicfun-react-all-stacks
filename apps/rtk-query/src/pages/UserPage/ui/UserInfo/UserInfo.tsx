@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { setIsAuthModalOpen, useMeQuery } from '@/features/auth'
 import { selectProfileAvatar, selectProfileFullName } from '@/features/profile'
 import { useEditProfileModal } from '@/features/profile'
@@ -8,6 +10,8 @@ import { EditIcon } from '@/shared/icons'
 import s from './UserInfo.module.css'
 
 export const UserInfo = () => {
+  const { t } = useTranslation()
+
   const dispatch = useAppDispatch()
   const { data } = useMeQuery()
 
@@ -23,7 +27,7 @@ export const UserInfo = () => {
 
   return (
     <div className={s.box}>
-      <Avatar src={profileAvatarUrl} fullName={profileFullName} login={data?.login} />
+      <Avatar src={profileAvatarUrl} fullName={profileFullName} userLogin={data?.login} />
       <Typography variant="h2">
         {profileFullName?.name ? `${profileFullName.name} ${profileFullName.surname}` : data?.login}
       </Typography>
@@ -32,7 +36,7 @@ export const UserInfo = () => {
         variant="secondary"
         onClick={isAuth ? handleOpenEditProfileModal : handleOpenAuthModal}>
         <EditIcon />
-        Edit profile
+        {t('button.edit_profile')}
       </Button>
 
       {/* TODO: Backend don't return this data 😢 */}

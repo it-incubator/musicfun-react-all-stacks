@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
 
-import { ProfileDropdownMenu } from '@/features/auth'
 import { useMeQuery } from '@/features/auth/api'
 import { setIsAuthModalOpen } from '@/features/auth/model'
 import { selectProfileAvatar, selectProfileFullName } from '@/features/profile'
+import { AccountMenu } from '@/layout/Header/AccountMenu'
 import {
   Button,
   DropdownMenu,
@@ -34,17 +34,16 @@ export const Header = () => {
           <DropdownMenuTrigger>
             <LanguageIcon />
           </DropdownMenuTrigger>
-
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => setLocale('en')}>English</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setLocale('ru')}>Русский</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         {isAuth ? (
-          <ProfileDropdownMenu
+          <AccountMenu
             avatar={profileAvatarUrl}
             fullName={profileFullName}
-            login={user.login}
+            userLogin={user.login}
             id={user.userId}
           />
         ) : isLoading ? null : (

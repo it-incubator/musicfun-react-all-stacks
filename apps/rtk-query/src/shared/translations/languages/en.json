@@ -20,7 +20,10 @@
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
-    "update": "Update"
+    "update": "Update",
+    "edit_profile": "Edit profile",
+    "saving": "Saving...",
+    "save_changes": "Save Changes"
   },
   "description": {
     "label": {
@@ -136,7 +139,8 @@
     },
     "placeholder": {
       "enter_profile_name": "Enter profile name",
-      "enter_profile_surname": "Enter profile surname"
+      "enter_profile_surname": "Enter profile surname",
+      "upload_avatar": "Upload Avatar"
     },
     "label": {
       "name": "Name",

@@ -20,7 +20,10 @@
     "edit": "Редактировать",
     "delete": "Удалить",
     "cancel": "Отмена",
-    "update": "Обновить"
+    "update": "Обновить",
+    "edit_profile": "Редактировать профиль",
+    "saving": "Сохранение...",
+    "save_changes": "Сохранить изменения"
   },
   "description": {
     "label": {
@@ -136,7 +139,12 @@
     },
     "placeholder": {
       "enter_profile_name": "Введите имя профиля",
-      "enter_profile_surname": "Введите фамилию профиля"
+      "enter_profile_surname": "Введите фамилию профиля",
+      "upload_avatar": "Загрузить аватар"
+    },
+    "label": {
+      "name": "Имя",
+      "surname": "Фамилия"
     }
   }
 }

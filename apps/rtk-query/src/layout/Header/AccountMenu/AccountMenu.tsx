@@ -13,33 +13,30 @@ import {
 import { Paths } from '@/shared/configs'
 import { LogoutIcon, ProfileIcon } from '@/shared/icons'
 
-import { useLogoutMutation } from '../../api'
-import s from './ProfileDropdownMenu.module.css'
+import { useLogoutMutation } from '../../../features/auth/api'
+import s from './AccountMenu.module.css'
 
-export const ProfileDropdownMenu = ({
-  avatar,
-  fullName,
-  login,
-  id,
-}: {
+type AccountMenuProps = {
   avatar: string | null
   fullName: FullName
-  login: string
+  userLogin: string
   id: string
-}) => {
+}
+
+export const AccountMenu = ({ avatar, fullName, userLogin, id }: AccountMenuProps) => {
   const { t } = useTranslation()
 
   const [logout] = useLogoutMutation()
 
-  const displayName = fullName?.name ? `${fullName.name} ${fullName.surname}` : login
+  const profileName = fullName?.name ? `${fullName.name} ${fullName.surname}` : userLogin
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className={s.trigger}>
-        <Avatar className={s.avatar} src={avatar} fullName={fullName} login={login} />
+        <Avatar className={s.avatar} src={avatar} fullName={fullName} userLogin={userLogin} />
 
         <Typography className={s.name} variant="body2">
-          {displayName}
+          {profileName}
         </Typography>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
