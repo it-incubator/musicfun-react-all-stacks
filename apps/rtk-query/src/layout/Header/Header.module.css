@@ -7,3 +7,9 @@
   height: var(--header-height);
   padding: 0 32px;
 }
+
+.actions {
+  display: flex;
+  column-gap: 20px;
+  align-items: center;
+}

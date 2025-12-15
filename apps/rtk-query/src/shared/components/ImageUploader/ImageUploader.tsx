@@ -7,6 +7,7 @@ import { IconButton } from '../IconButton'
 import { type CropShape, ImageCropper } from '../ImageCropper'
 import { Typography } from '../Typography'
 import s from './ImageUploader.module.css'
+import { t } from 'i18next'
 
 export type ImageUploaderProps = {
   onImageSelect: (file: File) => void
@@ -27,7 +28,7 @@ const ACCEPTED_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 export const ImageUploader = ({
   className,
   onImageSelect,
-  placeholder = 'Upload Cover Image',
+  placeholder = t('placeholder.upload_cover_image'),
   cropShape = 'rect',
   enableCrop = true,
   initialImageUrl,
