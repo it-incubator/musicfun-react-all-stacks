@@ -1,29 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import type { FullName, Profile } from '@/features/profile'
-import { PROFILE_STORAGE_KEY } from '@/features/profile'
-import { emptyProfile } from '@/features/profile/utils'
-
-const preloadedState = JSON.parse(
-  localStorage.getItem(PROFILE_STORAGE_KEY) ?? JSON.stringify(emptyProfile)
-) as Profile //! temporary implementation
+import { localStorageKeys } from '@/app/api/base-query-with-refresh-token-flow-api'
+import type { FullName } from '@/features/profile'
+import { emptyProfile, PROFILE_STORAGE_KEY } from '@/features/profile'
 
 const initialState = {
   createEditModal: {
     isOpen: false,
   },
-  profile: preloadedState,
+  profile: emptyProfile,
 }
 
 export const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: (create) => ({
-    openEditProfileModal: create.reducer((state) => {
-      state.createEditModal.isOpen = true
-    }),
-    closeEditProfileModal: create.reducer((state) => {
-      state.createEditModal.isOpen = false
+    setEditProfileModalOpen: create.reducer<boolean>((state, action) => {
+      state.createEditModal.isOpen = action.payload
     }),
     setProfileAvatar: create.reducer<string | null>((state, action) => {
       state.profile.avatar = action.payload
@@ -31,8 +24,18 @@ export const profileSlice = createSlice({
     setProfileFullName: create.reducer<FullName>((state, action) => {
       state.profile.fullName = action.payload
     }),
-    clearProfileState: create.reducer((state) => {
-      state.profile = emptyProfile
+    //! FIXME: temporary implementation until backend issue #160 is fixed
+    hydrateProfileFromStorage: create.reducer((state) => {
+      const hasToken = !!localStorage.getItem(localStorageKeys.accessToken)
+      if (!hasToken) {
+        state.profile = emptyProfile
+        return
+      }
+
+      const stored = localStorage.getItem(PROFILE_STORAGE_KEY)
+      if (stored) {
+        state.profile = JSON.parse(stored)
+      }
     }),
   }),
   selectors: {
@@ -43,11 +46,10 @@ export const profileSlice = createSlice({
 })
 
 export const {
-  openEditProfileModal,
-  closeEditProfileModal,
+  setEditProfileModalOpen,
   setProfileAvatar,
   setProfileFullName,
-  clearProfileState,
+  hydrateProfileFromStorage,
 } = profileSlice.actions
 export const { selectIsEditProfileModalOpen, selectProfileAvatar, selectProfileFullName } =
   profileSlice.selectors

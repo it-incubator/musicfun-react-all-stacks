@@ -1,6 +1,6 @@
 import { baseApi } from '@/app/api/base-api.ts'
 import { localStorageKeys } from '@/app/api/base-query-with-refresh-token-flow-api'
-import { clearProfileState, PROFILE_STORAGE_KEY } from '@/features/profile'
+import { hydrateProfileFromStorage } from '@/features/profile'
 
 import type { AuthTokensResponse, GetMeResponse, OAuthLoginArgs } from './auth-api.types'
 
@@ -9,6 +9,12 @@ export const authApi = baseApi.injectEndpoints({
     me: builder.query<GetMeResponse, void>({
       query: () => 'auth/me',
       providesTags: ['User'],
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(hydrateProfileFromStorage()) //! FIXME: temporary implementation until backend issue #160 is fixed
+        } catch {}
+      },
     }),
 
     login: builder.mutation<AuthTokensResponse, OAuthLoginArgs>({
@@ -40,8 +46,8 @@ export const authApi = baseApi.injectEndpoints({
           await queryFulfilled
           localStorage.removeItem(localStorageKeys.accessToken)
           localStorage.removeItem(localStorageKeys.refreshToken)
-          localStorage.removeItem(PROFILE_STORAGE_KEY)
-          dispatch(clearProfileState())
+          // TODO: clear profile cache until backend supports user data (#160)
+          dispatch(hydrateProfileFromStorage())
           await dispatch(authApi.util.resetApiState())
         } catch {}
       },
