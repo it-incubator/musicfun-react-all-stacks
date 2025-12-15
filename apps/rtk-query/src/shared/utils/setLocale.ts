@@ -1,4 +1,5 @@
 import i18n from 'i18next'
+import { LOCALE_KEY } from '@/shared/constants'
 
 export type Locale = 'en' | 'ru'
 
@@ -11,5 +12,5 @@ export type Locale = 'en' | 'ru'
  */
 export const setLocale = (lng: Locale): void => {
   void i18n.changeLanguage(lng)
-  localStorage.setItem('locale', lng)
+  localStorage.setItem(LOCALE_KEY, lng)
 }
