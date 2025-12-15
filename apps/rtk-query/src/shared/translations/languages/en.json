@@ -17,7 +17,10 @@
   "button": {
     "choose": "Choose",
     "create": "Create",
-    "edit": "Edit"
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "update": "Update"
   },
   "description": {
     "label": {
@@ -29,7 +32,8 @@
   },
   "playlists": {
     "button": {
-      "choose_playlist": "Choose playlist"
+      "choose_playlist": "Choose playlist",
+      "create_playlist": "Create playlist"
     },
     "placeholder": {
       "enter_playlist_description": "Enter playlist description",
@@ -78,11 +82,14 @@
       "save": "Save",
       "show_text_song": "Show text song",
       "tracks_not_found": "Tracks not found",
-      "upload": "Upload"
+      "upload": "Upload",
+      "choose_track": "Choose track",
+      "upload_track": "Upload track"
     },
     "label": {
       "lyrics": "Lyrics",
-      "title": "Title"
+      "title": "Title",
+      "no_tracks": "No tracks"
     },
     "placeholder": {
       "lyrics": "Enter track lyrics",
@@ -94,7 +101,28 @@
       "create": "Create Track",
       "edit": "Edit Track",
       "new_tracks": "New tracks"
+    },
+    "table": {
+      "track": "Track",
+      "date_added": "Date added",
+      "actions": "Actions",
+      "duration": "Duration"
     }
+  },
+  "sort": {
+    "label": "Sort by",
+    "newest_first": "Newest first",
+    "oldest_first": "Oldest first",
+    "most_liked": "Most liked",
+    "least_liked": "Least liked"
+  },
+  "placeholder": {
+    "upload_cover_image": "Upload Cover Image",
+    "search_and_select": "Search and select...",
+    "selected": "selected",
+    "no_options_found": "No options found",
+    "all_options_selected": "All options selected",
+    "which_playlist": "In which playlist is the track?"
   },
   "date": {
     "today": "today",

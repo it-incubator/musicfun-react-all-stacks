@@ -18,6 +18,7 @@ import {
 import { MoreIcon } from '@/shared/icons'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
+import { t } from 'i18next'
 
 export const MyLikedPlaylistsTab = () => {
   const { userId } = useParams()
@@ -67,13 +68,13 @@ export const MyLikedPlaylistsTab = () => {
                         onClick={() => {
                           handleOpenEditPlaylistModal(playlist.id)
                         }}>
-                        Edit
+                        {t('button.edit')}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => {
                           removePlaylist(playlist.id)
                         }}>
-                        Delete
+                        {t('button.delete')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
