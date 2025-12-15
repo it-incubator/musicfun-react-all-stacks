@@ -1,4 +1,4 @@
-import {getRussianPluralForm} from "@/shared/utils/getRussianPluralForm.ts";
+import {getRussianPluralForm} from "@/shared/utils/get-russian-plural-form.ts";
 
 
 export const getPluralKey = (count: number, lang: string, type: 'day' | 'month') => {

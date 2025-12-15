@@ -56,6 +56,9 @@ export const MyLikedPlaylistsTab = () => {
                 title={playlist.attributes.title}
                 imageSrc={image?.url}
                 userName={playlist.attributes.user.name}
+                isShowReactionButtons={true}
+                reaction={playlist.attributes.currentUserReaction}
+                likesCount={playlist.attributes.likesCount}
                 userId={playlist.attributes.user.id}
                 addedAt={playlist.attributes.addedAt}
                 actions={

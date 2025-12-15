@@ -11,7 +11,7 @@ import {Card, CurrentUserReaction, ReactionButtons, Typography} from '@/shared/c
 import type {MouseEvent} from "react";
 import s from './PlaylistCard.module.css'
 import {Paths} from "@/shared/configs";
-import {formatCreatedDate} from "@/shared/utils/formatCreatedDate.ts";
+import {formatCreatedDate} from "@/shared/utils/format-created-date.ts";
 
 type PlaylistCardPropsBase = {
     id: string
