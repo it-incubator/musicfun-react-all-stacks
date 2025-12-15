@@ -1,17 +1,15 @@
 import clsx from 'clsx'
-import {Link, useNavigate} from 'react-router'
+import {Link} from 'react-router'
 
-import {
-    useDislikePlaylistMutation,
-    useLikePlaylistMutation,
-    useUnReactionPlaylistMutation,
-} from '@/features/playlists'
+import {useDislikePlaylistMutation, useLikePlaylistMutation, useUnReactionPlaylistMutation,} from '@/features/playlists'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import {Card, CurrentUserReaction, ReactionButtons, Typography} from '@/shared/components'
-import type {MouseEvent} from "react";
 import s from './PlaylistCard.module.css'
 import {Paths} from "@/shared/configs";
 import {formatCreatedDate} from "@/shared/utils/format-created-date.ts";
+import {useTranslation} from "react-i18next";
+
+
 
 type PlaylistCardPropsBase = {
     id: string
@@ -21,8 +19,8 @@ type PlaylistCardPropsBase = {
     userName?: string
     userId?: string
     addedAt?: string
-    isShowCurrentUser?: boolean
-    isShowCreatedDate?: boolean
+    shouldShowOwnerName?: boolean
+    shouldShowCreateDate?: boolean
 }
 
 type PlaylistCardPropsWithReactions = PlaylistCardPropsBase & {
@@ -46,28 +44,27 @@ export const PlaylistCard = ({
                                  userName,
                                  userId,
                                  addedAt,
-                                 isShowCurrentUser = true,
-                                 isShowCreatedDate = true,
+                                 shouldShowOwnerName = false,
+                                 shouldShowCreateDate = false,
                                  ...props
                              }: PlaylistCardProps) => {
     const [like] = useLikePlaylistMutation()
     const [dislike] = useDislikePlaylistMutation()
     const [unReaction] = useUnReactionPlaylistMutation()
-    const navigate = useNavigate()
+    const {t} = useTranslation()
 
-    const handleUserNameClick = (e: MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault()
-        e.stopPropagation()
-        navigate(`${Paths.Profile}/${userId}`)
-    }
+    const handleUserNameClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    };
+
 
     return (
         <Card
             className={clsx(s.card, isShowReactionButtons && s.withReactionButtons)}>
             <Link
-                to={`/playlists/${id}`}
+                to={`${Paths.Playlist}/${id}`}
                 className={s.imageLink}
-                aria-label={`Open playlist ${title}`}
+                aria-label={t('playlists.aria_labels.open_playlist', {title})}
             >
                 <div className={s.image}>
                     <img src={imageSrc} alt={title}/>
@@ -81,11 +78,11 @@ export const PlaylistCard = ({
             </div>
 
             <div className={s.details}>
-                {isShowCurrentUser &&
+                {shouldShowOwnerName &&
                     <div className={s.madeFor}>
-                        <Typography variant="body2" as="span">Made for </Typography>
+                        <Typography variant="body2" as="span">{t("playlist.made_for")} </Typography>
                         <Link
-                            to={`/users/${userId}`}
+                            to={`${Paths.Profile}/${userId}`}
                             className={s.userLink}
                             onClick={handleUserNameClick}
                         >
@@ -96,32 +93,33 @@ export const PlaylistCard = ({
 
                 <div className={s.detailsRow}>
                     <Typography variant="body2" className={s.tracks}>
-                        0 tracks
+                        {/* TODO: Replace 0 with tracksCount when backend is ready */}
+                        {t('playlist.tracks_count', { count: 0 })}
                     </Typography>
-                    {isShowCreatedDate && (
+                    {shouldShowCreateDate && (
                         <>
-                        <span className={s.dot} aria-hidden="true"/>
-                        <Typography variant="body2" className={s.created}>
-                      {formatCreatedDate(addedAt)}
-                </Typography>
+                            <span className={s.dot} aria-hidden="true"/>
+                            <Typography variant="body2" className={s.created}>
+                                {formatCreatedDate(addedAt)}
+                            </Typography>
                         </>
-                )}
+                    )}
+                </div>
             </div>
-        </div>
-{/*  'reaction' in props — Type guard for correct type checking */
-}
-{
-    isShowReactionButtons && 'reaction' in props && (
-        <ReactionButtons
-            className={s.reactionButtons}
-            reaction={props.reaction}
-            onLike={() => like({id})}
-            onDislike={() => dislike({id})}
-            likesCount={props.likesCount}
-            onUnReaction={() => unReaction({id})}
-        />
+            {/*  'reaction' in props — Type guard for correct type checking */
+            }
+            {
+                isShowReactionButtons && 'reaction' in props && (
+                    <ReactionButtons
+                        className={s.reactionButtons}
+                        reaction={props.reaction}
+                        onLike={() => like({id})}
+                        onDislike={() => dislike({id})}
+                        likesCount={props.likesCount}
+                        onUnReaction={() => unReaction({id})}
+                    />
+                )
+            }
+        </Card>
     )
-}
-</Card>
-)
 }

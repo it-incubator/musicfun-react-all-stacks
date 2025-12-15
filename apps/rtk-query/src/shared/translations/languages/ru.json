@@ -46,6 +46,9 @@
       "edit_playlist": "Редактировать плейлист",
       "new_playlists": "Новые плейлисты",
       "playlists_not_found": "Плейлисты не найдены"
+    },
+    "aria_labels": {
+      "open_playlist": "Открыть плейлист {{title}}"
     }
   },
   "sidebar": {
@@ -134,5 +137,13 @@
     "no_options_found": "Ничего не найдено",
     "all_options_selected": "Выбраны все",
     "which_playlist": "В каком плейлисте находится трек?"
+  },
+  "playlist": {
+    "tracks_count_zero": "{{count}} треков",
+    "tracks_count_one": "{{count}} трек",
+    "tracks_count_two": "{{count}} трека",
+    "tracks_count_few": "{{count}} трека",
+    "tracks_count_many": "{{count}} треков",
+    "tracks_count_other": "{{count}} треков"
   }
 }

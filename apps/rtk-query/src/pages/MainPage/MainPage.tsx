@@ -45,6 +45,8 @@ export const MainPage = () => {
                   userName={playlist.attributes.user.name}
                   userId={playlist.attributes.user.id}
                   addedAt={playlist.attributes.addedAt}
+                  shouldShowOwnerName
+                  shouldShowCreateDate
               />
           )
         }}

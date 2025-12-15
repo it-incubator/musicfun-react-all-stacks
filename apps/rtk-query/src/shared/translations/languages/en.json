@@ -46,6 +46,9 @@
       "edit_playlist": "Edit Playlist",
       "new_playlists": "New playlists",
       "playlists_not_found": "No playlists found"
+    },
+    "aria_labels": {
+      "open_playlist": "Open playlist {{title}}"
     }
   },
   "sidebar": {
@@ -131,5 +134,10 @@
     "monthAgo": "{{addedAt}} month ago",
     "monthsAgo": "{{addedAt}} months ago",
     "created": "Created"
+  },
+  "playlist": {
+    "made_for": "Create for",
+    "tracks_count_one": "{{count}} track",
+    "tracks_count_other": "{{count}} tracks"
   }
 }

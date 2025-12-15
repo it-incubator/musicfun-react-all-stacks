@@ -61,6 +61,8 @@ export const MyLikedPlaylistsTab = () => {
                 likesCount={playlist.attributes.likesCount}
                 userId={playlist.attributes.user.id}
                 addedAt={playlist.attributes.addedAt}
+                shouldShowOwnerName
+                shouldShowCreateDate
                 actions={
                   <DropdownMenu>
                     <DropdownMenuTrigger>
