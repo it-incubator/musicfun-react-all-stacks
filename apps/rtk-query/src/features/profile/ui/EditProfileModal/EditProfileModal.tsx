@@ -1,9 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import type { Profile } from '@/features/profile'
-import { PROFILE_STORAGE_KEY, setEditProfileModalOpen } from '@/features/profile'
+import {
+  PROFILE_STORAGE_KEY,
+  setEditProfileModalOpen,
+  useEditProfileSchema,
+} from '@/features/profile'
 import {
   selectProfileAvatar,
   selectProfileFullName,
@@ -32,6 +37,7 @@ type FormData = {
 
 export const EditProfileModal = () => {
   const { t } = useTranslation()
+  const { editProfileSchema } = useEditProfileSchema()
 
   const dispatch = useAppDispatch()
   const profileFullName = useAppSelector(selectProfileFullName)
@@ -44,6 +50,7 @@ export const EditProfileModal = () => {
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({
+    resolver: zodResolver(editProfileSchema),
     defaultValues: {
       name: profileFullName?.name || '',
       surname: profileFullName?.surname || '',
@@ -51,7 +58,7 @@ export const EditProfileModal = () => {
     mode: 'onChange',
   })
 
-  const handleClose = async () => {
+  const handleClose = () => {
     dispatch(setEditProfileModalOpen(false))
   }
 
@@ -70,7 +77,7 @@ export const EditProfileModal = () => {
         PROFILE_STORAGE_KEY,
         JSON.stringify({ fullName, avatar: avatarBase64 } as Profile)
       )
-      await new Promise((res) => setTimeout(res, 500))
+
       dispatch(setProfileAvatar(avatarBase64))
       dispatch(setProfileFullName(fullName))
 
@@ -97,34 +104,14 @@ export const EditProfileModal = () => {
           />
 
           <TextField
-            {...register('name', {
-              required: t('profile.title.required_name'),
-              minLength: {
-                value: 2,
-                message: t('profile.title.min_value_name', { quantity: '2' }),
-              },
-              maxLength: {
-                value: 20,
-                message: t('profile.title.max_value_name', { quantity: '20' }),
-              },
-            })}
+            {...register('name')}
             label={t('profile.label.name')}
             placeholder={t('profile.placeholder.enter_profile_name')}
             errorMessage={errors.name?.message}
           />
 
           <TextField
-            {...register('surname', {
-              required: t('profile.title.required_surname'),
-              minLength: {
-                value: 2,
-                message: t('profile.title.min_value_surname', { quantity: '2' }),
-              },
-              maxLength: {
-                value: 20,
-                message: t('profile.title.max_value_surname', { quantity: '20' }),
-              },
-            })}
+            {...register('surname')}
             label={t('profile.label.surname')}
             placeholder={t('profile.placeholder.enter_profile_surname')}
             errorMessage={errors.surname?.message}
