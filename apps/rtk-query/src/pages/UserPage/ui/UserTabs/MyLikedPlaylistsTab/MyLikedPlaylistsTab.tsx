@@ -55,7 +55,14 @@ export const MyLikedPlaylistsTab = () => {
                 id={playlist.id}
                 title={playlist.attributes.title}
                 imageSrc={image?.url}
-                description={playlist.attributes.description}
+                userName={playlist.attributes.user.name}
+                isShowReactionButtons={true}
+                reaction={playlist.attributes.currentUserReaction}
+                likesCount={playlist.attributes.likesCount}
+                userId={playlist.attributes.user.id}
+                addedAt={playlist.attributes.addedAt}
+                shouldShowOwnerName
+                shouldShowCreatedDate
                 actions={
                   <DropdownMenu>
                     <DropdownMenuTrigger>

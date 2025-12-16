@@ -27,7 +27,7 @@
 
 .card:hover .image {
   transform: scale(1.02);
-  opacity: 0.92;
+  opacity: 0.80;
 }
 
 .image img {
@@ -51,3 +51,73 @@
 .reactionButtons {
   margin-top: auto;
 }
+
+.detailsRow {
+  display: flex;
+  gap: 4px;
+  min-width: 0
+
+}
+
+.dot::before {
+  content: '•';
+  margin: 0 4px;
+  font-size: 17px;
+  opacity: 0.7;
+}
+
+.madeFor {
+  overflow: hidden;
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+  width: 100%;
+  min-width: 0;
+}
+
+
+.userLink {
+  cursor: pointer;
+
+  overflow: hidden;
+  display: inline-block;
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 100%;
+
+  line-height: inherit;
+  color: white;
+  text-decoration: underline;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  background: none;
+
+  transition: transform 0.4s;
+}
+
+.userLink:hover {
+  transform: scale(1.02);
+}
+
+.userLink:active {
+  transform: scale(1.005);
+}
+
+.created {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tracks {
+  flex-shrink: 0;
+}
+
+.madeForText {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+
+

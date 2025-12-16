@@ -49,6 +49,9 @@
       "edit_playlist": "Редактировать плейлист",
       "new_playlists": "Новые плейлисты",
       "playlists_not_found": "Плейлисты не найдены"
+    },
+    "aria_labels": {
+      "open_playlist": "Открыть плейлист {{title}}"
     }
   },
   "sidebar": {
@@ -112,6 +115,17 @@
       "duration": "Длительность"
     }
   },
+  "date": {
+    "today": "сегодня",
+    "yesterday": "вчера",
+    "dayAgo": "{{addedAt}} день назад",
+    "fewDaysAgo": "{{addedAt}} дня назад",
+    "daysAgo": "{{addedAt}} дней назад",
+    "monthAgo": "{{addedAt}} месяц назад",
+    "fewMonthAgo": "{{addedAt}} месяца назад",
+    "monthsAgo": "{{addedAt}} месяцев назад",
+    "created": "Создан"
+  },
   "sort": {
     "label": "Сортировать по",
     "newest_first": "Сначала новые",
@@ -146,5 +160,12 @@
       "name": "Имя",
       "surname": "Фамилия"
     }
+  },
+  "playlist": {
+    "made_for": "Сделан для",
+    "tracks_count_one": "{{count}} трек",
+    "tracks_count_few": "{{count}} трека",
+    "tracks_count_many": "{{count}} треков",
+    "tracks_count_other": "{{count}} треков"
   }
 }

@@ -20,7 +20,7 @@ export const Default: Story = {
     id: '1',
     title: 'Lofi for Vibe Coding',
     imageSrc: 'https://unsplash.it/182/182',
-    description: 'A playlist for relaxing and unwinding.',
+    // description: 'A playlist for relaxing and unwinding.',
   },
 }
 
@@ -29,7 +29,7 @@ export const WithReactions: Story = {
     id: '1',
     title: 'Lofi for Vibe Coding',
     imageSrc: 'https://unsplash.it/182/182',
-    description: 'A playlist for relaxing and unwinding.',
+    // description: 'A playlist for relaxing and unwinding.',
     isShowReactionButtons: true,
     reaction: CurrentUserReaction.Like,
     likesCount: 10,
@@ -41,8 +41,8 @@ export const WithLongTextContent: Story = {
     id: '1',
     title: 'The Best Hits of Elton John',
     imageSrc: 'https://unsplash.it/183/183',
-    description:
-      'A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding.',
+    // description:
+    //   'A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding.',
   },
 }
 
@@ -51,7 +51,7 @@ export const WithActions: Story = {
     id: '1',
     title: 'Lofi for Vibe Coding',
     imageSrc: 'https://unsplash.it/182/182',
-    description: 'A playlist for relaxing and unwinding.',
+    // description: 'A playlist for relaxing and unwinding.',
     actions: (
       <DropdownMenu>
         <DropdownMenuTrigger>
