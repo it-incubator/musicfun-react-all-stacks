@@ -136,7 +136,7 @@
     "created": "Created"
   },
   "playlist": {
-    "made_for": "Create for",
+    "made_for": "Made for",
     "tracks_count_one": "{{count}} track",
     "tracks_count_other": "{{count}} tracks"
   }
