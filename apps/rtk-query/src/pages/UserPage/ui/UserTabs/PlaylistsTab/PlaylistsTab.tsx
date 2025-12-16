@@ -1,37 +1,27 @@
-import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router'
+import {useTranslation} from 'react-i18next'
 
 import {
   PlaylistCard,
   useCreatePlaylistModal,
   useEditPlaylistModal,
-  useFetchPlaylistsQuery,
   useRemovePlaylistMutation,
 } from '@/features/playlists'
-import { ContentList } from '@/pages/common'
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/shared/components'
-import { MoreIcon } from '@/shared/icons'
-import { ImageType } from '@/shared/types/commonApi.types'
-import { getImageByType } from '@/shared/utils'
+import {ContentList} from '@/pages/common'
+import {Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from '@/shared/components'
+import {MoreIcon} from '@/shared/icons'
+import {ImageType} from '@/shared/types/commonApi.types'
+import {getImageByType} from '@/shared/utils'
 
 import s from './PlaylistsTab.module.css'
+import {useGetUserPageData} from "@/pages/UserPage/model";
 
 export const PlaylistsTab = () => {
   const { t } = useTranslation()
-
-  const { userId } = useParams()
+  const { playlists } = useGetUserPageData()
 
   const { handleOpenCreatePlaylistModal } = useCreatePlaylistModal()
   const { handleOpenEditPlaylistModal } = useEditPlaylistModal()
   const [removePlaylist] = useRemovePlaylistMutation()
-
-  const { data: playlists } = useFetchPlaylistsQuery({ userId: userId! })
 
   return (
     <>

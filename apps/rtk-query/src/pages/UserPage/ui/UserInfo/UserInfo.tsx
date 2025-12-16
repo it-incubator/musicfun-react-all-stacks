@@ -1,21 +1,21 @@
-import { useMeQuery } from '@/features/auth'
-import { Typography } from '@/shared/components'
+import {Typography} from '@/shared/components'
 
 import s from './UserInfo.module.css'
+import {useGetUserPageData} from "@/pages/UserPage/model";
 
 export const UserInfo = () => {
-  const { data: user } = useMeQuery()
+    const {userName} = useGetUserPageData()
 
-  return (
-    <div className={s.box}>
-      <div className={s.avatar}>
-        <img src={'https://unsplash.it/192/192'} alt="User avatar" />
-      </div>
-      <Typography variant="h2">{user?.login}</Typography>
+    return (
+        <div className={s.box}>
+            <div className={s.avatar}>
+                <img src={'https://unsplash.it/192/192'} alt="User avatar"/>
+            </div>
+            <Typography variant="h2">{userName}</Typography>
 
-      {/* TODO: Backend don't return this data 😢 */}
+            {/* TODO: Backend don't return this data 😢 */}
 
-      {/* <dl className={s.descriptionList}>
+            {/* <dl className={s.descriptionList}>
         <div className={s.descriptionItem}>
           <Typography as="dd" variant="body1">
             58
@@ -33,6 +33,6 @@ export const UserInfo = () => {
           </Typography>
         </div>
       </dl> */}
-    </div>
-  )
+        </div>
+    )
 }
