@@ -3,18 +3,16 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
+import { useMeQuery } from '@/features/auth'
 import type { Profile } from '@/features/profile'
-import {
-  PROFILE_STORAGE_KEY,
-  setEditProfileModalOpen,
-  useEditProfileSchema,
-} from '@/features/profile'
+import { setEditProfileModalOpen, useEditProfileSchema } from '@/features/profile'
 import {
   selectProfileAvatar,
   selectProfileFullName,
   setProfileAvatar,
   setProfileFullName,
 } from '@/features/profile'
+import { getProfileStorageKey } from '@/features/profile/utils'
 import {
   Button,
   Dialog,
@@ -40,6 +38,7 @@ export const EditProfileModal = () => {
   const { editProfileSchema } = useEditProfileSchema()
 
   const dispatch = useAppDispatch()
+  const { data: me } = useMeQuery()
   const profileFullName = useAppSelector(selectProfileFullName)
   const profileAvatarUrl = useAppSelector(selectProfileAvatar)
 
@@ -74,7 +73,7 @@ export const EditProfileModal = () => {
       const fullName = data
 
       localStorage.setItem(
-        PROFILE_STORAGE_KEY,
+        getProfileStorageKey(me!.userId),
         JSON.stringify({ fullName, avatar: avatarBase64 } as Profile)
       )
 

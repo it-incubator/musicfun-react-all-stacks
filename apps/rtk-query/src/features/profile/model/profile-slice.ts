@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { localStorageKeys } from '@/app/api/base-query-with-refresh-token-flow-api'
 import type { FullName } from '@/features/profile'
-import { emptyProfile, PROFILE_STORAGE_KEY } from '@/features/profile'
+import { emptyProfile } from '@/features/profile'
+import { getProfileStorageKey } from '@/features/profile/utils'
 
 const initialState = {
   createEditModal: {
@@ -25,14 +26,14 @@ export const profileSlice = createSlice({
       state.profile.fullName = action.payload
     }),
     //! FIXME: temporary implementation until backend issue #160 is fixed
-    hydrateProfileFromStorage: create.reducer((state) => {
+    hydrateProfileFromStorage: create.reducer<{ userId?: string }>((state, action) => {
       const hasToken = !!localStorage.getItem(localStorageKeys.accessToken)
-      if (!hasToken) {
+      if (!hasToken || !action.payload.userId) {
         state.profile = emptyProfile
         return
       }
 
-      const stored = localStorage.getItem(PROFILE_STORAGE_KEY)
+      const stored = localStorage.getItem(getProfileStorageKey(action.payload.userId))
       if (stored) {
         state.profile = JSON.parse(stored)
       }

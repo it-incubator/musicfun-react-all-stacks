@@ -11,8 +11,8 @@ export const authApi = baseApi.injectEndpoints({
       providesTags: ['User'],
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
-          await queryFulfilled
-          dispatch(hydrateProfileFromStorage()) //! FIXME: temporary implementation until backend issue #160 is fixed
+          const { data } = await queryFulfilled
+          dispatch(hydrateProfileFromStorage({ userId: data.userId })) //! FIXME: temporary implementation until backend issue #160 is fixed
         } catch {}
       },
     }),
@@ -47,7 +47,7 @@ export const authApi = baseApi.injectEndpoints({
           localStorage.removeItem(localStorageKeys.accessToken)
           localStorage.removeItem(localStorageKeys.refreshToken)
           // TODO: clear profile cache until backend supports user data (#160)
-          dispatch(hydrateProfileFromStorage())
+          dispatch(hydrateProfileFromStorage({}))
           await dispatch(authApi.util.resetApiState())
         } catch {}
       },
