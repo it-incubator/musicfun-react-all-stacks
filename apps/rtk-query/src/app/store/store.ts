@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import { authSlice } from '@/features/auth'
 import { playlistsSlice } from '@/features/playlists'
+import { profileSlice } from '@/features/profile'
 import { tracksSlice } from '@/features/tracks'
 import { playerMiddleware, playerSlice } from '@/player'
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     [playlistsSlice.name]: playlistsSlice.reducer,
     [tracksSlice.name]: tracksSlice.reducer,
     [playerSlice.name]: playerSlice.reducer,
+    [profileSlice.name]: profileSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(baseApi.middleware).concat(playerMiddleware),

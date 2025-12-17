@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
+    "@hookform/resolvers": "^5.2.2",
     "@reduxjs/toolkit": "2.8.2",
     "async-mutex": "0.5.0",
     "i18next": "^25.5.2",
@@ -29,7 +30,7 @@
     "react-redux": "9.2.0",
     "react-router": "7.6.2",
     "react-toastify": "11.0.5",
-    "zod": "3.24.2"
+    "zod": "4.2.0"
   },
   "devDependencies": {
     "@storybook/react-vite": "9.0.8",
