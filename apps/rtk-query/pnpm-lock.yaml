@@ -11,6 +11,9 @@ importers:
       '@headlessui/react':
         specifier: ^2.2.4
         version: 2.2.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@hookform/resolvers':
+        specifier: ^5.2.2
+        version: 5.2.2(react-hook-form@7.58.0(react@19.1.0))
       '@reduxjs/toolkit':
         specifier: 2.8.2
         version: 2.8.2(react-redux@9.2.0(@types/react@19.1.8)(react@19.1.0)(redux@5.0.1))(react@19.1.0)
@@ -48,12 +51,9 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       zod:
-        specifier: 3.24.2
-        version: 3.24.2
+        specifier: 4.2.0
+        version: 4.2.0
     devDependencies:
-      '@eslint/js':
-        specifier: ^9.25.0
-        version: 9.30.1
       '@storybook/react-vite':
         specifier: 9.0.8
         version: 9.0.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.44.2)(storybook@9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3))(typescript@5.8.3)(vite@6.3.5(@types/node@24.0.3)(jiti@1.21.7)(sass@1.89.2)(tsx@4.20.3)(yaml@2.8.0))
@@ -72,33 +72,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      eslint:
-        specifier: ^9.25.0
-        version: 9.30.1(jiti@1.21.7)
-      eslint-config-prettier:
-        specifier: ^10.1.5
-        version: 10.1.5(eslint@9.30.1(jiti@1.21.7))
-      eslint-plugin-prettier:
-        specifier: ^5.4.1
-        version: 5.5.1(eslint-config-prettier@10.1.5(eslint@9.30.1(jiti@1.21.7)))(eslint@9.30.1(jiti@1.21.7))(prettier@3.5.3)
-      eslint-plugin-react-hooks:
-        specifier: ^5.2.0
-        version: 5.2.0(eslint@9.30.1(jiti@1.21.7))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.19
-        version: 0.4.20(eslint@9.30.1(jiti@1.21.7))
-      eslint-plugin-simple-import-sort:
-        specifier: ^12.1.1
-        version: 12.1.1(eslint@9.30.1(jiti@1.21.7))
-      eslint-plugin-storybook:
-        specifier: 9.0.8
-        version: 9.0.8(eslint@9.30.1(jiti@1.21.7))(storybook@9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3))(typescript@5.8.3)
-      globals:
-        specifier: ^16.0.0
-        version: 16.2.0
-      prettier:
-        specifier: ^3.5.3
-        version: 3.5.3
       storybook:
         specifier: 9.0.8
         version: 9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3)
@@ -114,9 +87,6 @@ importers:
       typescript:
         specifier: ~5.8.3
         version: 5.8.3
-      typescript-eslint:
-        specifier: ^8.30.1
-        version: 8.36.0(eslint@9.30.1(jiti@1.21.7))(typescript@5.8.3)
       vite:
         specifier: ^6.3.5
         version: 6.3.5(@types/node@24.0.3)(jiti@1.21.7)(sass@1.89.2)(tsx@4.20.3)(yaml@2.8.0)
@@ -2336,6 +2306,11 @@ packages:
     resolution: {integrity: sha512-S9YN1RgNWG+klUz5uQaV6rjE4pr6Py2tamj7ekshzLcMyg+/Pal1KZAYgGszV0+doiy41dUiQgXL3uRS9stndQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
+
+  '@hookform/resolvers@5.2.2':
+    resolution: {integrity: sha512-A/IxlMLShx3KjV/HeTcTfaMxdwy690+L/ZADoeaTltLx+CVuzkeVIPuybK3jrRfw7YZnmdKsVVHAlEPIAEUNlA==}
+    peerDependencies:
+      react-hook-form: ^7.55.0
 
   '@hookstate/core@4.0.2':
     resolution: {integrity: sha512-DTyb4fKk8GCwKFCVoF/2v1qnvs9rEB2Rc9ZH5eh1LRNemUVnC41Vuy6d8UGqQSA0PIUk3DRPzlOA0QQKONpSmQ==}
@@ -9373,6 +9348,9 @@ packages:
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
+  zod@4.2.0:
+    resolution: {integrity: sha512-Bd5fw9wlIhtqCCxotZgdTOMwGm1a0u75wARVEY9HMs1X17trvA/lMi4+MGK5EUfYkXVTbX8UDiDKW4OgzHVUZw==}
+
   zustand@4.5.7:
     resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
     engines: {node: '>=12.7.0'}
@@ -11764,6 +11742,11 @@ snapshots:
     dependencies:
       caniuse-lite: 1.0.30001727
       react-hook-form: 7.54.2(react@19.0.0)
+
+  '@hookform/resolvers@5.2.2(react-hook-form@7.58.0(react@19.1.0))':
+    dependencies:
+      '@standard-schema/utils': 0.3.0
+      react-hook-form: 7.58.0(react@19.1.0)
 
   '@hookstate/core@4.0.2(react@18.2.0)':
     dependencies:
@@ -15930,10 +15913,6 @@ snapshots:
     dependencies:
       eslint: 9.28.0(jiti@1.21.7)
 
-  eslint-config-prettier@10.1.5(eslint@9.30.1(jiti@1.21.7)):
-    dependencies:
-      eslint: 9.30.1(jiti@1.21.7)
-
   eslint-import-resolver-node@0.3.9:
     dependencies:
       debug: 3.2.7
@@ -16025,15 +16004,6 @@ snapshots:
     optionalDependencies:
       eslint-config-prettier: 10.1.5(eslint@9.28.0(jiti@1.21.7))
 
-  eslint-plugin-prettier@5.5.1(eslint-config-prettier@10.1.5(eslint@9.30.1(jiti@1.21.7)))(eslint@9.30.1(jiti@1.21.7))(prettier@3.5.3):
-    dependencies:
-      eslint: 9.30.1(jiti@1.21.7)
-      prettier: 3.5.3
-      prettier-linter-helpers: 1.0.0
-      synckit: 0.11.8
-    optionalDependencies:
-      eslint-config-prettier: 10.1.5(eslint@9.30.1(jiti@1.21.7))
-
   eslint-plugin-react-hooks@5.2.0(eslint@9.25.0(jiti@1.21.7)):
     dependencies:
       eslint: 9.25.0(jiti@1.21.7)
@@ -16084,23 +16054,10 @@ snapshots:
     dependencies:
       eslint: 9.28.0(jiti@1.21.7)
 
-  eslint-plugin-simple-import-sort@12.1.1(eslint@9.30.1(jiti@1.21.7)):
-    dependencies:
-      eslint: 9.30.1(jiti@1.21.7)
-
   eslint-plugin-storybook@9.0.8(eslint@9.28.0(jiti@1.21.7))(storybook@9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3))(typescript@5.8.3):
     dependencies:
       '@typescript-eslint/utils': 8.35.1(eslint@9.28.0(jiti@1.21.7))(typescript@5.8.3)
       eslint: 9.28.0(jiti@1.21.7)
-      storybook: 9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
-  eslint-plugin-storybook@9.0.8(eslint@9.30.1(jiti@1.21.7))(storybook@9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3))(typescript@5.8.3):
-    dependencies:
-      '@typescript-eslint/utils': 8.36.0(eslint@9.30.1(jiti@1.21.7))(typescript@5.8.3)
-      eslint: 9.30.1(jiti@1.21.7)
       storybook: 9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3)
     transitivePeerDependencies:
       - supports-color
@@ -19988,6 +19945,8 @@ snapshots:
   yoctocolors-cjs@2.1.2: {}
 
   zod@3.24.2: {}
+
+  zod@4.2.0: {}
 
   zustand@4.5.7(@types/react@18.2.18)(immer@10.1.1)(react@18.2.0):
     dependencies:
