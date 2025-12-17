@@ -19,8 +19,8 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  FormControlledTextField,
   ImageUploader,
-  TextField,
   Typography,
 } from '@/shared/components'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks'
@@ -45,9 +45,9 @@ export const EditProfileModal = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
+    formState: { isSubmitting, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
@@ -102,18 +102,18 @@ export const EditProfileModal = () => {
             placeholder={t('profile.placeholder.upload_avatar')}
           />
 
-          <TextField
-            {...register('name')}
+          <FormControlledTextField
+            control={control}
+            name="name"
             label={t('profile.label.name')}
             placeholder={t('profile.placeholder.enter_profile_name')}
-            errorMessage={errors.name?.message}
           />
 
-          <TextField
-            {...register('surname')}
+          <FormControlledTextField
+            control={control}
+            name="surname"
             label={t('profile.label.surname')}
             placeholder={t('profile.placeholder.enter_profile_surname')}
-            errorMessage={errors.surname?.message}
           />
         </DialogContent>
 
