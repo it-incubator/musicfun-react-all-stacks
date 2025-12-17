@@ -2,7 +2,12 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
-import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
+import {
+  MOCK_TRACKS,
+  TracksTable,
+  useFetchTracksInfiniteInfiniteQuery,
+  useFetchTracksQuery,
+} from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { loadPlaylist } from '@/player'
@@ -29,16 +34,26 @@ export const TracksPage = () => {
     ...(tagsIds.length > 0 && { tagsIds }),
     ...(artistsIds.length > 0 && { artistsIds }),
   }
-
-  const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs)
-
+  const {
+    data: infiniteData,
+    hasNextPage,
+    isFetching,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useFetchTracksInfiniteInfiniteQuery()
+  // const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs)
+  const pages = infiniteData?.pages.flatMap((p) => p.data) || []
+  // debugger
   const { data: me } = useMeQuery()
 
   const dispatch = useDispatch()
 
   const handleTrackPlayClick = (trackId: string) => {
+    if (!pages) return
+
     // TODO: Update to pass full track array with url, title, artist, duration, albumArt
-    const tracksForRedux = tracks!.data.map((t) => ({
+    const tracksForRedux = pages.map((t) => ({
       id: t.id,
       title: t.attributes.title,
       artist: 'artist',
@@ -50,9 +65,15 @@ export const TracksPage = () => {
       loadPlaylist({
         playlistId: 'all-tracks',
         tracks: tracksForRedux,
-        startIndex: tracksForRedux.findIndex((t) => t.id === trackId),
+        startIndex: tracksForRedux?.findIndex((t) => t.id === trackId),
       })
     )
+  }
+
+  const loadMoreHandler = () => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage()
+    }
   }
 
   return (
@@ -76,7 +97,7 @@ export const TracksPage = () => {
 
       <TracksTable
         trackRows={
-          tracks?.data?.map((track, index) => {
+          pages.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
             const userId = track.attributes.user.id
             const isOwner = userId === me?.userId
@@ -115,6 +136,17 @@ export const TracksPage = () => {
           />
         )}
       />
+      {!isLoading && (
+        <>
+          {hasNextPage ? (
+            <button onClick={loadMoreHandler} disabled={isFetching}>
+              {isFetchingNextPage ? 'Loading...' : 'Load More'}
+            </button>
+          ) : (
+            <p>Nothing more to load</p>
+          )}
+        </>
+      )}
     </PageWrapper>
   )
 }
