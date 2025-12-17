@@ -53,6 +53,7 @@ export type TrackDetailAttributes = BaseAttributes & {
   // likes
   dislikesCount: number
   likesCount: number
+  user: User
 }
 
 export type PlaylistItemAttributes = BaseAttributes & {

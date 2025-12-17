@@ -19,7 +19,7 @@ import {
   type ReactionButtonsSize,
 } from '@/shared/components'
 import { DropdownMenu } from '@/shared/components'
-import { MoreIcon } from '@/shared/icons'
+import {AddToPlaylistIcon, EditIcon, MoreIcon, TextIcon} from '@/shared/icons'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
 
 import { useEditTrackModal } from '../../model/hooks'
@@ -95,13 +95,16 @@ export const TrackActions = ({
         <DropdownMenuContent>
           {isOwner && (
             <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackId)}>
+              <EditIcon/>
               {t('tracks.button.edit')}
             </DropdownMenuItem>
           )}
           <DropdownMenuItem onClick={() => setIsOpenChoosePlaylistModal(true)}>
+            <AddToPlaylistIcon/>
             {t('tracks.button.add_to_playlist')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
+            <TextIcon/>
             {t('tracks.button.show_text_song')}
           </DropdownMenuItem>
         </DropdownMenuContent>
