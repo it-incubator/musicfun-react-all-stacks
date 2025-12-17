@@ -1,0 +1,35 @@
+.dialog {
+  width: 100%;
+  max-width: 745px;
+}
+
+.dialog [data-testid='container'] > * {
+  border-radius: 50%;
+}
+
+.form {
+  overflow-y: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 16px;
+}
+
+.imageUploader {
+  width: 280px;
+  margin: 0 auto;
+}
+
+.imageUploader > label,
+.imageUploader div {
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.imageUploader button {
+  top: 40px;
+  right: 40px;
+}

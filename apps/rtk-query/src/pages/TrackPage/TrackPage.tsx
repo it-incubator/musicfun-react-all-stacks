@@ -51,7 +51,7 @@ export const TrackPage = () => {
       />
 
       <Typography variant="h2" className={s.title}>
-        In which playlist is the track?
+        {t('placeholder.which_playlist')}
       </Typography>
 
       {playlists?.data && (

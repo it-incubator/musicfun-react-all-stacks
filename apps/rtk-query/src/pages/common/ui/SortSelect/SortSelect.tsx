@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router'
 import { Select, type SelectProps } from '@/shared/components'
 
 import s from './SortSelect.module.css'
+import { t } from 'i18next'
 
 export const SortSelect = (props: Omit<SelectProps, 'options'>) => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -23,16 +24,16 @@ export const SortSelect = (props: Omit<SelectProps, 'options'>) => {
 
   return (
     <label className={s.selectLabel}>
-      Sort By
+      <span>{t('sort.label')}</span>
       <Select
         {...props}
         value={currentValue}
         onChange={handleSortChange}
         options={[
-          { value: 'addedAt_desc', label: 'Newest first' },
-          { value: 'addedAt_asc', label: 'Oldest first' },
-          { value: 'likesCount_desc', label: 'Most liked' },
-          { value: 'likesCount_asc', label: 'Least liked' },
+          { value: 'addedAt_desc', label: t('sort.newest_first') },
+          { value: 'addedAt_asc', label: t('sort.oldest_first') },
+          { value: 'likesCount_desc', label: t('sort.most_liked') },
+          { value: 'likesCount_asc', label: t('sort.least_liked') },
         ]}
         className={s.select}
       />

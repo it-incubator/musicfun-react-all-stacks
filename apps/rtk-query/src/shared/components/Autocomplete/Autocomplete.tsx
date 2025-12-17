@@ -15,6 +15,7 @@ import { ArrowDownIcon, DeleteIcon } from '@/shared/icons'
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './Autocomplete.module.css'
+import { t } from 'i18next'
 
 export type AutocompleteOption = {
   value: string
@@ -39,7 +40,7 @@ export type AutocompleteProps = {
 
 export const Autocomplete = ({
   label,
-  placeholder = 'Search and select...',
+  placeholder = t('placeholder.search_and_select'),
   options,
   value,
   searchTerm,
@@ -256,7 +257,9 @@ export const Autocomplete = ({
             ) : (
               <div className={s.noResults}>
                 <Typography variant="body2" className={s.noResultsText}>
-                  {searchTerm ? 'No options found' : 'All options selected'}
+                  {searchTerm
+                    ? t('placeholder.no_options_found')
+                    : t('placeholder.all_options_selected')}
                 </Typography>
               </div>
             )}
@@ -283,7 +286,9 @@ export const Autocomplete = ({
             ) : (
               <div className={s.noResults}>
                 <Typography variant="body2" className={s.noResultsText}>
-                  {searchTerm ? 'No options found' : 'All options selected'}
+                  {searchTerm
+                    ? t('placeholder.no_options_found')
+                    : t('placeholder.all_options_selected')}
                 </Typography>
               </div>
             )}
@@ -301,7 +306,7 @@ export const Autocomplete = ({
       {/* Tags counter */}
       {maxTags && (
         <Typography variant="caption" className={s.counter}>
-          {value.length}/{maxTags} selected
+          {value.length}/{maxTags} {t('placeholder.selected')}
         </Typography>
       )}
     </div>

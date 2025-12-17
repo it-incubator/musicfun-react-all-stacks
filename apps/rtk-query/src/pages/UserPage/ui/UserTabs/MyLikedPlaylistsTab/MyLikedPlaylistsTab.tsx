@@ -18,6 +18,7 @@ import {
 import { MoreIcon } from '@/shared/icons'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
+import { t } from 'i18next'
 
 export const MyLikedPlaylistsTab = () => {
   const { userId } = useParams()
@@ -54,7 +55,14 @@ export const MyLikedPlaylistsTab = () => {
                 id={playlist.id}
                 title={playlist.attributes.title}
                 imageSrc={image?.url}
-                description={playlist.attributes.description}
+                userName={playlist.attributes.user.name}
+                isShowReactionButtons={true}
+                reaction={playlist.attributes.currentUserReaction}
+                likesCount={playlist.attributes.likesCount}
+                userId={playlist.attributes.user.id}
+                addedAt={playlist.attributes.addedAt}
+                shouldShowOwnerName
+                shouldShowCreatedDate
                 actions={
                   <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -65,13 +73,13 @@ export const MyLikedPlaylistsTab = () => {
                         onClick={() => {
                           handleOpenEditPlaylistModal(playlist.id)
                         }}>
-                        Edit
+                        {t('button.edit')}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => {
                           removePlaylist(playlist.id)
                         }}>
-                        Delete
+                        {t('button.delete')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
