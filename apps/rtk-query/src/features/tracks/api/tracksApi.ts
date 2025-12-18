@@ -31,49 +31,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         },
       }),
     }),
-    // fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
-    //   query: (params) => {
-    //     const query = buildQueryString(params)
-    //     return `playlists/tracks?${query}`
-    //   },
-    //
-    //   serializeQueryArgs: ({ endpointName, queryArgs }) => {
-    //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    //     const { pageNumber, ...otherParams } = queryArgs
-    //     return [endpointName, otherParams]
-    //   },
-    //
-    //   merge: (currentCacheData, responseData, { arg }) => {
-    //     const currentPage = arg.pageNumber
-    //
-    //     if (currentPage === 1) {
-    //       return responseData
-    //     }
-    //
-    //     if (!currentCacheData?.data || !responseData?.data) {
-    //       return responseData
-    //     }
-    //
-    //     return {
-    //       ...responseData,
-    //       data: [...currentCacheData.data, ...responseData.data],
-    //     }
-    //   },
-    //
-    //   forceRefetch: ({ currentArg, previousArg }) => {
-    //     if (!previousArg) return false
-    //     return currentArg?.pageNumber !== previousArg?.pageNumber
-    //   },
-    //
-    //   providesTags: (result) => [
-    //     ...(result?.data.map((track) => {
-    //       return { type: 'Track' as const, id: track.id }
-    //     }) || []),
-    //     'Track',
-    //   ],
-    //
-    //   keepUnusedDataFor: 60,
-    // }),
+
     fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
       query: (params) => {
         const query = buildQueryString(params) // TODO: возможно, это излишне
@@ -222,9 +180,14 @@ export const tracksAPI = baseApi.injectEndpoints({
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+        const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
+          getState(),
+          'fetchTracksInfinite'
+        )
 
         const patchResults: any[] = []
 
+        // Update fetchTracks cache
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
             dispatch(
@@ -235,15 +198,36 @@ export const tracksAPI = baseApi.injectEndpoints({
                   track.attributes.currentUserReaction = CurrentUserReaction.Like
                 }
               })
-            ),
+            )
+          )
+        })
+
+        // Update fetchTracksInfinite cache
+        infiniteArgs.forEach((_: void) => {
+          patchResults.push(
             dispatch(
-              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-                state.data.attributes.likesCount += 1
-                state.data.attributes.currentUserReaction = CurrentUserReaction.Like
+              tracksAPI.util.updateQueryData('fetchTracksInfinite', undefined, (state) => {
+                state.pages.forEach((page) => {
+                  const track = page.data.find((t: any) => t.id === trackId)
+                  if (track) {
+                    track.attributes.likesCount += 1
+                    track.attributes.currentUserReaction = CurrentUserReaction.Like
+                  }
+                })
               })
             )
           )
         })
+
+        // Update fetchTrackById cache
+        patchResults.push(
+          dispatch(
+            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+              state.data.attributes.likesCount += 1
+              state.data.attributes.currentUserReaction = CurrentUserReaction.Like
+            })
+          )
+        )
 
         try {
           await queryFulfilled
@@ -261,9 +245,14 @@ export const tracksAPI = baseApi.injectEndpoints({
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+        const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
+          getState(),
+          'fetchTracksInfinite'
+        )
 
         const patchResults: any[] = []
 
+        // Update fetchTracks cache
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
             dispatch(
@@ -277,18 +266,42 @@ export const tracksAPI = baseApi.injectEndpoints({
                   track.attributes.currentUserReaction = CurrentUserReaction.Dislike
                 }
               })
-            ),
+            )
+          )
+        })
+
+        // Update fetchTracksInfinite cache
+        infiniteArgs.forEach((_: void) => {
+          patchResults.push(
             dispatch(
-              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-                if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                  state.data.attributes.likesCount -= 1
-                }
-                state.data.attributes.dislikesCount += 1
-                state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike
+              tracksAPI.util.updateQueryData('fetchTracksInfinite', undefined, (state) => {
+                state.pages.forEach((page) => {
+                  const track = page.data.find((t: any) => t.id === trackId)
+                  if (track) {
+                    if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                      track.attributes.likesCount -= 1
+                    }
+                    track.attributes.dislikesCount += 1
+                    track.attributes.currentUserReaction = CurrentUserReaction.Dislike
+                  }
+                })
               })
             )
           )
         })
+
+        // Update fetchTrackById cache
+        patchResults.push(
+          dispatch(
+            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+              if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                state.data.attributes.likesCount -= 1
+              }
+              state.data.attributes.dislikesCount += 1
+              state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike
+            })
+          )
+        )
 
         try {
           await queryFulfilled
@@ -306,9 +319,14 @@ export const tracksAPI = baseApi.injectEndpoints({
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+        const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
+          getState(),
+          'fetchTracksInfinite'
+        )
 
         const patchResults: any[] = []
 
+        // Update fetchTracks cache
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
             dispatch(
@@ -323,21 +341,48 @@ export const tracksAPI = baseApi.injectEndpoints({
                   track.attributes.currentUserReaction = CurrentUserReaction.None
                 }
               })
-            ),
+            )
+          )
+        })
+
+        // Update fetchTracksInfinite cache
+        infiniteArgs.forEach((_: void) => {
+          patchResults.push(
             dispatch(
-              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-                if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                  state.data.attributes.likesCount -= 1
-                } else if (
-                  state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike
-                ) {
-                  state.data.attributes.dislikesCount -= 1
-                }
-                state.data.attributes.currentUserReaction = CurrentUserReaction.None
+              tracksAPI.util.updateQueryData('fetchTracksInfinite', undefined, (state) => {
+                state.pages.forEach((page) => {
+                  const track = page.data.find((t: any) => t.id === trackId)
+                  if (track) {
+                    if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                      track.attributes.likesCount -= 1
+                    } else if (
+                      track.attributes.currentUserReaction === CurrentUserReaction.Dislike
+                    ) {
+                      track.attributes.dislikesCount -= 1
+                    }
+                    track.attributes.currentUserReaction = CurrentUserReaction.None
+                  }
+                })
               })
             )
           )
         })
+
+        // Update fetchTrackById cache
+        patchResults.push(
+          dispatch(
+            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+              if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                state.data.attributes.likesCount -= 1
+              } else if (
+                state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike
+              ) {
+                state.data.attributes.dislikesCount -= 1
+              }
+              state.data.attributes.currentUserReaction = CurrentUserReaction.None
+            })
+          )
+        )
 
         try {
           await queryFulfilled

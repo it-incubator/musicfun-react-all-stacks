@@ -1,12 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMeQuery } from '@/features/auth'
-import {
-  MOCK_TRACKS,
-  TracksTable,
-  useFetchTracksInfiniteInfiniteQuery,
-  useFetchTracksQuery,
-} from '@/features/tracks'
+import { MOCK_TRACKS, TracksTable, useFetchTracksInfiniteInfiniteQuery } from '@/features/tracks'
 import { CircularLoader } from '@/shared/components/Loader/CircularLoader'
 
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
@@ -18,36 +13,25 @@ import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
-import { usePageSearchParams } from '../common/hooks'
+// import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 import { useEffect, useRef } from 'react'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
+  //
+  // const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
+  //   usePageSearchParams()
 
-  const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
-    usePageSearchParams()
-
-  const fetchTracksArgs = {
-    pageNumber,
-    sortBy,
-    sortDirection,
-    search: debouncedSearch,
-    ...(tagsIds.length > 0 && { tagsIds }),
-    ...(artistsIds.length > 0 && { artistsIds }),
-  }
   const {
     data: infiniteData,
     hasNextPage,
     isFetching,
-    isLoading,
     isFetchingNextPage,
     fetchNextPage,
   } = useFetchTracksInfiniteInfiniteQuery()
-  // const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs)
   const pages = infiniteData?.pages.flatMap((p) => p.data) || []
   const observerRef = useRef<HTMLDivElement>(null)
-  // debugger
   const { data: me } = useMeQuery()
 
   const dispatch = useDispatch()
