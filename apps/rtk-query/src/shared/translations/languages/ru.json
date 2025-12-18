@@ -20,7 +20,10 @@
     "edit": "Редактировать",
     "delete": "Удалить",
     "cancel": "Отмена",
-    "update": "Обновить"
+    "update": "Обновить",
+    "edit_profile": "Редактировать профиль",
+    "saving": "Сохранение...",
+    "save_changes": "Сохранить изменения"
   },
   "description": {
     "label": {
@@ -46,6 +49,9 @@
       "edit_playlist": "Редактировать плейлист",
       "new_playlists": "Новые плейлисты",
       "playlists_not_found": "Плейлисты не найдены"
+    },
+    "aria_labels": {
+      "open_playlist": "Открыть плейлист {{title}}"
     }
   },
   "sidebar": {
@@ -60,7 +66,8 @@
     "playlists": "Плейлисты",
     "tracks": "Треки",
     "liked_playlists": "Любимые плейлисты",
-    "liked_tracks": "Любимые треки"
+    "liked_tracks": "Любимые треки",
+    "possessive_case": ""
   },
   "tags": {
     "label": "Хэштеги",
@@ -111,6 +118,17 @@
       "duration": "Длительность"
     }
   },
+  "date": {
+    "today": "сегодня",
+    "yesterday": "вчера",
+    "dayAgo": "{{addedAt}} день назад",
+    "fewDaysAgo": "{{addedAt}} дня назад",
+    "daysAgo": "{{addedAt}} дней назад",
+    "monthAgo": "{{addedAt}} месяц назад",
+    "fewMonthAgo": "{{addedAt}} месяца назад",
+    "monthsAgo": "{{addedAt}} месяцев назад",
+    "created": "Создан"
+  },
   "sort": {
     "label": "Сортировать по",
     "newest_first": "Сначала новые",
@@ -125,5 +143,32 @@
     "no_options_found": "Ничего не найдено",
     "all_options_selected": "Выбраны все",
     "which_playlist": "В каком плейлисте находится трек?"
+  },
+  "profile": {
+    "title": {
+      "edit_profile": "Редактировать профиль",
+      "required_name": "Имя обязательно",
+      "required_surname": "Фамилия обязательна",
+      "max_value_name": "Имя должно быть меньше {{ quantity }} символов",
+      "min_value_name": "Имя должно содержать не менее {{ quantity }} символов",
+      "max_value_surname": "Фамилия должна быть меньше {{ quantity }} символов",
+      "min_value_surname": "Фамилия должна содержать не менее {{ quantity }} символов"
+    },
+    "placeholder": {
+      "enter_profile_name": "Введите имя профиля",
+      "enter_profile_surname": "Введите фамилию профиля",
+      "upload_avatar": "Загрузить аватар"
+    },
+    "label": {
+      "name": "Имя",
+      "surname": "Фамилия"
+    }
+  },
+  "playlist": {
+    "made_for": "Сделан для",
+    "tracks_count_one": "{{count}} трек",
+    "tracks_count_few": "{{count}} трека",
+    "tracks_count_many": "{{count}} треков",
+    "tracks_count_other": "{{count}} треков"
   }
 }

@@ -1,21 +1,47 @@
-import { useMeQuery } from '@/features/auth'
-import { Typography } from '@/shared/components'
+import {useTranslation} from 'react-i18next'
+import {selectProfileAvatar, selectProfileFullName, useEditProfileModal} from '@/features/profile'
+import {Avatar, Button, Typography} from '@/shared/components'
+import {useAppSelector} from '@/shared/hooks'
+import {EditIcon} from '@/shared/icons'
 
 import s from './UserInfo.module.css'
+import {useOwnerData} from "@/pages/UserPage/hooks";
 
 export const UserInfo = () => {
-  const { data: user } = useMeQuery()
+    const {t} = useTranslation()
 
-  return (
-    <div className={s.box}>
-      <div className={s.avatar}>
-        <img src={'https://unsplash.it/192/192'} alt="User avatar" />
-      </div>
-      <Typography variant="h2">{user?.login}</Typography>
+    const {isProfileOwner, userLogin} = useOwnerData()
 
-      {/* TODO: Backend don't return this data 😢 */}
+    const {handleOpenEditProfileModal} = useEditProfileModal()
+    const profileAvatarUrl = useAppSelector(selectProfileAvatar)
+    const profileFullName = useAppSelector(selectProfileFullName)
 
-      {/* <dl className={s.descriptionList}>
+    let userFullName
+    if (isProfileOwner && profileFullName.name) {
+        userFullName = `${profileFullName.name} ${profileFullName.surname}`
+    } else {
+        userFullName = userLogin
+    }
+
+    return (
+        <div className={s.box}>
+            <Avatar src={profileAvatarUrl}
+                    fullName={isProfileOwner ? profileFullName : undefined}
+                    userLogin={userLogin}/>
+            <Typography variant="h2">
+                {userFullName}
+            </Typography>
+            {isProfileOwner && <Button
+                className={s.editButton}
+                variant="secondary"
+                onClick={handleOpenEditProfileModal}>
+                <EditIcon/>
+                {t('button.edit_profile')}
+            </Button>}
+
+            {/* TODO: Backend don't return this data 😢 */}
+
+            {/* <dl className={s.descriptionList}>
         <div className={s.descriptionItem}>
           <Typography as="dd" variant="body1">
             58
@@ -33,6 +59,6 @@ export const UserInfo = () => {
           </Typography>
         </div>
       </dl> */}
-    </div>
-  )
+        </div>
+    )
 }

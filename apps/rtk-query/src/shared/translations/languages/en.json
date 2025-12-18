@@ -20,7 +20,10 @@
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
-    "update": "Update"
+    "update": "Update",
+    "edit_profile": "Edit profile",
+    "saving": "Saving...",
+    "save_changes": "Save Changes"
   },
   "description": {
     "label": {
@@ -46,6 +49,9 @@
       "edit_playlist": "Edit Playlist",
       "new_playlists": "New playlists",
       "playlists_not_found": "No playlists found"
+    },
+    "aria_labels": {
+      "open_playlist": "Open playlist {{title}}"
     }
   },
   "sidebar": {
@@ -60,7 +66,8 @@
     "playlists": "Playlists",
     "tracks": "Tracks",
     "liked_playlists": "Liked Playlists",
-    "liked_tracks": "Liked Tracks"
+    "liked_tracks": "Liked Tracks",
+    "possessive_case": "'s"
   },
   "tags": {
     "label": "Hashtags",
@@ -125,5 +132,38 @@
     "no_options_found": "No options found",
     "all_options_selected": "All options selected",
     "which_playlist": "In which playlist is the track?"
+  },
+  "profile": {
+    "title": {
+      "edit_profile": "Edit profile",
+      "max_value_name": "Name must be less than {{ quantity }} characters",
+      "min_value_name": "Name must be at least {{ quantity }} characters",
+      "max_value_surname": "Surname must be less than {{ quantity }} characters",
+      "min_value_surname": "Surname must be at least {{ quantity }} characters",
+      "required_name": "Name is required",
+      "required_surname": "Surname is required"
+    },
+    "placeholder": {
+      "enter_profile_name": "Enter profile name",
+      "enter_profile_surname": "Enter profile surname",
+      "upload_avatar": "Upload Avatar"
+    },
+    "label": {
+      "name": "Name",
+      "surname": "Surname"
+    }
+  },
+  "date": {
+    "today": "today",
+    "dayAgo": "{{addedAt}} day ago",
+    "daysAgo": "{{addedAt}} days ago",
+    "monthAgo": "{{addedAt}} month ago",
+    "monthsAgo": "{{addedAt}} months ago",
+    "created": "Created"
+  },
+  "playlist": {
+    "made_for": "Made for",
+    "tracks_count_one": "{{count}} track",
+    "tracks_count_other": "{{count}} tracks"
   }
 }
