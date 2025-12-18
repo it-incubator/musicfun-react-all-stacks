@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-
 import { useMeQuery } from '@/features/auth'
 import {
   MOCK_TRACKS,
@@ -8,6 +7,8 @@ import {
   useFetchTracksInfiniteInfiniteQuery,
   useFetchTracksQuery,
 } from '@/features/tracks'
+import { CircularLoader } from '@/shared/components/Loader/CircularLoader'
+
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { loadPlaylist } from '@/player'
@@ -19,6 +20,7 @@ import { getImageByType } from '@/shared/utils'
 import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
 import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
+import { useEffect, useRef } from 'react'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
@@ -44,6 +46,7 @@ export const TracksPage = () => {
   } = useFetchTracksInfiniteInfiniteQuery()
   // const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs)
   const pages = infiniteData?.pages.flatMap((p) => p.data) || []
+  const observerRef = useRef<HTMLDivElement>(null)
   // debugger
   const { data: me } = useMeQuery()
 
@@ -75,6 +78,29 @@ export const TracksPage = () => {
       fetchNextPage()
     }
   }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMoreHandler()
+        }
+      },
+      {
+        threshold: 0.1,
+        root: null,
+        rootMargin: '100px',
+      }
+    )
+    if (observerRef.current) {
+      observer.observe(observerRef.current)
+    }
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current)
+      }
+    }
+  }, [hasNextPage, isFetching, loadMoreHandler])
 
   return (
     <PageWrapper>
@@ -136,17 +162,17 @@ export const TracksPage = () => {
           />
         )}
       />
-      {!isLoading && (
-        <>
-          {hasNextPage ? (
-            <button onClick={loadMoreHandler} disabled={isFetching}>
-              {isFetchingNextPage ? 'Loading...' : 'Load More'}
-            </button>
+
+      {hasNextPage && (
+        <div ref={observerRef}>
+          {isFetchingNextPage ? (
+            <CircularLoader size="5rem" color="secondary" />
           ) : (
-            <p>Nothing more to load</p>
+            <div style={{ height: '10px' }} />
           )}
-        </>
+        </div>
       )}
+      {!hasNextPage && pages.length > 0 && <p>Nothing more to load</p>}
     </PageWrapper>
   )
 }

@@ -27,7 +27,7 @@
 
 .card:hover .image {
   transform: scale(1.02);
-  opacity: 0.80;
+  opacity: 0.8;
 }
 
 .image img {
@@ -55,8 +55,7 @@
 .detailsRow {
   display: flex;
   gap: 4px;
-  min-width: 0
-
+  min-width: 0;
 }
 
 .dot::before {
@@ -74,7 +73,6 @@
   width: 100%;
   min-width: 0;
 }
-
 
 .userLink {
   cursor: pointer;
@@ -118,6 +116,3 @@
   flex-shrink: 0;
   white-space: nowrap;
 }
-
-
-
