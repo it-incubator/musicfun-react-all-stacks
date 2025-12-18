@@ -1,5 +1,5 @@
 .wrapper {
-  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--header-height) - var(--player-height));
   padding: 30px 40px;
   background: linear-gradient(
     180deg,

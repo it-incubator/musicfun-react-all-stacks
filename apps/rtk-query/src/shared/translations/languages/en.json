@@ -91,7 +91,8 @@
       "tracks_not_found": "Tracks not found",
       "upload": "Upload",
       "choose_track": "Choose track",
-      "upload_track": "Upload track"
+      "upload_track": "Upload track",
+      "go_back": "Go back"
     },
     "label": {
       "lyrics": "Lyrics",
@@ -101,7 +102,8 @@
     "placeholder": {
       "lyrics": "Enter track lyrics",
       "search_tracks": "Search tracks",
-      "title": "Enter track title"
+      "title": "Enter track title",
+      "no_lyrics": "No lyrics available for this track"
     },
     "title": {
       "all_tracks": "All tracks",

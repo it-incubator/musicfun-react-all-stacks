@@ -4,6 +4,7 @@ import { OAuthCallback } from '@/features/auth'
 import { Layout } from '@/layout'
 import { MainPage, PlaylistPage, PlaylistsPage, TrackPage, TracksPage, UserPage } from '@/pages'
 import { Paths } from '@/shared/configs'
+import { TrackLyricsPage } from '@/pages/TrackLyricsPage'
 
 export const Routing = () => (
   <Routes>
@@ -12,6 +13,7 @@ export const Routing = () => (
 
       <Route path={Paths.Tracks} element={<TracksPage />} />
       <Route path={`${Paths.Tracks}/:id`} element={<TrackPage />} />
+      <Route path={`${Paths.TracksLyrics}/:id`} element={<TrackLyricsPage />} />
 
       <Route path={Paths.Playlists} element={<PlaylistsPage />} />
       <Route path={`${Paths.Playlists}/:id`} element={<PlaylistPage />} />

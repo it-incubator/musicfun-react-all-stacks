@@ -4,6 +4,7 @@ export const Paths = {
   Playlists: '/playlists',
   Profile: '/user',
   Tracks: '/tracks',
+  TracksLyrics: '/tracks/lyrics',
   OAuthRedirect: '/oauth/callback',
   Artists: '/artists',
   Tags: '/tags',
