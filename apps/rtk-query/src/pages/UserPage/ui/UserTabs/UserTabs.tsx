@@ -6,19 +6,19 @@ import {LikedTracksTab} from './LikedTracksTab'
 import {MyLikedPlaylistsTab} from './MyLikedPlaylistsTab'
 import {PlaylistsTab} from './PlaylistsTab'
 import {TracksTab} from './TracksTab/TracksTab'
-import {useGetUserPageData} from "@/pages/UserPage/model";
+import {useOwnerData} from "@/pages/UserPage/hooks";
 
 export const UserTabs = () => {
     const {t} = useTranslation()
-    const {isProfileOwner, userName} = useGetUserPageData()
+    const {isProfileOwner, userLogin} = useOwnerData()
 
     return (
         <Tabs defaultValue="playlists">
             <TabsList>
                 <TabsTrigger value="playlists">{t('tabs.playlists')}
-                    {!isProfileOwner && userName && ` ${userName}'s`}</TabsTrigger>
+                    {!isProfileOwner && userLogin && ` ${userLogin}${t('tabs.possessive_case')}`}</TabsTrigger>
                 <TabsTrigger value="tracks">{t('tabs.tracks')}
-                    {!isProfileOwner && userName && ` ${userName}'s`}</TabsTrigger>
+                    {!isProfileOwner && userLogin && ` ${userLogin}${t('tabs.possessive_case')}`}</TabsTrigger>
                 {isProfileOwner && (
                     <>
                         <TabsTrigger value="liked-playlists">{t('tabs.liked_playlists')}</TabsTrigger>

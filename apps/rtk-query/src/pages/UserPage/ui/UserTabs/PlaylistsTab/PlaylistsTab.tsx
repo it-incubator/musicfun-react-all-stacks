@@ -1,43 +1,33 @@
 import {useTranslation} from 'react-i18next'
-import {useParams} from 'react-router'
 
 import {
     PlaylistCard,
     useCreatePlaylistModal,
     useEditPlaylistModal,
-    useFetchPlaylistsQuery,
     useRemovePlaylistMutation,
 } from '@/features/playlists'
 import {ContentList} from '@/pages/common'
-import {
-    Button,
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/shared/components'
+import {Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from '@/shared/components'
 import {MoreIcon} from '@/shared/icons'
 import {ImageType} from '@/shared/types/commonApi.types'
 import {getImageByType} from '@/shared/utils'
 
 import s from './PlaylistsTab.module.css'
+import {useOwnerData} from "@/pages/UserPage/hooks";
 
 export const PlaylistsTab = () => {
     const {t} = useTranslation()
-
-    const {userId} = useParams()
+    const {isProfileOwner, playlists} = useOwnerData()
 
     const {handleOpenCreatePlaylistModal} = useCreatePlaylistModal()
     const {handleOpenEditPlaylistModal} = useEditPlaylistModal()
     const [removePlaylist] = useRemovePlaylistMutation()
 
-    const {data: playlists} = useFetchPlaylistsQuery({userId: userId!})
-
     return (
         <>
-            <Button className={s.createPlaylistButton} onClick={handleOpenCreatePlaylistModal}>
+            {isProfileOwner && <Button className={s.createPlaylistButton} onClick={handleOpenCreatePlaylistModal}>
                 {t('playlists.button.create_playlist')}
-            </Button>
+            </Button>}
 
             {playlists?.data && (
                 <ContentList
@@ -52,7 +42,7 @@ export const PlaylistsTab = () => {
 
 
                                 actions={
-                                    <DropdownMenu>
+                                    isProfileOwner && <DropdownMenu>
                                         <DropdownMenuTrigger>
                                             <MoreIcon/>
                                         </DropdownMenuTrigger>

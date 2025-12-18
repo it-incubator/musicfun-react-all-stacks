@@ -1,4 +1,4 @@
-import {TracksTable, useCreateTrackModal, useEditTrackModal,} from '@/features/tracks'
+import {TracksTable, useCreateTrackModal,} from '@/features/tracks'
 import {TrackActions} from '@/features/tracks/ui/TrackActions/TrackActions'
 import {TrackRow} from '@/features/tracks/ui/TrackRow/TrackRow'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
@@ -8,19 +8,19 @@ import {getImageByType} from '@/shared/utils'
 
 import s from './TracksTab.module.css'
 import {t} from 'i18next'
-import {useGetUserPageData} from "@/pages/UserPage/model";
+import {useOwnerData} from "@/pages/UserPage/hooks";
+
 
 export const TracksTab = () => {
-    const {isProfileOwner, tracks} = useGetUserPageData()
+    const {isProfileOwner, tracks} = useOwnerData()
     const {handleOpenCreateTrackModal} = useCreateTrackModal()
-    const {handleOpenEditTrackModal} = useEditTrackModal()
 
     // FIXME: temporary build fix, need to add url
     return (
         <>
-            <Button className={s.uploadTrackButton} onClick={handleOpenCreateTrackModal}>
+            {isProfileOwner && <Button className={s.uploadTrackButton} onClick={handleOpenCreateTrackModal}>
                 {t('tracks.button.upload_track')}
-            </Button>
+            </Button>}
             <TracksTable
                 trackRows={
                     tracks?.data?.map((track, index) => {
