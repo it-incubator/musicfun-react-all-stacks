@@ -1,28 +1,30 @@
-import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router'
+import {useTranslation} from 'react-i18next'
+import {useParams} from 'react-router'
 
-import { useMeQuery } from '@/features/auth'
-import { PlaylistCard, useFetchPlaylistsQuery } from '@/features/playlists'
-import { TrackOverview, useFetchTrackByIdQuery } from '@/features/tracks'
-import { Typography } from '@/shared/components'
-import { ImageType } from '@/shared/types/commonApi.types'
-import { getImageByType } from '@/shared/utils'
+import {useMeQuery} from '@/features/auth'
+import {PlaylistCard, useFetchPlaylistsQuery} from '@/features/playlists'
+import {TrackOverview, useFetchTrackByIdQuery} from '@/features/tracks'
+import {Typography} from '@/shared/components'
+import {ImageType} from '@/shared/types/commonApi.types'
+import {getImageByType} from '@/shared/utils'
 
-import { ContentList, PageWrapper } from '../common'
+import {ContentList, PageWrapper} from '../common'
 import s from './TrackPage.module.css'
-import { ControlPanel } from './ui/ControlPanel'
+import {ControlPanel} from './ui/ControlPanel'
 
 export const TrackPage = () => {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
 
-  const { id } = useParams()
-  const { data: track } = useFetchTrackByIdQuery({ trackId: id! })
-  const { data: me } = useMeQuery()
+  const {id} = useParams()
+  const {data: track} = useFetchTrackByIdQuery({trackId: id!})
+  const {data: me} = useMeQuery()
+  const isTrackOwner = me?.userId === track?.data.attributes.user.id
+
 
   // TODO: backend don't return user id for track
-  // const isOwnTrack = me?.userId === track?.data.attributes.user.id
 
-  const { data: playlists } = useFetchPlaylistsQuery({ trackId: id! })
+
+  const {data: playlists} = useFetchPlaylistsQuery({trackId: id!})
 
   if (!track) {
     return <div>{t('tracks.title.tracks_not_found')}</div>
@@ -43,7 +45,7 @@ export const TrackPage = () => {
 
       <ControlPanel
         trackId={track.data.id}
-        isOwnTrack={false}
+        isOwnTrack={isTrackOwner}
         reaction={track.data.attributes.currentUserReaction}
         likesCount={track.data.attributes.likesCount}
       />
@@ -61,7 +63,7 @@ export const TrackPage = () => {
               id={playlist.id}
               title={playlist.attributes.title}
               imageSrc={getImageByType(playlist.attributes.images, ImageType.ORIGINAL)?.url}
-              description={playlist.attributes.description}
+              
             />
           )}
         />
