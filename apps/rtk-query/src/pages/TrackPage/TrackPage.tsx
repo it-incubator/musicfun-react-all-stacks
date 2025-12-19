@@ -63,7 +63,7 @@ export const TrackPage = () => {
               id={playlist.id}
               title={playlist.attributes.title}
               imageSrc={getImageByType(playlist.attributes.images, ImageType.ORIGINAL)?.url}
-              description={playlist.attributes.description}
+              
             />
           )}
         />

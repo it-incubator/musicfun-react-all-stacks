@@ -19,11 +19,13 @@ import {
   type ReactionButtonsSize,
 } from '@/shared/components'
 import { DropdownMenu } from '@/shared/components'
-import {AddToPlaylistIcon, EditIcon, MoreIcon, TextIcon} from '@/shared/icons'
+import { AddToPlaylistIcon, EditIcon, MoreIcon, TextIcon } from '@/shared/icons'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
 
 import { useEditTrackModal } from '../../model/hooks'
 import { syncTrackPlaylists } from '../../utils/playlistSync'
+import { useNavigate } from 'react-router'
+import { Paths } from '@/shared/configs'
 
 type TrackActionsPropsBase = {
   trackId: string
@@ -61,6 +63,8 @@ export const TrackActions = ({
 
   const [playlistIds, setPlaylistIds] = useState<string[]>([])
 
+  const navigate = useNavigate()
+
   // update playlistIds when playlists change
   useEffect(() => {
     if (playlists?.data) {
@@ -95,16 +99,16 @@ export const TrackActions = ({
         <DropdownMenuContent>
           {isOwner && (
             <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackId)}>
-              <EditIcon/>
+              <EditIcon />
               {t('tracks.button.edit')}
             </DropdownMenuItem>
           )}
           <DropdownMenuItem onClick={() => setIsOpenChoosePlaylistModal(true)}>
-            <AddToPlaylistIcon/>
+            <AddToPlaylistIcon />
             {t('tracks.button.add_to_playlist')}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
-            <TextIcon/>
+          <DropdownMenuItem onClick={() => navigate(`${Paths.TracksLyrics}/${trackId}`)}>
+            <TextIcon />
             {t('tracks.button.show_text_song')}
           </DropdownMenuItem>
         </DropdownMenuContent>
