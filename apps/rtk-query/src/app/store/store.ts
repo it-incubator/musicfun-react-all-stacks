@@ -6,6 +6,9 @@ import { tracksSlice } from '@/features/tracks'
 import { playerMiddleware, playerSlice } from '@/player'
 
 import { baseApi } from '../api'
+import additionalLoadingReducer from './additionalLoadingSlice'
+
+import type { AdditionalLoadingState } from './additionalLoadingSlice.types'
 
 export const store = configureStore({
   reducer: {
@@ -14,10 +17,19 @@ export const store = configureStore({
     [playlistsSlice.name]: playlistsSlice.reducer,
     [tracksSlice.name]: tracksSlice.reducer,
     [playerSlice.name]: playerSlice.reducer,
+    additionalLoading: additionalLoadingReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(baseApi.middleware).concat(playerMiddleware),
 })
 
-export type RootState = ReturnType<typeof store.getState>
+export interface RootState {
+  [baseApi.reducerPath]: ReturnType<typeof baseApi.reducer>
+  [authSlice.name]: ReturnType<typeof authSlice.reducer>
+  [playlistsSlice.name]: ReturnType<typeof playlistsSlice.reducer>
+  [tracksSlice.name]: ReturnType<typeof tracksSlice.reducer>
+  [playerSlice.name]: ReturnType<typeof playerSlice.reducer>
+  additionalLoading: AdditionalLoadingState
+}
+
 export type AppDispatch = typeof store.dispatch

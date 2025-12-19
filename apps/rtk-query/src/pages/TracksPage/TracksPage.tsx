@@ -1,7 +1,12 @@
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMeQuery } from '@/features/auth'
-import { MOCK_TRACKS, TracksTable, useFetchTracksInfiniteInfiniteQuery } from '@/features/tracks'
+import {
+  MOCK_TRACKS,
+  TracksTable,
+  useFetchTracksInfiniteInfiniteQuery,
+  useFetchTracksQuery,
+} from '@/features/tracks'
 import { CircularLoader } from '@/shared/components/Loader/CircularLoader'
 
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
@@ -16,6 +21,7 @@ import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
 // import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 import { useEffect, useRef } from 'react'
+import { setAdditionalLoading } from '@/app/store/additionalLoadingSlice'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
@@ -58,8 +64,12 @@ export const TracksPage = () => {
   }
 
   const loadMoreHandler = () => {
-    if (hasNextPage && !isFetching) {
-      fetchNextPage()
+    // was isFetching
+    if (hasNextPage && !isFetchingNextPage) {
+      dispatch(setAdditionalLoading(true))
+      fetchNextPage().finally(() => {
+        dispatch(setAdditionalLoading(false))
+      })
     }
   }
 
