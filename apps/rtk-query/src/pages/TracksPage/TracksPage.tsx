@@ -1,13 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMeQuery } from '@/features/auth'
-import {
-  MOCK_TRACKS,
-  TracksTable,
-  useFetchTracksInfiniteInfiniteQuery,
-  useFetchTracksQuery,
-} from '@/features/tracks'
-import { CircularLoader } from '@/shared/components/Loader/CircularLoader'
+import { MOCK_TRACKS, TracksTable, useFetchTracksInfiniteInfiniteQuery } from '@/features/tracks'
+import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
 
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
@@ -18,16 +13,12 @@ import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
-// import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 import { useEffect, useRef } from 'react'
 import { setAdditionalLoading } from '@/app/store/additionalLoadingSlice'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
-  //
-  // const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
-  //   usePageSearchParams()
 
   const {
     data: infiniteData,
@@ -159,11 +150,7 @@ export const TracksPage = () => {
 
       {hasNextPage && (
         <div ref={observerRef}>
-          {isFetchingNextPage ? (
-            <CircularLoader size="5rem" color="secondary" />
-          ) : (
-            <div style={{ height: '10px' }} />
-          )}
+          {isFetchingNextPage ? <Spinner size={50} /> : <div style={{ height: '10px' }} />}
         </div>
       )}
       {!hasNextPage && pages.length > 0 && <p>Nothing more to load</p>}
