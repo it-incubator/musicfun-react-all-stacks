@@ -1,5 +1,6 @@
 export * from './ui/ContentList'
-export * from './ui/PageWrapper'
+export * from './ui/PageWithHeader'
+export * from './ui/PageWithoutHeader'
 export * from './ui/SearchTags'
 export * from './ui/SearchTextField'
 export * from './ui/SortSelect'

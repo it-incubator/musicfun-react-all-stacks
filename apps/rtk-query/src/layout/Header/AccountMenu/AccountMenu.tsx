@@ -13,7 +13,7 @@ import {
 import { Paths } from '@/shared/configs'
 import { LogoutIcon, ProfileIcon } from '@/shared/icons'
 
-import { useLogoutMutation } from '../../../features/auth/api'
+import { useLogoutMutation } from '@/features/auth'
 import s from './AccountMenu.module.css'
 
 type AccountMenuProps = {

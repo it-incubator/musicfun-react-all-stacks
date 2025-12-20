@@ -5,5 +5,5 @@
   flex-direction: column;
 
   height: calc(100vh - var(--header-height) - var(--player-height));
-  padding: 0 30px;
+  padding: var(--header-height) 30px 0;
 }

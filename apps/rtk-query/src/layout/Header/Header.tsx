@@ -16,6 +16,8 @@ import { LanguageIcon } from '@/shared/icons/LanguageIcon.tsx'
 import { setLocale } from '@/shared/utils'
 
 import s from './Header.module.css'
+import { useLocation } from 'react-router'
+import { Paths } from '@/shared/configs'
 
 export const Header = () => {
   const { t } = useTranslation()
@@ -26,8 +28,15 @@ export const Header = () => {
   const profileAvatarUrl = useAppSelector(selectProfileAvatar)
   const profileFullName = useAppSelector(selectProfileFullName)
 
+  const location = useLocation()
+  const hasColorBg = ([Paths.Playlists, Paths.Tracks, Paths.Main] as string[]).includes(
+    location.pathname
+  )
+
   return (
-    <header className={s.header}>
+    <header
+      className={s.header}
+      style={{ backgroundColor: hasColorBg ? 'var(--color-bg-primary)' : '' }}>
       <div className={s.logo}>Musicfun</div>
       <div className={s.actions}>
         <DropdownMenu>
