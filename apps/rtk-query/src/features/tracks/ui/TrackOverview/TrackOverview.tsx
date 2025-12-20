@@ -26,7 +26,7 @@ export const TrackOverview = ({
   ...props
 }: TrackOverviewProps) => {
   return (
-    <div style={{ border: '2px solid yellow' }} className={clsx(s.container, className)} {...props}>
+    <div className={clsx(s.container, className)} {...props}>
       <div className={s.imageContainer}>
         <img src={image} alt="" aria-hidden />
       </div>

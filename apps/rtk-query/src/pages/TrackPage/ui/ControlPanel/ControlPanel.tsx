@@ -20,7 +20,7 @@ export const ControlPanel = ({
   }
 
   return (
-    <div style={{ border: '2px solid red' }} className={s.box}>
+    <div className={s.box}>
       <IconButton onClick={onClickHandler} className={s.playButton}>
         {/*//todo: play the track*/}
         <PlayIcon />
