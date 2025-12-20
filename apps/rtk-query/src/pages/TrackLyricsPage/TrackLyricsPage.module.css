@@ -1,8 +1,11 @@
 .trackLyricsPage {
   --page-gradient-color: #9a3426;
+  padding-block: 0;
 }
 
 .header {
+  display: flex;
+  justify-content: space-between;
   height: var(--header-height);
 }
 

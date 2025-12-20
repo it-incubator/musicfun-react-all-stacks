@@ -1,5 +1,6 @@
 .trackPage {
   --page-gradient-color: #9a3426;
+  padding-block: 0;
 }
 
 .trackOverview {
