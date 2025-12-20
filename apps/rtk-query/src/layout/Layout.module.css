@@ -4,19 +4,9 @@
   height: 100vh;
 }
 
-.gridCompact {
-  grid-template: 'header main' var(--header-height) 'sidebar main' 1fr / 310px 1fr;
-}
-
 .grid.playerOpen {
   grid-template:
     'header header' var(--header-height)
-    'sidebar main' 1fr 'player player' var(--player-height) / 310px 1fr;
-}
-
-.gridCompact.playerOpen {
-  grid-template:
-    'header main' var(--header-height)
     'sidebar main' 1fr 'player player' var(--player-height) / 310px 1fr;
 }
 

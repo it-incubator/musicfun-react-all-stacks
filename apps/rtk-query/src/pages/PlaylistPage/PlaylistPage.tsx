@@ -11,7 +11,6 @@ import { getImageByType } from '@/shared/utils'
 import { PageWrapper } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
-import { PageHeader } from '@/pages/common/ui/PageHeader'
 
 export const PlaylistPage = () => {
   const { t } = useTranslation()
@@ -33,7 +32,6 @@ export const PlaylistPage = () => {
 
   return (
     <PageWrapper className={s.playlistPage}>
-      <PageHeader />
       <PlaylistOverview
         className={s.playlistOverview}
         title={playlist.data.attributes.title}

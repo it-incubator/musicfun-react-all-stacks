@@ -1,10 +1,11 @@
 import clsx from 'clsx'
-import { Outlet, useLocation } from 'react-router'
+import { Outlet } from 'react-router'
 
 import { LoginModal } from '@/features/auth'
 import { selectIsAuthModalOpen } from '@/features/auth/model'
 import { CreateEditPlaylistModal, selectIsCreateEditModalOpen } from '@/features/playlists'
-import { EditProfileModal, selectIsEditProfileModalOpen } from '@/features/profile'
+import { selectIsEditProfileModalOpen } from '@/features/profile'
+import { EditProfileModal } from '@/features/profile'
 import { CreateEditTrackModal, selectIsCreateEditTrackModalOpen } from '@/features/tracks'
 import { AppLoader } from '@/layout/AppLoader'
 import { useAppSelector } from '@/shared/hooks'
@@ -13,7 +14,6 @@ import { Player } from '@/widgets/Player'
 import { Header } from './Header'
 import s from './Layout.module.css'
 import { Sidebar } from './Sidebar'
-import { isCompactHeaderPath } from '@/shared/utils'
 
 export const Layout = () => {
   const IS_PLAYER_OPEN = true
@@ -22,19 +22,12 @@ export const Layout = () => {
   const isAuthModalOpen = useAppSelector(selectIsAuthModalOpen)
   const isEditProfileOpen = useAppSelector(selectIsEditProfileModalOpen)
 
-  const { pathname } = useLocation()
-  const headerVariant = isCompactHeaderPath(pathname) ? 'compact' : 'default'
-
   return (
     <>
       <AppLoader />
-      <div
-        className={clsx(
-          s.grid,
-          headerVariant === 'compact' ? s.gridCompact : '',
-          IS_PLAYER_OPEN && s.playerOpen
-        )}>
-        <Header variant={headerVariant} />
+      <div className={clsx(s.grid, IS_PLAYER_OPEN && s.playerOpen)}>
+        <Header />
+
         <Sidebar />
         <main className={s.main}>
           <Outlet />

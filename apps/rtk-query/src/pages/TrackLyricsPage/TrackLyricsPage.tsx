@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router'
 import { useFetchTrackByIdQuery } from '@/features/tracks'
 import { ArrowBackIcon } from '@/shared/icons/ArrowBackIcon.tsx'
 import { useTranslation } from 'react-i18next'
-import { HeaderActions } from '@/pages/common/ui/HeaderActions'
 
 export const TrackLyricsPage = () => {
   const { t } = useTranslation()
@@ -18,7 +17,7 @@ export const TrackLyricsPage = () => {
   return (
     <>
       <PageWrapper className={s.trackLyricsPage}>
-        <header className={s.header}>
+        <div>
           <button
             type="button"
             className={s.button}
@@ -28,8 +27,7 @@ export const TrackLyricsPage = () => {
             <ArrowBackIcon />
             {t('tracks.button.go_back')}
           </button>
-          <HeaderActions />
-        </header>
+        </div>
         <div className={s.trackTextWrapper}>
           {!isLoading && <p className={s.trackText}>{trackText}</p>}
         </div>
