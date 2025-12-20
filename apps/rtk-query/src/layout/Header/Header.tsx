@@ -34,6 +34,7 @@ export const Header = () => {
           <DropdownMenuTrigger>
             <LanguageIcon />
           </DropdownMenuTrigger>
+
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => setLocale('en')}>English</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setLocale('ru')}>Русский</DropdownMenuItem>

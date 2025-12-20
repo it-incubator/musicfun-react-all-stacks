@@ -92,7 +92,8 @@
       "upload": "Загрузить",
       "choose_track": "Выбрать трек",
       "upload_track": "Загрузить трек",
-      "go_back": "Назад"
+      "go_back": "Назад",
+      "delete_from_playlist": "Удалить из плейлиста"
     },
     "label": {
       "lyrics": "Текст песни",

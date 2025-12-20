@@ -36,7 +36,8 @@
   "playlists": {
     "button": {
       "choose_playlist": "Choose playlist",
-      "create_playlist": "Create playlist"
+      "create_playlist": "Create playlist",
+      "edit": "Edit"
     },
     "placeholder": {
       "enter_playlist_description": "Enter playlist description",
@@ -92,7 +93,8 @@
       "upload": "Upload",
       "choose_track": "Choose track",
       "upload_track": "Upload track",
-      "go_back": "Go back"
+      "go_back": "Go back",
+      "delete_from_playlist": "Delete from playlist"
     },
     "label": {
       "lyrics": "Lyrics",
