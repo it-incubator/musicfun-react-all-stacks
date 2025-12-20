@@ -7,7 +7,7 @@ import { TrackRowContainer, TracksTable, useFetchTracksInPlaylistQuery } from '@
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { PageWrapper } from '../common'
+import { PageWithoutHeader } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
@@ -30,7 +30,7 @@ export const PlaylistPage = () => {
   const playlistCover = getImageByType(playlist?.data.attributes.images, ImageType.ORIGINAL)
 
   return (
-    <PageWrapper className={s.playlistPage}>
+    <PageWithoutHeader className={s.playlistPage}>
       <PlaylistOverview
         className={s.playlistOverview}
         title={playlist.data.attributes.title}
@@ -69,6 +69,6 @@ export const PlaylistPage = () => {
           )}
         />
       )}
-    </PageWrapper>
+    </PageWithoutHeader>
   )
 }

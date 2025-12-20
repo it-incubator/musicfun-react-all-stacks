@@ -1,5 +1,7 @@
 .trackLyricsPage {
   --page-gradient-color: #9a3426;
+
+  position: relative;
 }
 
 .header {
@@ -16,6 +18,10 @@
   all: unset;
 
   cursor: pointer;
+
+  position: absolute;
+  z-index: 2;
+  top: 20px;
 
   display: flex;
   gap: 12px;

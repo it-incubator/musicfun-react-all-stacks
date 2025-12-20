@@ -11,7 +11,7 @@ import { Pagination, Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { ContentList, PageWithHeader, SearchTags, SearchTextField, SortSelect } from '../common'
 import { usePageSearchParams } from '../common/hooks'
 import s from './PlaylistsPage.module.css'
 
@@ -33,7 +33,7 @@ export const PlaylistsPage = () => {
   const pagesCount = playlists?.meta.pagesCount || 1
 
   return (
-    <PageWrapper>
+    <PageWithHeader>
       <Typography variant="h2" as="h1" className={s.title}>
         {t('playlists.title.all_playlists')}
       </Typography>
@@ -81,6 +81,6 @@ export const PlaylistsPage = () => {
         pagesCount={pagesCount}
         onPageChange={handlePageChange}
       />
-    </PageWrapper>
+    </PageWithHeader>
   )
 }

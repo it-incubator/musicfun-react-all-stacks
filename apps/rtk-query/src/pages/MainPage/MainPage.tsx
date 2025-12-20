@@ -12,7 +12,7 @@ import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper } from '../common'
+import { ContentList, PageWithHeader } from '../common'
 import s from './MainPage.module.css'
 
 export const MainPage = () => {
@@ -32,7 +32,7 @@ export const MainPage = () => {
   const { data: tags } = useFindTagsQuery({ value: '' })
 
   return (
-    <PageWrapper className={s.mainPage}>
+    <PageWithHeader className={s.mainPage}>
       <TagsList tags={tags || []} />
 
       <ContentList
@@ -82,6 +82,6 @@ export const MainPage = () => {
           )
         }}
       />
-    </PageWrapper>
+    </PageWithHeader>
   )
 }

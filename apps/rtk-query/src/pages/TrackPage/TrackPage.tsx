@@ -8,7 +8,7 @@ import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper } from '../common'
+import { ContentList, PageWithoutHeader } from '../common'
 import s from './TrackPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
@@ -31,7 +31,7 @@ export const TrackPage = () => {
   const trackCover = getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)
 
   return (
-    <PageWrapper className={s.trackPage}>
+    <PageWithoutHeader className={s.trackPage}>
       <TrackOverview
         className={s.trackOverview}
         title={track.data.attributes.title}
@@ -65,6 +65,6 @@ export const TrackPage = () => {
           )}
         />
       )}
-    </PageWrapper>
+    </PageWithoutHeader>
   )
 }

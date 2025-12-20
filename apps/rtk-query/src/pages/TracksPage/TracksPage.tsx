@@ -11,7 +11,7 @@ import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { PageWithHeader, SearchTags, SearchTextField, SortSelect } from '../common'
 import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 
@@ -56,7 +56,7 @@ export const TracksPage = () => {
   }
 
   return (
-    <PageWrapper>
+    <PageWithHeader>
       <Typography variant="h2" as="h1" className={s.title}>
         {t('tracks.title.all_tracks')}
       </Typography>
@@ -115,6 +115,6 @@ export const TracksPage = () => {
           />
         )}
       />
-    </PageWrapper>
+    </PageWithHeader>
   )
 }
