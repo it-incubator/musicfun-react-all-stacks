@@ -1,4 +1,8 @@
 .header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
   display: flex;
   grid-area: header;
   align-items: center;
@@ -12,4 +16,14 @@
   display: flex;
   column-gap: 20px;
   align-items: center;
+  padding-left: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 40px;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  transition: 0.2s;
+}
+
+.actions:hover {
+  background-color: var(--color-bg-primary);
 }

@@ -6,7 +6,7 @@ import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper } from '../common'
+import { ContentList, PageWithHeader } from '../common'
 import s from './MainPage.module.css'
 
 export const MainPage = () => {
@@ -24,7 +24,7 @@ export const MainPage = () => {
   const { data: tags } = useFindTagsQuery({ value: '' })
 
   return (
-    <PageWrapper className={s.mainPage}>
+    <PageWithHeader className={s.mainPage}>
       <TagsList tags={tags || []} />
 
       <ContentList
@@ -35,19 +35,19 @@ export const MainPage = () => {
         renderItem={(playlist) => {
           const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
           return (
-              <PlaylistCard
-                  id={playlist.id}
-                  title={playlist.attributes.title}
-                  imageSrc={image?.url}
-                  isShowReactionButtons={true}
-                  reaction={playlist.attributes.currentUserReaction}
-                  likesCount={playlist.attributes.likesCount}
-                  userName={playlist.attributes.user.name}
-                  userId={playlist.attributes.user.id}
-                  addedAt={playlist.attributes.addedAt}
-                  shouldShowOwnerName
-                  shouldShowCreatedDate
-              />
+            <PlaylistCard
+              id={playlist.id}
+              title={playlist.attributes.title}
+              imageSrc={image?.url}
+              isShowReactionButtons={true}
+              reaction={playlist.attributes.currentUserReaction}
+              likesCount={playlist.attributes.likesCount}
+              userName={playlist.attributes.user.name}
+              userId={playlist.attributes.user.id}
+              addedAt={playlist.attributes.addedAt}
+              shouldShowOwnerName
+              shouldShowCreatedDate
+            />
           )
         }}
       />
@@ -69,6 +69,6 @@ export const MainPage = () => {
           )
         }}
       />
-    </PageWrapper>
+    </PageWithHeader>
   )
 }
