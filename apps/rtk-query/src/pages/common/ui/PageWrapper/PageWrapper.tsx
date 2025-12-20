@@ -8,5 +8,9 @@ type PageWrapperProps = {
 }
 
 export const PageWrapper = ({ children, className }: PageWrapperProps) => {
-  return <div className={clsx(s.wrapper, className)}>{children}</div>
+  return (
+    <div style={{ border: '2px solid green' }} className={clsx(s.wrapper, className)}>
+      {children}
+    </div>
+  )
 }

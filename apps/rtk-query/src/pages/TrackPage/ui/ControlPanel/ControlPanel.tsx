@@ -15,9 +15,14 @@ export const ControlPanel = ({
   reaction: CurrentUserReaction
   likesCount: number
 }) => {
+  const onClickHandler = () => {
+    console.log('play track with id:')
+  }
+
   return (
-    <div className={s.box}>
-      <IconButton className={s.playButton}>
+    <div style={{ border: '2px solid red' }} className={s.box}>
+      <IconButton onClick={onClickHandler} className={s.playButton}>
+        {/*//todo: play the track*/}
         <PlayIcon />
       </IconButton>
 
