@@ -7,9 +7,9 @@
 }
 
 .trackTextWrapper {
+  padding-inline: 180px;
   text-align: center;
   white-space: wrap;
-  padding-inline: 180px;
 }
 
 .button {
@@ -33,7 +33,7 @@
 }
 
 .trackText {
-  font-weight: 900;
-  font-size: var(--font-size-xxxxl);
   margin: 0;
+  font-size: var(--font-size-xxxxl);
+  font-weight: 900;
 }
