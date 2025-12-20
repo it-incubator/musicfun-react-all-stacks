@@ -8,28 +8,29 @@ import {
   useDislikeTrackMutation,
   useLikeTrackMutation,
   useRemoveTrackFromPlaylistMutation,
+  useRemoveTrackMutation,
   useUnReactionTrackMutation,
-  type FetchTracksArgs,
 } from '@/features/tracks'
 import {
+  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   ReactionButtons,
   type ReactionButtonsSize,
 } from '@/shared/components'
-import { DropdownMenu } from '@/shared/components'
-import { AddToPlaylistIcon, EditIcon, MoreIcon, TextIcon } from '@/shared/icons'
+import { AddToPlaylistIcon, DeleteIcon, EditIcon, MoreIcon, TextIcon } from '@/shared/icons'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
 
+import { Paths } from '@/shared/configs'
+import { useNavigate } from 'react-router'
 import { useEditTrackModal } from '../../model/hooks'
 import { syncTrackPlaylists } from '../../utils/playlistSync'
-import { useNavigate } from 'react-router'
-import { Paths } from '@/shared/configs'
 
 type TrackActionsPropsBase = {
   trackId: string
   isOwner?: boolean
+  playlistId?: string
 }
 
 type TrackActionsPropsWithReactions = TrackActionsPropsBase & {
@@ -52,6 +53,7 @@ export const TrackActions = ({
   trackId,
   sizeReactionButtons = 'small',
   isOwner,
+  playlistId,
 }: TrackActionsProps) => {
   const { t } = useTranslation()
 
@@ -78,6 +80,13 @@ export const TrackActions = ({
 
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
   const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
+  const [removeTrack] = useRemoveTrackMutation()
+
+  const removeTrackHandler = () => {
+    removeTrack({ trackId })
+      .unwrap()
+      .then(() => navigate(-1))
+  }
 
   return (
     <>
@@ -98,10 +107,21 @@ export const TrackActions = ({
 
         <DropdownMenuContent>
           {isOwner && (
-            <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackId)}>
-              <EditIcon />
-              {t('tracks.button.edit')}
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackId)}>
+                <EditIcon />
+                {t('tracks.button.edit')}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  playlistId
+                    ? removeTrackFromPlaylist({ playlistId, trackId })
+                    : removeTrackHandler()
+                }>
+                <DeleteIcon width={24} height={24} />
+                {t('tracks.button.delete')}
+              </DropdownMenuItem>
+            </>
           )}
           <DropdownMenuItem onClick={() => setIsOpenChoosePlaylistModal(true)}>
             <AddToPlaylistIcon />

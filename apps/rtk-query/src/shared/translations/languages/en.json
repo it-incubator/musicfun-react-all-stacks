@@ -86,9 +86,9 @@
       "cancel": "Cancel",
       "create": "Create",
       "edit": "Edit",
+      "delete": "Delete",
       "save": "Save",
       "show_text_song": "Show text song",
-      "tracks_not_found": "Tracks not found",
       "upload": "Upload",
       "choose_track": "Choose track",
       "upload_track": "Upload track",
@@ -109,7 +109,8 @@
       "all_tracks": "All tracks",
       "create": "Create Track",
       "edit": "Edit Track",
-      "new_tracks": "New tracks"
+      "new_tracks": "New tracks",
+      "tracks_not_found": "Tracks not found"
     },
     "table": {
       "track": "Track",
