@@ -1,9 +1,11 @@
-import { PageWithoutHeader } from '@/pages/common'
-import s from './TrackLyricsPage.module.css'
-import { useNavigate, useParams } from 'react-router'
-import { useFetchTrackByIdQuery } from '@/features/tracks'
-import { ArrowBackIcon } from '@/shared/icons/ArrowBackIcon.tsx'
 import { useTranslation } from 'react-i18next'
+import { useNavigate, useParams } from 'react-router'
+
+import { useFetchTrackByIdQuery } from '@/features/tracks'
+import { PageWithoutHeader } from '@/pages/common'
+import { ArrowBackIcon } from '@/shared/icons/ArrowBackIcon.tsx'
+
+import s from './TrackLyricsPage.module.css'
 
 export const TrackLyricsPage = () => {
   const { t } = useTranslation()

@@ -3,8 +3,7 @@ import { useParams } from 'react-router'
 
 import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
-import { TrackActions, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
-import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
+import { TrackRowContainer, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -61,18 +60,11 @@ export const PlaylistPage = () => {
             url: track.attributes.attachments[0].url,
           }))}
           renderTrackRow={(trackRow) => (
-            <TrackRow
+            <TrackRowContainer
               key={trackRow.id}
               trackRow={trackRow}
-              playingTrackId={'mock'}
-              playingTrackProgress={20}
-              renderActionsCell={(row) => (
-                <TrackActions
-                  likesCount={row.likesCount}
-                  reaction={row.currentUserReaction}
-                  trackId={row.id}
-                />
-              )}
+              userId={me?.userId}
+              playlistId={playlist.data.id}
             />
           )}
         />

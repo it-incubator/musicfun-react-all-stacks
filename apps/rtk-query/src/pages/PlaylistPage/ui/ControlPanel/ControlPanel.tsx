@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import {
   useDislikePlaylistMutation,
   useEditPlaylistModal,
@@ -28,6 +30,7 @@ export const ControlPanel = ({
   reaction: CurrentUserReaction
   likesCount: number
 }) => {
+  const { t } = useTranslation()
   const [like] = useLikePlaylistMutation()
   const [dislike] = useDislikePlaylistMutation()
   const [unReaction] = useUnReactionPlaylistMutation()
@@ -61,7 +64,7 @@ export const ControlPanel = ({
                 handleOpenEditPlaylistModal(playlistId)
               }}>
               <EditIcon />
-              <span>Edit</span>
+              <span>{t('button.edit')}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
