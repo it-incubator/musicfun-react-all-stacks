@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 import {
   useDislikePlaylistMutation,
   useEditPlaylistModal,
@@ -17,17 +19,21 @@ import { EditIcon, MoreIcon, PlayIcon } from '@/shared/icons'
 
 import s from './ControlPanel.module.css'
 
+type ControlPanelProps = {
+  playlistId: string
+  isOwnPlaylist: boolean
+  reaction: CurrentUserReaction
+  likesCount: number
+  className?: string
+}
+
 export const ControlPanel = ({
   playlistId,
   isOwnPlaylist,
   reaction,
   likesCount,
-}: {
-  playlistId: string
-  isOwnPlaylist: boolean
-  reaction: CurrentUserReaction
-  likesCount: number
-}) => {
+  className,
+}: ControlPanelProps) => {
   const [like] = useLikePlaylistMutation()
   const [dislike] = useDislikePlaylistMutation()
   const [unReaction] = useUnReactionPlaylistMutation()
@@ -35,7 +41,7 @@ export const ControlPanel = ({
   const { handleOpenEditPlaylistModal } = useEditPlaylistModal()
 
   return (
-    <div className={s.box}>
+    <div className={clsx(s.box, className)}>
       <IconButton className={s.playButton}>
         <PlayIcon />
       </IconButton>
