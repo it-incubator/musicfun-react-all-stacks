@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // SPA redirect for GitHub Pages
+      ;(function () {
+        var path = window.location.pathname
+        var search = window.location.search
+        var hash = window.location.hash
+
+        // Determine which app the path belongs to
+        if (path.startsWith('/tanstackquery/') || path === '/tanstackquery') {
+          var fullPath = path + search + hash
+          window.location.replace('/tanstackquery/?spa_redirect=' + encodeURIComponent(fullPath))
+        } else if (path.startsWith('/rtkquery/') || path === '/rtkquery') {
+          var fullPath = path + search + hash
+          window.location.replace('/rtkquery/?spa_redirect=' + encodeURIComponent(fullPath))
+        } else if (path.startsWith('/reatom/') || path === '/reatom') {
+          var fullPath = path + search + hash
+          window.location.replace('/reatom/?spa_redirect=' + encodeURIComponent(fullPath))
+        } else if (path.startsWith('/effector/') || path === '/effector') {
+          var fullPath = path + search + hash
+          window.location.replace('/effector/?spa_redirect=' + encodeURIComponent(fullPath))
+        } else {
+          // Unknown path, redirect to home
+          window.location.replace('/')
+        }
+      })()
+    </script>
+  </head>
+  <body></body>
+</html>
