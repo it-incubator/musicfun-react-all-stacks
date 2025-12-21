@@ -1,9 +1,9 @@
+import { t } from 'i18next'
 import { useSearchParams } from 'react-router'
 
 import { Select, type SelectProps } from '@/shared/components'
 
 import s from './SortSelect.module.css'
-import { t } from 'i18next'
 
 export const SortSelect = (props: Omit<SelectProps, 'options'>) => {
   const [searchParams, setSearchParams] = useSearchParams()
