@@ -162,6 +162,14 @@
     "label": {
       "name": "Имя",
       "surname": "Фамилия"
+    },
+    "stats": {
+      "playlists_one": "Плейлист",
+      "playlists_few": "Плейлиста",
+      "playlists_many": "Плейлистов",
+      "tracks_one": "Трек",
+      "tracks_few": "Трека",
+      "tracks_many": "Треков"
     }
   },
   "playlist": {

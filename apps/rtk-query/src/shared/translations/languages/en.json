@@ -151,6 +151,12 @@
     "label": {
       "name": "Name",
       "surname": "Surname"
+    },
+    "stats": {
+      "playlists_one": "Playlist",
+      "playlists_other": "Playlists",
+      "tracks_one": "Track",
+      "tracks_other": "Tracks"
     }
   },
   "date": {
