@@ -1,0 +1,20 @@
+.descriptionList {
+  display: flex;
+  gap: 23px;
+  margin: 0;
+}
+
+.descriptionItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.descriptionItem dd {
+  margin: 0;
+}
+
+.descriptionItem dt {
+  font-size: var(--font-size-s);
+  text-transform: uppercase;
+}
