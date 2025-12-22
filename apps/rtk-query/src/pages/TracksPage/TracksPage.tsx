@@ -14,7 +14,8 @@ import { getImageByType } from '@/shared/utils'
 
 import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
 import s from './TracksPage.module.css'
-import { useEffect, useRef } from 'react'
+import { useInView } from 'react-intersection-observer'
+import { useEffect } from 'react'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
@@ -22,12 +23,10 @@ export const TracksPage = () => {
   const {
     data: infiniteData,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
     fetchNextPage,
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = infiniteData?.pages.flatMap((p) => p.data) || []
-  const observerRef = useRef<HTMLDivElement>(null)
   const { data: me } = useMeQuery()
 
   const dispatch = useDispatch()
@@ -53,35 +52,17 @@ export const TracksPage = () => {
     )
   }
 
-  const loadMoreHandler = () => {
-    // was isFetching
+  const { ref, inView } = useInView({
+    threshold: 0,
+  })
+
+  useEffect(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
     }
-  }
+  }, [inView])
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMoreHandler()
-        }
-      },
-      {
-        threshold: 0.1,
-        root: null,
-        rootMargin: '100px',
-      }
-    )
-    if (observerRef.current) {
-      observer.observe(observerRef.current)
-    }
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current)
-      }
-    }
-  }, [hasNextPage, isFetching, loadMoreHandler])
+  console.log(inView)
 
   return (
     <PageWrapper>
@@ -145,7 +126,7 @@ export const TracksPage = () => {
       />
 
       {hasNextPage && (
-        <div ref={observerRef}>
+        <div ref={ref}>
           {isFetchingNextPage ? <Spinner size={50} /> : <div style={{ height: '10px' }} />}
         </div>
       )}
