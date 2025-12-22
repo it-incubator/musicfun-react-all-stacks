@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -19,18 +20,23 @@ import { EditIcon, MoreIcon, PlayIcon } from '@/shared/icons'
 
 import s from './ControlPanel.module.css'
 
+type ControlPanelProps = {
+  playlistId: string
+  isOwnPlaylist: boolean
+  reaction: CurrentUserReaction
+  likesCount: number
+  className?: string
+}
+
 export const ControlPanel = ({
   playlistId,
   isOwnPlaylist,
   reaction,
   likesCount,
-}: {
-  playlistId: string
-  isOwnPlaylist: boolean
-  reaction: CurrentUserReaction
-  likesCount: number
-}) => {
+  className,
+}: ControlPanelProps) => {
   const { t } = useTranslation()
+
   const [like] = useLikePlaylistMutation()
   const [dislike] = useDislikePlaylistMutation()
   const [unReaction] = useUnReactionPlaylistMutation()
@@ -38,7 +44,7 @@ export const ControlPanel = ({
   const { handleOpenEditPlaylistModal } = useEditPlaylistModal()
 
   return (
-    <div className={s.box}>
+    <div className={clsx(s.box, className)}>
       <IconButton className={s.playButton}>
         <PlayIcon />
       </IconButton>

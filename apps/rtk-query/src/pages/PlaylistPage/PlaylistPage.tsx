@@ -4,15 +4,17 @@ import { useParams } from 'react-router'
 import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
 import { TrackRowContainer, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
+import { usePageSearchParams } from '@/pages/common/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { PageWithoutHeader } from '../common'
+import { PageWithoutHeader, SearchTextField } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
 export const PlaylistPage = () => {
   const { t } = useTranslation()
+  const { debouncedSearch } = usePageSearchParams()
 
   const { id } = useParams()
   const { data: playlist } = useFetchPlaylistByIdQuery(id!)
@@ -23,6 +25,13 @@ export const PlaylistPage = () => {
   const { data: tracks } = useFetchTracksInPlaylistQuery({
     playlistId: id!,
   })
+
+  // TODO: Implement client-side track sorting after backend fix (issue #160)
+  //! FIXME: temporary implementation until backend issue #210 is fixed
+  const filteredTracks =
+    tracks?.data.filter((track) =>
+      track.attributes.title.toLowerCase().includes(debouncedSearch.toLowerCase())
+    ) ?? []
 
   if (!playlist) {
     return <div>{t('playlists.title.playlists_not_found')}</div>
@@ -38,15 +47,19 @@ export const PlaylistPage = () => {
         description={playlist.data.attributes.description}
         tags={playlist.data.attributes.tags}
       />
-      <ControlPanel
-        playlistId={playlist.data.id}
-        isOwnPlaylist={isOwnPlaylist}
-        reaction={playlist.data.attributes.currentUserReaction}
-        likesCount={playlist.data.attributes.likesCount}
-      />
-      {tracks?.data && (
+      <div className={s.playlistToolbar}>
+        <SearchTextField placeholder={t('tracks.placeholder.search_tracks')} onChange={() => {}} />
+        <ControlPanel
+          className={s.playlistActions}
+          playlistId={playlist.data.id}
+          isOwnPlaylist={isOwnPlaylist}
+          reaction={playlist.data.attributes.currentUserReaction}
+          likesCount={playlist.data.attributes.likesCount}
+        />
+      </div>
+      {filteredTracks?.length > 0 ? (
         <TracksTable
-          trackRows={tracks?.data.map((track, index) => ({
+          trackRows={filteredTracks.map((track, index) => ({
             index,
             id: track.id,
             title: track.attributes.title,
@@ -68,6 +81,8 @@ export const PlaylistPage = () => {
             />
           )}
         />
+      ) : (
+        <div>{t('tracks.label.no_tracks')}</div>
       )}
     </PageWithoutHeader>
   )
