@@ -14,7 +14,7 @@ import type {
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchTracksInfinite: build.infiniteQuery<FetchTracksResponse, void, string | undefined>({
+    fetchTracksByScroll: build.infiniteQuery<FetchTracksResponse, void, string | undefined>({
       infiniteQueryOptions: {
         initialPageParam: undefined,
         getNextPageParam: (lastPage) => {
@@ -182,7 +182,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
           getState(),
-          'fetchTracksInfinite'
+          'fetchTracksByScroll'
         )
 
         const patchResults: any[] = []
@@ -206,7 +206,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         infiniteArgs.forEach((_: void) => {
           patchResults.push(
             dispatch(
-              tracksAPI.util.updateQueryData('fetchTracksInfinite', undefined, (state) => {
+              tracksAPI.util.updateQueryData('fetchTracksByScroll', undefined, (state) => {
                 state.pages.forEach((page) => {
                   const track = page.data.find((t: any) => t.id === trackId)
                   if (track) {
@@ -247,7 +247,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
           getState(),
-          'fetchTracksInfinite'
+          'fetchTracksByScroll'
         )
 
         const patchResults: any[] = []
@@ -274,7 +274,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         infiniteArgs.forEach((_: void) => {
           patchResults.push(
             dispatch(
-              tracksAPI.util.updateQueryData('fetchTracksInfinite', undefined, (state) => {
+              tracksAPI.util.updateQueryData('fetchTracksByScroll', undefined, (state) => {
                 state.pages.forEach((page) => {
                   const track = page.data.find((t: any) => t.id === trackId)
                   if (track) {
@@ -321,7 +321,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
           getState(),
-          'fetchTracksInfinite'
+          'fetchTracksByScroll'
         )
 
         const patchResults: any[] = []
@@ -349,7 +349,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         infiniteArgs.forEach((_: void) => {
           patchResults.push(
             dispatch(
-              tracksAPI.util.updateQueryData('fetchTracksInfinite', undefined, (state) => {
+              tracksAPI.util.updateQueryData('fetchTracksByScroll', undefined, (state) => {
                 state.pages.forEach((page) => {
                   const track = page.data.find((t: any) => t.id === trackId)
                   if (track) {
@@ -440,8 +440,8 @@ export const tracksAPI = baseApi.injectEndpoints({
 })
 
 export const {
-  useFetchTracksInfiniteInfiniteQuery,
   useFetchTracksQuery,
+  useFetchTracksByScrollInfiniteQuery,
   useFetchTrackByIdQuery,
   useAddCoverToTrackMutation,
   useDeleteCoverFromTrackMutation,

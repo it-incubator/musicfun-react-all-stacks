@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMeQuery } from '@/features/auth'
-import { MOCK_TRACKS, TracksTable, useFetchTracksInfiniteInfiniteQuery } from '@/features/tracks'
+import { MOCK_TRACKS, TracksTable, useFetchTracksByScrollInfiniteQuery } from '@/features/tracks'
 import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
 
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
@@ -15,7 +15,6 @@ import { getImageByType } from '@/shared/utils'
 import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
 import s from './TracksPage.module.css'
 import { useEffect, useRef } from 'react'
-import { setAdditionalLoading } from '@/app/store/additionalLoadingSlice'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
@@ -26,7 +25,7 @@ export const TracksPage = () => {
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-  } = useFetchTracksInfiniteInfiniteQuery()
+  } = useFetchTracksByScrollInfiniteQuery()
   const pages = infiniteData?.pages.flatMap((p) => p.data) || []
   const observerRef = useRef<HTMLDivElement>(null)
   const { data: me } = useMeQuery()
@@ -57,10 +56,7 @@ export const TracksPage = () => {
   const loadMoreHandler = () => {
     // was isFetching
     if (hasNextPage && !isFetchingNextPage) {
-      dispatch(setAdditionalLoading(true))
-      fetchNextPage().finally(() => {
-        dispatch(setAdditionalLoading(false))
-      })
+      fetchNextPage()
     }
   }
 
