@@ -37,7 +37,10 @@ export const UserInfo = () => {
           {t('button.edit_profile')}
         </Button>
       )}
-      <UserStats playlistsCount={playlists?.data.length} tracksCount={tracks?.data.length} />
+      <UserStats
+        playlistsCount={playlists?.meta.totalCount}
+        tracksCount={tracks?.meta.totalCount}
+      />
     </div>
   )
 }
