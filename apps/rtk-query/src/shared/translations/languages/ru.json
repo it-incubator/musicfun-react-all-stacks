@@ -86,13 +86,14 @@
       "cancel": "Отмена",
       "create": "Создать",
       "edit": "Редактировать",
+      "delete": "Удалить",
       "save": "Сохранить",
       "show_text_song": "Показать текст песни",
-      "tracks_not_found": "Треки не найдены",
       "upload": "Загрузить",
       "choose_track": "Выбрать трек",
       "upload_track": "Загрузить трек",
-      "go_back": "Назад"
+      "go_back": "Назад",
+      "delete_from_playlist": "Удалить из плейлиста"
     },
     "label": {
       "lyrics": "Текст песни",
@@ -109,7 +110,8 @@
       "all_tracks": "Все треки",
       "create": "Создать трек",
       "edit": "Редактировать трек",
-      "new_tracks": "Новые треки"
+      "new_tracks": "Новые треки",
+      "tracks_not_found": "Треки не найдены"
     },
     "table": {
       "track": "Трек",
