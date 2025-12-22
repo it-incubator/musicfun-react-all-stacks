@@ -3,8 +3,8 @@ import { Route, Routes } from 'react-router'
 import { OAuthCallback } from '@/features/auth'
 import { Layout } from '@/layout'
 import { MainPage, PlaylistPage, PlaylistsPage, TrackPage, TracksPage, UserPage } from '@/pages'
-import { Paths } from '@/shared/configs'
 import { TrackLyricsPage } from '@/pages/TrackLyricsPage'
+import { Paths } from '@/shared/configs'
 
 export const Routing = () => (
   <Routes>

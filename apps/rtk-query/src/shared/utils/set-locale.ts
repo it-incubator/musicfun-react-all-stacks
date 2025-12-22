@@ -1,4 +1,5 @@
 import i18n from 'i18next'
+
 import { LOCALE_KEY } from '@/shared/constants'
 
 export type Locale = 'en' | 'ru'
