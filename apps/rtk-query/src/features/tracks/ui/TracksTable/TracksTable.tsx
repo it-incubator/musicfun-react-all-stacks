@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import type { ReactNode } from 'react'
 
 import {
@@ -9,7 +10,6 @@ import {
   TableRow,
 } from '@/shared/components'
 import { ClockIcon } from '@/shared/icons'
-import { t } from 'i18next'
 
 type TableColumn = {
   title: ReactNode

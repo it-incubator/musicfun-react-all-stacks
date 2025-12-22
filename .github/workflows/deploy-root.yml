@@ -1,0 +1,38 @@
+name: Deploy Root Landing Page
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare root files
+        run: |
+          mkdir -p temp-root
+          cp public/index.html temp-root/
+          cp public/404.html temp-root/
+          echo 'stg.musicfun.dev' > temp-root/CNAME
+          touch temp-root/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: temp-root
+          target-folder: .
+          clean: false
+          clean-exclude: |
+            tanstackquery/
+            rtkquery/
+            reatom/
+            effector/
+          branch: gh-pages
