@@ -1,32 +1,32 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useInView } from 'react-intersection-observer'
 import { useDispatch } from 'react-redux'
+
 import { useMeQuery } from '@/features/auth'
 import { MOCK_TRACKS, TracksTable, useFetchTracksByScrollInfiniteQuery } from '@/features/tracks'
-import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
-
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { loadPlaylist } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
+import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
 import s from './TracksPage.module.css'
-import { useInView } from 'react-intersection-observer'
-import { useEffect } from 'react'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
 
   const {
-    data: infiniteData,
+    data: tracksData,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
   } = useFetchTracksByScrollInfiniteQuery()
-  const pages = infiniteData?.pages.flatMap((p) => p.data) || []
+  const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
 
   const dispatch = useDispatch()
@@ -53,7 +53,7 @@ export const TracksPage = () => {
   }
 
   const { ref, inView } = useInView({
-    threshold: 0,
+    threshold: 0.1,
   })
 
   useEffect(() => {
@@ -61,8 +61,6 @@ export const TracksPage = () => {
       fetchNextPage()
     }
   }, [inView])
-
-  console.log(inView)
 
   return (
     <PageWrapper>
