@@ -21,12 +21,5 @@ export const store = configureStore({
     getDefaultMiddleware().concat(baseApi.middleware).concat(playerMiddleware),
 })
 
-export interface RootState {
-  [baseApi.reducerPath]: ReturnType<typeof baseApi.reducer>
-  [authSlice.name]: ReturnType<typeof authSlice.reducer>
-  [playlistsSlice.name]: ReturnType<typeof playlistsSlice.reducer>
-  [tracksSlice.name]: ReturnType<typeof tracksSlice.reducer>
-  [playerSlice.name]: ReturnType<typeof playerSlice.reducer>
-}
-
+export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
