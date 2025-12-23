@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { AudioPlayer } from '@/shared/components'
 
 import s from './Player.module.css'
-import { usePlaybackState } from '@/player'
+import { usePlaybackState, usePlayerControls } from '@/player'
 
 const MOCK_TRACK = {
   src: 'https://cdn.uppbeat.io/audio-files/c636d7c86452449b1203fc0bded83e29/4358717fc9da477a52fb18a6cbd3afcc/d154b5ce5ff1a05ae8115a3c678062e8/STREAMING-dreamland-matrika-main-version-31140-02-25.mp3',
@@ -16,6 +16,7 @@ export const Player = () => {
   const [isShuffle, setIsShuffle] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
   const { isPlaying } = usePlaybackState()
+  const { togglePlayPause } = usePlayerControls()
 
   return (
     <AudioPlayer
@@ -23,6 +24,7 @@ export const Player = () => {
       isPlaying={isPlaying}
       onNext={() => {}}
       onPrevious={() => {}}
+      onTogglePlay={togglePlayPause}
       isShuffle={isShuffle}
       isRepeat={isRepeat}
       onShuffle={() => setIsShuffle(!isShuffle)}

@@ -1,6 +1,6 @@
 import { clsx } from 'clsx'
 import type { ComponentProps } from 'react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import {
   PauseIcon,
@@ -25,6 +25,7 @@ export type PlayerProps = {
   isPlaying: boolean
   onNext: () => void
   onPrevious: () => void
+  onTogglePlay: () => void
   isShuffle: boolean
   isRepeat: boolean
   onShuffle: () => void
@@ -39,6 +40,7 @@ export const AudioPlayer = ({
   isPlaying,
   onNext,
   onPrevious,
+  onTogglePlay,
   isShuffle,
   isRepeat,
   onShuffle,
@@ -51,20 +53,20 @@ export const AudioPlayer = ({
   const [volume, setVolume] = useState(1)
   const [duration, setDuration] = useState(0)
 
-  const handlePlayPause = () => {
+  useEffect(() => {
     const audio = audioRef.current
     if (!audio) {
       return
     }
 
     if (isPlaying) {
-      audio.pause()
-    } else {
       audio.play().catch((e) => {
         console.error('Audio play error:', e)
       })
+    } else {
+      audio.pause()
     }
-  }
+  }, [isPlaying, src])
 
   const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = Number(e.target.value)
@@ -97,6 +99,7 @@ export const AudioPlayer = ({
         src={src}
         onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
         onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+        onEnded={onNext}
       />
 
       <div className={s.trackInfo}>
@@ -121,7 +124,7 @@ export const AudioPlayer = ({
           <IconButton onClick={onPrevious}>
             <SkipPreviousIcon />
           </IconButton>
-          <IconButton className={s.playPauseButton} onClick={handlePlayPause}>
+          <IconButton className={s.playPauseButton} onClick={onTogglePlay}>
             {isPlaying ? <PauseIcon /> : <PlayIcon />}
           </IconButton>
           <IconButton onClick={onNext}>
