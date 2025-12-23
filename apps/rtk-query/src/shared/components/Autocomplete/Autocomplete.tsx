@@ -1,4 +1,5 @@
 import { clsx } from 'clsx'
+import { t } from 'i18next'
 import {
   type ComponentProps,
   type KeyboardEvent,
@@ -15,7 +16,6 @@ import { ArrowDownIcon, DeleteIcon } from '@/shared/icons'
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './Autocomplete.module.css'
-import { t } from 'i18next'
 
 export type AutocompleteOption = {
   value: string

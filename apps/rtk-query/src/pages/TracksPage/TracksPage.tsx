@@ -14,7 +14,7 @@ import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { PageWithHeader, SearchTags, SearchTextField, SortSelect } from '../common'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
@@ -63,7 +63,7 @@ export const TracksPage = () => {
   }, [inView])
 
   return (
-    <PageWrapper>
+    <PageWithHeader>
       <Typography variant="h2" as="h1" className={s.title}>
         {t('tracks.title.all_tracks')}
       </Typography>
@@ -129,6 +129,6 @@ export const TracksPage = () => {
         </div>
       )}
       {!hasNextPage && pages.length > 0 && <p>Nothing more to load</p>}
-    </PageWrapper>
+    </PageWithHeader>
   )
 }

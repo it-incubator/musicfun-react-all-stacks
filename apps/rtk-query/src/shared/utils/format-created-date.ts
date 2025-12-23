@@ -1,5 +1,6 @@
-import i18n from '../translations/i18nConfiguration.ts'
 import { getPluralKey } from '@/shared/utils/get-plural-key.ts'
+
+import i18n from '../translations/i18nConfiguration.ts'
 
 export const formatCreatedDate = (addedAt: string | undefined) => {
   const lang = i18n.language || 'en'

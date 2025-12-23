@@ -1,39 +1,28 @@
-import { useParams } from 'react-router'
+import { t } from 'i18next'
 
-import {
-  TracksTable,
-  useCreateTrackModal,
-  useEditTrackModal,
-  useFetchTracksQuery,
-} from '@/features/tracks'
+import { TracksTable, useCreateTrackModal } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
+import { useOwnerData } from '@/pages/UserPage/hooks'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Button } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import s from './TracksTab.module.css'
-import { t } from 'i18next'
 
 export const TracksTab = () => {
-  const { userId } = useParams()
+  const { isProfileOwner, tracks } = useOwnerData()
   const { handleOpenCreateTrackModal } = useCreateTrackModal()
-  const { handleOpenEditTrackModal } = useEditTrackModal()
-
-  const { data: tracks } = useFetchTracksQuery({
-    pageSize: 10,
-    pageNumber: 1,
-    userId: userId!,
-    includeDrafts: true,
-  })
 
   // FIXME: temporary build fix, need to add url
   return (
     <>
-      <Button className={s.uploadTrackButton} onClick={handleOpenCreateTrackModal}>
-        {t('tracks.button.upload_track')}
-      </Button>
+      {isProfileOwner && (
+        <Button className={s.uploadTrackButton} onClick={handleOpenCreateTrackModal}>
+          {t('tracks.button.upload_track')}
+        </Button>
+      )}
       <TracksTable
         trackRows={
           tracks?.data?.map((track, index) => {
@@ -62,7 +51,7 @@ export const TracksTab = () => {
             playingTrackId={'TEST_ID'}
             playingTrackProgress={20}
             renderActionsCell={() => (
-              <TrackActions trackId={trackRow.id} isOwner={true} />
+              <TrackActions trackId={trackRow.id} isOwner={isProfileOwner} />
               // <DropdownMenu>
               //   <DropdownMenuTrigger>
               //     <MoreIcon />

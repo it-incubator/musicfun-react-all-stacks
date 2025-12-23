@@ -1,4 +1,5 @@
 import { clsx } from 'clsx'
+import { t } from 'i18next'
 import { type ChangeEvent, type DragEvent, useRef, useState } from 'react'
 
 import { ImageUploadIcon } from '@/shared/icons'
@@ -7,7 +8,6 @@ import { IconButton } from '../IconButton'
 import { type CropShape, ImageCropper } from '../ImageCropper'
 import { Typography } from '../Typography'
 import s from './ImageUploader.module.css'
-import { t } from 'i18next'
 
 export type ImageUploaderProps = {
   onImageSelect: (file: File) => void

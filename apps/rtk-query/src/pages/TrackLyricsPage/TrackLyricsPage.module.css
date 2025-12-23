@@ -1,0 +1,45 @@
+.trackLyricsPage {
+  --page-gradient-color: #9a3426;
+
+  position: relative;
+}
+
+.header {
+  height: var(--header-height);
+}
+
+.trackTextWrapper {
+  padding-inline: 180px;
+  text-align: center;
+  white-space: wrap;
+}
+
+.button {
+  all: unset;
+
+  cursor: pointer;
+
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  font-size: var(--font-size-m);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+
+  transition: color 0.2s ease;
+}
+
+.button:hover {
+  color: var(--color-text-primary);
+}
+
+.trackText {
+  margin: 0;
+  font-size: var(--font-size-xxxxl);
+  font-weight: 900;
+}

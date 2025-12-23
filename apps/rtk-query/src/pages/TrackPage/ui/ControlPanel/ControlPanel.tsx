@@ -26,6 +26,7 @@ export const ControlPanel = ({
         reaction={reaction}
         likesCount={likesCount}
         sizeReactionButtons="large"
+        isOwner={isOwnTrack}
       />
     </div>
   )

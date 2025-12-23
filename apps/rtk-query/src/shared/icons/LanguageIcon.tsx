@@ -8,7 +8,7 @@ export const LanguageIcon = (props: SVGProps<SVGSVGElement>) => (
     height="24"
     fill="none"
     stroke="#fff"
-    stroke-width="0.75"
+    strokeWidth="0.75"
     {...props}>
     <circle cx="12" cy="12" r="10" />
     <path d="M12,22 C14.6666667,19.5757576 16,16.2424242 16,12 C16,7.75757576 14.6666667,4.42424242 12,2 C9.33333333,4.42424242 8,7.75757576 8,12 C8,16.2424242 9.33333333,19.5757576 12,22 Z" />

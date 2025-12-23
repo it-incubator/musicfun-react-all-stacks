@@ -20,7 +20,10 @@
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
-    "update": "Update"
+    "update": "Update",
+    "edit_profile": "Edit profile",
+    "saving": "Saving...",
+    "save_changes": "Save Changes"
   },
   "description": {
     "label": {
@@ -33,7 +36,8 @@
   "playlists": {
     "button": {
       "choose_playlist": "Choose playlist",
-      "create_playlist": "Create playlist"
+      "create_playlist": "Create playlist",
+      "edit": "Edit"
     },
     "placeholder": {
       "enter_playlist_description": "Enter playlist description",
@@ -63,7 +67,8 @@
     "playlists": "Playlists",
     "tracks": "Tracks",
     "liked_playlists": "Liked Playlists",
-    "liked_tracks": "Liked Tracks"
+    "liked_tracks": "Liked Tracks",
+    "possessive_case": "'s"
   },
   "tags": {
     "label": "Hashtags",
@@ -82,12 +87,14 @@
       "cancel": "Cancel",
       "create": "Create",
       "edit": "Edit",
+      "delete": "Delete",
       "save": "Save",
       "show_text_song": "Show text song",
-      "tracks_not_found": "Tracks not found",
       "upload": "Upload",
       "choose_track": "Choose track",
-      "upload_track": "Upload track"
+      "upload_track": "Upload track",
+      "go_back": "Go back",
+      "delete_from_playlist": "Delete from playlist"
     },
     "label": {
       "lyrics": "Lyrics",
@@ -97,13 +104,15 @@
     "placeholder": {
       "lyrics": "Enter track lyrics",
       "search_tracks": "Search tracks",
-      "title": "Enter track title"
+      "title": "Enter track title",
+      "no_lyrics": "No lyrics available for this track"
     },
     "title": {
       "all_tracks": "All tracks",
       "create": "Create Track",
       "edit": "Edit Track",
-      "new_tracks": "New tracks"
+      "new_tracks": "New tracks",
+      "tracks_not_found": "Tracks not found"
     },
     "table": {
       "track": "Track",
@@ -126,6 +135,32 @@
     "no_options_found": "No options found",
     "all_options_selected": "All options selected",
     "which_playlist": "In which playlist is the track?"
+  },
+  "profile": {
+    "title": {
+      "edit_profile": "Edit profile",
+      "max_value_name": "Name must be less than {{ quantity }} characters",
+      "min_value_name": "Name must be at least {{ quantity }} characters",
+      "max_value_surname": "Surname must be less than {{ quantity }} characters",
+      "min_value_surname": "Surname must be at least {{ quantity }} characters",
+      "required_name": "Name is required",
+      "required_surname": "Surname is required"
+    },
+    "placeholder": {
+      "enter_profile_name": "Enter profile name",
+      "enter_profile_surname": "Enter profile surname",
+      "upload_avatar": "Upload Avatar"
+    },
+    "label": {
+      "name": "Name",
+      "surname": "Surname"
+    },
+    "stats": {
+      "playlists_one": "Playlist",
+      "playlists_other": "Playlists",
+      "tracks_one": "Track",
+      "tracks_other": "Tracks"
+    }
   },
   "date": {
     "today": "today",

@@ -1,16 +1,24 @@
 import { useTranslation } from 'react-i18next'
 
-import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
+import { useMeQuery } from '@/features/auth'
+import {
+  PlaylistActions,
+  PlaylistCard,
+  PlaylistCardSkeleton,
+  useFetchPlaylistsQuery,
+} from '@/features/playlists'
 import { TagsList, useFindTagsQuery } from '@/features/tags'
 import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper } from '../common'
+import { ContentList, PageWithHeader } from '../common'
 import s from './MainPage.module.css'
 
 export const MainPage = () => {
   const { t } = useTranslation()
+  const { data: me } = useMeQuery()
+  const isOwnPlaylist = (userId: string): boolean => me?.userId === userId
 
   const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
     pageSize: 10,
@@ -24,7 +32,7 @@ export const MainPage = () => {
   const { data: tags } = useFindTagsQuery({ value: '' })
 
   return (
-    <PageWrapper className={s.mainPage}>
+    <PageWithHeader className={s.mainPage}>
       <TagsList tags={tags || []} />
 
       <ContentList
@@ -47,6 +55,11 @@ export const MainPage = () => {
               addedAt={playlist.attributes.addedAt}
               shouldShowOwnerName
               shouldShowCreatedDate
+              actions={
+                isOwnPlaylist(playlist.attributes.user.id) && (
+                  <PlaylistActions playlistId={playlist.id} />
+                )
+              }
             />
           )
         }}
@@ -69,6 +82,6 @@ export const MainPage = () => {
           )
         }}
       />
-    </PageWrapper>
+    </PageWithHeader>
   )
 }
