@@ -23,7 +23,6 @@ export type PlayerProps = {
   title: string
   artist: string
   isPlaying: boolean
-  setIsPlaying: (isPlaying: boolean) => void
   onNext: () => void
   onPrevious: () => void
   isShuffle: boolean
@@ -38,7 +37,6 @@ export const AudioPlayer = ({
   title,
   artist,
   isPlaying,
-  setIsPlaying,
   onNext,
   onPrevious,
   isShuffle,
@@ -66,8 +64,6 @@ export const AudioPlayer = ({
         console.error('Audio play error:', e)
       })
     }
-
-    setIsPlaying(!isPlaying)
   }
 
   const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
