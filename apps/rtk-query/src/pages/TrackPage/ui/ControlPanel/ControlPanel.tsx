@@ -1,10 +1,9 @@
-import { useState } from 'react'
 import { TrackActions } from '@/features/tracks'
 import { CurrentUserReaction, IconButton } from '@/shared/components'
 import { PauseIcon, PlayIcon } from '@/shared/icons'
 
 import s from './ControlPanel.module.css'
-import { usePlayerControls, type Track } from '@/player'
+import { usePlaybackState, usePlayerControls, type Track } from '@/player'
 
 export const ControlPanel = ({
   trackId,
@@ -20,7 +19,7 @@ export const ControlPanel = ({
   likesCount: number
 }) => {
   const { play, pause } = usePlayerControls()
-  const [isPlaying, setIsPlaying] = useState(false)
+  const { isPlaying } = usePlaybackState()
 
   const onClickHandler = () => {
     if (isPlaying) {
@@ -28,7 +27,6 @@ export const ControlPanel = ({
     } else {
       play(track)
     }
-    setIsPlaying(!isPlaying)
   }
 
   return (
