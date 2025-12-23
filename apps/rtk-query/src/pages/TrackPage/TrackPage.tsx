@@ -12,6 +12,8 @@ import { ContentList, PageWrapper } from '../common'
 import s from './TrackPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
+import type { Track } from '@/player'
+
 export const TrackPage = () => {
   const { t } = useTranslation()
 
@@ -29,6 +31,15 @@ export const TrackPage = () => {
   }
 
   const trackCover = getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)
+  // Transform TrackDetails to Track type expected by player
+  const playerTrack: Track = {
+    id: track.data.id,
+    title: track.data.attributes.title,
+    artist: track.data.attributes.artists.map((artist) => artist.name).join(', '),
+    duration: track.data.attributes.duration,
+    url: track.data.attributes.attachments[0]?.url || '',
+    albumArt: trackCover?.url,
+  }
 
   return (
     <PageWrapper className={s.trackPage}>
@@ -42,6 +53,7 @@ export const TrackPage = () => {
       />
 
       <ControlPanel
+        track={playerTrack}
         trackId={track.data.id}
         isOwnTrack={isTrackOwner}
         reaction={track.data.attributes.currentUserReaction}

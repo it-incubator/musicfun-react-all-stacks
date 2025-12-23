@@ -33,6 +33,8 @@ const loadPersistedShuffle = (): boolean => {
 }
 
 const initialState: PlayerState = {
+  IsTrackPlaying: false,
+
   // Current playback state
   currentTrackId: null,
   currentPlaylistId: null,
@@ -502,6 +504,16 @@ export const playerSlice = createSlice({
       state.playbackState = action.payload
     },
 
+    // Toggle IsTrackPlaying state
+    toggleIsTrackPlaying: (state) => {
+      state.IsTrackPlaying = !state.IsTrackPlaying
+    },
+
+    // Set IsTrackPlaying state
+    setIsTrackPlaying: (state, action: PayloadAction<boolean>) => {
+      state.IsTrackPlaying = action.payload
+    },
+
     // ========================================
     // Internal Helpers
     // ========================================
@@ -568,6 +580,8 @@ export const {
   // Metadata
   setLoadingState,
   setPlaybackState,
+  toggleIsTrackPlaying,
+  setIsTrackPlaying,
 } = playerSlice.actions
 
 export default playerSlice.reducer

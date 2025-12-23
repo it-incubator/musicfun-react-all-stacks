@@ -25,6 +25,8 @@ export type PlaybackState = 'idle' | 'playing' | 'paused' | 'loading' | 'error'
 export type RepeatMode = 'off' | 'one' | 'all'
 
 export interface PlayerState {
+  IsTrackPlaying: boolean
+
   // Current playback state
   currentTrackId: string | null
   currentPlaylistId: string | null
