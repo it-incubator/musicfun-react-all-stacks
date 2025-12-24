@@ -15,15 +15,12 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const LoginInitial: Story = {
-  args: {
-    login: 'james',
-  },
+  args: {},
 }
 
 export const InitialsOnly: Story = {
   args: {
     fullName: { name: 'james', surname: 'allen' },
-    login: 'james',
   },
 }
 

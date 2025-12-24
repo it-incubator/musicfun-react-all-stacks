@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import { useParams, useSearchParams } from 'react-router'
 
 import {
@@ -18,7 +19,6 @@ import {
 import { MoreIcon } from '@/shared/icons'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
-import { t } from 'i18next'
 
 export const MyLikedPlaylistsTab = () => {
   const { userId } = useParams()

@@ -1,6 +1,12 @@
 import { useTranslation } from 'react-i18next'
 
-import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
+import { useMeQuery } from '@/features/auth'
+import {
+  PlaylistActions,
+  PlaylistCard,
+  PlaylistCardSkeleton,
+  useFetchPlaylistsQuery,
+} from '@/features/playlists'
 import { Pagination, Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
@@ -11,6 +17,8 @@ import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {
   const { t } = useTranslation()
+  const { data: me } = useMeQuery()
+  const isOwnPlaylist = (userId: string): boolean => me?.userId === userId
 
   const { pageNumber, handlePageChange, debouncedSearch, sortBy, sortDirection, tagsIds } =
     usePageSearchParams()
@@ -57,6 +65,11 @@ export const PlaylistsPage = () => {
               addedAt={playlist.attributes.addedAt}
               shouldShowOwnerName
               shouldShowCreatedDate
+              actions={
+                isOwnPlaylist(playlist.attributes.user.id) && (
+                  <PlaylistActions playlistId={playlist.id} />
+                )
+              }
             />
           )
         }}

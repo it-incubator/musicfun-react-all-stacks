@@ -5,3 +5,10 @@
 .playlistOverview {
   margin-bottom: 46px;
 }
+
+.playlistToolbar {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  margin-bottom: 16px;
+}

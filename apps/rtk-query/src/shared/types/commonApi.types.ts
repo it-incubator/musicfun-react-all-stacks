@@ -13,6 +13,8 @@ export type Meta = {
   pageSize: number
   totalCount: number
   pagesCount: number
+  nextCursor?: string // for cursor-based pagination
+  prevCursor?: string
 }
 
 export type Cover = {

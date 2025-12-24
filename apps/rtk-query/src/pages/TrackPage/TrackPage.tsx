@@ -55,7 +55,7 @@ export const TrackPage = () => {
       {playlists?.data && (
         <ContentList
           data={playlists.data}
-          emptyMessage={t('playlists.title.not_found_playlists')}
+          emptyMessage={t('playlists.title.playlists_not_found')}
           renderItem={(playlist) => (
             <PlaylistCard
               id={playlist.id}

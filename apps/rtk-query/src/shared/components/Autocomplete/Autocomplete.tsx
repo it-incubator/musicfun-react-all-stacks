@@ -1,8 +1,15 @@
-import {clsx} from 'clsx'
-import {type ComponentProps, type KeyboardEvent, type ReactNode, useEffect, useRef, useState,} from 'react'
-import {createPortal} from 'react-dom'
+import { clsx } from 'clsx'
+import {
+  type ComponentProps,
+  type KeyboardEvent,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import { createPortal } from 'react-dom'
 
-import {useGetId} from '@/shared/hooks'
+import { useGetId } from '@/shared/hooks'
 import {ArrowDownIcon, SearchIcon} from '@/shared/icons'
 
 import {IconButton} from '../IconButton'
@@ -128,7 +135,6 @@ export const Autocomplete = ({
         setIsOpen(false)
         setFocusedIndex(-1)
         break
-
     }
   }
 
@@ -266,7 +272,7 @@ export const Autocomplete = ({
           </div>
         )}
 
-
+        {/* Search input */}
         <div className={s.inputContainer}>
           <SearchIcon width={20} height={20}/>
           <input
@@ -282,10 +288,6 @@ export const Autocomplete = ({
             disabled={disabled || isMaxTagsReached}
             autoComplete="off"
           />
-
-          {/* Dropdown arrow — оставляем без изменений */}
-
-
         </div>
         <ArrowDownIcon
           className={clsx(s.dropdownIcon, isOpen && s.dropdownIconOpen)}
@@ -396,11 +398,11 @@ type AutocompleteDropdownPortalProps = {
 }
 
 const AutocompleteDropdownPortal = ({
-                                      anchorRef,
-                                      dropdownRef,
-                                      children,
-                                      isOpen,
-                                    }: AutocompleteDropdownPortalProps) => {
+  anchorRef,
+  dropdownRef,
+  children,
+  isOpen,
+}: AutocompleteDropdownPortalProps) => {
   const [styles, setStyles] = useState<{ top: number; left: number; width: number }>({
     top: 0,
     left: 0,

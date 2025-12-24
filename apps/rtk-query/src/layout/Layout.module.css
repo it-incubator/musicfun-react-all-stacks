@@ -9,7 +9,7 @@
 }
 
 .main {
-  padding-top: var(--header-height);
   overflow-y: auto;
   grid-area: main;
+  padding-top: var(--header-height);
 }
