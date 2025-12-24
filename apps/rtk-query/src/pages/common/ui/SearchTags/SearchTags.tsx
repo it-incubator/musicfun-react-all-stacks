@@ -21,7 +21,7 @@ export const SearchTags = ({ type, className, label, placeholder }: SearchTagsPr
 
   const [searchParams, setSearchParams] = useSearchParams()
   const [searchTerm, setSearchTerm] = useState('')
-  const debouncedSearchTerm = useDebounce(searchTerm, 500)
+  const debouncedSearchTerm = useDebounce(searchTerm, 700)
 
   const paramKey = type === 'tags' ? 'tags' : 'artists'
 
@@ -34,9 +34,10 @@ export const SearchTags = ({ type, className, label, placeholder }: SearchTagsPr
     { value: debouncedSearchTerm },
     { skip: type !== 'tags' }
   )
-  const { data: artistsData } = useFindArtistsQuery(debouncedSearchTerm, {
-    skip: type !== 'artists',
-  })
+  const { data: artistsData } = useFindArtistsQuery(
+    debouncedSearchTerm,
+    {skip: type !== 'artists',}
+  )
 
   const data = type === 'tags' ? tagsData : artistsData
 
