@@ -15,11 +15,8 @@ import {
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './AudioPlayer.module.css'
-import { type Track } from '@/player'
 
 export type PlayerProps = {
-  track: Track
-  src: string
   cover: string
   title: string
   artist: string
@@ -39,9 +36,7 @@ export type PlayerProps = {
 } & ComponentProps<'div'>
 
 export const AudioPlayer = ({
-  src,
   cover,
-  track,
   title,
   artist,
   isPlaying,

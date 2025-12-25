@@ -1,9 +1,9 @@
 import { TrackActions } from '@/features/tracks'
+import { type Track, useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
 import { CurrentUserReaction, IconButton } from '@/shared/components'
 import { PauseIcon, PlayIcon } from '@/shared/icons'
 
 import s from './ControlPanel.module.css'
-import { usePlaybackState, usePlayerControls, type Track, useCurrentTrack } from '@/player'
 
 export const ControlPanel = ({
   trackId,

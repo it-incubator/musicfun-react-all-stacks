@@ -2,14 +2,14 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useFetchTrackByIdQuery } from '@/features/tracks'
+import type { Track } from '@/player'
 import {
   usePlaybackProgress,
+  usePlaybackState,
   usePlayerControls,
   useVolumeControl,
-  usePlaybackState,
 } from '@/player'
 import { AudioPlayer } from '@/shared/components'
-import type { Track } from '@/player'
 
 import s from './Player.module.css'
 
@@ -44,11 +44,6 @@ export const Player = () => {
       }
     : undefined
 
-  const currentSrc = track?.url || MOCK_TRACK.src
-  const currentTitle = track?.title || MOCK_TRACK.title
-  const currentArtist = track?.artist || MOCK_TRACK.artist
-  const currentCover = track?.albumArt || MOCK_TRACK.cover
-
   if (isLoading) {
     return <div className={s.player}>Loading...</div>
   }
@@ -69,17 +64,6 @@ export const Player = () => {
 
   return (
     <AudioPlayer
-      track={
-        track || {
-          id: 'mock',
-          title: currentTitle,
-          artist: currentArtist,
-          duration: 0,
-          url: currentSrc,
-          albumArt: currentCover,
-        }
-      }
-      src={track?.url || MOCK_TRACK.src}
       cover={track?.albumArt || MOCK_TRACK.cover}
       title={track?.title || MOCK_TRACK.title}
       artist={track?.artist || MOCK_TRACK.artist}
