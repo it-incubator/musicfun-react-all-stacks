@@ -1,6 +1,5 @@
 import { clsx } from 'clsx'
 import type { ComponentProps } from 'react'
-import { useEffect, useRef, useState } from 'react'
 
 import {
   PauseIcon,
@@ -16,8 +15,10 @@ import {
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './AudioPlayer.module.css'
+import { type Track } from '@/player'
 
 export type PlayerProps = {
+  track: Track
   src: string
   cover: string
   title: string
@@ -30,11 +31,17 @@ export type PlayerProps = {
   isRepeat: boolean
   onShuffle: () => void
   onRepeat: () => void
+  duration: number
+  currentTime: number
+  volume: number
+  onTimeSeek: (time: number) => void
+  onVolumeSet: (volume: number) => void
 } & ComponentProps<'div'>
 
 export const AudioPlayer = ({
   src,
   cover,
+  track,
   title,
   artist,
   isPlaying,
@@ -46,62 +53,27 @@ export const AudioPlayer = ({
   onShuffle,
   onRepeat,
   className,
+  duration,
+  currentTime,
+  volume,
+  onTimeSeek,
+  onVolumeSet,
   ...props
 }: PlayerProps) => {
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [volume, setVolume] = useState(1)
-  const [duration, setDuration] = useState(0)
-
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) {
-      return
-    }
-
-    if (isPlaying) {
-      audio.play().catch((e) => {
-        console.error('Audio play error:', e)
-      })
-    } else {
-      audio.pause()
-    }
-  }, [isPlaying, src])
-
   const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const time = Number(e.target.value)
-    setCurrentTime(time)
-    if (audioRef.current) {
-      audioRef.current.currentTime = time
-    }
+    onTimeSeek(Number(e.target.value))
   }
 
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = Number(e.target.value)
-    setVolume(newVolume)
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume
-    }
+    onVolumeSet(Number(e.target.value))
   }
 
   const handleVolumeMute = () => {
-    const newVolume = volume > 0 ? 0 : 1
-    setVolume(newVolume)
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume
-    }
+    onVolumeSet(volume > 0 ? 0 : 1)
   }
 
   return (
     <div className={clsx(s.player, className)} {...props}>
-      <audio
-        ref={audioRef}
-        src={src}
-        onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-        onEnded={onNext}
-      />
-
       <div className={s.trackInfo}>
         <div className={s.cover}>
           <img src={cover} alt="cover" />

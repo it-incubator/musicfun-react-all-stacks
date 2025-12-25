@@ -16,6 +16,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: 2.8.2
         version: 2.8.2(react-redux@9.2.0(@types/react@19.1.8)(react@19.1.0)(redux@5.0.1))(react@19.1.0)
+      '@types/react-router-dom':
+        specifier: ^5.3.3
+        version: 5.3.3
       async-mutex:
         specifier: 0.5.0
         version: 0.5.0
@@ -46,6 +49,9 @@ importers:
       react-router:
         specifier: 7.6.2
         version: 7.6.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-router-dom:
+        specifier: ^7.11.0
+        version: 7.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-toastify:
         specifier: 11.0.5
         version: 11.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -6312,6 +6318,12 @@ packages:
         integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==,
       }
 
+  '@types/history@4.7.11':
+    resolution:
+      {
+        integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==,
+      }
+
   '@types/http-cache-semantics@4.0.4':
     resolution:
       {
@@ -6423,6 +6435,18 @@ packages:
       }
     peerDependencies:
       '@types/react': ^19.0.0
+
+  '@types/react-router-dom@5.3.3':
+    resolution:
+      {
+        integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==,
+      }
+
+  '@types/react-router@5.1.20':
+    resolution:
+      {
+        integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==,
+      }
 
   '@types/react-transition-group@4.4.12':
     resolution:
@@ -12713,6 +12737,29 @@ packages:
         integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==,
       }
     engines: { node: '>=0.10.0' }
+
+  react-router-dom@7.11.0:
+    resolution:
+      {
+        integrity: sha512-e49Ir/kMGRzFOOrYQBdoitq3ULigw4lKbAyKusnvtDu2t4dBX4AGYPrzNvorXmVuOyeakai6FUPW5MmibvVG8g==,
+      }
+    engines: { node: '>=20.0.0' }
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+
+  react-router@7.11.0:
+    resolution:
+      {
+        integrity: sha512-uI4JkMmjbWCZc01WVP2cH7ZfSzH91JAZUDd7/nIprDgWxBV1TkkmLToFh7EbMTcMak8URFRa2YoBL/W8GWnCTQ==,
+      }
+    engines: { node: '>=20.0.0' }
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
 
   react-router@7.6.2:
     resolution:
@@ -19875,6 +19922,8 @@ snapshots:
 
   '@types/geojson@7946.0.16': {}
 
+  '@types/history@4.7.11': {}
+
   '@types/http-cache-semantics@4.0.4': {}
 
   '@types/json-schema@7.0.15': {}
@@ -19931,6 +19980,17 @@ snapshots:
 
   '@types/react-dom@19.1.6(@types/react@19.1.8)':
     dependencies:
+      '@types/react': 19.1.8
+
+  '@types/react-router-dom@5.3.3':
+    dependencies:
+      '@types/history': 4.7.11
+      '@types/react': 19.1.8
+      '@types/react-router': 5.1.20
+
+  '@types/react-router@5.1.20':
+    dependencies:
+      '@types/history': 4.7.11
       '@types/react': 19.1.8
 
   '@types/react-transition-group@4.4.12(@types/react@19.0.7)':
@@ -24097,6 +24157,20 @@ snapshots:
       redux: 5.0.1
 
   react-refresh@0.17.0: {}
+
+  react-router-dom@7.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      react-router: 7.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
+  react-router@7.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      cookie: 1.0.2
+      react: 19.1.0
+      set-cookie-parser: 2.7.1
+    optionalDependencies:
+      react-dom: 19.1.0(react@19.1.0)
 
   react-router@7.6.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
