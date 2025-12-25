@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router'
 
 import { useFetchTrackByIdQuery } from '@/features/tracks'
-import type { Track } from '@/player'
+import { type Track, useCurrentTrack } from '@/player'
 import {
   usePlaybackProgress,
   usePlaybackState,
@@ -23,7 +23,7 @@ const MOCK_TRACK = {
 export const Player = () => {
   const { id } = useParams()
   const { data: trackResponse, isLoading } = useFetchTrackByIdQuery({ trackId: id! })
-
+  const { track: currentTrack } = useCurrentTrack()
   const [isShuffle, setIsShuffle] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
   const { isPlaying } = usePlaybackState()
@@ -31,7 +31,7 @@ export const Player = () => {
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
 
-  const { pause, resume } = usePlayerControls()
+  const { pause, resume, play } = usePlayerControls()
 
   const track: Track | undefined = trackResponse?.data
     ? {
@@ -51,15 +51,19 @@ export const Player = () => {
   const onTogglePlay = () => {
     // debugger
     // If you uncomment it, it won't work because track === undefined.
-    // if (currentTrack && currentTrack.id === track?.id) {
-    if (isPlaying) {
-      pause()
+    if (currentTrack && currentTrack.id === track?.id) {
+      // debugger
+      if (isPlaying) {
+        pause()
+      } else {
+        resume()
+      }
+      console.log(track)
     } else {
-      resume()
+      if (track) {
+        play(track)
+      }
     }
-    // } else {
-    //   play(track)
-    // }
   }
 
   return (
