@@ -49,10 +49,7 @@ export const Player = () => {
   }
 
   const onTogglePlay = () => {
-    // debugger
-    // If you uncomment it, it won't work because track === undefined.
     if (currentTrack && currentTrack.id === track?.id) {
-      // debugger
       if (isPlaying) {
         pause()
       } else {
