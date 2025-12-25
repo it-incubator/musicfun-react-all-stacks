@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 
 import { useFetchTrackByIdQuery } from '@/features/tracks'
 import type { Track } from '@/player'
