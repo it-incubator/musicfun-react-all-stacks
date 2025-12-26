@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
 
 import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { ChoosePlaylistModal } from '@/features/playlists/ui/ChoosePlaylistModal/ChoosePlaylistModal'
@@ -9,7 +10,6 @@ import {
   useLikeTrackMutation,
   useRemoveTrackFromPlaylistMutation,
   useUnReactionTrackMutation,
-  type FetchTracksArgs,
 } from '@/features/tracks'
 import {
   DropdownMenuContent,
@@ -19,13 +19,12 @@ import {
   type ReactionButtonsSize,
 } from '@/shared/components'
 import { DropdownMenu } from '@/shared/components'
+import { Paths } from '@/shared/configs'
 import { AddToPlaylistIcon, EditIcon, MoreIcon, TextIcon } from '@/shared/icons'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
 
 import { useEditTrackModal } from '../../model/hooks'
 import { syncTrackPlaylists } from '../../utils/playlistSync'
-import { useNavigate } from 'react-router'
-import { Paths } from '@/shared/configs'
 
 type TrackActionsPropsBase = {
   trackId: string
@@ -72,9 +71,15 @@ export const TrackActions = ({
     }
   }, [playlists?.data])
 
-  const [like] = useLikeTrackMutation()
-  const [dislike] = useDislikeTrackMutation()
-  const [unReaction] = useUnReactionTrackMutation()
+  const [like] = useLikeTrackMutation({
+    fixedCacheKey: `track-reaction-${trackId}`,
+  })
+  const [dislike] = useDislikeTrackMutation({
+    fixedCacheKey: `track-reaction-${trackId}`,
+  })
+  const [unReaction] = useUnReactionTrackMutation({
+    fixedCacheKey: `track-reaction-${trackId}`,
+  })
 
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
   const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()

@@ -84,7 +84,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}`,
       }),
-      providesTags: (_, __, { trackId }) => [{ type: 'Track', trackId }],
+      providesTags: (_, __, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
     createTrack: build.mutation<
       { data: TrackDetails<TrackDetailAttributes> },
@@ -99,14 +99,6 @@ export const tracksAPI = baseApi.injectEndpoints({
           url: `playlists/tracks/upload`,
           method: 'POST',
           body: formData,
-        }
-      },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track']))
-        } catch {
-          // При ошибке кеш не трогаем
         }
       },
       invalidatesTags: ['Track'],
@@ -138,20 +130,6 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/${playlistId}/relationships/tracks/${trackId}`,
         method: 'DELETE',
       }),
-      async onQueryStarted({ playlistId, trackId }, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(
-            baseApi.util.invalidateTags([
-              'Track',
-              { type: 'Playlist', id: playlistId },
-              { type: 'Track', id: trackId },
-            ])
-          )
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: (_res, __err, { playlistId, trackId }) => [
         'Playlist',
         { type: 'Playlist', id: playlistId },
@@ -173,14 +151,6 @@ export const tracksAPI = baseApi.injectEndpoints({
           putAfterItemId: putAfterItemId,
         },
       }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track']))
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: (_res, _err, { playlistId }) => [{ type: 'Playlist', id: playlistId }],
     }),
     removeTrack: build.mutation<void, { trackId: string }>({
@@ -188,14 +158,6 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/tracks/${trackId}`,
         method: 'DELETE',
       }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track']))
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: ['Track'],
     }),
     likeTrack: build.mutation<ReactionResponse, { trackId: string }>({
@@ -204,25 +166,34 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
-        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
-
         const patchResults: any[] = []
 
+        // --- ИСПРАВЛЕНИЕ: Обновляем кеш для страницы одного трека (fetchTrackById) ---
+        const patchTrackById = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            if (state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+              state.data.attributes.dislikesCount -= 1
+            }
+            state.data.attributes.likesCount += 1
+            state.data.attributes.currentUserReaction = CurrentUserReaction.Like
+          })
+        )
+        patchResults.push(patchTrackById)
+
+        // Обновляем кеш для списков треков (fetchTracks)
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
             dispatch(
               tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
                 const track = state.data.find((t) => t.id === trackId)
                 if (track) {
+                  if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+                    track.attributes.dislikesCount -= 1
+                  }
                   track.attributes.likesCount += 1
                   track.attributes.currentUserReaction = CurrentUserReaction.Like
                 }
-              })
-            ),
-            dispatch(
-              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-                state.data.attributes.likesCount += 1
-                state.data.attributes.currentUserReaction = CurrentUserReaction.Like
               })
             )
           )
@@ -230,7 +201,6 @@ export const tracksAPI = baseApi.injectEndpoints({
 
         try {
           await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResults.forEach((p) => p.undo())
         }
@@ -243,10 +213,22 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
-        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
-
         const patchResults: any[] = []
 
+        // --- ИСПРАВЛЕНИЕ: Обновляем кеш для страницы одного трека (fetchTrackById) ---
+        const patchTrackById = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+              state.data.attributes.likesCount -= 1
+            }
+            state.data.attributes.dislikesCount += 1
+            state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike
+          })
+        )
+        patchResults.push(patchTrackById)
+
+        // Обновляем кеш для списков треков (fetchTracks)
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
             dispatch(
@@ -260,22 +242,12 @@ export const tracksAPI = baseApi.injectEndpoints({
                   track.attributes.currentUserReaction = CurrentUserReaction.Dislike
                 }
               })
-            ),
-            dispatch(
-              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-                if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                  state.data.attributes.likesCount -= 1
-                }
-                state.data.attributes.dislikesCount += 1
-                state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike
-              })
             )
           )
         })
 
         try {
           await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResults.forEach((p) => p.undo())
         }
@@ -288,10 +260,23 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'DELETE',
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
-        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
-
         const patchResults: any[] = []
 
+        // --- ИСПРАВЛЕНИЕ: Обновляем кеш для страницы одного трека (fetchTrackById) ---
+        const patchTrackById = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+              state.data.attributes.likesCount -= 1
+            } else if (state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+              state.data.attributes.dislikesCount -= 1
+            }
+            state.data.attributes.currentUserReaction = CurrentUserReaction.None
+          })
+        )
+        patchResults.push(patchTrackById)
+
+        // Обновляем кеш для списков треков (fetchTracks)
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
             dispatch(
@@ -306,25 +291,12 @@ export const tracksAPI = baseApi.injectEndpoints({
                   track.attributes.currentUserReaction = CurrentUserReaction.None
                 }
               })
-            ),
-            dispatch(
-              tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-                if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                  state.data.attributes.likesCount -= 1
-                } else if (
-                  state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike
-                ) {
-                  state.data.attributes.dislikesCount -= 1
-                }
-                state.data.attributes.currentUserReaction = CurrentUserReaction.None
-              })
             )
           )
         })
 
         try {
           await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResults.forEach((p) => p.undo())
         }
@@ -342,14 +314,6 @@ export const tracksAPI = baseApi.injectEndpoints({
           body: formData,
         }
       },
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
     deleteCoverFromTrack: build.mutation<void, { trackId: string }>({
@@ -357,14 +321,6 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/tracks/${trackId}/cover`,
         method: 'DELETE',
       }),
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
     publishTrack: build.mutation<void, { trackId: string }>({
