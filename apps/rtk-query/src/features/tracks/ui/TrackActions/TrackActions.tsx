@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
@@ -12,13 +12,13 @@ import {
   useUnReactionTrackMutation,
 } from '@/features/tracks'
 import {
+  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   ReactionButtons,
   type ReactionButtonsSize,
 } from '@/shared/components'
-import { DropdownMenu } from '@/shared/components'
 import { Paths } from '@/shared/configs'
 import { AddToPlaylistIcon, EditIcon, MoreIcon, TextIcon } from '@/shared/icons'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
@@ -53,23 +53,21 @@ export const TrackActions = ({
   isOwner,
 }: TrackActionsProps) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const [isOpenChoosePlaylistModal, setIsOpenChoosePlaylistModal] = useState(false)
-
   const { handleOpenEditTrackModal } = useEditTrackModal()
 
   const { data: playlists } = useFetchPlaylistsQuery({ trackId })
 
-  const [playlistIds, setPlaylistIds] = useState<string[]>([])
+  // This “server status” is the original list of playlists in which the track is located.
+  const originalPlaylistIds = useMemo(
+    () => playlists?.data.map((playlist) => playlist.id) ?? [],
+    [playlists?.data]
+  )
 
-  const navigate = useNavigate()
-
-  // update playlistIds when playlists change
-  useEffect(() => {
-    if (playlists?.data) {
-      setPlaylistIds(playlists.data.map((playlist) => playlist.id))
-    }
-  }, [playlists?.data])
+  // This "UI state" is what the user selects in the modal window.
+  const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<string[]>([])
 
   const [like] = useLikeTrackMutation({
     fixedCacheKey: `track-reaction-${trackId}`,
@@ -83,6 +81,12 @@ export const TrackActions = ({
 
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
   const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
+
+  const handleOpenChoosePlaylistModal = () => {
+    // When opening the modal window, initialize the selection state with the current state from the server.
+    setSelectedPlaylistIds(originalPlaylistIds)
+    setIsOpenChoosePlaylistModal(true)
+  }
 
   return (
     <>
@@ -108,7 +112,7 @@ export const TrackActions = ({
               {t('tracks.button.edit')}
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem onClick={() => setIsOpenChoosePlaylistModal(true)}>
+          <DropdownMenuItem onClick={handleOpenChoosePlaylistModal}>
             <AddToPlaylistIcon />
             {t('tracks.button.add_to_playlist')}
           </DropdownMenuItem>
@@ -122,12 +126,12 @@ export const TrackActions = ({
         <ChoosePlaylistModal
           isOpen={isOpenChoosePlaylistModal}
           setIsOpen={setIsOpenChoosePlaylistModal}
-          playlistIds={playlistIds}
-          setPlaylistIds={setPlaylistIds}
+          playlistIds={selectedPlaylistIds}
+          setPlaylistIds={setSelectedPlaylistIds}
           onChoose={() => {
             syncTrackPlaylists({
-              originalPlaylistIds: playlists?.data.map((playlist) => playlist.id) || [],
-              newPlaylistIds: playlistIds,
+              originalPlaylistIds: originalPlaylistIds,
+              newPlaylistIds: selectedPlaylistIds,
               trackId,
               addTrackToPlaylist: (params) => addTrackToPlaylist(params).unwrap(),
               removeTrackFromPlaylist: (params) => removeTrackFromPlaylist(params).unwrap(),
