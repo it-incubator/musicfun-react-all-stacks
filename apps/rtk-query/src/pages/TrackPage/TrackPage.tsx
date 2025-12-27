@@ -4,6 +4,7 @@ import { useParams } from 'react-router'
 import { useMeQuery } from '@/features/auth'
 import { PlaylistCard, useFetchPlaylistsQuery } from '@/features/playlists'
 import { TrackOverview, useFetchTrackByIdQuery } from '@/features/tracks'
+import { usePageBackgroundColor } from '@/pages/common/hooks'
 import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
@@ -16,7 +17,7 @@ export const TrackPage = () => {
   const { t } = useTranslation()
 
   const { id } = useParams()
-  const { data: track } = useFetchTrackByIdQuery({ trackId: id! })
+  const { data: track, isSuccess } = useFetchTrackByIdQuery({ trackId: id! })
   const { data: me } = useMeQuery()
   const isTrackOwner = me?.userId === track?.data.attributes.user.id
 
@@ -24,46 +25,55 @@ export const TrackPage = () => {
 
   const { data: playlists } = useFetchPlaylistsQuery({ trackId: id! })
 
+  const trackCover =
+    track?.data.attributes.images &&
+    getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)
+
+  const { dominantColor, canvasRef } = usePageBackgroundColor(trackCover?.url, isSuccess)
+
   if (!track) {
     return <div>{t('tracks.title.tracks_not_found')}</div>
   }
 
-  const trackCover = getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)
-
   return (
-    <PageWithoutHeader className={s.trackPage}>
-      <TrackOverview
-        className={s.trackOverview}
-        title={track.data.attributes.title}
-        image={trackCover?.url}
-        addedAt={track.data.attributes.addedAt}
-        artists={track.data.attributes.artists.map((artist) => artist.name)}
-        tags={track.data.attributes.tags}
-      />
+    <PageWithoutHeader className={s.trackPage} backgroundColor={dominantColor}>
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
+      {dominantColor && (
+        <>
+          <TrackOverview
+            className={s.trackOverview}
+            title={track.data.attributes.title}
+            image={trackCover?.url}
+            addedAt={track.data.attributes.addedAt}
+            artists={track.data.attributes.artists.map((artist) => artist.name)}
+            tags={track.data.attributes.tags}
+          />
 
-      <ControlPanel
-        trackId={track.data.id}
-        isOwnTrack={isTrackOwner}
-        reaction={track.data.attributes.currentUserReaction}
-        likesCount={track.data.attributes.likesCount}
-      />
+          <ControlPanel
+            trackId={track.data.id}
+            isOwnTrack={isTrackOwner}
+            reaction={track.data.attributes.currentUserReaction}
+            likesCount={track.data.attributes.likesCount}
+          />
 
-      <Typography variant="h2" className={s.title}>
-        {t('placeholder.which_playlist')}
-      </Typography>
+          <Typography variant="h2" className={s.title}>
+            {t('placeholder.which_playlist')}
+          </Typography>
 
-      {playlists?.data && (
-        <ContentList
-          data={playlists.data}
-          emptyMessage={t('playlists.title.playlists_not_found')}
-          renderItem={(playlist) => (
-            <PlaylistCard
-              id={playlist.id}
-              title={playlist.attributes.title}
-              imageSrc={getImageByType(playlist.attributes.images, ImageType.ORIGINAL)?.url}
+          {playlists?.data && (
+            <ContentList
+              data={playlists.data}
+              emptyMessage={t('playlists.title.not_found_playlists')}
+              renderItem={(playlist) => (
+                <PlaylistCard
+                  id={playlist.id}
+                  title={playlist.attributes.title}
+                  imageSrc={getImageByType(playlist.attributes.images, ImageType.ORIGINAL)?.url}
+                />
+              )}
             />
           )}
-        />
+        </>
       )}
     </PageWithoutHeader>
   )

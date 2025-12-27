@@ -2,10 +2,4 @@
   min-height: calc(100vh - var(--player-height));
   margin-top: calc(0px - var(--header-height));
   padding: var(--header-height) 40px 0;
-  background: linear-gradient(
-    180deg,
-    var(--page-gradient-color, #3333a3) 0,
-    var(--color-bg-secondary) 300px,
-    var(--color-bg-secondary) 100%
-  );
 }
