@@ -336,6 +336,7 @@ export const tracksAPI = baseApi.injectEndpoints({
 export const {
   useFetchTracksInfinityQuery,
   useFetchTracksQuery,
+  useLazyFetchTrackByIdQuery,
   useFetchTrackByIdQuery,
   useAddCoverToTrackMutation,
   useDeleteCoverFromTrackMutation,

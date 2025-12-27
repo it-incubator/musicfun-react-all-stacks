@@ -1,4 +1,4 @@
-import { TrackActions } from '@/features/tracks'
+import { TrackActions, useLazyFetchTrackByIdQuery } from '@/features/tracks'
 import { type Track, useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
 import { CurrentUserReaction, IconButton } from '@/shared/components'
 import { PauseIcon, PlayIcon } from '@/shared/icons'
@@ -21,8 +21,10 @@ export const ControlPanel = ({
   const { play, pause, resume } = usePlayerControls()
   const { isPlaying } = usePlaybackState()
   const { track: currentTrack } = useCurrentTrack()
+  const [fetchTrack] = useLazyFetchTrackByIdQuery()
 
-  const onClickHandler = () => {
+  const onClickHandler = async () => {
+    // debugger
     if (currentTrack && currentTrack.id === track.id) {
       if (isPlaying) {
         pause()
@@ -30,7 +32,25 @@ export const ControlPanel = ({
         resume()
       }
     } else {
-      play(track)
+      // Fetch the full track details before playing
+      try {
+        const result = await fetchTrack({ trackId: trackId })
+        if (result.data?.data) {
+          const fullTrack: Track = {
+            id: result.data.data.id,
+            title: result.data.data.attributes.title,
+            artist: result.data.data.attributes.artists[0]?.name || 'Unknown Artist',
+            duration: result.data.data.attributes.duration,
+            url: result.data.data.attributes.attachments[0]?.url || '',
+            albumArt: result.data.data.attributes.images?.main?.[0]?.url,
+          }
+          play(fullTrack)
+        }
+      } catch (error) {
+        console.error('Failed to fetch track:', error)
+        // Fallback to the track we already have
+        play(track)
+      }
     }
   }
 
