@@ -50,7 +50,10 @@ export const TrackActions = ({
 
   const { handleOpenEditTrackModal } = useEditTrackModal()
 
-  const { data: playlists } = useFetchPlaylistsQuery({ trackId })
+  const { data: playlists } = useFetchPlaylistsQuery(
+    { trackId },
+    { skip: !isOpenChoosePlaylistModal }
+  )
   const { data: isAuth } = useMeQuery()
 
   const [playlistIds, setPlaylistIds] = useState<string[]>([])
