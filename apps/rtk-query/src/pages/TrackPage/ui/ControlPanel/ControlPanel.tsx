@@ -24,7 +24,6 @@ export const ControlPanel = ({
   const [fetchTrack] = useLazyFetchTrackByIdQuery()
 
   const onClickHandler = async () => {
-    // debugger
     if (currentTrack && currentTrack.id === track.id) {
       if (isPlaying) {
         pause()
@@ -32,7 +31,6 @@ export const ControlPanel = ({
         resume()
       }
     } else {
-      // Fetch the full track details before playing
       try {
         const result = await fetchTrack({ trackId: trackId })
         if (result.data?.data) {

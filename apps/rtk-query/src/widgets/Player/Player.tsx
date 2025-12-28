@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useParams } from 'react-router'
 
-import { useFetchTrackByIdQuery } from '@/features/tracks'
+import { useLazyFetchTrackByIdQuery } from '@/features/tracks'
 import { type Track, useCurrentTrack } from '@/player'
 import {
   usePlaybackProgress,
@@ -21,57 +20,58 @@ const MOCK_TRACK = {
 }
 
 export const Player = () => {
-  const { id } = useParams()
-  const { data: trackResponse, isLoading } = useFetchTrackByIdQuery({ trackId: id! })
+  const [fetchTrack, { isLoading }] = useLazyFetchTrackByIdQuery()
   const { track: currentTrack } = useCurrentTrack()
   const [isShuffle, setIsShuffle] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
   const { isPlaying } = usePlaybackState()
-  const { seek } = usePlayerControls()
+  const { seek, pause, resume, play } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
 
-  const { pause, resume, play } = usePlayerControls()
-
-  const track: Track | undefined = trackResponse?.data
-    ? {
-        id: trackResponse.data.id,
-        title: trackResponse.data.attributes.title,
-        artist: trackResponse.data.attributes.artists[0]?.name || 'Unknown Artist',
-        duration: trackResponse.data.attributes.duration,
-        url: trackResponse.data.attributes.attachments[0]?.url || '',
-        albumArt: trackResponse.data.attributes.images?.main?.[0]?.url,
-      }
-    : undefined
-
-  if (isLoading) {
-    return <div className={s.player}>Loading...</div>
-  }
-
-  const onTogglePlay = () => {
-    if (currentTrack && currentTrack.id === track?.id) {
+  const fetchLazyTrack = async (trackToPlay: Track) => {
+    if (currentTrack && currentTrack.id === trackToPlay.id) {
       if (isPlaying) {
         pause()
       } else {
         resume()
       }
-      console.log(track)
-    } else {
-      if (track) {
-        play(track)
-      }
+      return
     }
+
+    try {
+      const result = await fetchTrack({ trackId: trackToPlay.id }).unwrap()
+
+      if (result.data) {
+        const fullTrackData: Track = {
+          id: result.data.id,
+          title: result.data.attributes.title,
+          artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
+          duration: result.data.attributes.duration,
+          url: result.data.attributes.attachments[0]?.url || '',
+          albumArt: result.data.attributes.images?.main?.[0]?.url,
+        }
+        play(fullTrackData)
+      }
+    } catch (error) {
+      console.error('Failed to fetch track:', error)
+      // Error handling can be added, for example, to display a notification.
+    }
+  }
+
+  if (isLoading) {
+    return <div className={s.player}>Loading...</div>
   }
 
   return (
     <AudioPlayer
-      cover={track?.albumArt || MOCK_TRACK.cover}
-      title={track?.title || MOCK_TRACK.title}
-      artist={track?.artist || MOCK_TRACK.artist}
+      cover={currentTrack?.albumArt || MOCK_TRACK.cover}
+      title={currentTrack?.title || MOCK_TRACK.title}
+      artist={currentTrack?.artist || MOCK_TRACK.artist}
       isPlaying={isPlaying}
       onNext={() => {}}
       onPrevious={() => {}}
-      onTogglePlay={onTogglePlay}
+      onTogglePlay={() => currentTrack && fetchLazyTrack(currentTrack)}
       isShuffle={isShuffle}
       isRepeat={isRepeat}
       onShuffle={() => setIsShuffle(!isShuffle)}
