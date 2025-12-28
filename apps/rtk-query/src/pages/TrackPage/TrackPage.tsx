@@ -11,6 +11,7 @@ import { getImageByType } from '@/shared/utils'
 import { ContentList, PageWithoutHeader } from '../common'
 import s from './TrackPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
+import { TrackPageSkeleton } from './ui/TrackPageSkeleton'
 
 export const TrackPage = () => {
   const { t } = useTranslation()
@@ -25,7 +26,7 @@ export const TrackPage = () => {
   const { data: playlists } = useFetchPlaylistsQuery({ trackId: id! })
 
   if (!track) {
-    return <div>{t('tracks.title.tracks_not_found')}</div>
+    return <TrackPageSkeleton />
   }
 
   const trackCover = getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)

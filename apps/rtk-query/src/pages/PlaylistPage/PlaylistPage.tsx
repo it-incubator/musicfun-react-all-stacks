@@ -11,6 +11,7 @@ import { getImageByType } from '@/shared/utils'
 import { PageWithoutHeader, SearchTextField } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
+import { PlaylistPageSkeleton } from './ui/PlaylistPageSkeleton'
 
 export const PlaylistPage = () => {
   const { t } = useTranslation()
@@ -34,7 +35,7 @@ export const PlaylistPage = () => {
     ) ?? []
 
   if (!playlist) {
-    return <div>{t('playlists.title.playlists_not_found')}</div>
+    return <PlaylistPageSkeleton />
   }
   const playlistCover = getImageByType(playlist?.data.attributes.images, ImageType.ORIGINAL)
 

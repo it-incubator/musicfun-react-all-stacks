@@ -4,7 +4,12 @@ import { useInView } from 'react-intersection-observer'
 import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
-import { MOCK_TRACKS, TracksTable, useFetchTracksByScrollInfiniteQuery } from '@/features/tracks'
+import {
+  MOCK_TRACKS,
+  TracksTable,
+  TracksTableSkeleton,
+  useFetchTracksByScrollInfiniteQuery,
+} from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { loadPlaylist } from '@/player'
@@ -25,6 +30,7 @@ export const TracksPage = () => {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
+    isLoading,
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
@@ -81,47 +87,51 @@ export const TracksPage = () => {
         </div>
       </div>
 
-      <TracksTable
-        trackRows={
-          pages.map((track, index) => {
-            const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
-            const userId = track.attributes.user.id
-            const isOwner = userId === me?.userId
+      {isLoading ? (
+        <TracksTableSkeleton />
+      ) : (
+        <TracksTable
+          trackRows={
+            pages.map((track, index) => {
+              const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
+              const userId = track.attributes.user.id
+              const isOwner = userId === me?.userId
 
-            return {
-              index,
-              id: track.id,
-              title: track.attributes.title,
-              imageSrc: image?.url || noCoverPlaceholder,
-              addedAt: track.attributes.addedAt,
-              artists: ['Artist 1', 'Artist 2'],
-              duration: 100,
-              likesCount: track.attributes.likesCount,
-              dislikesCount: track.attributes.dislikesCount,
-              currentUserReaction: track.attributes.currentUserReaction,
-              url: track.attributes.attachments[0].url,
-              isOwner,
-            }
-          }) ?? []
-        }
-        renderTrackRow={(trackRow) => (
-          <TrackRow
-            key={trackRow.id}
-            trackRow={trackRow}
-            playingTrackId={MOCK_TRACKS[0].id}
-            playingTrackProgress={20}
-            onTrackPlayClick={handleTrackPlayClick}
-            renderActionsCell={() => (
-              <TrackActions
-                reaction={trackRow.currentUserReaction}
-                likesCount={trackRow.likesCount}
-                trackId={trackRow.id}
-                isOwner={trackRow.isOwner}
-              />
-            )}
-          />
-        )}
-      />
+              return {
+                index,
+                id: track.id,
+                title: track.attributes.title,
+                imageSrc: image?.url || noCoverPlaceholder,
+                addedAt: track.attributes.addedAt,
+                artists: ['Artist 1', 'Artist 2'],
+                duration: 100,
+                likesCount: track.attributes.likesCount,
+                dislikesCount: track.attributes.dislikesCount,
+                currentUserReaction: track.attributes.currentUserReaction,
+                url: track.attributes.attachments[0].url,
+                isOwner,
+              }
+            }) ?? []
+          }
+          renderTrackRow={(trackRow) => (
+            <TrackRow
+              key={trackRow.id}
+              trackRow={trackRow}
+              playingTrackId={MOCK_TRACKS[0].id}
+              playingTrackProgress={20}
+              onTrackPlayClick={handleTrackPlayClick}
+              renderActionsCell={() => (
+                <TrackActions
+                  reaction={trackRow.currentUserReaction}
+                  likesCount={trackRow.likesCount}
+                  trackId={trackRow.id}
+                  isOwner={trackRow.isOwner}
+                />
+              )}
+            />
+          )}
+        />
+      )}
 
       {hasNextPage && (
         <div ref={ref}>
