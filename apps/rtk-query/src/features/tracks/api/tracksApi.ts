@@ -14,7 +14,7 @@ import type {
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
+    fetchTracksByScrollInfinite: build.query<FetchTracksResponse, FetchTracksArgs>({
       query: (params) => {
         const query = buildQueryString(params)
         return `playlists/tracks?${query}`
@@ -334,7 +334,7 @@ export const tracksAPI = baseApi.injectEndpoints({
 })
 
 export const {
-  useFetchTracksInfinityQuery,
+  useFetchTracksByScrollInfiniteQuery,
   useFetchTracksQuery,
   useLazyFetchTrackByIdQuery,
   useFetchTrackByIdQuery,

@@ -1,8 +1,14 @@
 import { useTranslation } from 'react-i18next'
+import { useInView } from 'react-intersection-observer'
 import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
-import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
+import {
+  MOCK_TRACKS,
+  TracksTable,
+  useFetchTracksByScrollInfiniteQuery,
+  useFetchTracksQuery,
+} from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { loadPlaylist } from '@/player'
@@ -14,13 +20,21 @@ import { getImageByType } from '@/shared/utils'
 import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
 import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
+import { useEffect } from 'react'
+import { Spinner } from '@/shared/components/Spinner/Spinner'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
 
+  const {
+    data: tracksData,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useFetchTracksByScrollInfiniteQuery({ pageSize: 5 })
+
   const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
     usePageSearchParams()
-
   const fetchTracksArgs = {
     pageNumber,
     sortBy,
@@ -30,8 +44,8 @@ export const TracksPage = () => {
     ...(artistsIds.length > 0 && { artistsIds }),
   }
 
-  const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs)
-
+  const { data: tracks } = useFetchTracksQuery(fetchTracksArgs)
+  debugger
   const { data: me } = useMeQuery()
 
   const dispatch = useDispatch()
@@ -54,6 +68,16 @@ export const TracksPage = () => {
       })
     )
   }
+
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+  })
+
+  useEffect(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage()
+    }
+  }, [inView])
 
   return (
     <PageWrapper>
@@ -115,6 +139,12 @@ export const TracksPage = () => {
           />
         )}
       />
+      {hasNextPage && (
+        <div ref={ref}>
+          {isFetchingNextPage ? <Spinner size={50} /> : <div style={{ height: '10px' }} />}
+        </div>
+      )}
+      {!hasNextPage && tracks!.data.length > 0 && <p>Nothing more to load</p>}
     </PageWrapper>
   )
 }
