@@ -12,7 +12,7 @@
 
   box-sizing: border-box;
 
-  border-top: 3px solid var(--color-accent-500);
+  border-top: 3px solid var(--color-accent);
   border-right: 3px solid transparent;
   border-radius: 50%;
 

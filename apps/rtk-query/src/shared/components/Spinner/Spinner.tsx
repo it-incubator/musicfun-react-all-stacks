@@ -1,7 +1,7 @@
 'use client'
 import type { FC } from 'react'
 
-import s from './spinner.module.scss'
+import s from './spinner.module.css'
 
 export type SpinnerProps = {
   fullScreen?: boolean
