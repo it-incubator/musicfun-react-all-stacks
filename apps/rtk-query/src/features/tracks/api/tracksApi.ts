@@ -151,7 +151,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
         const patchResults: any[] = []
 
-        // --- ИСПРАВЛЕНИЕ: Обновляем кеш для страницы одного трека (fetchTrackById) ---
+        // Refresh the cache for a single track page (fetchTrackById)
         const patchTrackById = dispatch(
           tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
             if (state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
@@ -163,7 +163,34 @@ export const tracksAPI = baseApi.injectEndpoints({
         )
         patchResults.push(patchTrackById)
 
-        // Обновляем кеш для списков треков (fetchTracks)
+        // Refresh cache for infinite scroll (fetchTracksByScroll)
+        const scrollArgs = tracksAPI.util.selectCachedArgsForQuery(
+          getState(),
+          'fetchTracksByScroll'
+        )
+        if (scrollArgs) {
+          scrollArgs.forEach((scrollArg) => {
+            patchResults.push(
+              dispatch(
+                tracksAPI.util.updateQueryData('fetchTracksByScroll', scrollArg, (state) => {
+                  // Go through all pages
+                  state.pages.forEach((page) => {
+                    const track = page.data.find((t: any) => t.id === trackId)
+                    if (track) {
+                      if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+                        track.attributes.dislikesCount -= 1
+                      }
+                      track.attributes.likesCount += 1
+                      track.attributes.currentUserReaction = CurrentUserReaction.Like
+                    }
+                  })
+                })
+              )
+            )
+          })
+        }
+
+        // Refresh the cache for track lists (fetchTracks)
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
@@ -210,7 +237,34 @@ export const tracksAPI = baseApi.injectEndpoints({
         )
         patchResults.push(patchTrackById)
 
-        // Обновляем кеш для списков треков (fetchTracks)
+        // Refresh cache for infinite scroll (fetchTracksByScroll)
+        const scrollArgs = tracksAPI.util.selectCachedArgsForQuery(
+          getState(),
+          'fetchTracksByScroll'
+        )
+        if (scrollArgs) {
+          scrollArgs.forEach((scrollArg) => {
+            patchResults.push(
+              dispatch(
+                tracksAPI.util.updateQueryData('fetchTracksByScroll', scrollArg, (state) => {
+                  // Go through all pages
+                  state.pages.forEach((page) => {
+                    const track = page.data.find((t: any) => t.id === trackId)
+                    if (track) {
+                      if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                        track.attributes.likesCount -= 1
+                      }
+                      track.attributes.dislikesCount += 1
+                      track.attributes.currentUserReaction = CurrentUserReaction.Dislike
+                    }
+                  })
+                })
+              )
+            )
+          })
+        }
+
+        // Refresh the cache for track lists (fetchTracks)
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
@@ -245,7 +299,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
         const patchResults: any[] = []
 
-        // --- ИСПРАВЛЕНИЕ: Обновляем кеш для страницы одного трека (fetchTrackById) ---
+        // Refresh the cache for a single track page (fetchTrackById)
         const patchTrackById = dispatch(
           tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
             if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
@@ -258,7 +312,35 @@ export const tracksAPI = baseApi.injectEndpoints({
         )
         patchResults.push(patchTrackById)
 
-        // Обновляем кеш для списков треков (fetchTracks)
+        // Refresh cache for infinite scroll (fetchTracksByScroll)
+        const scrollArgs = tracksAPI.util.selectCachedArgsForQuery(
+          getState(),
+          'fetchTracksByScroll'
+        )
+        scrollArgs.forEach((scrollArg) => {
+          patchResults.push(
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTracksByScroll', scrollArg, (state) => {
+                // Go through all pages
+                state.pages.forEach((page) => {
+                  const track = page.data.find((t: any) => t.id === trackId)
+                  if (track) {
+                    if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                      track.attributes.likesCount -= 1
+                    } else if (
+                      track.attributes.currentUserReaction === CurrentUserReaction.Dislike
+                    ) {
+                      track.attributes.dislikesCount -= 1
+                    }
+                    track.attributes.currentUserReaction = CurrentUserReaction.None
+                  }
+                })
+              })
+            )
+          )
+        })
+
+        // Refresh the cache for track lists (fetchTracks)
         const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
