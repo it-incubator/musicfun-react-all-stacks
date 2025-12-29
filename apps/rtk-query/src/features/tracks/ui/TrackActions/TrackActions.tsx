@@ -1,25 +1,18 @@
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useMeQuery } from '@/features/auth'
 import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { ChoosePlaylistModal } from '@/features/playlists/ui/ChoosePlaylistModal/ChoosePlaylistModal'
 import {
+  TrackActionsMenu,
   useAddTrackToPlaylistMutation,
   useDislikeTrackMutation,
   useLikeTrackMutation,
   useRemoveTrackFromPlaylistMutation,
+  useRemoveTrackMutation,
   useUnReactionTrackMutation,
-  type FetchTracksArgs,
 } from '@/features/tracks'
-import {
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  ReactionButtons,
-  type ReactionButtonsSize,
-} from '@/shared/components'
-import { DropdownMenu } from '@/shared/components'
-import { MoreIcon } from '@/shared/icons'
+import { ReactionButtons, type ReactionButtonsSize } from '@/shared/components'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
 
 import { useEditTrackModal } from '../../model/hooks'
@@ -28,6 +21,7 @@ import { syncTrackPlaylists } from '../../utils/playlistSync'
 type TrackActionsPropsBase = {
   trackId: string
   isOwner?: boolean
+  playlistId?: string
 }
 
 type TrackActionsPropsWithReactions = TrackActionsPropsBase & {
@@ -49,15 +43,18 @@ export const TrackActions = ({
   likesCount,
   trackId,
   sizeReactionButtons = 'small',
-  isOwner,
+  isOwner = false,
+  playlistId,
 }: TrackActionsProps) => {
-  const { t } = useTranslation()
-
   const [isOpenChoosePlaylistModal, setIsOpenChoosePlaylistModal] = useState(false)
 
   const { handleOpenEditTrackModal } = useEditTrackModal()
 
-  const { data: playlists } = useFetchPlaylistsQuery({ trackId })
+  const { data: playlists } = useFetchPlaylistsQuery(
+    { trackId },
+    { skip: !isOpenChoosePlaylistModal }
+  )
+  const { data: isAuth } = useMeQuery()
 
   const [playlistIds, setPlaylistIds] = useState<string[]>([])
 
@@ -74,6 +71,15 @@ export const TrackActions = ({
 
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
   const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
+  const [removeTrack] = useRemoveTrackMutation()
+
+  const handleDelete = () => {
+    if (playlistId) {
+      removeTrackFromPlaylist({ playlistId, trackId })
+    } else {
+      removeTrack({ trackId })
+    }
+  }
 
   return (
     <>
@@ -87,25 +93,15 @@ export const TrackActions = ({
           size={sizeReactionButtons}
         />
       )}
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <MoreIcon />
-        </DropdownMenuTrigger>
-
-        <DropdownMenuContent>
-          {isOwner && (
-            <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackId)}>
-              {t('tracks.button.edit')}
-            </DropdownMenuItem>
-          )}
-          <DropdownMenuItem onClick={() => setIsOpenChoosePlaylistModal(true)}>
-            {t('tracks.button.add_to_playlist')}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
-            {t('tracks.button.show_text_song')}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {!!isAuth && (
+        <TrackActionsMenu
+          trackId={trackId}
+          isOwner={isOwner}
+          onEdit={() => handleOpenEditTrackModal(trackId)}
+          onDelete={handleDelete}
+          onAddToPlaylist={() => setIsOpenChoosePlaylistModal(true)}
+        />
+      )}
       {isOpenChoosePlaylistModal && (
         <ChoosePlaylistModal
           isOpen={isOpenChoosePlaylistModal}

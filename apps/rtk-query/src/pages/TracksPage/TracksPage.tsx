@@ -1,44 +1,41 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useInView } from 'react-intersection-observer'
 import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
-import { MOCK_TRACKS, TracksTable, useFetchTracksQuery } from '@/features/tracks'
+import { MOCK_TRACKS, TracksTable, useFetchTracksByScrollInfiniteQuery } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { loadPlaylist } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
+import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
-import { usePageSearchParams } from '../common/hooks'
+import { PageWithHeader, SearchTags, SearchTextField, SortSelect } from '../common'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
 
-  const { pageNumber, debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } =
-    usePageSearchParams()
-
-  const fetchTracksArgs = {
-    pageNumber,
-    sortBy,
-    sortDirection,
-    search: debouncedSearch,
-    ...(tagsIds.length > 0 && { tagsIds }),
-    ...(artistsIds.length > 0 && { artistsIds }),
-  };
-
-  const { data: tracks, isLoading } = useFetchTracksQuery(fetchTracksArgs);
-
+  const {
+    data: tracksData,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useFetchTracksByScrollInfiniteQuery()
+  const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
 
   const dispatch = useDispatch()
 
   const handleTrackPlayClick = (trackId: string) => {
+    if (!pages) return
+
     // TODO: Update to pass full track array with url, title, artist, duration, albumArt
-    const tracksForRedux = tracks!.data.map((t) => ({
+    const tracksForRedux = pages.map((t) => ({
       id: t.id,
       title: t.attributes.title,
       artist: 'artist',
@@ -50,13 +47,23 @@ export const TracksPage = () => {
       loadPlaylist({
         playlistId: 'all-tracks',
         tracks: tracksForRedux,
-        startIndex: tracksForRedux.findIndex((t) => t.id === trackId),
+        startIndex: tracksForRedux?.findIndex((t) => t.id === trackId),
       })
     )
   }
 
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+  })
+
+  useEffect(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage()
+    }
+  }, [inView])
+
   return (
-    <PageWrapper>
+    <PageWithHeader>
       <Typography variant="h2" as="h1" className={s.title}>
         {t('tracks.title.all_tracks')}
       </Typography>
@@ -76,7 +83,7 @@ export const TracksPage = () => {
 
       <TracksTable
         trackRows={
-          tracks?.data?.map((track, index) => {
+          pages.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
             const userId = track.attributes.user.id
             const isOwner = userId === me?.userId
@@ -115,6 +122,13 @@ export const TracksPage = () => {
           />
         )}
       />
-    </PageWrapper>
+
+      {hasNextPage && (
+        <div ref={ref}>
+          {isFetchingNextPage ? <Spinner size={50} /> : <div style={{ height: '10px' }} />}
+        </div>
+      )}
+      {!hasNextPage && pages.length > 0 && <p>Nothing more to load</p>}
+    </PageWithHeader>
   )
 }

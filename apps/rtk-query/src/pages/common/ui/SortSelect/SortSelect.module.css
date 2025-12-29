@@ -4,10 +4,12 @@
   gap: 8px;
   align-items: center;
 
-  width: 210px;
+  min-width: 210px;
+
+  white-space: nowrap;
 }
 
 .select {
-  flex-shrink: 0;
-  width: 145px;
+  flex-shrink: 1;
+  min-width: 145px;
 }

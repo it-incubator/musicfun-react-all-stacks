@@ -1,4 +1,5 @@
 import { clsx } from 'clsx'
+import { t } from 'i18next'
 import { type ChangeEvent, type DragEvent, useRef, useState } from 'react'
 
 import { ImageUploadIcon } from '@/shared/icons'
@@ -27,7 +28,7 @@ const ACCEPTED_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 export const ImageUploader = ({
   className,
   onImageSelect,
-  placeholder = 'Upload Cover Image',
+  placeholder = t('placeholder.upload_cover_image'),
   cropShape = 'rect',
   enableCrop = true,
   initialImageUrl,

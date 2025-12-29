@@ -1,0 +1,49 @@
+.trigger {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  gap: 11px;
+  align-items: center;
+
+  padding: 3px 39px 3px 3px;
+  border-radius: 40px;
+}
+
+.trigger::after {
+  content: '';
+
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+
+  display: block;
+
+  width: 14px;
+  height: 7px;
+
+  background-color: var(--color-text-primary);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+
+  transition: clip-path 0.3s ease;
+}
+
+.trigger[data-open]::after {
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
+
+.avatar {
+  overflow: hidden;
+
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+
+  font-size: var(--font-size-xxxs);
+}
+
+.name {
+  color: var(--color-text-primary);
+}

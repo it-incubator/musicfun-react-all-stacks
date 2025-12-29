@@ -8,7 +8,7 @@ import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper } from '../common'
+import { ContentList, PageWithoutHeader } from '../common'
 import s from './TrackPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
@@ -18,9 +18,9 @@ export const TrackPage = () => {
   const { id } = useParams()
   const { data: track } = useFetchTrackByIdQuery({ trackId: id! })
   const { data: me } = useMeQuery()
+  const isTrackOwner = me?.userId === track?.data.attributes.user.id
 
   // TODO: backend don't return user id for track
-  // const isOwnTrack = me?.userId === track?.data.attributes.user.id
 
   const { data: playlists } = useFetchPlaylistsQuery({ trackId: id! })
 
@@ -31,7 +31,7 @@ export const TrackPage = () => {
   const trackCover = getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)
 
   return (
-    <PageWrapper className={s.trackPage}>
+    <PageWithoutHeader className={s.trackPage}>
       <TrackOverview
         className={s.trackOverview}
         title={track.data.attributes.title}
@@ -43,29 +43,28 @@ export const TrackPage = () => {
 
       <ControlPanel
         trackId={track.data.id}
-        isOwnTrack={false}
+        isOwnTrack={isTrackOwner}
         reaction={track.data.attributes.currentUserReaction}
         likesCount={track.data.attributes.likesCount}
       />
 
       <Typography variant="h2" className={s.title}>
-        In which playlist is the track?
+        {t('placeholder.which_playlist')}
       </Typography>
 
       {playlists?.data && (
         <ContentList
           data={playlists.data}
-          emptyMessage={t('playlists.title.not_found_playlists')}
+          emptyMessage={t('playlists.title.playlists_not_found')}
           renderItem={(playlist) => (
             <PlaylistCard
               id={playlist.id}
               title={playlist.attributes.title}
               imageSrc={getImageByType(playlist.attributes.images, ImageType.ORIGINAL)?.url}
-              description={playlist.attributes.description}
             />
           )}
         />
       )}
-    </PageWrapper>
+    </PageWithoutHeader>
   )
 }

@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import { useState } from 'react'
 
 import { AddTrackIcon, DeleteIcon } from '@/shared/icons'
@@ -19,7 +20,7 @@ type FileUploaderProps = {
 export const FileUploader = ({
   onFileSelect,
   accept = '.mp3,audio/*',
-  placeholder = 'Choose Track',
+  placeholder = t('tracks.button.choose_track'),
   disabled = false,
   loading = false,
   value,

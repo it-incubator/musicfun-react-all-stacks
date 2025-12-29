@@ -1,6 +1,9 @@
 .card {
   display: flex;
   flex-direction: column;
+
+  height: 100%;
   padding: 8px;
+
   background: var(--color-bg-card);
 }

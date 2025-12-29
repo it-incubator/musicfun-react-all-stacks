@@ -1,16 +1,24 @@
 import { useTranslation } from 'react-i18next'
 
-import { PlaylistCard, PlaylistCardSkeleton, useFetchPlaylistsQuery } from '@/features/playlists'
+import { useMeQuery } from '@/features/auth'
+import {
+  PlaylistActions,
+  PlaylistCard,
+  PlaylistCardSkeleton,
+  useFetchPlaylistsQuery,
+} from '@/features/playlists'
 import { Pagination, Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper, SearchTags, SearchTextField, SortSelect } from '../common'
+import { ContentList, PageWithHeader, SearchTags, SearchTextField, SortSelect } from '../common'
 import { usePageSearchParams } from '../common/hooks'
 import s from './PlaylistsPage.module.css'
 
 export const PlaylistsPage = () => {
   const { t } = useTranslation()
+  const { data: me } = useMeQuery()
+  const isOwnPlaylist = (userId: string): boolean => me?.userId === userId
 
   const { pageNumber, handlePageChange, debouncedSearch, sortBy, sortDirection, tagsIds } =
     usePageSearchParams()
@@ -25,7 +33,7 @@ export const PlaylistsPage = () => {
   const pagesCount = playlists?.meta.pagesCount || 1
 
   return (
-    <PageWrapper>
+    <PageWithHeader>
       <Typography variant="h2" as="h1" className={s.title}>
         {t('playlists.title.all_playlists')}
       </Typography>
@@ -49,10 +57,19 @@ export const PlaylistsPage = () => {
               id={playlist.id}
               title={playlist.attributes.title}
               imageSrc={image?.url}
-              description={playlist.attributes.description}
               isShowReactionButtons={true}
               reaction={playlist.attributes.currentUserReaction}
               likesCount={playlist.attributes.likesCount}
+              userName={playlist.attributes.user.name}
+              userId={playlist.attributes.user.id}
+              addedAt={playlist.attributes.addedAt}
+              shouldShowOwnerName
+              shouldShowCreatedDate
+              actions={
+                isOwnPlaylist(playlist.attributes.user.id) && (
+                  <PlaylistActions playlistId={playlist.id} />
+                )
+              }
             />
           )
         }}
@@ -64,6 +81,6 @@ export const PlaylistsPage = () => {
         pagesCount={pagesCount}
         onPageChange={handlePageChange}
       />
-    </PageWrapper>
+    </PageWithHeader>
   )
 }

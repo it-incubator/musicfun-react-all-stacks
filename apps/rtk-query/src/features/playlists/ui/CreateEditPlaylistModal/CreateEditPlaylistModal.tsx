@@ -202,7 +202,7 @@ export const CreateEditPlaylistModal = () => {
 
         <DialogFooter>
           <Button variant="secondary" onClick={handleClose} type="button" disabled={isSubmitting}>
-            Cancel
+            {t('button.cancel')}
           </Button>
           <Button variant="primary" type="submit" disabled={isSubmitting}>
             {isSubmitting
@@ -210,8 +210,8 @@ export const CreateEditPlaylistModal = () => {
                 ? 'Updating...'
                 : 'Creating...'
               : isEditMode
-                ? 'Update'
-                : 'Create'}
+                ? t('button.update')
+                : t('button.create')}
           </Button>
         </DialogFooter>
       </form>

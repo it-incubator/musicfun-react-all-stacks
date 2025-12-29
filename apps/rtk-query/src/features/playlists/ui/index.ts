@@ -1,4 +1,5 @@
 export * from './CreateEditPlaylistModal'
+export * from './PlaylistActions'
 export * from './PlaylistCard'
 export * from './PlaylistCardSkeleton'
 export * from './PlaylistOverview'

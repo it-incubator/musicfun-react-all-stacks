@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import type { ReactNode } from 'react'
 
 import {
@@ -14,31 +15,6 @@ type TableColumn = {
   title: ReactNode
   width?: string
 }
-
-const TABLE_COLUMNS: TableColumn[] = [
-  {
-    title: '#',
-    width: '40px',
-  },
-  {
-    title: 'Track',
-  },
-  {
-    title: '',
-  },
-  {
-    title: 'Date added',
-    width: '120px',
-  },
-  {
-    title: 'Actions',
-    width: '150px',
-  },
-  {
-    title: <ClockIcon />,
-    width: '60px',
-  },
-]
 
 export type TracksTableProps<T extends TrackRowData> = {
   trackRows: T[]
@@ -74,8 +50,17 @@ export const TracksTable = <T extends TrackRowData>({
   renderTrackRow,
 }: TracksTableProps<T>) => {
   if (trackRows.length === 0) {
-    return <div>No tracks</div>
+    return <div>{t('tracks.label.no_tracks')}</div>
   }
+
+  const TABLE_COLUMNS: TableColumn[] = [
+    { title: '#', width: '40px' },
+    { title: t('tracks.table.track') },
+    { title: '' },
+    { title: t('tracks.table.date_added'), width: '120px' },
+    { title: t('tracks.table.actions'), width: '150px' },
+    { title: <ClockIcon />, width: '60px' },
+  ]
 
   return (
     <Table>
