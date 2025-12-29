@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { type ChangeEvent, useCallback, useState } from 'react'
+import { type ChangeEvent, useState } from 'react'
+import { useOnInView } from 'react-intersection-observer'
 
 import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
@@ -9,14 +10,14 @@ import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackR
 import { tracksSortFunction } from '@/pages/TracksPage/TracksSortFunction.ts'
 import { usePlayerStore } from '@/player/model/player-store.ts'
 import { Autocomplete, Typography } from '@/shared/components'
-import { useDebounceValue, useInfiniteScroll } from '@/shared/hooks'
+import { useDebounceValue } from '@/shared/hooks'
 import { VU } from '@/shared/utils'
 
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
 
-const PAGE_SIZE = 1 // PAGE_SIZE reduced to 1 for demo purposes only
+const PAGE_SIZE = 10
 
 export const TracksPage = () => {
   const [hashtags, setHashtags] = React.useState<string[]>([])
@@ -26,8 +27,6 @@ export const TracksPage = () => {
   const [sort, setSort] = useState('newest')
 
   const { sortBy, sortDirection } = tracksSortFunction(sort)
-
-  const targetRef = React.useRef<HTMLDivElement | null>(null)
 
   // todo: task search tracks filter w/o trhotling/debounce
   // todo: add sorting;
@@ -88,18 +87,18 @@ export const TracksPage = () => {
     [tracks, play]
   )
 
-  const infinityFetchNextPage = () => {
-    if (!isFetching && hasNextPage && !isFetchingNextPage) {
-      void fetchNextPage()
+  const targetRef = useOnInView(
+    (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage && !isFetching) {
+        void fetchNextPage()
+      }
+    },
+    {
+      threshold: 0,
+      rootMargin: '300px',
+      triggerOnce: false,
     }
-  }
-
-  useInfiniteScroll({
-    targetRef,
-    callBack: infinityFetchNextPage,
-    rootMargin: '300px',
-    threshold: 0.1,
-  })
+  )
 
   if (isPending) {
     return <div>Loading...</div>
