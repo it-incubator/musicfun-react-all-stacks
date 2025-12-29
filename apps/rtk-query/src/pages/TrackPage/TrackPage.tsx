@@ -36,7 +36,7 @@ export const TrackPage = () => {
   }
 
   return (
-    <PageWithoutHeader className={s.trackPage} backgroundColor={dominantColor}>
+    <PageWithoutHeader backgroundColor={dominantColor}>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       {dominantColor && (
         <>

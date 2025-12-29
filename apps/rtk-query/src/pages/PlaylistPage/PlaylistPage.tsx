@@ -44,7 +44,7 @@ export const PlaylistPage = () => {
   }
 
   return (
-    <PageWithoutHeader className={s.playlistPage} backgroundColor={dominantColor}>
+    <PageWithoutHeader backgroundColor={dominantColor}>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       {dominantColor && (
         <>

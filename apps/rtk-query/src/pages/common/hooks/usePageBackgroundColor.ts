@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 
 const DEFAULT_BACKGROUND_COLOR = '#3333a3'
 
-export const usePageBackgroundColor = (url: string | null | undefined, isSuccess: boolean) => {
+export const usePageBackgroundColor = (
+  url: string | null | undefined,
+  isSuccess: boolean,
+  isLocalUrlData?: boolean
+) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [dominantColor, setDominantColor] = useState<string>('')
 
@@ -13,7 +17,7 @@ export const usePageBackgroundColor = (url: string | null | undefined, isSuccess
     if (url) {
       const img = new Image()
       img.crossOrigin = 'anonymous'
-      img.src = url + '?' //to avoid CORS error
+      img.src = isLocalUrlData ? url : url + '?' //to avoid CORS error
       img.onload = () => {
         const canvas = canvasRef.current
         if (canvas) {
