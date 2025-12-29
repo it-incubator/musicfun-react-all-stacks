@@ -14,48 +14,31 @@ import type {
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchTracksInfinity: build.query<FetchTracksResponse, FetchTracksArgs>({
-      query: (params) => {
-        const query = buildQueryString(params)
-        return `playlists/tracks?${query}`
+    fetchTracksByScroll: build.infiniteQuery<FetchTracksResponse, void, string | undefined>({
+      infiniteQueryOptions: {
+        initialPageParam: undefined,
+        getNextPageParam: (lastPage) => {
+          return lastPage.meta.nextCursor || null
+        },
       },
 
-      serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { pageNumber, ...otherParams } = queryArgs
-        return [endpointName, otherParams]
-      },
-
-      merge: (currentCacheData, responseData, { arg }) => {
-        const currentPage = arg.pageNumber
-
-        if (currentPage === 1) {
-          return responseData
-        }
-
-        if (!currentCacheData?.data || !responseData?.data) {
-          return responseData
-        }
-
-        return {
-          ...responseData,
-          data: [...currentCacheData.data, ...responseData.data],
-        }
-      },
-
-      forceRefetch: ({ currentArg, previousArg }) => {
-        if (!previousArg) return false
-        return currentArg?.pageNumber !== previousArg?.pageNumber
-      },
-
-      providesTags: (result) => [
-        ...(result?.data.map((track) => {
-          return { type: 'Track' as const, id: track.id }
-        }) || []),
-        'Track',
-      ],
-
-      keepUnusedDataFor: 60,
+      query: ({ pageParam }) => ({
+        url: 'playlists/tracks',
+        params: {
+          cursor: pageParam,
+          paginationType: 'cursor',
+          pageSize: 5,
+        },
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.pages.flatMap((page) =>
+                page.data.map((track) => ({ type: 'Track' as const, id: track.id }))
+              ),
+              { type: 'Track', id: 'LIST' },
+            ]
+          : [{ type: 'Track', id: 'LIST' }],
     }),
     fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
       query: (params) => {
@@ -334,7 +317,8 @@ export const tracksAPI = baseApi.injectEndpoints({
 })
 
 export const {
-  useFetchTracksInfinityQuery,
+  useFetchTracksByScrollInfiniteQuery,
+  useLazyFetchTrackByIdQuery,
   useFetchTracksQuery,
   useFetchTrackByIdQuery,
   useAddCoverToTrackMutation,

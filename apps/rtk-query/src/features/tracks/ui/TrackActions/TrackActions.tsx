@@ -69,15 +69,9 @@ export const TrackActions = ({
   // This "UI state" is what the user selects in the modal window.
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<string[]>([])
 
-  const [like] = useLikeTrackMutation({
-    fixedCacheKey: `track-reaction-${trackId}`,
-  })
-  const [dislike] = useDislikeTrackMutation({
-    fixedCacheKey: `track-reaction-${trackId}`,
-  })
-  const [unReaction] = useUnReactionTrackMutation({
-    fixedCacheKey: `track-reaction-${trackId}`,
-  })
+  const [like] = useLikeTrackMutation()
+  const [dislike] = useDislikeTrackMutation()
+  const [unReaction] = useUnReactionTrackMutation()
 
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
   const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
