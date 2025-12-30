@@ -19,6 +19,9 @@ export const usePageBackgroundColor = (
       img.crossOrigin = 'anonymous'
       img.src = isLocalUrlData ? url : url + '?' //to avoid CORS error
       img.onload = () => {
+        if (isLocalUrlData) {
+          URL.revokeObjectURL(url)
+        }
         const canvas = canvasRef.current
         if (canvas) {
           canvas.width = img.naturalWidth
