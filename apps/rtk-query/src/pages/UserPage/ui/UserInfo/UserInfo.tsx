@@ -10,13 +10,13 @@ import { EditIcon } from '@/shared/icons'
 import s from './UserInfo.module.css'
 
 export const UserInfo = () => {
-  const { t } = useTranslation()
+    const {t} = useTranslation()
 
   const { isProfileOwner, userLogin, playlists, tracks } = useOwnerData()
 
-  const { handleOpenEditProfileModal } = useEditProfileModal()
-  const profileAvatarUrl = useAppSelector(selectProfileAvatar)
-  const profileFullName = useAppSelector(selectProfileFullName)
+    const {handleOpenEditProfileModal} = useEditProfileModal()
+    const profileAvatarUrl = useAppSelector(selectProfileAvatar)
+    const profileFullName = useAppSelector(selectProfileFullName)
 
   const userFullName =
     isProfileOwner && profileFullName.name

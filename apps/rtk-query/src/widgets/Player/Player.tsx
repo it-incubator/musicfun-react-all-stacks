@@ -1,5 +1,14 @@
 import { useState } from 'react'
 
+import { useLazyFetchTrackByIdQuery } from '@/features/tracks'
+import {
+  type Track,
+  useCurrentTrack,
+  usePlaybackProgress,
+  usePlaybackState,
+  usePlayerControls,
+  useVolumeControl,
+} from '@/player'
 import { AudioPlayer } from '@/shared/components'
 
 import s from './Player.module.css'
@@ -12,22 +21,67 @@ const MOCK_TRACK = {
 }
 
 export const Player = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [fetchTrack, { isLoading }] = useLazyFetchTrackByIdQuery()
+  const { track: currentTrack } = useCurrentTrack()
   const [isShuffle, setIsShuffle] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
+  const { isPlaying } = usePlaybackState()
+  const { seek, pause, resume, play } = usePlayerControls()
+  const { currentTime, duration } = usePlaybackProgress()
+  const { volume, setVolume } = useVolumeControl()
+  const fetchLazyTrack = async (trackToPlay: Track) => {
+    if (currentTrack && currentTrack.id === trackToPlay.id) {
+      if (isPlaying) {
+        pause()
+      } else {
+        resume()
+      }
+      return
+    }
+
+    try {
+      const result = await fetchTrack({ trackId: trackToPlay.id }).unwrap()
+
+      if (result.data) {
+        const playerTrack: Track = {
+          id: result.data.id,
+          title: result.data.attributes.title,
+          artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
+          duration: result.data.attributes.duration,
+          url: result.data.attributes.attachments[0]?.url || '',
+          albumArt: result.data.attributes.images?.main?.[0]?.url,
+        }
+        play(playerTrack)
+      }
+    } catch (error) {
+      console.error('Failed to fetch track:', error)
+      // Error handling can be added, for example, to display a notification.
+    }
+  }
+
+  if (isLoading) {
+    return <div className={s.player}>Loading...</div>
+  }
 
   return (
     <AudioPlayer
-      {...MOCK_TRACK}
+      cover={currentTrack?.albumArt || MOCK_TRACK.cover}
+      title={currentTrack?.title || MOCK_TRACK.title}
+      artist={currentTrack?.artist || MOCK_TRACK.artist}
       isPlaying={isPlaying}
-      setIsPlaying={setIsPlaying}
       onNext={() => {}}
       onPrevious={() => {}}
+      onTogglePlay={() => currentTrack && fetchLazyTrack(currentTrack)}
       isShuffle={isShuffle}
       isRepeat={isRepeat}
       onShuffle={() => setIsShuffle(!isShuffle)}
       onRepeat={() => setIsRepeat(!isRepeat)}
       className={s.player}
+      duration={duration}
+      currentTime={currentTime}
+      volume={volume}
+      onTimeSeek={seek}
+      onVolumeSet={setVolume}
     />
   )
 }

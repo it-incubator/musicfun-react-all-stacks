@@ -28,9 +28,15 @@ export const TrackCard = ({
   reaction,
   likesCount,
 }: Props) => {
-  const [like] = useLikeTrackMutation()
-  const [dislike] = useDislikeTrackMutation()
-  const [unReaction] = useUnReactionTrackMutation()
+  const [like] = useLikeTrackMutation({
+    fixedCacheKey: `track-reaction-${id}`,
+  })
+  const [dislike] = useDislikeTrackMutation({
+    fixedCacheKey: `track-reaction-${id}`,
+  })
+  const [unReaction] = useUnReactionTrackMutation({
+    fixedCacheKey: `track-reaction-${id}`,
+  })
 
   return (
     <Card as={Link} to={`/tracks/${id}`} className={s.card}>

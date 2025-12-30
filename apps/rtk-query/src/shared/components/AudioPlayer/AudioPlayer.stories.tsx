@@ -2,6 +2,7 @@ import type { Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 
 import { AudioPlayer } from './AudioPlayer.tsx'
+import { usePlaybackState } from '@/player/index.ts'
 
 const meta = {
   title: 'Components/Player',
@@ -21,7 +22,8 @@ const demoTrack = {
 
 export const Basic = {
   render: () => {
-    const [isPlaying, setIsPlaying] = useState(false)
+    const { isPlaying } = usePlaybackState()
+
     const [isShuffle, setIsShuffle] = useState(false)
     const [isRepeat, setIsRepeat] = useState(false)
 
@@ -30,7 +32,6 @@ export const Basic = {
       <AudioPlayer
         {...track}
         isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
         onNext={() => {}}
         onPrevious={() => {}}
         isShuffle={isShuffle}
