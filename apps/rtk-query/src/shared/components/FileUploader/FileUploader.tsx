@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import { useState } from 'react'
 
 import { AddTrackIcon, DeleteIcon } from '@/shared/icons'
@@ -5,7 +6,6 @@ import { AddTrackIcon, DeleteIcon } from '@/shared/icons'
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './FileUploader.module.css'
-import { t } from 'i18next'
 
 type FileUploaderProps = {
   onFileSelect: (file: File) => void

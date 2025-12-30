@@ -70,6 +70,7 @@
   display: flex;
   gap: 4px;
   align-items: baseline;
+
   width: 100%;
   min-width: 0;
 }
@@ -80,6 +81,7 @@
   overflow: hidden;
   display: inline-block;
   flex-shrink: 1;
+
   min-width: 0;
   max-width: 100%;
 

@@ -1,27 +1,27 @@
 import { useTranslation } from 'react-i18next'
+
 import { selectProfileAvatar, selectProfileFullName, useEditProfileModal } from '@/features/profile'
+import { useOwnerData } from '@/pages/UserPage/hooks'
+import { UserStats } from '@/pages/UserPage/ui/UserInfo/UserStats'
 import { Avatar, Button, Typography } from '@/shared/components'
 import { useAppSelector } from '@/shared/hooks'
 import { EditIcon } from '@/shared/icons'
 
 import s from './UserInfo.module.css'
-import { useOwnerData } from '@/pages/UserPage/hooks'
 
 export const UserInfo = () => {
-  const { t } = useTranslation()
+    const {t} = useTranslation()
 
-  const { isProfileOwner, userLogin } = useOwnerData()
+  const { isProfileOwner, userLogin, playlists, tracks } = useOwnerData()
 
-  const { handleOpenEditProfileModal } = useEditProfileModal()
-  const profileAvatarUrl = useAppSelector(selectProfileAvatar)
-  const profileFullName = useAppSelector(selectProfileFullName)
+    const {handleOpenEditProfileModal} = useEditProfileModal()
+    const profileAvatarUrl = useAppSelector(selectProfileAvatar)
+    const profileFullName = useAppSelector(selectProfileFullName)
 
-  let userFullName
-  if (isProfileOwner && profileFullName.name) {
-    userFullName = `${profileFullName.name} ${profileFullName.surname}`
-  } else {
-    userFullName = userLogin
-  }
+  const userFullName =
+    isProfileOwner && profileFullName.name
+      ? `${profileFullName.name} ${profileFullName.surname}`
+      : userLogin
 
   return (
     <div className={s.box}>
@@ -37,27 +37,10 @@ export const UserInfo = () => {
           {t('button.edit_profile')}
         </Button>
       )}
-
-      {/* TODO: Backend don't return this data 😢 */}
-
-      {/* <dl className={s.descriptionList}>
-        <div className={s.descriptionItem}>
-          <Typography as="dd" variant="body1">
-            58
-          </Typography>
-          <Typography as="dt" variant="body2">
-            Playlists
-          </Typography>
-        </div>
-        <div className={s.descriptionItem}>
-          <Typography as="dd" variant="body1">
-            100
-          </Typography>
-          <Typography as="dt" variant="body2">
-            Tracks
-          </Typography>
-        </div>
-      </dl> */}
+      <UserStats
+        playlistsCount={playlists?.meta.totalCount}
+        tracksCount={tracks?.meta.totalCount}
+      />
     </div>
   )
 }

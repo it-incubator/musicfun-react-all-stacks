@@ -1,0 +1,45 @@
+name: Deploy Effector App
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        working-directory: apps/react-effector-fsd
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build app
+        working-directory: apps/react-effector-fsd
+        run: pnpm build
+
+      - name: Create SPA fallback
+        working-directory: apps/react-effector-fsd/dist
+        run: cp index.html 404.html
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: apps/react-effector-fsd/dist
+          target-folder: effector
+          clean: false
+          branch: gh-pages

@@ -18,7 +18,6 @@ export const Default: Story = {
   args: {
     avatar: 'https://unsplash.it/182/182',
     fullName: { name: 'Kanye', surname: 'West' },
-    login: 'kanye',
     id: '1',
   },
 }

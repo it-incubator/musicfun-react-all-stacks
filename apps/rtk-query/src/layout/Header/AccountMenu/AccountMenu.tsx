@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
+import { useLogoutMutation } from '@/features/auth'
 import type { FullName } from '@/features/profile'
 import {
   Avatar,
@@ -13,7 +14,6 @@ import {
 import { Paths } from '@/shared/configs'
 import { LogoutIcon, ProfileIcon } from '@/shared/icons'
 
-import { useLogoutMutation } from '../../../features/auth/api'
 import s from './AccountMenu.module.css'
 
 type AccountMenuProps = {

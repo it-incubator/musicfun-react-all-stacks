@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import {
@@ -8,10 +9,10 @@ import {
 } from '@/features/playlists'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Card, CurrentUserReaction, ReactionButtons, Typography } from '@/shared/components'
-import s from './PlaylistCard.module.css'
 import { Paths } from '@/shared/configs'
 import { formatCreatedDate } from '@/shared/utils/format-created-date.ts'
-import { useTranslation } from 'react-i18next'
+
+import s from './PlaylistCard.module.css'
 
 type PlaylistCardPropsBase = {
   id: string

@@ -8,7 +8,7 @@ import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWrapper } from '../common'
+import { ContentList, PageWithoutHeader } from '../common'
 import s from './TrackPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 
@@ -42,7 +42,7 @@ export const TrackPage = () => {
   }
 
   return (
-    <PageWrapper className={s.trackPage}>
+    <PageWithoutHeader className={s.trackPage}>
       <TrackOverview
         className={s.trackOverview}
         title={track.data.attributes.title}
@@ -67,16 +67,17 @@ export const TrackPage = () => {
       {playlists?.data && (
         <ContentList
           data={playlists.data}
-          emptyMessage={t('playlists.title.not_found_playlists')}
+          emptyMessage={t('playlists.title.playlists_not_found')}
           renderItem={(playlist) => (
             <PlaylistCard
               id={playlist.id}
               title={playlist.attributes.title}
               imageSrc={getImageByType(playlist.attributes.images, ImageType.ORIGINAL)?.url}
+              
             />
           )}
         />
       )}
-    </PageWrapper>
+    </PageWithoutHeader>
   )
 }

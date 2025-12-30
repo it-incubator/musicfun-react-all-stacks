@@ -1,5 +1,7 @@
 .trackLyricsPage {
   --page-gradient-color: #9a3426;
+
+  position: relative;
 }
 
 .header {
@@ -7,15 +9,19 @@
 }
 
 .trackTextWrapper {
+  padding-inline: 180px;
   text-align: center;
   white-space: wrap;
-  padding-inline: 180px;
 }
 
 .button {
   all: unset;
 
   cursor: pointer;
+
+  position: absolute;
+  z-index: 2;
+  top: 20px;
 
   display: flex;
   gap: 12px;
@@ -33,7 +39,7 @@
 }
 
 .trackText {
-  font-weight: 900;
-  font-size: var(--font-size-xxxxl);
   margin: 0;
+  font-size: var(--font-size-xxxxl);
+  font-weight: 900;
 }
