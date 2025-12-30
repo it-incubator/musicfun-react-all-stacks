@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
 import { useLazyFetchTrackByIdQuery } from '@/features/tracks'
-import { type Track, useCurrentTrack } from '@/player'
 import {
+  type Track,
+  useCurrentTrack,
   usePlaybackProgress,
   usePlaybackState,
   usePlayerControls,
@@ -28,7 +29,6 @@ export const Player = () => {
   const { seek, pause, resume, play } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
-
   const fetchLazyTrack = async (trackToPlay: Track) => {
     if (currentTrack && currentTrack.id === trackToPlay.id) {
       if (isPlaying) {
@@ -43,7 +43,7 @@ export const Player = () => {
       const result = await fetchTrack({ trackId: trackToPlay.id }).unwrap()
 
       if (result.data) {
-        const fullTrackData: Track = {
+        const playerTrack: Track = {
           id: result.data.id,
           title: result.data.attributes.title,
           artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
@@ -51,7 +51,7 @@ export const Player = () => {
           url: result.data.attributes.attachments[0]?.url || '',
           albumArt: result.data.attributes.images?.main?.[0]?.url,
         }
-        play(fullTrackData)
+        play(playerTrack)
       }
     } catch (error) {
       console.error('Failed to fetch track:', error)
