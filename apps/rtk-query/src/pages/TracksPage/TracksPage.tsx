@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'react-intersection-observer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
-import { MOCK_TRACKS, TracksTable, useFetchTracksByScrollInfiniteQuery } from '@/features/tracks'
+import { TracksTable, useFetchTracksByScrollInfiniteQuery } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { loadPlaylist } from '@/player'
+import { loadPlaylist, selectCurrentTime, selectCurrentTrackId, selectDuration } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
@@ -62,6 +62,11 @@ export const TracksPage = () => {
     }
   }, [inView])
 
+  const currentTrackId = useSelector(selectCurrentTrackId)
+  const currentTime = useSelector(selectCurrentTime)
+  const duration = useSelector(selectDuration)
+  const playingTrackProgress = duration > 0 ? (currentTime / duration) * 100 : 0
+
   return (
     <PageWithHeader>
       <Typography variant="h2" as="h1" className={s.title}>
@@ -108,8 +113,8 @@ export const TracksPage = () => {
           <TrackRow
             key={trackRow.id}
             trackRow={trackRow}
-            playingTrackId={MOCK_TRACKS[0].id}
-            playingTrackProgress={20}
+            playingTrackId={currentTrackId ?? undefined}
+            playingTrackProgress={playingTrackProgress}
             onTrackPlayClick={handleTrackPlayClick}
             renderActionsCell={() => (
               <TrackActions
