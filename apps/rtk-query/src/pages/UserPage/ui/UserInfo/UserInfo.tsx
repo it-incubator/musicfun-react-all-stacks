@@ -26,7 +26,7 @@ export const UserInfo = () => {
   return (
     <div className={s.box}>
       <Avatar
-        src={profileAvatarUrl}
+        src={isProfileOwner ? profileAvatarUrl : undefined}
         fullName={isProfileOwner ? profileFullName : undefined}
         userLogin={userLogin}
       />
