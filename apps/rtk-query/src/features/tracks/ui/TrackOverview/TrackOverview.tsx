@@ -7,6 +7,7 @@ import Placeholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 
 import s from './TrackOverview.module.css'
+import {useTranslation} from "react-i18next";
 
 type TrackOverviewProps = {
   title: string
@@ -25,6 +26,9 @@ export const TrackOverview = ({
   artists,
   ...props
 }: TrackOverviewProps) => {
+
+  const {t} = useTranslation()
+
   return (
     <div className={clsx(s.container, className)} {...props}>
       <div className={s.imageContainer}>
@@ -40,7 +44,7 @@ export const TrackOverview = ({
 
         <div className={s.info}>
           <Typography variant="body1">{artists.join(', ')}</Typography>
-          <Typography variant="body2">{new Date(addedAt).toLocaleDateString()}</Typography>
+          <Typography variant="body2"> {`${t("tracks.release")} ${new Date(addedAt).toLocaleDateString()}`}</Typography>
         </div>
       </div>
     </div>

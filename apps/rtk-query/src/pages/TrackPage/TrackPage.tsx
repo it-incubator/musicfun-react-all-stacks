@@ -6,13 +6,15 @@ import { PlaylistCard, useFetchPlaylistsQuery } from '@/features/playlists'
 import { TrackOverview, useFetchTrackByIdQuery } from '@/features/tracks'
 import { usePageBackgroundColor } from '@/pages/common/hooks'
 import type { Track } from '@/player'
-import { Typography } from '@/shared/components'
+import {Pagination, Typography} from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
-import { ContentList, PageWithoutHeader } from '../common'
+import {ContentList, PageWithoutHeader, SearchTextField} from '../common'
 import s from './TrackPage.module.css'
-import { ControlPanel } from './ui/ControlPanel'
+import {ControlPanel} from './ui/ControlPanel'
+import {usePageSearchParams} from "@/pages/common/hooks";
+import {PlaylistRow} from "@/features/playlists/ui/PlaylistRow/PlaylistRow.tsx";
 
 export const TrackPage = () => {
   const { t } = useTranslation()
@@ -24,7 +26,18 @@ export const TrackPage = () => {
 
   // TODO: backend don't return user id for track
 
-  const { data: playlists } = useFetchPlaylistsQuery({ trackId: id! })
+  const {pageNumber, handlePageChange, debouncedSearch} =
+    usePageSearchParams()
+
+  const {data: playlists,} = useFetchPlaylistsQuery({
+    trackId: id!,
+    pageNumber,
+    pageSize: 4,
+    search: debouncedSearch,
+  })
+
+
+  const pagesCount = playlists?.meta.pagesCount || 1
 
   const trackCover =
     track?.data.attributes.images &&
@@ -71,13 +84,15 @@ export const TrackPage = () => {
           <Typography variant="h2" className={s.title}>
             {t('placeholder.which_playlist')}
           </Typography>
-
+          <SearchTextField placeholder={t('playlists.placeholder.search_playlist')}/>
           {playlists?.data && (
             <ContentList
+              layout={"row"}
               data={playlists.data}
-              emptyMessage={t('playlists.title.not_found_playlists')}
+              emptyMessage={t('playlists.title.playlists_not_found')}
               renderItem={(playlist) => (
-                <PlaylistCard
+                <PlaylistRow
+                  key={playlist.id}
                   id={playlist.id}
                   title={playlist.attributes.title}
                   imageSrc={getImageByType(playlist.attributes.images, ImageType.ORIGINAL)?.url}
@@ -85,6 +100,12 @@ export const TrackPage = () => {
               )}
             />
           )}
+          <Pagination
+            className={s.pagination}
+            page={pageNumber}
+            pagesCount={pagesCount}
+            onPageChange={handlePageChange}
+          />
         </>
       )}
     </PageWithoutHeader>
