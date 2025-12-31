@@ -5,6 +5,7 @@ import { useMeQuery } from '@/features/auth'
 import { PlaylistCard, useFetchPlaylistsQuery } from '@/features/playlists'
 import { TrackOverview, useFetchTrackByIdQuery } from '@/features/tracks'
 import { usePageBackgroundColor } from '@/pages/common/hooks'
+import type { Track } from '@/player'
 import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
@@ -35,6 +36,16 @@ export const TrackPage = () => {
     return <div>{t('tracks.title.tracks_not_found')}</div>
   }
 
+  // Transform TrackDetails to Track type expected by player
+  const playerTrack: Track = {
+    id: track.data.id,
+    title: track.data.attributes.title,
+    artist: track.data.attributes.artists.map((artist) => artist.name).join(', '),
+    duration: track.data.attributes.duration,
+    url: track.data.attributes.attachments[0]?.url || '',
+    albumArt: trackCover?.url,
+  }
+
   return (
     <PageWithoutHeader backgroundColor={dominantColor}>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -50,6 +61,7 @@ export const TrackPage = () => {
           />
 
           <ControlPanel
+            track={playerTrack}
             trackId={track.data.id}
             isOwnTrack={isTrackOwner}
             reaction={track.data.attributes.currentUserReaction}

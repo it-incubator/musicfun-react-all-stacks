@@ -51,7 +51,12 @@ export const TracksTab = () => {
             playingTrackId={'TEST_ID'}
             playingTrackProgress={20}
             renderActionsCell={() => (
-              <TrackActions trackId={trackRow.id} isOwner={isProfileOwner} />
+              <TrackActions
+                trackId={trackRow.id}
+                isOwner={isProfileOwner}
+                reaction={undefined}
+                likesCount={undefined}
+              />
               // <DropdownMenu>
               //   <DropdownMenuTrigger>
               //     <MoreIcon />
