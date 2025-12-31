@@ -1,8 +1,7 @@
 import { Skeleton, Typography } from '@/shared/components'
 import s from './TrackPageSkeleton.module.css'
-import { PageWithoutHeader } from '@/pages/common'
+import { PageWithoutHeader, SearchTextField } from '@/pages/common'
 import { useTranslation } from 'react-i18next'
-import { PlaylistCardSkeleton } from '@/features/playlists'
 import { TRACK_SKELETON_INFO_LINES, TRACK_SKELETON_PLAYLISTS } from '@/shared/constants'
 
 export const TrackPageSkeleton = () => {
@@ -33,9 +32,11 @@ export const TrackPageSkeleton = () => {
         {t('placeholder.which_playlist')}
       </Typography>
 
+      <SearchTextField placeholder={t('playlists.placeholder.search_playlist')} />
+
       <div className={s.playlists}>
         {Array.from({ length: TRACK_SKELETON_PLAYLISTS }).map((_el, i) => (
-          <PlaylistCardSkeleton key={i} />
+          <Skeleton height={'70px'} width={'100%'} key={i} />
         ))}
       </div>
     </PageWithoutHeader>

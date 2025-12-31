@@ -2,9 +2,9 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import { useMeQuery } from '@/features/auth'
-import { PlaylistCard, useFetchPlaylistsQuery } from '@/features/playlists'
+import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { TrackOverview, useFetchTrackByIdQuery } from '@/features/tracks'
-import { usePageBackgroundColor } from '@/pages/common/hooks'
+import { usePageBackgroundColor, usePageSearchParams } from '@/pages/common/hooks'
 import type { Track } from '@/player'
 import { Pagination, Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
@@ -12,7 +12,6 @@ import { getImageByType } from '@/shared/utils'
 
 import { ContentList, PageWithoutHeader, SearchTextField } from '../common'
 import s from './TrackPage.module.css'
-import { usePageSearchParams } from '@/pages/common/hooks'
 import { PlaylistRow } from '@/features/playlists/ui/PlaylistRow/PlaylistRow.tsx'
 import { ControlPanel } from './ui/ControlPanel'
 import { TrackPageSkeleton } from './ui/TrackPageSkeleton'
@@ -47,7 +46,6 @@ export const TrackPage = () => {
     getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)
 
   const { dominantColor, canvasRef } = usePageBackgroundColor(trackCover?.url, isSuccess)
-  debugger
   if (isTrackLoading || isPlaylistsLoading) {
     return <TrackPageSkeleton />
   }

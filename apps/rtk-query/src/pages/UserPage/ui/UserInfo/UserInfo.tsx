@@ -13,7 +13,7 @@ import s from './UserInfo.module.css'
 export const UserInfo = () => {
   const { t } = useTranslation()
 
-  const { isProfileOwner, userLogin, playlists, tracks, isLoading } = useOwnerData()
+  const { isProfileOwner, userLogin, playlists, tracks, isContentLoading } = useOwnerData()
 
   const { handleOpenEditProfileModal } = useEditProfileModal()
   const profileAvatarUrl = useAppSelector(selectProfileAvatar)
@@ -24,7 +24,7 @@ export const UserInfo = () => {
       ? `${profileFullName.name} ${profileFullName.surname}`
       : userLogin
 
-  if (isLoading) {
+  if (isContentLoading) {
     return <UserInfoSkeleton />
   }
 
