@@ -12,3 +12,8 @@
   align-items: center;
   margin-bottom: 16px;
 }
+
+.errorMessage {
+  text-align: center;
+  font-size: var(--font-size-xxxl);
+}

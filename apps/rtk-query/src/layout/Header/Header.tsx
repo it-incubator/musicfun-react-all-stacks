@@ -34,6 +34,29 @@ export const Header = () => {
     location.pathname
   )
 
+  const renderActions = () => {
+    if (isLoading) {
+      return <Skeleton className={s.actionsSkeleton} />
+    }
+
+    if (isAuth) {
+      return (
+        <AccountMenu
+          avatar={profileAvatarUrl}
+          fullName={profileFullName}
+          userLogin={user.login}
+          id={user.userId}
+        />
+      )
+    }
+
+    return (
+      <Button onClick={() => dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))}>
+        {t('auth.button.sign_in')}
+      </Button>
+    )
+  }
+
   return (
     <header
       className={s.header}
@@ -51,20 +74,7 @@ export const Header = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {isLoading ? (
-          <Skeleton className={s.actionsSkeleton} />
-        ) : isAuth ? (
-          <AccountMenu
-            avatar={profileAvatarUrl}
-            fullName={profileFullName}
-            userLogin={user.login}
-            id={user.userId}
-          />
-        ) : (
-          <Button onClick={() => dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))}>
-            {t('auth.button.sign_in')}
-          </Button>
-        )}
+        {renderActions()}
       </div>
     </header>
   )

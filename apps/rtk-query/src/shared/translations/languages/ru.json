@@ -50,6 +50,9 @@
       "new_playlists": "Новые плейлисты",
       "playlists_not_found": "Плейлисты не найдены"
     },
+    "label": {
+      "load_error": "Не удалось загрузить плейлист"
+    },
     "aria_labels": {
       "open_playlist": "Открыть плейлист {{title}}"
     }
@@ -98,7 +101,8 @@
     "label": {
       "lyrics": "Текст песни",
       "title": "Название",
-      "no_tracks": "Нет треков"
+      "no_tracks": "Нет треков",
+      "load_error": "Не удалось загрузить трек"
     },
     "placeholder": {
       "lyrics": "Введите текст песни",

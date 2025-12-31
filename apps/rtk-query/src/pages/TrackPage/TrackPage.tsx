@@ -17,16 +17,28 @@ export const TrackPage = () => {
   const { t } = useTranslation()
 
   const { id } = useParams()
-  const { data: track } = useFetchTrackByIdQuery({ trackId: id! })
+  const { data: track, isLoading: isTrackLoading } = useFetchTrackByIdQuery({ trackId: id! })
   const { data: me } = useMeQuery()
   const isTrackOwner = me?.userId === track?.data.attributes.user.id
 
   // TODO: backend don't return user id for track
 
-  const { data: playlists } = useFetchPlaylistsQuery({ trackId: id! })
+  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
+    trackId: id!,
+  })
+
+  if (isTrackLoading || isPlaylistsLoading) {
+    return <TrackPageSkeleton />
+  }
 
   if (!track) {
-    return <TrackPageSkeleton />
+    return (
+      <PageWithoutHeader className={s.trackPage}>
+        <Typography variant="h1" className={s.errorMessage}>
+          {t('tracks.label.load_error')}
+        </Typography>
+      </PageWithoutHeader>
+    )
   }
 
   const trackCover = getImageByType(track?.data.attributes.images, ImageType.ORIGINAL)

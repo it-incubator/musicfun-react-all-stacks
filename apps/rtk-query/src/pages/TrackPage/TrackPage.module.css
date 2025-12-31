@@ -13,3 +13,8 @@
 .search {
   margin-bottom: 24px;
 }
+
+.errorMessage {
+  text-align: center;
+  font-size: var(--font-size-xxxl);
+}

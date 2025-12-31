@@ -12,18 +12,19 @@ import { PageWithoutHeader, SearchTextField } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 import { PlaylistPageSkeleton } from './ui/PlaylistPageSkeleton'
+import { Typography } from '@/shared/components'
 
 export const PlaylistPage = () => {
   const { t } = useTranslation()
   const { debouncedSearch } = usePageSearchParams()
 
   const { id } = useParams()
-  const { data: playlist } = useFetchPlaylistByIdQuery(id!)
+  const { data: playlist, isLoading: isPlaylistLoading } = useFetchPlaylistByIdQuery(id!)
   const { data: me } = useMeQuery()
 
   const isOwnPlaylist = me?.userId === playlist?.data.attributes.user.id
 
-  const { data: tracks } = useFetchTracksInPlaylistQuery({
+  const { data: tracks, isLoading: isTracksLoading } = useFetchTracksInPlaylistQuery({
     playlistId: id!,
   })
 
@@ -34,9 +35,20 @@ export const PlaylistPage = () => {
       track.attributes.title.toLowerCase().includes(debouncedSearch.toLowerCase())
     ) ?? []
 
-  if (!playlist) {
+  if (isPlaylistLoading || isTracksLoading) {
     return <PlaylistPageSkeleton />
   }
+
+  if (!playlist) {
+    return (
+      <PageWithoutHeader className={s.trackPage}>
+        <Typography variant="h1" className={s.errorMessage}>
+          {t('playlists.label.load_error')}
+        </Typography>
+      </PageWithoutHeader>
+    )
+  }
+
   const playlistCover = getImageByType(playlist?.data.attributes.images, ImageType.ORIGINAL)
 
   return (

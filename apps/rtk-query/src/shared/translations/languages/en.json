@@ -51,6 +51,9 @@
       "new_playlists": "New playlists",
       "playlists_not_found": "No playlists found"
     },
+    "label": {
+      "load_error": "Unable to load the playlist"
+    },
     "aria_labels": {
       "open_playlist": "Open playlist {{title}}"
     }
@@ -99,7 +102,8 @@
     "label": {
       "lyrics": "Lyrics",
       "title": "Title",
-      "no_tracks": "No tracks"
+      "no_tracks": "No tracks",
+      "load_error": "Unable to load the track"
     },
     "placeholder": {
       "lyrics": "Enter track lyrics",
