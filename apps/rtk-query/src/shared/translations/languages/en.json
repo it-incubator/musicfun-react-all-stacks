@@ -123,7 +123,8 @@
       "date_added": "Date added",
       "actions": "Actions",
       "duration": "Duration"
-    }
+    },
+    "release": "Release date"
   },
   "sort": {
     "label": "Sort by",

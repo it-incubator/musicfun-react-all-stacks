@@ -5,7 +5,7 @@ import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { useFetchTracksQuery } from '@/features/tracks'
 
 export const useOwnerData = () => {
-  const { data: user, isLoading } = useMeQuery()
+  const { data: user, isLoading, isSuccess: isMeQuerySuccess } = useMeQuery()
   const { userId: pageOwnerId } = useParams()
   const isProfileOwner = user?.userId === pageOwnerId
 
@@ -39,6 +39,7 @@ export const useOwnerData = () => {
     userLogin,
     tracks,
     playlists,
+    isMeQuerySuccess,
     isLoading,
     isContentLoading: isPlaylistsLoading || isTracksLoading || isLoading,
   }
