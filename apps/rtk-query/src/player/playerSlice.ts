@@ -33,7 +33,6 @@ const loadPersistedShuffle = (): boolean => {
 }
 
 const initialState: PlayerState = {
-
   // Current playback state
   currentTrackId: null,
   currentPlaylistId: null,

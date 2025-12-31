@@ -2,7 +2,8 @@ import { useTranslation } from 'react-i18next'
 
 import { selectProfileAvatar, selectProfileFullName, useEditProfileModal } from '@/features/profile'
 import { useOwnerData } from '@/pages/UserPage/hooks'
-import { UserStats } from '@/pages/UserPage/ui/UserInfo/UserStats'
+import { UserStats } from './UserStats'
+import { UserInfoSkeleton } from './UserInfoSkeleton'
 import { Avatar, Button, Typography } from '@/shared/components'
 import { useAppSelector } from '@/shared/hooks'
 import { EditIcon } from '@/shared/icons'
@@ -10,18 +11,22 @@ import { EditIcon } from '@/shared/icons'
 import s from './UserInfo.module.css'
 
 export const UserInfo = () => {
-    const {t} = useTranslation()
+  const { t } = useTranslation()
 
-  const { isProfileOwner, userLogin, playlists, tracks } = useOwnerData()
+  const { isProfileOwner, userLogin, playlists, tracks, isContentLoading } = useOwnerData()
 
-    const {handleOpenEditProfileModal} = useEditProfileModal()
-    const profileAvatarUrl = useAppSelector(selectProfileAvatar)
-    const profileFullName = useAppSelector(selectProfileFullName)
+  const { handleOpenEditProfileModal } = useEditProfileModal()
+  const profileAvatarUrl = useAppSelector(selectProfileAvatar)
+  const profileFullName = useAppSelector(selectProfileFullName)
 
   const userFullName =
     isProfileOwner && profileFullName.name
       ? `${profileFullName.name} ${profileFullName.surname}`
       : userLogin
+
+  if (isContentLoading) {
+    return <UserInfoSkeleton />
+  }
 
   return (
     <div className={s.box}>

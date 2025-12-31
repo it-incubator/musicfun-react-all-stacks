@@ -11,18 +11,20 @@ import { getImageByType } from '@/shared/utils'
 import { PageWithoutHeader, SearchTextField } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
+import { PlaylistPageSkeleton } from './ui/PlaylistPageSkeleton'
+import { Typography } from '@/shared/components'
 
 export const PlaylistPage = () => {
   const { t } = useTranslation()
   const { debouncedSearch } = usePageSearchParams()
 
   const { id } = useParams()
-  const { data: playlist, isSuccess } = useFetchPlaylistByIdQuery(id!)
+  const { data: playlist, isLoading: isPlaylistLoading, isSuccess } = useFetchPlaylistByIdQuery(id!)
   const { data: me } = useMeQuery()
 
   const isOwnPlaylist = me?.userId === playlist?.data.attributes.user.id
 
-  const { data: tracks } = useFetchTracksInPlaylistQuery({
+  const { data: tracks, isLoading: isTracksLoading } = useFetchTracksInPlaylistQuery({
     playlistId: id!,
   })
 
@@ -39,63 +41,67 @@ export const PlaylistPage = () => {
 
   const { dominantColor, canvasRef } = usePageBackgroundColor(playlistCover?.url, isSuccess)
 
+  if (isPlaylistLoading || isTracksLoading) {
+    return <PlaylistPageSkeleton />
+  }
+
   if (!playlist) {
-    return <div>{t('playlists.title.playlists_not_found')}</div>
+    return (
+      <PageWithoutHeader className={s.trackPage}>
+        <Typography variant="h1" className={s.errorMessage}>
+          {t('playlists.label.load_error')}
+        </Typography>
+      </PageWithoutHeader>
+    )
   }
 
   return (
-    <PageWithoutHeader backgroundColor={dominantColor}>
+    <PageWithoutHeader backgroundColor={dominantColor || 'var(--color-bg-primary)'}>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
-      {dominantColor && (
-        <>
-          <PlaylistOverview
-            className={s.playlistOverview}
-            title={playlist.data.attributes.title}
-            image={playlistCover?.url}
-            description={playlist.data.attributes.description}
-            tags={playlist.data.attributes.tags}
-          />
-          <div className={s.playlistToolbar}>
-            <SearchTextField
-              placeholder={t('tracks.placeholder.search_tracks')}
-              onChange={() => {}}
-            />
-            <ControlPanel
-              className={s.playlistActions}
+
+      <PlaylistOverview
+        className={s.playlistOverview}
+        title={playlist.data.attributes.title}
+        image={playlistCover?.url}
+        description={playlist.data.attributes.description}
+        tags={playlist.data.attributes.tags}
+      />
+      <div className={s.playlistToolbar}>
+        <SearchTextField placeholder={t('tracks.placeholder.search_tracks')} onChange={() => {}} />
+        <ControlPanel
+          className={s.playlistActions}
+          playlistId={playlist.data.id}
+          isOwnPlaylist={isOwnPlaylist}
+          reaction={playlist.data.attributes.currentUserReaction}
+          likesCount={playlist.data.attributes.likesCount}
+        />
+      </div>
+      {filteredTracks?.length > 0 ? (
+        <TracksTable
+          trackRows={filteredTracks.map((track, index) => ({
+            index,
+            id: track.id,
+            title: track.attributes.title,
+            imageSrc: getImageByType(track.attributes.images, ImageType.THUMBNAIL)?.url,
+            addedAt: track.attributes.addedAt,
+            artists: ['Artist 1', 'Artist 2'],
+            duration: 100,
+            likesCount: track.attributes.likesCount,
+            dislikesCount: track.attributes.dislikesCount,
+            currentUserReaction: track.attributes.currentUserReaction,
+            url: track.attributes.attachments[0].url,
+          }))}
+          renderTrackRow={(trackRow) => (
+            <TrackRowContainer
+              key={trackRow.id}
+              trackRow={trackRow}
+              userId={me?.userId}
               playlistId={playlist.data.id}
-              isOwnPlaylist={isOwnPlaylist}
-              reaction={playlist.data.attributes.currentUserReaction}
-              likesCount={playlist.data.attributes.likesCount}
             />
-          </div>
-          {filteredTracks?.length > 0 ? (
-            <TracksTable
-              trackRows={filteredTracks.map((track, index) => ({
-                index,
-                id: track.id,
-                title: track.attributes.title,
-                imageSrc: getImageByType(track.attributes.images, ImageType.THUMBNAIL)?.url,
-                addedAt: track.attributes.addedAt,
-                artists: ['Artist 1', 'Artist 2'],
-                duration: 100,
-                likesCount: track.attributes.likesCount,
-                dislikesCount: track.attributes.dislikesCount,
-                currentUserReaction: track.attributes.currentUserReaction,
-                url: track.attributes.attachments[0].url,
-              }))}
-              renderTrackRow={(trackRow) => (
-                <TrackRowContainer
-                  key={trackRow.id}
-                  trackRow={trackRow}
-                  userId={me?.userId}
-                  playlistId={playlist.data.id}
-                />
-              )}
-            />
-          ) : (
-            <div>{t('tracks.label.no_tracks')}</div>
           )}
-        </>
+        />
+      ) : (
+        <div>{t('tracks.label.no_tracks')}</div>
       )}
     </PageWithoutHeader>
   )

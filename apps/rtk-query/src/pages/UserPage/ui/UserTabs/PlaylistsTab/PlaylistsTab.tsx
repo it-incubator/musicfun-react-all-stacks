@@ -1,4 +1,4 @@
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { PlaylistActions, PlaylistCard, useCreatePlaylistModal } from '@/features/playlists'
 import { ContentList } from '@/pages/common'
@@ -10,16 +10,18 @@ import { getImageByType } from '@/shared/utils'
 import s from './PlaylistsTab.module.css'
 
 export const PlaylistsTab = () => {
-    const {t} = useTranslation()
-    const {isProfileOwner, playlists} = useOwnerData()
+  const { t } = useTranslation()
+  const { isProfileOwner, playlists } = useOwnerData()
 
   const { handleOpenCreatePlaylistModal } = useCreatePlaylistModal()
 
-    return (
-        <>
-            {isProfileOwner && <Button className={s.createPlaylistButton} onClick={handleOpenCreatePlaylistModal}>
-                {t('playlists.button.create_playlist')}
-            </Button>}
+  return (
+    <>
+      {isProfileOwner && (
+        <Button className={s.createPlaylistButton} onClick={handleOpenCreatePlaylistModal}>
+          {t('playlists.button.create_playlist')}
+        </Button>
+      )}
 
       {playlists?.data && (
         <ContentList

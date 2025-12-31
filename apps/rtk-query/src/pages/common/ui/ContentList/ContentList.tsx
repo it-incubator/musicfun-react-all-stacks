@@ -12,7 +12,7 @@ type ContentListProps<T> = {
   isLoading?: boolean
   skeleton?: React.ReactNode
   emptyMessage?: string
-  layout?: "column" | "row"
+  layout?: 'column' | 'row'
 }
 
 const SKELETON_ITEM_COUNT = 10
@@ -22,7 +22,7 @@ export const ContentList = <T,>({
   data = [],
   renderItem,
   listClassName,
-  layout = "column",
+  layout = 'column',
   isLoading,
   skeleton,
   emptyMessage,
@@ -38,11 +38,7 @@ export const ContentList = <T,>({
           {title}
         </Typography>
       )}
-      <ul className={clsx(
-        s.list,
-        layout === "row" && s.listRow,
-        listClassName
-      )}>
+      <ul className={clsx(s.list, layout === 'row' && s.listRow, listClassName)}>
         {isLoading
           ? Array.from({ length: SKELETON_ITEM_COUNT }).map((_, i) => <li key={i}>{skeleton}</li>)
           : data.map((item, index) => <li key={index}>{renderItem(item)}</li>)}
