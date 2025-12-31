@@ -1,28 +1,41 @@
-import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router'
+import {useTranslation} from 'react-i18next'
+import {useParams} from 'react-router'
 
-import { useMeQuery } from '@/features/auth'
-import { PlaylistCard, useFetchPlaylistsQuery } from '@/features/playlists'
-import { TrackOverview, useFetchTrackByIdQuery } from '@/features/tracks'
-import { Typography } from '@/shared/components'
-import { ImageType } from '@/shared/types/commonApi.types'
-import { getImageByType } from '@/shared/utils'
+import {useMeQuery} from '@/features/auth'
+import {useFetchPlaylistsQuery} from '@/features/playlists'
+import {TrackOverview, useFetchTrackByIdQuery} from '@/features/tracks'
+import {Pagination, Typography} from '@/shared/components'
+import {ImageType} from '@/shared/types/commonApi.types'
+import {getImageByType} from '@/shared/utils'
 
-import { ContentList, PageWithoutHeader } from '../common'
+import {ContentList, PageWithoutHeader, SearchTextField} from '../common'
 import s from './TrackPage.module.css'
-import { ControlPanel } from './ui/ControlPanel'
+import {ControlPanel} from './ui/ControlPanel'
+import {usePageSearchParams} from "@/pages/common/hooks";
+import {PlaylistRow} from "@/features/playlists/ui/PlaylistRow/PlaylistRow.tsx";
 
 export const TrackPage = () => {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
 
-  const { id } = useParams()
-  const { data: track } = useFetchTrackByIdQuery({ trackId: id! })
-  const { data: me } = useMeQuery()
+  const {id} = useParams()
+  const {data: track} = useFetchTrackByIdQuery({trackId: id!})
+  const {data: me} = useMeQuery()
   const isTrackOwner = me?.userId === track?.data.attributes.user.id
 
   // TODO: backend don't return user id for track
 
-  const { data: playlists } = useFetchPlaylistsQuery({ trackId: id! })
+  const {pageNumber, handlePageChange, debouncedSearch} =
+    usePageSearchParams()
+
+  const {data: playlists,} = useFetchPlaylistsQuery({
+    trackId: id!,
+    pageNumber,
+    pageSize: 4,
+    search: debouncedSearch,
+  })
+
+
+  const pagesCount = playlists?.meta.pagesCount || 1
 
   if (!track) {
     return <div>{t('tracks.title.tracks_not_found')}</div>
@@ -51,13 +64,15 @@ export const TrackPage = () => {
       <Typography variant="h2" className={s.title}>
         {t('placeholder.which_playlist')}
       </Typography>
-
+      <SearchTextField placeholder={t('playlists.placeholder.search_playlist')}/>
       {playlists?.data && (
         <ContentList
+          layout={"row"}
           data={playlists.data}
           emptyMessage={t('playlists.title.playlists_not_found')}
           renderItem={(playlist) => (
-            <PlaylistCard
+            <PlaylistRow
+              key={playlist.id}
               id={playlist.id}
               title={playlist.attributes.title}
               imageSrc={getImageByType(playlist.attributes.images, ImageType.ORIGINAL)?.url}
@@ -65,6 +80,12 @@ export const TrackPage = () => {
           )}
         />
       )}
+      <Pagination
+        className={s.pagination}
+        page={pageNumber}
+        pagesCount={pagesCount}
+        onPageChange={handlePageChange}
+      />
     </PageWithoutHeader>
   )
 }
