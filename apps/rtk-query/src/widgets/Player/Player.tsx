@@ -29,17 +29,16 @@ export const Player = () => {
   const [isShuffle, setIsShuffle] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
   const { isPlaying } = usePlaybackState()
-  const { seek, pause, resume } = usePlayerControls()
+  const { seek, pause, resume, next, previous } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
-  const dispatch = useAppDispatch()
 
   const handleNextTrack = () => {
-    dispatch(nextTrack())
+    next()
   }
 
   const handlePreviousTrack = () => {
-    dispatch(previousTrack())
+    previous()
   }
 
   const handleTogglePlay = () => {
