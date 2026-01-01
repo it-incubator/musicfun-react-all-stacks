@@ -65,7 +65,23 @@ export const TracksPage = () => {
           url: result.data.attributes.attachments[0]?.url || '',
           albumArt: result.data.attributes.images?.main?.[0]?.url,
         }
-        dispatch(playTrack({ track: playerTrack }))
+
+        const tracksForPlayer: Track[] = pages.map((track) => {
+          const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
+
+          return {
+            id: track.id,
+            title: track.attributes.title,
+            artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
+            duration: result.data.attributes.duration,
+            url: track.attributes.attachments[0]?.url || '',
+            albumArt: image?.url,
+          }
+        })
+
+        dispatch(
+          playTrack({ track: playerTrack, tracks: tracksForPlayer, playlistId: 'all-tracks' })
+        )
       }
     } catch (error) {
       console.error('Failed to fetch track:', error)
