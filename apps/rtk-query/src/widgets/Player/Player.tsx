@@ -1,8 +1,7 @@
 import { useState } from 'react'
 
-import { useLazyFetchTrackByIdQuery } from '@/features/tracks'
 import {
-  type Track,
+  selectIsLoadingTrack,
   useCurrentTrack,
   usePlaybackProgress,
   usePlaybackState,
@@ -10,6 +9,8 @@ import {
   useVolumeControl,
 } from '@/player'
 import { AudioPlayer } from '@/shared/components'
+import { AudioPlayerSkeleton } from '@/shared/components/Skeleton/AudioPlayerSkeleton.tsx'
+import { useAppSelector } from '@/shared/hooks'
 
 import s from './Player.module.css'
 
@@ -21,57 +22,38 @@ const MOCK_TRACK = {
 }
 
 export const Player = () => {
-  const [fetchTrack, { isLoading }] = useLazyFetchTrackByIdQuery()
+  const isLoadingTrack = useAppSelector(selectIsLoadingTrack)
   const { track: currentTrack } = useCurrentTrack()
   const [isShuffle, setIsShuffle] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
   const { isPlaying } = usePlaybackState()
-  const { seek, pause, resume, play } = usePlayerControls()
+  const { seek, pause, resume } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
-  const fetchLazyTrack = async (trackToPlay: Track) => {
-    if (currentTrack && currentTrack.id === trackToPlay.id) {
-      if (isPlaying) {
-        pause()
-      } else {
-        resume()
-      }
-      return
-    }
 
-    try {
-      const result = await fetchTrack({ trackId: trackToPlay.id }).unwrap()
-
-      if (result.data) {
-        const playerTrack: Track = {
-          id: result.data.id,
-          title: result.data.attributes.title,
-          artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
-          duration: result.data.attributes.duration,
-          url: result.data.attributes.attachments[0]?.url || '',
-          albumArt: result.data.attributes.images?.main?.[0]?.url,
-        }
-        play(playerTrack)
-      }
-    } catch (error) {
-      console.error('Failed to fetch track:', error)
-      // Error handling can be added, for example, to display a notification.
+  const handleTogglePlay = () => {
+    if (isPlaying) {
+      pause()
+    } else {
+      resume()
     }
   }
 
-  if (isLoading) {
-    return <div className={s.player}>Loading...</div>
-  }
-
-  return (
+  return isLoadingTrack ? (
+    <AudioPlayerSkeleton />
+  ) : (
     <AudioPlayer
       cover={currentTrack?.albumArt || MOCK_TRACK.cover}
       title={currentTrack?.title || MOCK_TRACK.title}
       artist={currentTrack?.artist || MOCK_TRACK.artist}
       isPlaying={isPlaying}
-      onNext={() => {}}
-      onPrevious={() => {}}
-      onTogglePlay={() => currentTrack && fetchLazyTrack(currentTrack)}
+      onNext={() => {
+        // Здесь будет логика переключения вперед
+      }}
+      onPrevious={() => {
+        // Здесь будет логика переключения назад
+      }}
+      onTogglePlay={handleTogglePlay}
       isShuffle={isShuffle}
       isRepeat={isRepeat}
       onShuffle={() => setIsShuffle(!isShuffle)}

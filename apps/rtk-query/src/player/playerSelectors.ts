@@ -45,6 +45,7 @@ export const selectHasNextTrack = (state: RootState) => state.player.hasNextTrac
 
 export const selectHasPreviousTrack = (state: RootState) => state.player.hasPreviousTrack
 
+export const selectIsPlayerLoading = (state: RootState) => state.player.isLoading
 // ========================================
 // Computed Selectors (Memoized)
 // ========================================

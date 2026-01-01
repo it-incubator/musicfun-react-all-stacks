@@ -1,13 +1,17 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'react-intersection-observer'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
-import { TracksTable, useFetchTracksByScrollInfiniteQuery } from '@/features/tracks'
+import {
+  TracksTable,
+  useFetchTracksByScrollInfiniteQuery,
+  useLazyFetchTrackByIdQuery,
+} from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { loadPlaylist, selectCurrentTime, selectCurrentTrackId, selectDuration } from '@/player'
+import { playTrack, setLoadingState, type Track, useCurrentTrack, usePlaybackState } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
@@ -20,6 +24,9 @@ import s from './TracksPage.module.css'
 export const TracksPage = () => {
   const { t } = useTranslation()
 
+  const [fetchTrack] = useLazyFetchTrackByIdQuery()
+  const { track: currentTrack } = useCurrentTrack()
+  const { isPlaying } = usePlaybackState()
   const {
     data: tracksData,
     hasNextPage,
@@ -28,28 +35,34 @@ export const TracksPage = () => {
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
-
   const dispatch = useDispatch()
 
-  const handleTrackPlayClick = (trackId: string) => {
-    if (!pages) return
+  const handleTrackPlayClick = async (trackId: string) => {
+    if (currentTrack?.id === trackId) {
+      // Logic for play/pause on the same track can be handled by the player itself
+      return
+    }
 
-    // TODO: Update to pass full track array with url, title, artist, duration, albumArt
-    const tracksForRedux = pages.map((t) => ({
-      id: t.id,
-      title: t.attributes.title,
-      artist: 'artist',
-      url: t.attributes.attachments[0].url,
-      duration: 100,
-      albumArt: undefined,
-    }))
-    dispatch(
-      loadPlaylist({
-        playlistId: 'all-tracks',
-        tracks: tracksForRedux,
-        startIndex: tracksForRedux?.findIndex((t) => t.id === trackId),
-      })
-    )
+    dispatch(setLoadingState(true))
+    try {
+      const result = await fetchTrack({ trackId }).unwrap()
+
+      if (result.data) {
+        const playerTrack: Track = {
+          id: result.data.id,
+          title: result.data.attributes.title,
+          artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
+          duration: result.data.attributes.duration,
+          url: result.data.attributes.attachments[0]?.url || '',
+          albumArt: result.data.attributes.images?.main?.[0]?.url,
+        }
+        dispatch(playTrack({ track: playerTrack }))
+      }
+    } catch (error) {
+      console.error('Failed to fetch track:', error)
+    } finally {
+      dispatch(setLoadingState(false))
+    }
   }
 
   const { ref, inView } = useInView({
@@ -61,11 +74,6 @@ export const TracksPage = () => {
       fetchNextPage()
     }
   }, [inView])
-
-  const currentTrackId = useSelector(selectCurrentTrackId)
-  const currentTime = useSelector(selectCurrentTime)
-  const duration = useSelector(selectDuration)
-  const playingTrackProgress = duration > 0 ? (currentTime / duration) * 100 : 0
 
   return (
     <PageWithHeader>
@@ -113,8 +121,7 @@ export const TracksPage = () => {
           <TrackRow
             key={trackRow.id}
             trackRow={trackRow}
-            playingTrackId={currentTrackId ?? undefined}
-            playingTrackProgress={playingTrackProgress}
+            isPlaying={isPlaying && currentTrack?.id === trackRow.id}
             onTrackPlayClick={handleTrackPlayClick}
             renderActionsCell={() => (
               <TrackActions

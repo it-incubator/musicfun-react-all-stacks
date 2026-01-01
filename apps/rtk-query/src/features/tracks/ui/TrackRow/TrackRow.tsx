@@ -10,19 +10,18 @@ import s from './TrackRow.module.css'
 
 export const TrackRow = <T extends TrackRowData>({
   trackRow,
-  playingTrackId,
+  isPlaying,
   playingTrackProgress,
   renderActionsCell,
   onTrackPlayClick,
 }: {
   renderActionsCell: (trackRow: T) => ReactNode
   trackRow: T
+  isPlaying: boolean
   playingTrackId?: string
   playingTrackProgress?: number
   onTrackPlayClick?: (trackId: string) => void
 }) => {
-  const isPlaying = playingTrackId === trackRow.id
-
   return (
     <TableRow>
       <TableCell className={clsx(isPlaying && s.playing)}>
@@ -35,7 +34,6 @@ export const TrackRow = <T extends TrackRowData>({
         artists={trackRow.artists}
         isPlaying={isPlaying}
         onTrackPlayClick={onTrackPlayClick}
-        url={trackRow.url}
       />
       <TableCell>
         {isPlaying && (
