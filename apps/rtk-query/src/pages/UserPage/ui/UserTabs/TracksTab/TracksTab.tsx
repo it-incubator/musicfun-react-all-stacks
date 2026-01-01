@@ -1,9 +1,11 @@
 import { t } from 'i18next'
+import { useDispatch } from 'react-redux'
 
 import { TracksTable, useCreateTrackModal } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { useOwnerData } from '@/pages/UserPage/hooks'
+import { loadPlaylist } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Button } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
@@ -12,8 +14,32 @@ import { getImageByType } from '@/shared/utils'
 import s from './TracksTab.module.css'
 
 export const TracksTab = () => {
-  const { isProfileOwner, tracks } = useOwnerData()
+  const { isProfileOwner, tracks, pageOwnerId } = useOwnerData()
   const { handleOpenCreateTrackModal } = useCreateTrackModal()
+
+  const dispatch = useDispatch()
+
+  const handleTrackPlayClick = (trackId: string) => {
+    if (!tracks) return
+    const tracksForRedux = tracks.data.map((t) => {
+      const image = getImageByType(t.attributes.images, ImageType.MEDIUM)
+      return {
+        id: t.id,
+        title: t.attributes.title,
+        artist: 'artist',
+        url: t.attributes.attachments[0].url,
+        duration: 100,
+        albumArt: image?.url || noCoverPlaceholder,
+      }
+    })
+    dispatch(
+      loadPlaylist({
+        playlistId: `${pageOwnerId}-user-tracks`,
+        tracks: tracksForRedux,
+        startIndex: tracksForRedux?.findIndex((t) => t.id === trackId),
+      })
+    )
+  }
 
   // FIXME: temporary build fix, need to add url
   return (
@@ -37,10 +63,10 @@ export const TracksTab = () => {
               addedAt: track.attributes.addedAt,
               artists: ['Artist 1', 'Artist 2'],
               duration: 100,
-              likesCount: 100,
-              dislikesCount: 100,
+              likesCount: track.attributes.likesCount,
+              dislikesCount: track.attributes.dislikesCount,
               currentUserReaction: track.attributes.currentUserReaction,
-              url: '',
+              url: track.attributes.attachments[0].url,
             }
           }) ?? []
         }
@@ -48,8 +74,7 @@ export const TracksTab = () => {
           <TrackRow
             key={trackRow.id}
             trackRow={trackRow}
-            playingTrackId={'TEST_ID'}
-            playingTrackProgress={20}
+            onTrackPlayClick={handleTrackPlayClick}
             renderActionsCell={() => (
               <TrackActions
                 trackId={trackRow.id}

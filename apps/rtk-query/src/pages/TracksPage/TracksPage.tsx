@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
 import {
-  MOCK_TRACKS,
   TracksTable,
   TracksTableSkeleton,
   useFetchTracksByScrollInfiniteQuery,
@@ -41,14 +40,17 @@ export const TracksPage = () => {
     if (!pages) return
 
     // TODO: Update to pass full track array with url, title, artist, duration, albumArt
-    const tracksForRedux = pages.map((t) => ({
-      id: t.id,
-      title: t.attributes.title,
-      artist: 'artist',
-      url: t.attributes.attachments[0].url,
-      duration: 100,
-      albumArt: undefined,
-    }))
+    const tracksForRedux = pages.map((t) => {
+      const image = getImageByType(t.attributes.images, ImageType.MEDIUM)
+      return {
+        id: t.id,
+        title: t.attributes.title,
+        artist: 'artist',
+        url: t.attributes.attachments[0].url,
+        duration: 100,
+        albumArt: image?.url || noCoverPlaceholder,
+      }
+    })
     dispatch(
       loadPlaylist({
         playlistId: 'all-tracks',
@@ -117,8 +119,6 @@ export const TracksPage = () => {
             <TrackRow
               key={trackRow.id}
               trackRow={trackRow}
-              playingTrackId={MOCK_TRACKS[0].id}
-              playingTrackProgress={20}
               onTrackPlayClick={handleTrackPlayClick}
               renderActionsCell={() => (
                 <TrackActions

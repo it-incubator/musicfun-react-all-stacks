@@ -42,5 +42,6 @@ export const useOwnerData = () => {
     isMeQuerySuccess,
     isLoading,
     isContentLoading: isPlaylistsLoading || isTracksLoading || isLoading,
+    pageOwnerId,
   }
 }
