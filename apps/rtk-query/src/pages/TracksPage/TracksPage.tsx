@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'react-intersection-observer'
-import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
 import {
@@ -15,6 +14,7 @@ import { playTrack, setLoadingState, type Track, useCurrentTrack, usePlaybackSta
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
+import { useAppDispatch } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -35,7 +35,7 @@ export const TracksPage = () => {
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleTrackPlayClick = async (trackId: string) => {
     if (currentTrack?.id === trackId) {

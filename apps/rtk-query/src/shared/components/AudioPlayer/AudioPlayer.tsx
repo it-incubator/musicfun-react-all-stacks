@@ -1,6 +1,7 @@
 import { clsx } from 'clsx'
 import type { ComponentProps } from 'react'
 
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import {
   PauseIcon,
   PlayIcon,
@@ -36,7 +37,7 @@ export type PlayerProps = {
 } & ComponentProps<'div'>
 
 export const AudioPlayer = ({
-  cover,
+  cover = noCoverPlaceholder,
   title,
   artist,
   isPlaying,

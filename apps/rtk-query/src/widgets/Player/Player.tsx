@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
 import {
+  nextTrack,
+  previousTrack,
   selectIsLoadingTrack,
   useCurrentTrack,
   usePlaybackProgress,
@@ -10,7 +12,7 @@ import {
 } from '@/player'
 import { AudioPlayer } from '@/shared/components'
 import { AudioPlayerSkeleton } from '@/shared/components/Skeleton/AudioPlayerSkeleton.tsx'
-import { useAppSelector } from '@/shared/hooks'
+import { useAppDispatch, useAppSelector } from '@/shared/hooks'
 
 import s from './Player.module.css'
 
@@ -30,6 +32,15 @@ export const Player = () => {
   const { seek, pause, resume } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
+  const dispatch = useAppDispatch()
+
+  const handleNextTrack = () => {
+    dispatch(nextTrack())
+  }
+
+  const handlePreviousTrack = () => {
+    dispatch(previousTrack())
+  }
 
   const handleTogglePlay = () => {
     if (isPlaying) {
@@ -47,12 +58,8 @@ export const Player = () => {
       title={currentTrack?.title || MOCK_TRACK.title}
       artist={currentTrack?.artist || MOCK_TRACK.artist}
       isPlaying={isPlaying}
-      onNext={() => {
-        // Здесь будет логика переключения вперед
-      }}
-      onPrevious={() => {
-        // Здесь будет логика переключения назад
-      }}
+      onNext={handleNextTrack}
+      onPrevious={handlePreviousTrack}
       onTogglePlay={handleTogglePlay}
       isShuffle={isShuffle}
       isRepeat={isRepeat}
