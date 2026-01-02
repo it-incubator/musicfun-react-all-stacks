@@ -1,8 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { useFetchTracksQuery } from '@/features/tracks'
 import {
-  nextTrack,
-  previousTrack,
   selectIsLoadingTrack,
   useCurrentTrack,
   usePlaybackProgress,
@@ -10,18 +9,12 @@ import {
   usePlayerControls,
   useVolumeControl,
 } from '@/player'
+import { convertApiTrackToPlayerTrack } from '@/player/utils'
 import { AudioPlayer } from '@/shared/components'
 import { AudioPlayerSkeleton } from '@/shared/components/Skeleton/AudioPlayerSkeleton.tsx'
-import { useAppDispatch, useAppSelector } from '@/shared/hooks'
+import { useAppSelector } from '@/shared/hooks'
 
 import s from './Player.module.css'
-
-const MOCK_TRACK = {
-  src: 'https://cdn.uppbeat.io/audio-files/c636d7c86452449b1203fc0bded83e29/4358717fc9da477a52fb18a6cbd3afcc/d154b5ce5ff1a05ae8115a3c678062e8/STREAMING-dreamland-matrika-main-version-31140-02-25.mp3',
-  cover: 'https://unsplash.it/112/112',
-  title: 'Play It Safe',
-  artist: 'Julia Wolf',
-}
 
 export const Player = () => {
   const isLoadingTrack = useAppSelector(selectIsLoadingTrack)
@@ -29,9 +22,26 @@ export const Player = () => {
   const [isShuffle, setIsShuffle] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
   const { isPlaying } = usePlaybackState()
-  const { seek, pause, resume, next, previous } = usePlayerControls()
+  const { seek, pause, resume, next, previous, play } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
+
+  const { data: tracks } = useFetchTracksQuery({
+    pageSize: 10,
+    pageNumber: 1,
+  })
+
+  // Set the first track as current track when tracks are loaded
+  useEffect(() => {
+    if (tracks?.data && tracks.data.length > 0 && !currentTrack?.id) {
+      const firstTrack = tracks.data[0]
+      const playerTrack = convertApiTrackToPlayerTrack(firstTrack)
+
+      // Play the first track with the context of all tracks
+      const allPlayerTracks = tracks.data.map(convertApiTrackToPlayerTrack)
+      play(playerTrack, undefined, allPlayerTracks)
+    }
+  }, [tracks, currentTrack?.id, play])
 
   const handleNextTrack = () => {
     next()
@@ -42,20 +52,35 @@ export const Player = () => {
   }
 
   const handleTogglePlay = () => {
-    if (isPlaying) {
-      pause()
-    } else {
-      resume()
+    if (currentTrack) {
+      // If there's a current track in the player, play it
+      if (isPlaying) {
+        pause()
+      } else {
+        resume()
+      }
+    } else if (tracks?.data && tracks.data.length > 0) {
+      // If no current track, play the first track from the API
+      const firstTrack = tracks.data[0]
+      const playerTrack = convertApiTrackToPlayerTrack(firstTrack)
+      const allPlayerTracks = tracks.data.map(convertApiTrackToPlayerTrack)
+      play(playerTrack, undefined, allPlayerTracks)
     }
   }
+
+  const cover = tracks?.data[0].attributes.images.main[1].url
+  const title = tracks?.data[0].attributes.title
+  // We'll get artist info through the converted track object
+  const firstTrackForDisplay = tracks?.data[0] ? convertApiTrackToPlayerTrack(tracks.data[0]) : null
+  const artist = firstTrackForDisplay?.artist || 'Unknown Artist'
 
   return isLoadingTrack ? (
     <AudioPlayerSkeleton />
   ) : (
     <AudioPlayer
-      cover={currentTrack?.albumArt || MOCK_TRACK.cover}
-      title={currentTrack?.title || MOCK_TRACK.title}
-      artist={currentTrack?.artist || MOCK_TRACK.artist}
+      cover={currentTrack?.albumArt || cover!}
+      title={currentTrack?.title || title!}
+      artist={currentTrack?.artist || artist}
       isPlaying={isPlaying}
       onNext={handleNextTrack}
       onPrevious={handlePreviousTrack}
