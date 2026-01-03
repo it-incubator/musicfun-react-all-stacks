@@ -4,6 +4,7 @@
 }
 
 .image {
+  position: relative;
   flex-shrink: 0;
   width: 52px;
   height: 52px;
@@ -31,4 +32,29 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.playButton {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: var(--color-bg-card);
+  border: none;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.boxHovered .playButton {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.playButton svg {
+  width: var(--font-size-xxl);
+  height: var(--font-size-xxl);
 }

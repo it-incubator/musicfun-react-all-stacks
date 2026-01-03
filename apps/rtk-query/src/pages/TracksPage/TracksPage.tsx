@@ -5,14 +5,13 @@ import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
 import {
-  MOCK_TRACKS,
   TracksTable,
   TracksTableSkeleton,
   useFetchTracksByScrollInfiniteQuery,
 } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { loadPlaylist } from '@/player'
+import { loadPlaylist, useCurrentTrack, usePlaybackState } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
@@ -36,6 +35,8 @@ export const TracksPage = () => {
   const { data: me } = useMeQuery()
 
   const dispatch = useDispatch()
+  const { playbackState } = usePlaybackState()
+  const { trackId: currentTrackId } = useCurrentTrack()
 
   const handleTrackPlayClick = (trackId: string) => {
     if (!pages) return
@@ -117,7 +118,8 @@ export const TracksPage = () => {
             <TrackRow
               key={trackRow.id}
               trackRow={trackRow}
-              playingTrackId={MOCK_TRACKS[0].id}
+              playingTrackId={currentTrackId ?? undefined}
+              playbackState={playbackState}
               playingTrackProgress={20}
               onTrackPlayClick={handleTrackPlayClick}
               renderActionsCell={() => (
