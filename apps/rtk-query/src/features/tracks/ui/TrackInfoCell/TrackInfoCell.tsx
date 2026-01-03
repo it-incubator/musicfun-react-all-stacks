@@ -28,7 +28,7 @@ export const TrackInfoCell = ({
 }: TrackInfoCellProps) => {
   return (
     <TableCell>
-      <div className={clsx(s.box, isHovered && s.boxHovered)}>
+      <div className={clsx(s.box, { [s.boxHovered]: isHovered })}>
         <div className={s.image}>
           <img src={imageSrc} alt={title} />
           <button
