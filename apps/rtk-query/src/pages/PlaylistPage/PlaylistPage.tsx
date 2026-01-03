@@ -5,6 +5,7 @@ import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
 import { TrackRowContainer, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
 import { usePageBackgroundColor, usePageSearchParams } from '@/pages/common/hooks'
+import { useCurrentTrack, usePlaybackState } from '@/player'
 import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
@@ -21,6 +22,8 @@ export const PlaylistPage = () => {
   const { id } = useParams()
   const { data: playlist, isLoading: isPlaylistLoading, isSuccess } = useFetchPlaylistByIdQuery(id!)
   const { data: me } = useMeQuery()
+  const { playbackState } = usePlaybackState()
+  const { trackId } = useCurrentTrack()
 
   const isOwnPlaylist = me?.userId === playlist?.data.attributes.user.id
 
@@ -94,8 +97,10 @@ export const PlaylistPage = () => {
           renderTrackRow={(trackRow) => (
             <TrackRowContainer
               key={trackRow.id}
+              currentTrackId={trackId ?? undefined}
               trackRow={trackRow}
               userId={me?.userId}
+              playbackState={playbackState}
               playlistId={playlist.data.id}
             />
           )}

@@ -68,7 +68,7 @@ export const TrackRow = <T extends TrackRowData>({
   }
 
   return (
-    <TableRow ref={ref}>
+    <TableRow ref={ref} className={clsx({ [s.active]: isPlaying })}>
       <TableCell className={clsx(isPlaying && s.playing)}>
         {isPlaying ? <LiveWaveIcon /> : trackRow.index + 1}
       </TableCell>
