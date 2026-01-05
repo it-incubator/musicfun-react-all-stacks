@@ -241,32 +241,11 @@ export const playerSlice = createSlice({
 
     handleTrackEnded: (state) => {
       // Repeat one - replay current track
-      // debugger
       if (state.repeatMode === 'one') {
         state.currentTime = 0
         return
       }
-
-      // if (state.repeatMode === 'off') {
-      //   playerSlice.caseReducers.nextTrack(state)
-      //   return
-      // }
-      //
-      // if (state.repeatMode === 'all') {
-      //   if (state.currentTrackId === state.queue[state.queue.length - 1]) {
-      //     // If current track is the last track in queue, go to first track
-      //     state.queueIndex = 0
-      //     state.currentTrackId = state.queue[0]
-      //     state.currentTime = 0
-      //     state.playbackState = 'loading'
-      //   } else {
-      //     // Otherwise, proceed to next track
-      //     playerSlice.caseReducers.nextTrack(state)
-      //   }
-      // }
-
       // Automatically play next track when current track ends
-      // todo: Следующий трек хардкорно воспроизводится потому что нет Логики обработки repeat (off | all | one). Этот reduser вызывается в playerMiddleware
       playerSlice.caseReducers.nextTrack(state)
     },
 

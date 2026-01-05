@@ -18,9 +18,7 @@ import s from './Player.module.css'
 export const Player = () => {
   const isLoadingTrack = useAppSelector(selectIsLoadingTrack)
   const { track: currentTrack } = useCurrentTrack()
-
   const { shuffleMode, repeatMode, setRepeatMode, toggleShuffle } = usePlaybackModes()
-
   const { isPlaying } = usePlaybackState()
   const { seek, pause, resume, next, previous, play } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
