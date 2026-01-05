@@ -4,6 +4,7 @@ import { useFetchTracksQuery } from '@/features/tracks'
 import {
   selectIsLoadingTrack,
   useCurrentTrack,
+  usePlaybackModes,
   usePlaybackProgress,
   usePlaybackState,
   usePlayerControls,
@@ -19,6 +20,9 @@ import s from './Player.module.css'
 export const Player = () => {
   const isLoadingTrack = useAppSelector(selectIsLoadingTrack)
   const { track: currentTrack } = useCurrentTrack()
+
+  const {shuffleMode, repeatMode, setRepeatMode, toggleShuffle } = usePlaybackModes()
+
   const [isShuffle, setIsShuffle] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
   const { isPlaying } = usePlaybackState()
@@ -34,11 +38,9 @@ export const Player = () => {
   const handleNextTrack = () => {
     next()
   }
-
   const handlePreviousTrack = () => {
     previous()
   }
-
   const handleTogglePlay = () => {
     if (currentTrack) {
       // If there's a current track in the player, play it
@@ -55,7 +57,9 @@ export const Player = () => {
       play(playerTrack, undefined, allPlayerTracks)
     }
   }
-
+  const handleToggleShuffle = () => {
+    toggleShuffle()
+  }
   const cover = tracks?.data[0].attributes.images.main[1].url
   const title = tracks?.data[0].attributes.title
   // We'll get artist info through the converted track object
@@ -73,9 +77,9 @@ export const Player = () => {
       onNext={handleNextTrack}
       onPrevious={handlePreviousTrack}
       onTogglePlay={handleTogglePlay}
-      isShuffle={isShuffle}
+      isShuffle={shuffleMode}
       isRepeat={isRepeat}
-      onShuffle={() => setIsShuffle(!isShuffle)}
+      onShuffle={handleToggleShuffle}
       onRepeat={() => setIsRepeat(!isRepeat)}
       className={s.player}
       duration={duration}
