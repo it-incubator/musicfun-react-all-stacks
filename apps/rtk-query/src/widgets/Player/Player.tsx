@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useFetchTracksQuery } from '@/features/tracks'
 import {
@@ -30,18 +30,6 @@ export const Player = () => {
     pageSize: 10,
     pageNumber: 1,
   })
-
-  // Set the first track as current track when tracks are loaded
-  useEffect(() => {
-    if (tracks?.data && tracks.data.length > 0 && !currentTrack?.id) {
-      const firstTrack = tracks.data[0]
-      const playerTrack = convertApiTrackToPlayerTrack(firstTrack)
-
-      // Play the first track with the context of all tracks
-      const allPlayerTracks = tracks.data.map(convertApiTrackToPlayerTrack)
-      play(playerTrack, undefined, allPlayerTracks)
-    }
-  }, [tracks, currentTrack?.id, play])
 
   const handleNextTrack = () => {
     next()
