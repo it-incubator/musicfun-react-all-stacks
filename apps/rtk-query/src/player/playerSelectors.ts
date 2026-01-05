@@ -3,7 +3,7 @@ import { createSelector } from '@reduxjs/toolkit'
 import type { RootState } from '@/app/store/store'
 
 import type { FormattedTime, TrackPlaybackState, TrackProgress } from './types/player.types'
-import { formatTime } from './utils'
+import { formatTime } from './utils/formatTime'
 
 // ========================================
 // Basic Selectors
@@ -45,7 +45,6 @@ export const selectHasNextTrack = (state: RootState) => state.player.hasNextTrac
 
 export const selectHasPreviousTrack = (state: RootState) => state.player.hasPreviousTrack
 
-export const selectIsPlayerLoading = (state: RootState) => state.player.isLoading
 // ========================================
 // Computed Selectors (Memoized)
 // ========================================
