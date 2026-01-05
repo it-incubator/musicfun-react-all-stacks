@@ -17,7 +17,7 @@ const loadPersistedVolume = (): number => {
 const loadPersistedRepeatMode = (): RepeatMode => {
   try {
     const mode = localStorage.getItem('player_repeat_mode')
-    return (mode as RepeatMode) || 'off'
+    return (mode as RepeatMode) || 'one'
   } catch {
     return 'off'
   }
@@ -33,7 +33,6 @@ const loadPersistedShuffle = (): boolean => {
 }
 
 const initialState: PlayerState = {
-
   // Current playback state
   currentTrackId: null,
   currentPlaylistId: null,
@@ -242,10 +241,30 @@ export const playerSlice = createSlice({
 
     handleTrackEnded: (state) => {
       // Repeat one - replay current track
+      // debugger
       if (state.repeatMode === 'one') {
         state.currentTime = 0
         return
       }
+
+      // if (state.repeatMode === 'off') {
+      //   playerSlice.caseReducers.nextTrack(state)
+      //   return
+      // }
+      //
+      // if (state.repeatMode === 'all') {
+      //   if (state.currentTrackId === state.queue[state.queue.length - 1]) {
+      //     // If current track is the last track in queue, go to first track
+      //     state.queueIndex = 0
+      //     state.currentTrackId = state.queue[0]
+      //     state.currentTime = 0
+      //     state.playbackState = 'loading'
+      //   } else {
+      //     // Otherwise, proceed to next track
+      //     playerSlice.caseReducers.nextTrack(state)
+      //   }
+      // }
+
       // Automatically play next track when current track ends
       // todo: Следующий трек хардкорно воспроизводится потому что нет Логики обработки repeat (off | all | one). Этот reduser вызывается в playerMiddleware
       playerSlice.caseReducers.nextTrack(state)

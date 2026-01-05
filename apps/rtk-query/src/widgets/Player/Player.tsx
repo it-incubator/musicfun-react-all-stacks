@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { useFetchTracksQuery } from '@/features/tracks'
 import {
   selectIsLoadingTrack,
@@ -21,10 +19,8 @@ export const Player = () => {
   const isLoadingTrack = useAppSelector(selectIsLoadingTrack)
   const { track: currentTrack } = useCurrentTrack()
 
-  const {shuffleMode, repeatMode, setRepeatMode, toggleShuffle } = usePlaybackModes()
+  const { shuffleMode, repeatMode, setRepeatMode, toggleShuffle } = usePlaybackModes()
 
-  const [isShuffle, setIsShuffle] = useState(false)
-  const [isRepeat, setIsRepeat] = useState(false)
   const { isPlaying } = usePlaybackState()
   const { seek, pause, resume, next, previous, play } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
@@ -60,6 +56,9 @@ export const Player = () => {
   const handleToggleShuffle = () => {
     toggleShuffle()
   }
+  const handleSetRepeatMode = () => {
+    setRepeatMode()
+  }
   const cover = tracks?.data[0].attributes.images.main[1].url
   const title = tracks?.data[0].attributes.title
   // We'll get artist info through the converted track object
@@ -78,9 +77,9 @@ export const Player = () => {
       onPrevious={handlePreviousTrack}
       onTogglePlay={handleTogglePlay}
       isShuffle={shuffleMode}
-      isRepeat={isRepeat}
+      isRepeat={repeatMode}
       onShuffle={handleToggleShuffle}
-      onRepeat={() => setIsRepeat(!isRepeat)}
+      onRepeat={handleSetRepeatMode}
       className={s.player}
       duration={duration}
       currentTime={currentTime}

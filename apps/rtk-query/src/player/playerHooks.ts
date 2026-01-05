@@ -342,12 +342,17 @@ export function usePlaybackModes() {
   const shuffleMode = useSelector(selectShuffleMode)
   const modeDescription = useSelector(selectPlaybackModeDescription)
 
-  const setRepeatModeValue = useCallback(
-    (mode: RepeatMode) => {
-      dispatch(setRepeatMode(mode))
-    },
-    [dispatch]
-  )
+  const setRepeatModeValue = useCallback(() => {
+    if (repeatMode === 'off') {
+      dispatch(setRepeatMode('one'))
+    }
+    if (repeatMode === 'one') {
+      dispatch(setRepeatMode('all'))
+    }
+    if (repeatMode === 'all') {
+      dispatch(setRepeatMode('off'))
+    }
+  }, [dispatch, repeatMode])
 
   const toggleShuffleValue = useCallback(() => {
     dispatch(toggleShuffle())
