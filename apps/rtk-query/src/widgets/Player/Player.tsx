@@ -9,10 +9,10 @@ import {
   useVolumeControl,
 } from '@/player'
 import { convertApiTrackToPlayerTrack } from '@/player/utils'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { AudioPlayer } from '@/shared/components'
 import { AudioPlayerSkeleton } from '@/shared/components/Skeleton/AudioPlayerSkeleton.tsx'
 import { useAppSelector } from '@/shared/hooks'
-import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 
 import s from './Player.module.css'
 
