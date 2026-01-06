@@ -12,6 +12,7 @@ import { convertApiTrackToPlayerTrack } from '@/player/utils'
 import { AudioPlayer } from '@/shared/components'
 import { AudioPlayerSkeleton } from '@/shared/components/Skeleton/AudioPlayerSkeleton.tsx'
 import { useAppSelector } from '@/shared/hooks'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 
 import s from './Player.module.css'
 
@@ -57,7 +58,7 @@ export const Player = () => {
   const handleSetRepeatMode = () => {
     setRepeatMode()
   }
-  const cover = tracks?.data[0].attributes.images.main[1].url
+  const cover = tracks?.data[0].attributes.images.main[1]?.url
   const title = tracks?.data[0].attributes.title
   // We'll get artist info through the converted track object
   const firstTrackForDisplay = tracks?.data[0] ? convertApiTrackToPlayerTrack(tracks.data[0]) : null
@@ -67,7 +68,7 @@ export const Player = () => {
     <AudioPlayerSkeleton />
   ) : (
     <AudioPlayer
-      cover={currentTrack?.albumArt || cover!}
+      cover={currentTrack?.albumArt || (currentTrack ? noCoverPlaceholder : cover!)}
       title={currentTrack?.title || title!}
       artist={currentTrack?.artist || artist}
       isPlaying={isPlaying}
