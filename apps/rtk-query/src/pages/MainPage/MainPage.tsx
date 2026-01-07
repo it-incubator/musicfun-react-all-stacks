@@ -9,6 +9,9 @@ import {
 } from '@/features/playlists'
 import { TagsList, useFindTagsQuery } from '@/features/tags'
 import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
+import { loadPlaylist } from '@/player'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
+import { useAppDispatch } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -19,6 +22,7 @@ export const MainPage = () => {
   const { t } = useTranslation()
   const { data: me } = useMeQuery()
   const isOwnPlaylist = (userId: string): boolean => me?.userId === userId
+  const dispatch = useAppDispatch()
 
   const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
     pageSize: 10,
@@ -30,6 +34,28 @@ export const MainPage = () => {
   })
 
   const { data: tags } = useFindTagsQuery({ value: '' })
+
+  const handleTrackCardPlaybackClick = (trackId: string) => {
+    if (!tracks) return
+    const tracksForRedux = tracks.data.map((t) => {
+      const image = getImageByType(t.attributes.images, ImageType.MEDIUM)
+      return {
+        id: t.id,
+        title: t.attributes.title,
+        artist: 'artist',
+        duration: 100,
+        url: t.attributes.attachments[0].url,
+        albumArt: image?.url || noCoverPlaceholder,
+      }
+    })
+    dispatch(
+      loadPlaylist({
+        playlistId: 'new-tracks',
+        tracks: tracksForRedux,
+        startIndex: tracksForRedux?.findIndex((t) => t.id === trackId),
+      })
+    )
+  }
 
   return (
     <PageWithHeader className={s.mainPage}>
@@ -68,19 +94,9 @@ export const MainPage = () => {
       <ContentList
         title={t('tracks.title.new_tracks')}
         data={tracks?.data}
-        renderItem={(track) => {
-          const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
-          return (
-            <TrackCard
-              artistNames={['Freddie Mercury', 'John Lennon']}
-              title={track.attributes.title}
-              id={track.id}
-              imageSrc={image?.url}
-              reaction={track.attributes.currentUserReaction}
-              likesCount={track.attributes.likesCount}
-            />
-          )
-        }}
+        renderItem={(track) => (
+          <TrackCard track={track} loadPlaylistToPLayer={handleTrackCardPlaybackClick} />
+        )}
       />
     </PageWithHeader>
   )
