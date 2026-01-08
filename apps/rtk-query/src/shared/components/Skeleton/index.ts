@@ -1,1 +1,1 @@
-export * from './Skeleton'
+export * from '../AudioPlayer/AudioPlayerSceleton/Skeleton.tsx'
