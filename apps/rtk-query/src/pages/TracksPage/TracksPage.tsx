@@ -22,7 +22,7 @@ import {
 } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
-import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
+import { Spinner } from '@/shared/components/Spinner/Spinner.tsx'
 import { useAppDispatch } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
