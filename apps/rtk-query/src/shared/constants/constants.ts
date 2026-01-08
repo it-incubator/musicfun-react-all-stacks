@@ -1,1 +1,8 @@
 export const LOCALE_KEY = 'locale'
+
+// SKELETON
+export const TRACK_SKELETON_INFO_LINES = 3
+export const TRACK_SKELETON_PLAYLISTS = 2
+export const PLAYLIST_SKELETON_INFO_LINES = 4
+export const PLAYLIST_SKELETON_TABLE_ROWS = 3
+export const USER_TABS_SKELETON_PLAYLISTS = 5

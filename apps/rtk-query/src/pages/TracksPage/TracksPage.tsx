@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { useMeQuery } from '@/features/auth'
 import {
   TracksTable,
+  TracksTableSkeleton,
   useFetchTracksByScrollInfiniteQuery,
   useLazyFetchTrackByIdQuery,
 } from '@/features/tracks'
@@ -41,6 +42,7 @@ export const TracksPage = () => {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
+    isLoading,
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
@@ -48,7 +50,6 @@ export const TracksPage = () => {
 
   const handleTrackPlayClick = async (trackId: string) => {
     if (currentTrack?.id === trackId) {
-      // Logic for play/pause on the same track can be handled by the player itself
       return
     }
 
@@ -123,9 +124,11 @@ export const TracksPage = () => {
         </div>
       </div>
 
-      <TracksTable
-        trackRows={
-          pages.map((track, index) => {
+      {isLoading ? (
+        <TracksTableSkeleton />
+      ) : (
+        <TracksTable
+          trackRows={pages.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
             const userId = track.attributes.user.id
             const isOwner = userId === me?.userId
@@ -144,26 +147,26 @@ export const TracksPage = () => {
               url: track.attributes.attachments[0].url,
               isOwner,
             }
-          }) ?? []
-        }
-        renderTrackRow={(trackRow) => (
-          <TrackRow
-            playingTrackProgress={playingTrackProgress}
-            key={trackRow.id}
-            trackRow={trackRow}
-            isPlaying={isPlaying && currentTrack?.id === trackRow.id}
-            onTrackPlayClick={handleTrackPlayClick}
-            renderActionsCell={() => (
-              <TrackActions
-                reaction={trackRow.currentUserReaction}
-                likesCount={trackRow.likesCount}
-                trackId={trackRow.id}
-                isOwner={trackRow.isOwner}
-              />
-            )}
-          />
-        )}
-      />
+          })}
+          renderTrackRow={(trackRow) => (
+            <TrackRow
+              playingTrackProgress={playingTrackProgress}
+              key={trackRow.id}
+              trackRow={trackRow}
+              isPlaying={isPlaying && currentTrack?.id === trackRow.id}
+              onTrackPlayClick={handleTrackPlayClick}
+              renderActionsCell={() => (
+                <TrackActions
+                  reaction={trackRow.currentUserReaction}
+                  likesCount={trackRow.likesCount}
+                  trackId={trackRow.id}
+                  isOwner={trackRow.isOwner}
+                />
+              )}
+            />
+          )}
+        />
+      )}
 
       {hasNextPage && (
         <div ref={ref}>

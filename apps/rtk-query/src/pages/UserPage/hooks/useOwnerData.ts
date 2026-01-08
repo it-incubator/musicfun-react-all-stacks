@@ -9,7 +9,7 @@ export const useOwnerData = () => {
   const { userId: pageOwnerId } = useParams()
   const isProfileOwner = user?.userId === pageOwnerId
 
-  const { data: tracks } = useFetchTracksQuery(
+  const { data: tracks, isLoading: isTracksLoading } = useFetchTracksQuery(
     {
       pageSize: 10,
       pageNumber: 1,
@@ -19,7 +19,10 @@ export const useOwnerData = () => {
     { skip: isLoading }
   )
 
-  const { data: playlists } = useFetchPlaylistsQuery({ userId: pageOwnerId }, { skip: isLoading })
+  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery(
+    { userId: pageOwnerId },
+    { skip: isLoading }
+  )
 
   let userLogin = isProfileOwner ? user?.login : ''
 
@@ -31,5 +34,13 @@ export const useOwnerData = () => {
     userLogin = tracks.data[0].attributes.user.name
   }
 
-  return { isProfileOwner, userLogin, tracks, playlists, isMeQuerySuccess }
+  return {
+    isProfileOwner,
+    userLogin,
+    tracks,
+    playlists,
+    isMeQuerySuccess,
+    isLoading,
+    isContentLoading: isPlaylistsLoading || isTracksLoading || isLoading,
+  }
 }
