@@ -7,17 +7,15 @@ import {
   TracksTable,
   TracksTableSkeleton,
   useFetchTracksByScrollInfiniteQuery,
-  useLazyFetchTrackByIdQuery,
 } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { setLoadingState, useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
+import { useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
 import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils.ts'
 import { usePlayingTrackProgress } from '@/player/utils/getPlayingTrackProgress.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { Spinner } from '@/shared/components/Spinner/Spinner.tsx'
-import { useAppDispatch } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -27,7 +25,7 @@ import s from './TracksPage.module.css'
 export const TracksPage = () => {
   const { t } = useTranslation()
 
-  const [fetchTrack] = useLazyFetchTrackByIdQuery()
+  // const [fetchTrack] = useLazyFetchTrackByIdQuery()
   const { track: currentTrack } = useCurrentTrack()
   const { isPlaying } = usePlaybackState()
   const {
@@ -39,28 +37,21 @@ export const TracksPage = () => {
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
-  const dispatch = useAppDispatch()
   const { play } = usePlayerControls()
   const { playingTrackProgress } = usePlayingTrackProgress()
+
   const handleTrackPlayClick = async (trackId: string) => {
+    const playingTrack = pages.find((track) => track.id === trackId)
+
     if (currentTrack?.id === trackId) {
       return
     }
 
-    dispatch(setLoadingState(true))
-    try {
-      const result = await fetchTrack({ trackId }).unwrap()
+    if (playingTrack) {
+      const playerTrack = convertApiTrackToPlayerTrack(playingTrack)
+      const tracksForPlayer = convertApiTracksToPlayerTracks(pages)
 
-      if (result.data) {
-        const playerTrack = convertApiTrackToPlayerTrack(result.data)
-        const tracksForPlayer = convertApiTracksToPlayerTracks(pages)
-
-        dispatch(play(playerTrack, 'all-tracks', tracksForPlayer))
-      }
-    } catch (error) {
-      console.error('Failed to fetch track:', error)
-    } finally {
-      dispatch(setLoadingState(false))
+      play(playerTrack, 'all-tracks', tracksForPlayer)
     }
   }
 

@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 
 import { useFetchTracksQuery } from '@/features/tracks'
 import {
-  selectIsLoadingTrack,
   useCurrentTrack,
   usePlaybackModes,
   usePlaybackProgress,
@@ -14,13 +13,11 @@ import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { AudioPlayer } from '@/shared/components'
 import { AudioPlayerSkeleton } from '@/shared/components/AudioPlayer/AudioPlayerSceleton/AudioPlayerSkeleton.tsx'
-import { useAppSelector } from '@/shared/hooks'
 
 import s from './Player.module.css'
 
 export const Player = () => {
   const { t } = useTranslation()
-  const isLoadingTrack = useAppSelector(selectIsLoadingTrack)
   const { track: currentTrack } = useCurrentTrack()
   const { shuffleMode, repeatMode, setRepeatMode, toggleShuffle } = usePlaybackModes()
   const { isPlaying } = usePlaybackState()
@@ -28,7 +25,7 @@ export const Player = () => {
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
 
-  const { data: tracks } = useFetchTracksQuery({
+  const { data: tracks, isLoading: isApiTrackLoading } = useFetchTracksQuery({
     pageSize: 10,
     pageNumber: 1,
   })
@@ -63,8 +60,8 @@ export const Player = () => {
   const handleSetRepeatMode = () => {
     setRepeatMode()
   }
-
-  return isLoadingTrack ? (
+  // debugger
+  return isApiTrackLoading ? (
     <AudioPlayerSkeleton />
   ) : (
     <AudioPlayer

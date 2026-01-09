@@ -4,7 +4,7 @@ import { getImageByType } from '@/shared/utils'
 import type { Track } from './types/player.types'
 
 // Generic type for API track data
-interface ApiTrackBase {
+type ApiTrackBase = {
   id: string
   attributes: {
     title: string
