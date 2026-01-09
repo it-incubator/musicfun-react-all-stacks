@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { AudioPlayerSkeleton } from './AudioPlayerSkeleton'
+import { AudioPlayerSkeleton } from './AudioPlayerSkeleton.tsx'
 
 const meta: Meta<typeof AudioPlayerSkeleton> = {
   title: 'Player/AudioPlayerSkeleton',
