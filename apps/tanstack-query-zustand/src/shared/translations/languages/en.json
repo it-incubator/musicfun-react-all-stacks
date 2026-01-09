@@ -7,11 +7,15 @@
     "button": {
       "continue_without_sign_in": "Continue without Sign in",
       "sign_in": "Sign in",
-      "sign_in_with_apihub": "Sign in with APIHub"
+      "sign_in_with_apihub": "Sign in with APIHub",
+      "logging_out": "Logging out..."
     },
     "title": {
       "logout": "Logout",
       "my_profile": "My Profile"
+    },
+    "modal": {
+      "title": "Millions of Songs. <br /> Free on Musicfun."
     }
   },
   "button": {
@@ -103,7 +107,9 @@
       "lyrics": "Lyrics",
       "title": "Title",
       "no_tracks": "No tracks",
-      "load_error": "Unable to load the track"
+      "load_error": "Unable to load the track",
+      "audio": "Audio",
+      "artist": "Artist"
     },
     "placeholder": {
       "lyrics": "Enter track lyrics",
@@ -124,7 +130,17 @@
       "actions": "Actions",
       "duration": "Duration"
     },
-    "release": "Release date"
+    "release": "Release date",
+    "error": {
+      "need_select_file": "Need select a file",
+      "incorrect_audio_format": "Please select correct audio-format",
+      "file_too_large": "The file is too large. Max size is {{size}} MB",
+      "upload_cover": "Error upload cover"
+    },
+    "success": {
+      "upload_cover": "Success Upload Cover",
+      "uploaded_successfully": "Track uploaded successfully"
+    }
   },
   "sort": {
     "label": "Sort by",
@@ -158,7 +174,8 @@
     },
     "label": {
       "name": "Name",
-      "surname": "Surname"
+      "surname": "Surname",
+      "avatar": "User avatar"
     },
     "stats": {
       "playlists_one": "Playlist",
@@ -179,5 +196,15 @@
     "made_for": "Made for",
     "tracks_count_one": "{{count}} track",
     "tracks_count_other": "{{count}} tracks"
+  },
+  "common": {
+    "loading": "Loading...",
+    "loading_tags": "Loading tags..."
+  },
+  "image_uploader": {
+    "error": {
+      "invalid_format": "Only {{formats}} files are allowed",
+      "file_too_large": "File size must be less than {{size}}MB"
+    }
   }
 }

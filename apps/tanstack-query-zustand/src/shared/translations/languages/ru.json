@@ -7,11 +7,15 @@
     "button": {
       "continue_without_sign_in": "Продолжить без входа",
       "sign_in": "Войти",
-      "sign_in_with_apihub": "Войти через APIHub"
+      "sign_in_with_apihub": "Войти через APIHub",
+      "logging_out": "Выход..."
     },
     "title": {
       "logout": "Выйти",
       "my_profile": "Мой профиль"
+    },
+    "modal": {
+      "title": "Миллионы песен. <br /> Бесплатно на Musicfun."
     }
   },
   "button": {
@@ -102,7 +106,9 @@
       "lyrics": "Текст песни",
       "title": "Название",
       "no_tracks": "Нет треков",
-      "load_error": "Не удалось загрузить трек"
+      "load_error": "Не удалось загрузить трек",
+      "audio": "Аудио",
+      "artist": "Артист"
     },
     "placeholder": {
       "lyrics": "Введите текст песни",
@@ -123,7 +129,17 @@
       "actions": "Действия",
       "duration": "Длительность"
     },
-    "release": "Дата релиза"
+    "release": "Дата релиза",
+    "error": {
+      "need_select_file": "Необходимо выбрать файл",
+      "incorrect_audio_format": "Пожалуйста, выберите правильный аудио-формат",
+      "file_too_large": "Файл слишком большой. Максимальный размер {{size}} МБ",
+      "upload_cover": "Ошибка загрузки обложки"
+    },
+    "success": {
+      "upload_cover": "Обложка успешно загружена",
+      "uploaded_successfully": "Трек успешно загружен"
+    }
   },
   "date": {
     "today": "сегодня",
@@ -168,7 +184,8 @@
     },
     "label": {
       "name": "Имя",
-      "surname": "Фамилия"
+      "surname": "Фамилия",
+      "avatar": "Аватар пользователя"
     },
     "stats": {
       "playlists_one": "Плейлист",
@@ -185,5 +202,15 @@
     "tracks_count_few": "{{count}} трека",
     "tracks_count_many": "{{count}} треков",
     "tracks_count_other": "{{count}} треков"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "loading_tags": "Загрузка тегов..."
+  },
+  "image_uploader": {
+    "error": {
+      "invalid_format": "Разрешены только файлы {{formats}}",
+      "file_too_large": "Размер файла должен быть меньше {{size}}МБ"
+    }
   }
 }
