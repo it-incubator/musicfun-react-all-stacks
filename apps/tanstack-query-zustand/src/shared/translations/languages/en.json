@@ -53,6 +53,7 @@
       "create_playlist": "Create Playlist",
       "edit_playlist": "Edit Playlist",
       "new_playlists": "New playlists",
+      "no_playlists": "No playlists yet",
       "playlists_not_found": "No playlists found"
     },
     "label": {
@@ -79,7 +80,8 @@
   },
   "tags": {
     "label": "Hashtags",
-    "placeholder": "Search by hashtags"
+    "placeholder": "Search by hashtags",
+    "add_tag_placeholder": "Add tag and press Enter"
   },
   "title": {
     "max_value": "Title must be less than {{ quantity }} characters",

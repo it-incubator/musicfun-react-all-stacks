@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import { PlaylistCard } from '@/entities/playlist'
@@ -19,6 +20,8 @@ const PAGE_SIZE = 8
 const DEFAULT_PAGE = 1
 
 export const PlaylistsTab = () => {
+  const { t } = useTranslation()
+
   const [isCreatePlaylistModalOpen, setIsCreatePlaylistModalOpen] = useState(false) // STATE FOR TESTING
   const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
   const { id: userId } = useParams<{ id: string }>()
@@ -52,7 +55,7 @@ export const PlaylistsTab = () => {
   return (
     <>
       <Button className={s.createPlaylistButton} onClick={openCreatePlaylistModal}>
-        Create Playlist
+        {t('playlists.button.create_playlist')}
       </Button>
 
       {isCreatePlaylistModalOpen && (
@@ -80,7 +83,7 @@ export const PlaylistsTab = () => {
       )}
       {/* temporary placeholder if there are no playlists */}
       {!isLoading && !isError && playlists.length === 0 && (
-        <div className={s.emptyState}>No playlists yet.</div>
+        <div className={s.emptyState}>{t('playlists.title.no_playlists')}</div>
       )}
 
       {totalPages > 1 && (

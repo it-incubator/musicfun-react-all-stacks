@@ -1,6 +1,7 @@
 import { clsx } from 'clsx'
 import type { ComponentProps, KeyboardEvent } from 'react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { DeleteIcon } from '@/shared/icons'
 
@@ -20,7 +21,7 @@ export type TagEditorProps = {
 
 export const TagEditor = ({
   label,
-  placeholder = 'Add tag and press Enter',
+  placeholder,
   value,
   onTagsChange,
   className,
@@ -28,14 +29,22 @@ export const TagEditor = ({
   disabled = false,
   ...props
 }: TagEditorProps) => {
+  const { t } = useTranslation()
   const [inputValue, setInputValue] = useState('')
+  const defaultPlaceholder = placeholder || t('tags.add_tag_placeholder')
 
   const addTag = (tag: string) => {
     const trimmedTag = tag.trim()
 
-    if (!trimmedTag) return
-    if (value.includes(trimmedTag)) return
-    if (maxTags && value.length >= maxTags) return
+    if (!trimmedTag) {
+      return
+    }
+    if (value.includes(trimmedTag)) {
+      return
+    }
+    if (maxTags && value.length >= maxTags) {
+      return
+    }
 
     onTagsChange([...value, trimmedTag])
     setInputValue('')
@@ -65,7 +74,7 @@ export const TagEditor = ({
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder={isMaxTagsReached ? 'Max tags reached' : placeholder}
+        placeholder={isMaxTagsReached ? 'Max tags reached' : defaultPlaceholder}
         disabled={disabled}
       />
 

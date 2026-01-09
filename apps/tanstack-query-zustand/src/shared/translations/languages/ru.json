@@ -52,6 +52,7 @@
       "create_playlist": "Создать плейлист",
       "edit_playlist": "Редактировать плейлист",
       "new_playlists": "Новые плейлисты",
+      "no_playlists": "Здесь пока нет плейлистов",
       "playlists_not_found": "Плейлисты не найдены"
     },
     "label": {
@@ -78,7 +79,8 @@
   },
   "tags": {
     "label": "Хэштеги",
-    "placeholder": "Поиск по хэштегам"
+    "placeholder": "Поиск по хэштегам",
+    "add_tag_placeholder": "Добавьте тег и нажмите Enter"
   },
   "title": {
     "max_value": "Название должно быть короче {{ quantity }} символов",
