@@ -1,5 +1,6 @@
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router'
 
 import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
@@ -23,54 +24,65 @@ type MenuButton = {
   label: string
 }
 
-const createLinks: MenuLink[] = [
-  {
-    to: '/tracks',
-    icon: <TrackIcon />,
-    label: 'All Tracks',
-  },
-  {
-    to: '/playlists',
-    icon: <PlaylistIcon />,
-    label: 'All Playlists',
-  },
-]
-
 export const MenuLinks = () => {
+  const { data: user } = useMeQuery()
+  const { t } = useTranslation()
+
   const [isCreatePlaylistOpen, setIsCreatePlaylistOpen] = useState<boolean>(false)
   const [isCreateTrackOpen, setIsCreateTrackOpen] = useState<boolean>(false)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
 
-  const { data: user } = useMeQuery()
+  const createLinks: MenuLink[] = useMemo(
+    () => [
+      {
+        to: '/tracks',
+        icon: <TrackIcon />,
+        label: t('sidebar.all_tracks'),
+      },
+      {
+        to: '/playlists',
+        icon: <PlaylistIcon />,
+        label: t('sidebar.all_playlists'),
+      },
+    ],
+    [t]
+  )
 
-  const actionButtons: MenuButton[] = [
-    {
-      // todo:task, implement upload track
-      onClick: user ? () => setIsCreateTrackOpen(true) : () => setIsLoginModalOpen(true),
-      icon: <UploadIcon />,
-      label: 'Upload Track',
-    },
-    {
-      // todo:task, implement upload playlist
-      onClick: user ? () => setIsCreatePlaylistOpen(true) : () => setIsLoginModalOpen(true),
-      icon: <CreateIcon />,
-      label: 'Create Playlist',
-    },
-  ]
+  const actionButtons: MenuButton[] = useMemo(
+    () => [
+      {
+        // todo:task, implement upload track
+        onClick: user ? () => setIsCreateTrackOpen(true) : () => setIsLoginModalOpen(true),
+        icon: <UploadIcon />,
+        label: t('sidebar.upload_track'),
+      },
+      {
+        // todo:task, implement upload playlist
+        onClick: user ? () => setIsCreatePlaylistOpen(true) : () => setIsLoginModalOpen(true),
+        icon: <CreateIcon />,
+        label: t('sidebar.create_playlist'),
+      },
+    ],
+    [user, t]
+  )
 
   return (
     <>
       <nav className={s.column} aria-label="Main navigation">
         <ul className={s.list}>
           <li>
-            <SidebarLink to={'/'} icon={<HomeIcon width={32} height={32} />} label={'Home'} />
+            <SidebarLink
+              to={'/'}
+              icon={<HomeIcon width={32} height={32} />}
+              label={t('sidebar.home')}
+            />
           </li>
           {user ? (
             <li>
               <SidebarLink
                 to={`/user/${user.userId}`}
                 icon={<LibraryIcon />}
-                label={'Your Library'}
+                label={t('sidebar.your_library')}
               />
             </li>
           ) : (
@@ -78,7 +90,7 @@ export const MenuLinks = () => {
               <SidebarButton
                 onClick={() => setIsLoginModalOpen(true)}
                 icon={<LibraryIcon />}
-                label={'Your Library'}
+                label={t('sidebar.your_library')}
               />
             </li>
           )}
