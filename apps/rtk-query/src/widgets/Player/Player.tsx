@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { useFetchTracksQuery } from '@/features/tracks'
 import {
   selectIsLoadingTrack,
@@ -8,15 +10,16 @@ import {
   usePlayerControls,
   useVolumeControl,
 } from '@/player'
-import { convertApiTrackToPlayerTrack } from '@/player/utils'
+import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { AudioPlayer } from '@/shared/components'
-import { AudioPlayerSkeleton } from '@/shared/components/Skeleton/AudioPlayerSkeleton.tsx'
+import { AudioPlayerSkeleton } from '@/shared/components/AudioPlayer/AudioPlayerSceleton/AudioPlayerSkeleton.tsx'
 import { useAppSelector } from '@/shared/hooks'
 
 import s from './Player.module.css'
 
 export const Player = () => {
+  const { t } = useTranslation()
   const isLoadingTrack = useAppSelector(selectIsLoadingTrack)
   const { track: currentTrack } = useCurrentTrack()
   const { shuffleMode, repeatMode, setRepeatMode, toggleShuffle } = usePlaybackModes()
@@ -30,6 +33,13 @@ export const Player = () => {
     pageNumber: 1,
   })
 
+  const firstTrack = tracks?.data[0]
+  const playerTrack = firstTrack ? convertApiTrackToPlayerTrack(firstTrack) : null
+  const allPlayerTracks = tracks?.data ? convertApiTracksToPlayerTracks(tracks.data) : []
+  const cover = firstTrack?.attributes.images.main[1]?.url // if you use 0 - image is blurred, if you use 1 - image is clear
+  const title = firstTrack?.attributes.title
+  const artistName = playerTrack?.artist || t('player.unknown_artist')
+
   const handleNextTrack = () => {
     next()
   }
@@ -38,19 +48,14 @@ export const Player = () => {
   }
   const handleTogglePlay = () => {
     if (currentTrack) {
-      // If there's a current track in the player, play it
-      if (isPlaying) {
-        pause()
-      } else {
-        resume()
-      }
-    } else if (tracks?.data && tracks.data.length > 0) {
-      // If no current track, play the first track from the API
-      const firstTrack = tracks.data[0]
-      const playerTrack = convertApiTrackToPlayerTrack(firstTrack)
-      const allPlayerTracks = tracks.data.map(convertApiTrackToPlayerTrack)
-      play(playerTrack, undefined, allPlayerTracks)
+      return isPlaying ? pause() : resume()
     }
+
+    if (firstTrack && allPlayerTracks.length > 0) {
+      return play(playerTrack!, undefined, allPlayerTracks)
+    }
+
+    return undefined
   }
   const handleToggleShuffle = () => {
     toggleShuffle()
@@ -58,11 +63,6 @@ export const Player = () => {
   const handleSetRepeatMode = () => {
     setRepeatMode()
   }
-  const cover = tracks?.data[0].attributes.images.main[1]?.url
-  const title = tracks?.data[0].attributes.title
-  // We'll get artist info through the converted track object
-  const firstTrackForDisplay = tracks?.data[0] ? convertApiTrackToPlayerTrack(tracks.data[0]) : null
-  const artist = firstTrackForDisplay?.artist || 'Unknown Artist'
 
   return isLoadingTrack ? (
     <AudioPlayerSkeleton />
@@ -70,7 +70,7 @@ export const Player = () => {
     <AudioPlayer
       cover={currentTrack?.albumArt || (currentTrack ? noCoverPlaceholder : cover!)}
       title={currentTrack?.title || title!}
-      artist={currentTrack?.artist || artist}
+      artist={currentTrack?.artist || artistName}
       isPlaying={isPlaying}
       onNext={handleNextTrack}
       onPrevious={handlePreviousTrack}

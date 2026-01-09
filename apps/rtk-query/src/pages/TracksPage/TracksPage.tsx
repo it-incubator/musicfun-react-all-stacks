@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'react-intersection-observer'
-import { useSelector } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
 import {
@@ -12,15 +11,9 @@ import {
 } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import {
-  playTrack,
-  selectCurrentTime,
-  selectDuration,
-  setLoadingState,
-  type Track,
-  useCurrentTrack,
-  usePlaybackState,
-} from '@/player'
+import { setLoadingState, useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
+import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils.ts'
+import { usePlayingTrackProgress } from '@/player/utils/getPlayingTrackProgress.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { Spinner } from '@/shared/components/Spinner/Spinner.tsx'
@@ -47,7 +40,8 @@ export const TracksPage = () => {
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
   const dispatch = useAppDispatch()
-
+  const { play } = usePlayerControls()
+  const { playingTrackProgress } = usePlayingTrackProgress()
   const handleTrackPlayClick = async (trackId: string) => {
     if (currentTrack?.id === trackId) {
       return
@@ -58,31 +52,10 @@ export const TracksPage = () => {
       const result = await fetchTrack({ trackId }).unwrap()
 
       if (result.data) {
-        const playerTrack: Track = {
-          id: result.data.id,
-          title: result.data.attributes.title,
-          artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
-          duration: result.data.attributes.duration,
-          url: result.data.attributes.attachments[0]?.url || '',
-          albumArt: result.data.attributes.images?.main?.[0]?.url,
-        }
+        const playerTrack = convertApiTrackToPlayerTrack(result.data)
+        const tracksForPlayer = convertApiTracksToPlayerTracks(pages)
 
-        const tracksForPlayer: Track[] = pages.map((track) => {
-          const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
-
-          return {
-            id: track.id,
-            title: track.attributes.title,
-            artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
-            duration: result.data.attributes.duration,
-            url: track.attributes.attachments[0]?.url || '',
-            albumArt: image?.url,
-          }
-        })
-
-        dispatch(
-          playTrack({ track: playerTrack, tracks: tracksForPlayer, playlistId: 'all-tracks' })
-        )
+        dispatch(play(playerTrack, 'all-tracks', tracksForPlayer))
       }
     } catch (error) {
       console.error('Failed to fetch track:', error)
@@ -100,10 +73,6 @@ export const TracksPage = () => {
       fetchNextPage()
     }
   }, [inView])
-
-  const currentTime = useSelector(selectCurrentTime)
-  const duration = useSelector(selectDuration)
-  const playingTrackProgress = duration > 0 ? (currentTime / duration) * 100 : 0
 
   return (
     <PageWithHeader>

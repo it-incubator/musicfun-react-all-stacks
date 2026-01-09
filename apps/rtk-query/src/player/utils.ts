@@ -1,13 +1,40 @@
+import { type Images, ImageType } from '@/shared/types/commonApi.types'
+import { getImageByType } from '@/shared/utils'
+
 import type { Track } from './types/player.types'
+
+// Generic type for API track data
+interface ApiTrackBase {
+  id: string
+  attributes: {
+    title: string
+    duration?: number
+    attachments?: Array<{ url: string }>
+    images?: Images
+    artists?: Array<{ id: string; name: string }>
+    user?: { id: string; name: string }
+    album?: { id: string; name: string }
+  }
+  relationships?: {
+    artists?: {
+      data: Array<{ id: string }>
+    }
+  }
+}
 
 /**
  * Converts API track response to Player Track format
  */
-export const convertApiTrackToPlayerTrack = (apiTrack: any): Track => {
+export const convertApiTrackToPlayerTrack = <T extends ApiTrackBase>(apiTrack: T): Track => {
   // Extract the audio URL from the attachments array
   // Try different possible paths for the audio URL
   const audioUrl = apiTrack.attributes.attachments?.[0]?.url || ''
-  const coverUrl = apiTrack.attributes.images?.main?.[0]?.url || ''
+
+  // Get medium-sized image using utility function
+  const image = apiTrack.attributes.images
+    ? getImageByType(apiTrack.attributes.images, ImageType.MEDIUM)
+    : undefined
+  const coverUrl = image?.url || ''
 
   // Extract artist information
   // For tracks list, artist name is typically in the user field
@@ -35,6 +62,6 @@ export const convertApiTrackToPlayerTrack = (apiTrack: any): Track => {
 /**
  * Converts array of API tracks to Player Track format
  */
-export const convertApiTracksToPlayerTracks = (apiTracks: any[]): Track[] => {
+export const convertApiTracksToPlayerTracks = <T extends ApiTrackBase>(apiTracks: T[]): Track[] => {
   return apiTracks.map(convertApiTrackToPlayerTrack)
 }
