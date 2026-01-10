@@ -67,6 +67,7 @@ export const Default: Story = {
         trackRow={trackRow}
         playingTrackId={MOCK_TRACKS[0].id}
         playingTrackProgress={20}
+        isPlaying={trackRow.id === MOCK_TRACKS[0].id}
         renderActionsCell={() => (
           <>
             <ReactionButtons
@@ -117,6 +118,7 @@ export const WithoutReactions: Story = {
         trackRow={trackRow}
         playingTrackId={MOCK_TRACKS[0].id}
         playingTrackProgress={20}
+        isPlaying={trackRow.id === MOCK_TRACKS[0].id}
         renderActionsCell={() => (
           <div>
             <DropdownMenu>
