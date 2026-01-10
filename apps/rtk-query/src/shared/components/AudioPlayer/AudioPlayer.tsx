@@ -1,6 +1,7 @@
 import { clsx } from 'clsx'
 import type { ComponentProps } from 'react'
 
+import type { RepeatMode } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import {
   PauseIcon,
@@ -27,7 +28,7 @@ export type PlayerProps = {
   onPrevious: () => void
   onTogglePlay: () => void
   isShuffle: boolean
-  isRepeat: string
+  isRepeat: RepeatMode
   onShuffle: () => void
   onRepeat: () => void
   duration: number
