@@ -8,16 +8,27 @@ type ApiTrackBase = {
   id: string
   attributes: {
     title: string
-    duration?: number
-    attachments?: Array<{ url: string }>
-    images?: Images
-    artists?: Array<{ id: string; name: string }>
-    user?: { id: string; name: string }
-    album?: { id: string; name: string }
+    addedAt: string
+    attachments: Array<{
+      id: string
+      addedAt: string
+      updatedAt: string
+      version: number
+      url: string
+      contentType: string
+      originalName: string
+      originalKey: string
+      fileSize: number
+    }>
+    images: Images
+    currentUserReaction: number
+    dislikesCount: number
+    likesCount: number
+    user: { id: string; name: string }
   }
-  relationships?: {
-    artists?: {
-      data: Array<{ id: string }>
+  relationships: {
+    artists: {
+      data: Array<{ id: string; type: string }>
     }
   }
 }
@@ -29,7 +40,6 @@ export const convertApiTrackToPlayerTrack = <T extends ApiTrackBase>(apiTrack: T
   // Extract the audio URL from the attachments array
   // Try different possible paths for the audio URL
   const audioUrl = apiTrack.attributes.attachments?.[0]?.url || ''
-
   // Get medium-sized image using utility function
   const image = apiTrack.attributes.images
     ? getImageByType(apiTrack.attributes.images, ImageType.MEDIUM)
@@ -37,25 +47,20 @@ export const convertApiTrackToPlayerTrack = <T extends ApiTrackBase>(apiTrack: T
   const coverUrl = image?.url || ''
 
   // Extract artist information
-  // For tracks list, artist name is typically in the user field
-  // For detailed track view, it might be in attributes.artists
-  const artistName =
-    apiTrack.attributes.artists?.[0]?.name || apiTrack.attributes.user?.name || 'Unknown Artist'
+  // For tracks list, artist name is in the user field
+  const artistName = apiTrack.attributes.user?.name || 'Unknown Artist'
 
   // Extract artist ID
-  const artistId =
-    apiTrack.attributes.artists?.[0]?.id || apiTrack.relationships?.artists?.data?.[0]?.id
+  const artistId = apiTrack.relationships?.artists?.data?.[0]?.id
 
   return {
     id: apiTrack.id,
     title: apiTrack.attributes.title,
     artist: artistName,
-    album: apiTrack.attributes.album?.name || undefined,
-    duration: apiTrack.attributes.duration || 0,
+    duration: 0, // Not available in track list
     url: audioUrl, // This is critical - the player needs the audio URL
     albumArt: coverUrl,
     artistId: artistId,
-    albumId: apiTrack.attributes.album?.id,
   }
 }
 
