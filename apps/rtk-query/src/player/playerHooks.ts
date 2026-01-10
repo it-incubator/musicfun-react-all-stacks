@@ -61,6 +61,14 @@ import type { RepeatMode, Track, TrackPlaybackState, TrackProgress } from './typ
 // Playback Control Hooks
 // ========================================
 
+export const usePlayingTrackProgress = () => {
+  const currentTime = useSelector(selectCurrentTime)
+  const duration = useSelector(selectDuration)
+  const playingTrackProgress = duration > 0 ? (currentTime / duration) * 100 : 0
+  return { playingTrackProgress }
+}
+
+
 /**
  * Hook for controlling playback (play, pause, stop, etc.)
  */
