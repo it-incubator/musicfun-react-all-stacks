@@ -11,11 +11,12 @@ import {
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
-import { usePlayingTrackProgress } from '@/player/playerHooks.ts'
+import { usePlayingTrackProgress, useQueueControls } from '@/player/playerHooks.ts'
 import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { Spinner } from '@/shared/components/Spinner/Spinner.tsx'
+import { useAppSelector } from '@/shared/hooks/useAppSelector.ts'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -38,14 +39,13 @@ export const TracksPage = () => {
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
   const { play } = usePlayerControls()
+  const { loadPlaylist, addToQueue } = useQueueControls()
   const { playingTrackProgress } = usePlayingTrackProgress()
+  const currentPlaylistId = useAppSelector((state) => state.player.currentPlaylistId)
 
   const handleTrackPlayClick = async (trackId: string) => {
+    // debugger
     const playingTrack = pages.find((track) => track.id === trackId)
-
-    if (currentTrack?.id === trackId) {
-      return
-    }
 
     if (playingTrack) {
       const playerTrack = convertApiTrackToPlayerTrack(playingTrack)
@@ -60,10 +60,42 @@ export const TracksPage = () => {
   })
 
   useEffect(() => {
-    if (hasNextPage && !isFetchingNextPage) {
+    // Handle infinite scroll loading
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
     }
-  }, [inView])
+
+    // Update player queue when new tracks are loaded
+    if (tracksData?.pages) {
+      const allTracks = tracksData.pages.flatMap((page) => page.data)
+      const playerTracks = convertApiTracksToPlayerTracks(allTracks)
+
+      if (playerTracks.length > 0) {
+        if (currentPlaylistId === 'all-tracks') {
+          // Playlist already exists, add new tracks
+          // We need to get only newly added tracks
+          if (tracksData.pages.length > 1) {
+            const currentPageIndex = tracksData.pages.length - 1
+            const newTracks = tracksData.pages[currentPageIndex].data
+            const newPlayerTracks = convertApiTracksToPlayerTracks(newTracks)
+            addToQueue(newPlayerTracks)
+          }
+        } else {
+          // First load - initialize playlist
+          loadPlaylist('all-tracks', playerTracks)
+        }
+      }
+    }
+  }, [
+    inView,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    tracksData?.pages,
+    addToQueue,
+    loadPlaylist,
+    currentPlaylistId,
+  ])
 
   return (
     <PageWithHeader>
