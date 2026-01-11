@@ -26,7 +26,6 @@ import s from './TracksPage.module.css'
 export const TracksPage = () => {
   const { t } = useTranslation()
 
-  // const [fetchTrack] = useLazyFetchTrackByIdQuery()
   const { track: currentTrack } = useCurrentTrack()
   const { isPlaying } = usePlaybackState()
   const {
@@ -44,7 +43,6 @@ export const TracksPage = () => {
   const currentPlaylistId = useAppSelector((state) => state.player.currentPlaylistId)
 
   const handleTrackPlayClick = async (trackId: string) => {
-    // debugger
     const playingTrack = pages.find((track) => track.id === trackId)
 
     if (playingTrack) {

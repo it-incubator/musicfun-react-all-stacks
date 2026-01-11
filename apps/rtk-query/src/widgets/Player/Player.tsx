@@ -25,7 +25,7 @@ export const Player = () => {
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
 
-  const { data: tracks, isLoading: isApiTrackLoading } = useFetchTracksQuery({
+  const { data: tracks, isLoading: isApiTracksLoading } = useFetchTracksQuery({
     pageSize: 10,
     pageNumber: 1,
   })
@@ -60,8 +60,8 @@ export const Player = () => {
   const handleSetRepeatMode = () => {
     setRepeatMode()
   }
-  // debugger
-  return isApiTrackLoading ? (
+
+  return isApiTracksLoading ? (
     <AudioPlayerSkeleton />
   ) : (
     <AudioPlayer
