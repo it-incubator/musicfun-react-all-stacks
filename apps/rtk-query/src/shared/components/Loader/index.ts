@@ -1,2 +1,2 @@
 export * from './Loader'
-export * from './Spinner.tsx'
+export * from '../Spinner/Spinner.tsx'

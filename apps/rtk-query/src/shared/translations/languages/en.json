@@ -179,5 +179,8 @@
     "made_for": "Made for",
     "tracks_count_one": "{{count}} track",
     "tracks_count_other": "{{count}} tracks"
+  },
+  "player": {
+    "unknown_artist": "Unknown Artist"
   }
 }
