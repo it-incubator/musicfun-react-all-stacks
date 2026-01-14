@@ -1,81 +1,81 @@
-import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { useLazyFetchTrackByIdQuery } from '@/features/tracks'
+import { useFetchTracksQuery } from '@/features/tracks'
 import {
-  type Track,
   useCurrentTrack,
+  usePlaybackModes,
   usePlaybackProgress,
   usePlaybackState,
   usePlayerControls,
   useVolumeControl,
 } from '@/player'
+import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { AudioPlayer } from '@/shared/components'
+import { AudioPlayerSkeleton } from '@/shared/components/AudioPlayer/AudioPlayerSceleton/AudioPlayerSkeleton.tsx'
 
 import s from './Player.module.css'
 
-const MOCK_TRACK = {
-  src: 'https://cdn.uppbeat.io/audio-files/c636d7c86452449b1203fc0bded83e29/4358717fc9da477a52fb18a6cbd3afcc/d154b5ce5ff1a05ae8115a3c678062e8/STREAMING-dreamland-matrika-main-version-31140-02-25.mp3',
-  cover: 'https://unsplash.it/112/112',
-  title: 'Play It Safe',
-  artist: 'Julia Wolf',
-}
-
 export const Player = () => {
-  const [fetchTrack, { isLoading }] = useLazyFetchTrackByIdQuery()
+  const { t } = useTranslation()
   const { track: currentTrack } = useCurrentTrack()
-  const [isShuffle, setIsShuffle] = useState(false)
-  const [isRepeat, setIsRepeat] = useState(false)
+  const { shuffleMode, repeatMode, setRepeatMode, toggleShuffle } = usePlaybackModes()
   const { isPlaying } = usePlaybackState()
-  const { seek, pause, resume, play } = usePlayerControls()
+  const { seek, pause, resume, next, previous, play } = usePlayerControls()
   const { currentTime, duration } = usePlaybackProgress()
   const { volume, setVolume } = useVolumeControl()
-  const fetchLazyTrack = async (trackToPlay: Track) => {
-    if (currentTrack && currentTrack.id === trackToPlay.id) {
-      if (isPlaying) {
-        pause()
-      } else {
-        resume()
-      }
-      return
+
+  const { data: tracks, isLoading: isApiTracksLoading } = useFetchTracksQuery({
+    pageSize: 10,
+    pageNumber: 1,
+  })
+
+  const firstTrack = tracks?.data[0]
+  const playerTrack = firstTrack ? convertApiTrackToPlayerTrack(firstTrack) : null
+  const allPlayerTracks = tracks?.data ? convertApiTracksToPlayerTracks(tracks.data) : []
+  const cover = firstTrack?.attributes.images.main[1]?.url // if you use 0 - image is blurred, if you use 1 - image is clear
+  const title = firstTrack?.attributes.title
+  const artistName = playerTrack?.artist || t('player.unknown_artist')
+
+  const handleNextTrack = () => {
+    next()
+  }
+  const handlePreviousTrack = () => {
+    previous()
+  }
+  const handleTogglePlay = () => {
+    if (currentTrack) {
+      return isPlaying ? pause() : resume()
     }
 
-    try {
-      const result = await fetchTrack({ trackId: trackToPlay.id }).unwrap()
-
-      if (result.data) {
-        const playerTrack: Track = {
-          id: result.data.id,
-          title: result.data.attributes.title,
-          artist: result.data.attributes.artists[0]?.name || 'Unknown Artist',
-          duration: result.data.attributes.duration,
-          url: result.data.attributes.attachments[0]?.url || '',
-          albumArt: result.data.attributes.images?.main?.[0]?.url,
-        }
-        play(playerTrack)
-      }
-    } catch (error) {
-      console.error('Failed to fetch track:', error)
-      // Error handling can be added, for example, to display a notification.
+    if (firstTrack && allPlayerTracks.length > 0) {
+      return play(playerTrack!, undefined, allPlayerTracks)
     }
+
+    return undefined
+  }
+  const handleToggleShuffle = () => {
+    toggleShuffle()
+  }
+  const handleSetRepeatMode = () => {
+    setRepeatMode()
   }
 
-  if (isLoading) {
-    return <div className={s.player}>Loading...</div>
-  }
-
-  return (
+  return isApiTracksLoading ? (
+    <AudioPlayerSkeleton />
+  ) : (
     <AudioPlayer
-      cover={currentTrack?.albumArt || MOCK_TRACK.cover}
-      title={currentTrack?.title || MOCK_TRACK.title}
-      artist={currentTrack?.artist || MOCK_TRACK.artist}
+      cover={currentTrack?.albumArt || (currentTrack ? noCoverPlaceholder : cover!)}
+      title={currentTrack?.title || title!}
+      artist={currentTrack?.artist || artistName}
       isPlaying={isPlaying}
-      onNext={() => {}}
-      onPrevious={() => {}}
-      onTogglePlay={() => currentTrack && fetchLazyTrack(currentTrack)}
-      isShuffle={isShuffle}
-      isRepeat={isRepeat}
-      onShuffle={() => setIsShuffle(!isShuffle)}
-      onRepeat={() => setIsRepeat(!isRepeat)}
+      onNext={handleNextTrack}
+      onPrevious={handlePreviousTrack}
+      onTogglePlay={handleTogglePlay}
+      isShuffle={shuffleMode}
+      isRepeat={repeatMode}
+      onShuffle={handleToggleShuffle}
+      onRepeat={handleSetRepeatMode}
       className={s.player}
       duration={duration}
       currentTime={currentTime}

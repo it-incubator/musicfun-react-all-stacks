@@ -41,7 +41,6 @@ export const TrackRow = <T extends TrackRowData>({
         artists={trackRow.artists}
         isPlaying={isPlayerTrack}
         onTrackPlayClick={onTrackPlayClick}
-        url={trackRow.url}
       />
       <TableCell>
         {isPlayerTrack && (

@@ -2,7 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
 import type { PlayerState, RepeatMode, Track } from './types/player.types'
-import { shuffle, shuffleWithCurrentItem } from './utils'
+import { shuffle, shuffleWithCurrentItem } from './utils/shuffle'
 
 // Load persisted preferences from localStorage
 const loadPersistedVolume = (): number => {
@@ -17,7 +17,7 @@ const loadPersistedVolume = (): number => {
 const loadPersistedRepeatMode = (): RepeatMode => {
   try {
     const mode = localStorage.getItem('player_repeat_mode')
-    return (mode as RepeatMode) || 'off'
+    return (mode as RepeatMode) || 'one'
   } catch {
     return 'off'
   }
@@ -167,12 +167,6 @@ export const playerSlice = createSlice({
     nextTrack: (state) => {
       if (state.queue.length === 0) return
 
-      // Repeat one - replay current track
-      if (state.repeatMode === 'one') {
-        state.currentTime = 0
-        return
-      }
-
       // Check if at end of queue
       const isAtEnd = state.queueIndex >= state.queue.length - 1
 
@@ -246,6 +240,11 @@ export const playerSlice = createSlice({
     },
 
     handleTrackEnded: (state) => {
+      // Repeat one - replay current track
+      if (state.repeatMode === 'one') {
+        state.currentTime = 0
+        return
+      }
       // Automatically play next track when current track ends
       playerSlice.caseReducers.nextTrack(state)
     },

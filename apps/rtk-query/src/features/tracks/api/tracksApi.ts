@@ -1,4 +1,5 @@
 import { baseApi } from '@/app/api/base-api.ts'
+import { FETCH_TRACK_BY_SCROLL_PAGE_SIZE } from '@/features/tracks/constants'
 import { CurrentUserReaction, type Nullable, type ReactionResponse } from '@/shared/types'
 import { buildQueryString } from '@/shared/utils'
 
@@ -27,7 +28,7 @@ export const tracksAPI = baseApi.injectEndpoints({
         params: {
           cursor: pageParam,
           paginationType: 'cursor',
-          pageSize: 5,
+          pageSize: FETCH_TRACK_BY_SCROLL_PAGE_SIZE,
         },
       }),
       providesTags: (result) =>

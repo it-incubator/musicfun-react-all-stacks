@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { Card } from '../Card'
 import { Typography } from '../Typography'
-import { Skeleton } from './Skeleton'
+import { Skeleton } from './Skeleton.tsx'
 
 const meta = {
   title: 'Components/Skeleton',
