@@ -42,7 +42,7 @@ export const TracksTab = () => {
       const playerTracks = convertApiTracksToPlayerTracks(tracks.data)
       loadPlaylist(currentPlaylistId, playerTracks)
     }
-  }, [tracks, playerPlaylistId, loadPlaylist, currentPlaylistId])
+  }, [tracks, loadPlaylist])
 
   return (
     <>
