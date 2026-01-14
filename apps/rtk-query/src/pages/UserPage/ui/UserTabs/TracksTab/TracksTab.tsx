@@ -1,13 +1,15 @@
 import { t } from 'i18next'
-import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 
 import { TracksTable, useCreateTrackModal } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { useOwnerData } from '@/pages/UserPage/hooks'
-import { loadPlaylist } from '@/player'
+import { selectCurrentPlaylistId, usePlayerControls, useQueueControls } from '@/player'
+import { convertApiTracksToPlayerTracks } from '@/player/utils.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Button } from '@/shared/components'
+import { useAppSelector } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -16,32 +18,32 @@ import s from './TracksTab.module.css'
 export const TracksTab = () => {
   const { isProfileOwner, tracks, pageOwnerId } = useOwnerData()
   const { handleOpenCreateTrackModal } = useCreateTrackModal()
+  const { play } = usePlayerControls()
+  const { loadPlaylist } = useQueueControls()
+  const playerPlaylistId = useAppSelector(selectCurrentPlaylistId)
 
-  const dispatch = useDispatch()
+  const currentPlaylistId = `${pageOwnerId}-user-tracks`
 
   const handleTrackPlayClick = (trackId: string) => {
     if (!tracks) return
-    const tracksForRedux = tracks.data.map((t) => {
-      const image = getImageByType(t.attributes.images, ImageType.MEDIUM)
-      return {
-        id: t.id,
-        title: t.attributes.title,
-        artist: 'artist',
-        url: t.attributes.attachments[0].url,
-        duration: 100,
-        albumArt: image?.url || noCoverPlaceholder,
-      }
-    })
-    dispatch(
-      loadPlaylist({
-        playlistId: `${pageOwnerId}-user-tracks`,
-        tracks: tracksForRedux,
-        startIndex: tracksForRedux?.findIndex((t) => t.id === trackId),
-      })
-    )
+    const playerTracks = convertApiTracksToPlayerTracks(tracks.data)
+    const playerTrackIndex = playerTracks.findIndex((track) => track.id === trackId)
+    if (playerPlaylistId !== currentPlaylistId) {
+      loadPlaylist(currentPlaylistId, playerTracks, playerTrackIndex)
+    }
+    const playerTrack = playerTracks.find((track) => track.id === trackId)
+    if (playerTrack) {
+      play(playerTrack, currentPlaylistId, playerTracks)
+    }
   }
 
-  // FIXME: temporary build fix, need to add url
+  useEffect(() => {
+    if (playerPlaylistId === currentPlaylistId && tracks) {
+      const playerTracks = convertApiTracksToPlayerTracks(tracks.data)
+      loadPlaylist(currentPlaylistId, playerTracks)
+    }
+  }, [tracks, playerPlaylistId, loadPlaylist, currentPlaylistId])
+
   return (
     <>
       {isProfileOwner && (
@@ -53,8 +55,6 @@ export const TracksTab = () => {
         trackRows={
           tracks?.data?.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
-            console.log(image, track.attributes.images)
-
             return {
               index,
               id: track.id,
