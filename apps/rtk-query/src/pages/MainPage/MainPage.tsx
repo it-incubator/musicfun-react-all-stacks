@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useMeQuery } from '@/features/auth'
@@ -9,20 +10,23 @@ import {
 } from '@/features/playlists'
 import { TagsList, useFindTagsQuery } from '@/features/tags'
 import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
-import { loadPlaylist } from '@/player'
-import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
-import { useAppDispatch } from '@/shared/hooks'
+import { selectCurrentPlaylistId, useQueueControls } from '@/player'
+import { convertApiTracksToPlayerTracks } from '@/player/utils.ts'
+import { useAppSelector } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { ContentList, PageWithHeader } from '../common'
 import s from './MainPage.module.css'
 
+const NEW_TRACKS_PLAYLIST_ID = 'new-tracks'
+
 export const MainPage = () => {
   const { t } = useTranslation()
   const { data: me } = useMeQuery()
   const isOwnPlaylist = (userId: string): boolean => me?.userId === userId
-  const dispatch = useAppDispatch()
+  const { loadPlaylist } = useQueueControls()
+  const playerPlaylistId = useAppSelector(selectCurrentPlaylistId)
 
   const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
     pageSize: 10,
@@ -36,31 +40,27 @@ export const MainPage = () => {
   const { data: tags } = useFindTagsQuery({ value: '' })
 
   const handleTrackCardPlaybackClick = (trackId: string) => {
-    if (!tracks) return
-    const tracksForRedux = tracks.data.map((t) => {
-      const image = getImageByType(t.attributes.images, ImageType.MEDIUM)
-      return {
-        id: t.id,
-        title: t.attributes.title,
-        artist: 'artist',
-        duration: 100,
-        url: t.attributes.attachments[0].url,
-        albumArt: image?.url || noCoverPlaceholder,
-      }
-    })
-    dispatch(
-      loadPlaylist({
-        playlistId: 'new-tracks',
-        tracks: tracksForRedux,
-        startIndex: tracksForRedux?.findIndex((t) => t.id === trackId),
-      })
-    )
+    if (!tracks) {
+      return
+    }
+    if (playerPlaylistId === NEW_TRACKS_PLAYLIST_ID) {
+      return
+    }
+    const playerTracks = convertApiTracksToPlayerTracks(tracks.data)
+    const playerTrackIndex = playerTracks.findIndex((track) => track.id === trackId)
+    loadPlaylist(NEW_TRACKS_PLAYLIST_ID, playerTracks, playerTrackIndex)
   }
+
+  useEffect(() => {
+    if (playerPlaylistId === NEW_TRACKS_PLAYLIST_ID && tracks) {
+      const playerTracks = convertApiTracksToPlayerTracks(tracks.data)
+      loadPlaylist(NEW_TRACKS_PLAYLIST_ID, playerTracks)
+    }
+  }, [tracks, loadPlaylist])
 
   return (
     <PageWithHeader className={s.mainPage}>
       <TagsList tags={tags || []} />
-
       <ContentList
         isLoading={isPlaylistsLoading}
         skeleton={<PlaylistCardSkeleton showReactionButtons />}

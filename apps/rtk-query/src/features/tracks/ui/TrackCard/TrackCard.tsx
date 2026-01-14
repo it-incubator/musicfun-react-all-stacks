@@ -7,10 +7,10 @@ import {
   useLikeTrackMutation,
   useUnReactionTrackMutation,
 } from '@/features/tracks'
-import { playTrack, useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
+import { useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
+import { convertApiTrackToPlayerTrack } from '@/player/utils.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Card, IconButton, ReactionButtons, Typography } from '@/shared/components'
-import { useAppDispatch } from '@/shared/hooks'
 import { PauseIcon, PlayIcon } from '@/shared/icons'
 import { ImageType } from '@/shared/types'
 import { getImageByType } from '@/shared/utils'
@@ -23,8 +23,6 @@ type Props = {
 }
 
 export const TrackCard = ({ track, loadPlaylistToPLayer }: Props) => {
-  const dispatch = useAppDispatch()
-
   const [like] = useLikeTrackMutation({
     fixedCacheKey: `track-reaction-${track.id}`,
   })
@@ -36,7 +34,7 @@ export const TrackCard = ({ track, loadPlaylistToPLayer }: Props) => {
   })
 
   const { trackId: playerTrackId } = useCurrentTrack()
-  const { pause, resume } = usePlayerControls()
+  const { play, pause, resume } = usePlayerControls()
   const { isPlaying } = usePlaybackState()
 
   const isPlayerTrack = playerTrackId && playerTrackId === track.id
@@ -55,18 +53,8 @@ export const TrackCard = ({ track, loadPlaylistToPLayer }: Props) => {
       return
     }
     loadPlaylistToPLayer(track.id)
-    dispatch(
-      playTrack({
-        track: {
-          id: track.id,
-          title: track.attributes.title,
-          artist: '',
-          url: track.attributes.attachments[0].url,
-          duration: 100,
-          albumArt: trackCover,
-        },
-      })
-    )
+    const playerTrack = convertApiTrackToPlayerTrack(track)
+    play(playerTrack, 'new-tracks')
   }
 
   return (
