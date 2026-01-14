@@ -7,10 +7,15 @@ import { LikedTracksTab } from './LikedTracksTab'
 import { MyLikedPlaylistsTab } from './MyLikedPlaylistsTab'
 import { PlaylistsTab } from './PlaylistsTab'
 import { TracksTab } from './TracksTab/TracksTab'
+import { UserTabsSkeleton } from './UserTabsSkeleton'
 
 export const UserTabs = () => {
   const { t } = useTranslation()
-  const { isProfileOwner, userLogin } = useOwnerData()
+  const { isProfileOwner, userLogin, isContentLoading } = useOwnerData()
+
+  if (isContentLoading) {
+    return <UserTabsSkeleton />
+  }
 
   return (
     <Tabs defaultValue="playlists">

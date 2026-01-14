@@ -11,6 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Skeleton,
 } from '@/shared/components'
 import { Paths } from '@/shared/configs'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks'
@@ -33,6 +34,29 @@ export const Header = () => {
     location.pathname
   )
 
+  const renderActions = () => {
+    if (isLoading) {
+      return <Skeleton className={s.actionsSkeleton} />
+    }
+
+    if (isAuth) {
+      return (
+        <AccountMenu
+          avatar={profileAvatarUrl}
+          fullName={profileFullName}
+          userLogin={user.login}
+          id={user.userId}
+        />
+      )
+    }
+
+    return (
+      <Button onClick={() => dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))}>
+        {t('auth.button.sign_in')}
+      </Button>
+    )
+  }
+
   return (
     <header
       className={s.header}
@@ -49,18 +73,8 @@ export const Header = () => {
             <DropdownMenuItem onClick={() => setLocale('ru')}>Русский</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        {isAuth ? (
-          <AccountMenu
-            avatar={profileAvatarUrl}
-            fullName={profileFullName}
-            userLogin={user.login}
-            id={user.userId}
-          />
-        ) : isLoading ? null : (
-          <Button onClick={() => dispatch(setIsAuthModalOpen({ isAuthModalOpen: true }))}>
-            {t('auth.button.sign_in')}
-          </Button>
-        )}
+
+        {renderActions()}
       </div>
     </header>
   )

@@ -3,7 +3,7 @@ import { createSelector } from '@reduxjs/toolkit'
 import type { RootState } from '@/app/store/store'
 
 import type { FormattedTime, TrackPlaybackState, TrackProgress } from './types/player.types'
-import { formatTime } from './utils'
+import { formatTime } from './utils/formatTime'
 
 // ========================================
 // Basic Selectors

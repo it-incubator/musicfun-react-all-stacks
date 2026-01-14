@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { Spinner } from './Spinner'
+import { Spinner } from './Spinner.tsx'
 
 const meta = {
   argTypes: {

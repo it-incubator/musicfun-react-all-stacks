@@ -1,4 +1,5 @@
 import { baseApi } from '@/app/api/base-api.ts'
+import { FETCH_TRACK_BY_SCROLL_PAGE_SIZE } from '@/features/tracks/constants'
 import { CurrentUserReaction, type Nullable, type ReactionResponse } from '@/shared/types'
 import { buildQueryString } from '@/shared/utils'
 
@@ -27,11 +28,19 @@ export const tracksAPI = baseApi.injectEndpoints({
         params: {
           cursor: pageParam,
           paginationType: 'cursor',
-          pageSize: 5,
+          pageSize: FETCH_TRACK_BY_SCROLL_PAGE_SIZE,
         },
       }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.pages.flatMap((page) =>
+                page.data.map((track) => ({ type: 'Track' as const, id: track.id }))
+              ),
+              { type: 'Track', id: 'LIST' },
+            ]
+          : [{ type: 'Track', id: 'LIST' }],
     }),
-
     fetchTracks: build.query<FetchTracksResponse, FetchTracksArgs>({
       query: (params) => {
         const query = buildQueryString(params) // TODO: возможно, это излишне
@@ -59,7 +68,7 @@ export const tracksAPI = baseApi.injectEndpoints({
       query: ({ trackId }) => ({
         url: `playlists/tracks/${trackId}`,
       }),
-      providesTags: (_, __, { trackId }) => [{ type: 'Track', trackId }],
+      providesTags: (_, __, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
     createTrack: build.mutation<
       { data: TrackDetails<TrackDetailAttributes> },
@@ -74,14 +83,6 @@ export const tracksAPI = baseApi.injectEndpoints({
           url: `playlists/tracks/upload`,
           method: 'POST',
           body: formData,
-        }
-      },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track']))
-        } catch {
-          // При ошибке кеш не трогаем
         }
       },
       invalidatesTags: ['Track'],
@@ -113,20 +114,6 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/${playlistId}/relationships/tracks/${trackId}`,
         method: 'DELETE',
       }),
-      async onQueryStarted({ playlistId, trackId }, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(
-            baseApi.util.invalidateTags([
-              'Track',
-              { type: 'Playlist', id: playlistId },
-              { type: 'Track', id: trackId },
-            ])
-          )
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: (_res, __err, { playlistId, trackId }) => [
         'Playlist',
         { type: 'Playlist', id: playlistId },
@@ -148,14 +135,6 @@ export const tracksAPI = baseApi.injectEndpoints({
           putAfterItemId: putAfterItemId,
         },
       }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track']))
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: (_res, _err, { playlistId }) => [{ type: 'Playlist', id: playlistId }],
     }),
     removeTrack: build.mutation<void, { trackId: string }>({
@@ -163,14 +142,6 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/tracks/${trackId}`,
         method: 'DELETE',
       }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track']))
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: ['Track'],
     }),
     likeTrack: build.mutation<ReactionResponse, { trackId: string }>({
@@ -179,21 +150,58 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
-        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
-        const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
+        const patchResults: any[] = []
+
+        // Refresh the cache for a single track page (fetchTrackById)
+        const patchTrackById = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            if (state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+              state.data.attributes.dislikesCount -= 1
+            }
+            state.data.attributes.likesCount += 1
+            state.data.attributes.currentUserReaction = CurrentUserReaction.Like
+          })
+        )
+        patchResults.push(patchTrackById)
+
+        // Refresh cache for infinite scroll (fetchTracksByScroll)
+        const scrollArgs = tracksAPI.util.selectCachedArgsForQuery(
           getState(),
           'fetchTracksByScroll'
         )
+        if (scrollArgs) {
+          scrollArgs.forEach((scrollArg) => {
+            patchResults.push(
+              dispatch(
+                tracksAPI.util.updateQueryData('fetchTracksByScroll', scrollArg, (state) => {
+                  // Go through all pages
+                  state.pages.forEach((page) => {
+                    const track = page.data.find((t: any) => t.id === trackId)
+                    if (track) {
+                      if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+                        track.attributes.dislikesCount -= 1
+                      }
+                      track.attributes.likesCount += 1
+                      track.attributes.currentUserReaction = CurrentUserReaction.Like
+                    }
+                  })
+                })
+              )
+            )
+          })
+        }
 
-        const patchResults: any[] = []
-
-        // Update fetchTracks cache
+        // Refresh the cache for track lists (fetchTracks)
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
             dispatch(
               tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
                 const track = state.data.find((t) => t.id === trackId)
                 if (track) {
+                  if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+                    track.attributes.dislikesCount -= 1
+                  }
                   track.attributes.likesCount += 1
                   track.attributes.currentUserReaction = CurrentUserReaction.Like
                 }
@@ -202,36 +210,8 @@ export const tracksAPI = baseApi.injectEndpoints({
           )
         })
 
-        // Update fetchTracksInfinite cache
-        infiniteArgs.forEach((_: void) => {
-          patchResults.push(
-            dispatch(
-              tracksAPI.util.updateQueryData('fetchTracksByScroll', undefined, (state) => {
-                state.pages.forEach((page) => {
-                  const track = page.data.find((t: any) => t.id === trackId)
-                  if (track) {
-                    track.attributes.likesCount += 1
-                    track.attributes.currentUserReaction = CurrentUserReaction.Like
-                  }
-                })
-              })
-            )
-          )
-        })
-
-        // Update fetchTrackById cache
-        patchResults.push(
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-              state.data.attributes.likesCount += 1
-              state.data.attributes.currentUserReaction = CurrentUserReaction.Like
-            })
-          )
-        )
-
         try {
           await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResults.forEach((p) => p.undo())
         }
@@ -244,15 +224,49 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
-        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
-        const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
+        const patchResults: any[] = []
+
+        // --- ИСПРАВЛЕНИЕ: Обновляем кеш для страницы одного трека (fetchTrackById) ---
+        const patchTrackById = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+              state.data.attributes.likesCount -= 1
+            }
+            state.data.attributes.dislikesCount += 1
+            state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike
+          })
+        )
+        patchResults.push(patchTrackById)
+
+        // Refresh cache for infinite scroll (fetchTracksByScroll)
+        const scrollArgs = tracksAPI.util.selectCachedArgsForQuery(
           getState(),
           'fetchTracksByScroll'
         )
+        if (scrollArgs) {
+          scrollArgs.forEach((scrollArg) => {
+            patchResults.push(
+              dispatch(
+                tracksAPI.util.updateQueryData('fetchTracksByScroll', scrollArg, (state) => {
+                  // Go through all pages
+                  state.pages.forEach((page) => {
+                    const track = page.data.find((t: any) => t.id === trackId)
+                    if (track) {
+                      if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                        track.attributes.likesCount -= 1
+                      }
+                      track.attributes.dislikesCount += 1
+                      track.attributes.currentUserReaction = CurrentUserReaction.Dislike
+                    }
+                  })
+                })
+              )
+            )
+          })
+        }
 
-        const patchResults: any[] = []
-
-        // Update fetchTracks cache
+        // Refresh the cache for track lists (fetchTracks)
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
         args.forEach((arg: FetchTracksArgs) => {
           patchResults.push(
             dispatch(
@@ -270,42 +284,8 @@ export const tracksAPI = baseApi.injectEndpoints({
           )
         })
 
-        // Update fetchTracksInfinite cache
-        infiniteArgs.forEach((_: void) => {
-          patchResults.push(
-            dispatch(
-              tracksAPI.util.updateQueryData('fetchTracksByScroll', undefined, (state) => {
-                state.pages.forEach((page) => {
-                  const track = page.data.find((t: any) => t.id === trackId)
-                  if (track) {
-                    if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                      track.attributes.likesCount -= 1
-                    }
-                    track.attributes.dislikesCount += 1
-                    track.attributes.currentUserReaction = CurrentUserReaction.Dislike
-                  }
-                })
-              })
-            )
-          )
-        })
-
-        // Update fetchTrackById cache
-        patchResults.push(
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-              if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                state.data.attributes.likesCount -= 1
-              }
-              state.data.attributes.dislikesCount += 1
-              state.data.attributes.currentUserReaction = CurrentUserReaction.Dislike
-            })
-          )
-        )
-
         try {
           await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResults.forEach((p) => p.undo())
         }
@@ -318,38 +298,31 @@ export const tracksAPI = baseApi.injectEndpoints({
         method: 'DELETE',
       }),
       async onQueryStarted({ trackId }, { dispatch, getState, queryFulfilled }) {
-        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
-        const infiniteArgs = tracksAPI.util.selectCachedArgsForQuery(
+        const patchResults: any[] = []
+
+        // Refresh the cache for a single track page (fetchTrackById)
+        const patchTrackById = dispatch(
+          tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
+            if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
+              state.data.attributes.likesCount -= 1
+            } else if (state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+              state.data.attributes.dislikesCount -= 1
+            }
+            state.data.attributes.currentUserReaction = CurrentUserReaction.None
+          })
+        )
+        patchResults.push(patchTrackById)
+
+        // Refresh cache for infinite scroll (fetchTracksByScroll)
+        const scrollArgs = tracksAPI.util.selectCachedArgsForQuery(
           getState(),
           'fetchTracksByScroll'
         )
-
-        const patchResults: any[] = []
-
-        // Update fetchTracks cache
-        args.forEach((arg: FetchTracksArgs) => {
+        scrollArgs.forEach((scrollArg) => {
           patchResults.push(
             dispatch(
-              tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
-                const track = state.data.find((t) => t.id === trackId)
-                if (track) {
-                  if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                    track.attributes.likesCount -= 1
-                  } else if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
-                    track.attributes.dislikesCount -= 1
-                  }
-                  track.attributes.currentUserReaction = CurrentUserReaction.None
-                }
-              })
-            )
-          )
-        })
-
-        // Update fetchTracksInfinite cache
-        infiniteArgs.forEach((_: void) => {
-          patchResults.push(
-            dispatch(
-              tracksAPI.util.updateQueryData('fetchTracksByScroll', undefined, (state) => {
+              tracksAPI.util.updateQueryData('fetchTracksByScroll', scrollArg, (state) => {
+                // Go through all pages
                 state.pages.forEach((page) => {
                   const track = page.data.find((t: any) => t.id === trackId)
                   if (track) {
@@ -368,25 +341,28 @@ export const tracksAPI = baseApi.injectEndpoints({
           )
         })
 
-        // Update fetchTrackById cache
-        patchResults.push(
-          dispatch(
-            tracksAPI.util.updateQueryData('fetchTrackById', { trackId }, (state) => {
-              if (state.data.attributes.currentUserReaction === CurrentUserReaction.Like) {
-                state.data.attributes.likesCount -= 1
-              } else if (
-                state.data.attributes.currentUserReaction === CurrentUserReaction.Dislike
-              ) {
-                state.data.attributes.dislikesCount -= 1
-              }
-              state.data.attributes.currentUserReaction = CurrentUserReaction.None
-            })
+        // Refresh the cache for track lists (fetchTracks)
+        const args = tracksAPI.util.selectCachedArgsForQuery(getState(), 'fetchTracks')
+        args.forEach((arg: FetchTracksArgs) => {
+          patchResults.push(
+            dispatch(
+              tracksAPI.util.updateQueryData('fetchTracks', arg || {}, (state) => {
+                const track = state.data.find((t) => t.id === trackId)
+                if (track) {
+                  if (track.attributes.currentUserReaction === CurrentUserReaction.Like) {
+                    track.attributes.likesCount -= 1
+                  } else if (track.attributes.currentUserReaction === CurrentUserReaction.Dislike) {
+                    track.attributes.dislikesCount -= 1
+                  }
+                  track.attributes.currentUserReaction = CurrentUserReaction.None
+                }
+              })
+            )
           )
-        )
+        })
 
         try {
           await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
         } catch {
           patchResults.forEach((p) => p.undo())
         }
@@ -404,14 +380,6 @@ export const tracksAPI = baseApi.injectEndpoints({
           body: formData,
         }
       },
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
     deleteCoverFromTrack: build.mutation<void, { trackId: string }>({
@@ -419,14 +387,6 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/tracks/${trackId}/cover`,
         method: 'DELETE',
       }),
-      async onQueryStarted({ trackId }, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-          dispatch(baseApi.util.invalidateTags(['Track', { type: 'Track', id: trackId }]))
-        } catch {
-          // При ошибке кеш не трогаем
-        }
-      },
       invalidatesTags: (_res, _err, { trackId }) => [{ type: 'Track', id: trackId }],
     }),
     publishTrack: build.mutation<void, { trackId: string }>({
@@ -440,8 +400,9 @@ export const tracksAPI = baseApi.injectEndpoints({
 })
 
 export const {
-  useFetchTracksQuery,
   useFetchTracksByScrollInfiniteQuery,
+  useLazyFetchTrackByIdQuery,
+  useFetchTracksQuery,
   useFetchTrackByIdQuery,
   useAddCoverToTrackMutation,
   useDeleteCoverFromTrackMutation,

@@ -50,6 +50,9 @@
       "new_playlists": "Новые плейлисты",
       "playlists_not_found": "Плейлисты не найдены"
     },
+    "label": {
+      "load_error": "Не удалось загрузить плейлист"
+    },
     "aria_labels": {
       "open_playlist": "Открыть плейлист {{title}}"
     }
@@ -98,7 +101,8 @@
     "label": {
       "lyrics": "Текст песни",
       "title": "Название",
-      "no_tracks": "Нет треков"
+      "no_tracks": "Нет треков",
+      "load_error": "Не удалось загрузить трек"
     },
     "placeholder": {
       "lyrics": "Введите текст песни",
@@ -118,7 +122,8 @@
       "date_added": "Дата добавления",
       "actions": "Действия",
       "duration": "Длительность"
-    }
+    },
+    "release": "Дата релиза"
   },
   "date": {
     "today": "сегодня",
@@ -180,5 +185,8 @@
     "tracks_count_few": "{{count}} трека",
     "tracks_count_many": "{{count}} треков",
     "tracks_count_other": "{{count}} треков"
+  },
+  "player": {
+    "unknown_artist": "Неизвестный исполнитель"
   }
 }

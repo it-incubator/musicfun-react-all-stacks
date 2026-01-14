@@ -1,16 +1,22 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'react-intersection-observer'
-import { useDispatch } from 'react-redux'
 
 import { useMeQuery } from '@/features/auth'
-import { MOCK_TRACKS, TracksTable, useFetchTracksByScrollInfiniteQuery } from '@/features/tracks'
+import {
+  TracksTable,
+  TracksTableSkeleton,
+  useFetchTracksByScrollInfiniteQuery,
+} from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { loadPlaylist } from '@/player'
+import { useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
+import { usePlayingTrackProgress, useQueueControls } from '@/player/playerHooks.ts'
+import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
-import { Spinner } from '@/shared/components/Loader/Spinner.tsx'
+import { Spinner } from '@/shared/components/Spinner/Spinner.tsx'
+import { useAppSelector } from '@/shared/hooks/useAppSelector.ts'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -20,36 +26,31 @@ import s from './TracksPage.module.css'
 export const TracksPage = () => {
   const { t } = useTranslation()
 
+  const { track: currentTrack } = useCurrentTrack()
+  const { isPlaying } = usePlaybackState()
   const {
     data: tracksData,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
+    isLoading,
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
+  const { play } = usePlayerControls()
+  const { loadPlaylist, addToQueue } = useQueueControls()
+  const { playingTrackProgress } = usePlayingTrackProgress()
+  const currentPlaylistId = useAppSelector((state) => state.player.currentPlaylistId)
 
-  const dispatch = useDispatch()
+  const handleTrackPlayClick = async (trackId: string) => {
+    const playingTrack = pages.find((track) => track.id === trackId)
 
-  const handleTrackPlayClick = (trackId: string) => {
-    if (!pages) return
+    if (playingTrack) {
+      const playerTrack = convertApiTrackToPlayerTrack(playingTrack)
+      const tracksForPlayer = convertApiTracksToPlayerTracks(pages)
 
-    // TODO: Update to pass full track array with url, title, artist, duration, albumArt
-    const tracksForRedux = pages.map((t) => ({
-      id: t.id,
-      title: t.attributes.title,
-      artist: 'artist',
-      url: t.attributes.attachments[0].url,
-      duration: 100,
-      albumArt: undefined,
-    }))
-    dispatch(
-      loadPlaylist({
-        playlistId: 'all-tracks',
-        tracks: tracksForRedux,
-        startIndex: tracksForRedux?.findIndex((t) => t.id === trackId),
-      })
-    )
+      play(playerTrack, 'all-tracks', tracksForPlayer)
+    }
   }
 
   const { ref, inView } = useInView({
@@ -57,10 +58,42 @@ export const TracksPage = () => {
   })
 
   useEffect(() => {
-    if (hasNextPage && !isFetchingNextPage) {
+    // Handle infinite scroll loading
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
     }
-  }, [inView])
+
+    // Update player queue when new tracks are loaded
+    if (tracksData?.pages) {
+      const allTracks = tracksData.pages.flatMap((page) => page.data)
+      const playerTracks = convertApiTracksToPlayerTracks(allTracks)
+
+      if (playerTracks.length > 0) {
+        if (currentPlaylistId === 'all-tracks') {
+          // Playlist already exists, add new tracks
+          // We need to get only newly added tracks
+          if (tracksData.pages.length > 1) {
+            const currentPageIndex = tracksData.pages.length - 1
+            const newTracks = tracksData.pages[currentPageIndex].data
+            const newPlayerTracks = convertApiTracksToPlayerTracks(newTracks)
+            addToQueue(newPlayerTracks)
+          }
+        } else {
+          // First load - initialize playlist
+          loadPlaylist('all-tracks', playerTracks)
+        }
+      }
+    }
+  }, [
+    inView,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    tracksData?.pages,
+    addToQueue,
+    loadPlaylist,
+    currentPlaylistId,
+  ])
 
   return (
     <PageWithHeader>
@@ -81,9 +114,11 @@ export const TracksPage = () => {
         </div>
       </div>
 
-      <TracksTable
-        trackRows={
-          pages.map((track, index) => {
+      {isLoading ? (
+        <TracksTableSkeleton />
+      ) : (
+        <TracksTable
+          trackRows={pages.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
             const userId = track.attributes.user.id
             const isOwner = userId === me?.userId
@@ -102,26 +137,26 @@ export const TracksPage = () => {
               url: track.attributes.attachments[0].url,
               isOwner,
             }
-          }) ?? []
-        }
-        renderTrackRow={(trackRow) => (
-          <TrackRow
-            key={trackRow.id}
-            trackRow={trackRow}
-            playingTrackId={MOCK_TRACKS[0].id}
-            playingTrackProgress={20}
-            onTrackPlayClick={handleTrackPlayClick}
-            renderActionsCell={() => (
-              <TrackActions
-                reaction={trackRow.currentUserReaction}
-                likesCount={trackRow.likesCount}
-                trackId={trackRow.id}
-                isOwner={trackRow.isOwner}
-              />
-            )}
-          />
-        )}
-      />
+          })}
+          renderTrackRow={(trackRow) => (
+            <TrackRow
+              playingTrackProgress={playingTrackProgress}
+              key={trackRow.id}
+              trackRow={trackRow}
+              isPlaying={isPlaying && currentTrack?.id === trackRow.id}
+              onTrackPlayClick={handleTrackPlayClick}
+              renderActionsCell={() => (
+                <TrackActions
+                  reaction={trackRow.currentUserReaction}
+                  likesCount={trackRow.likesCount}
+                  trackId={trackRow.id}
+                  isOwner={trackRow.isOwner}
+                />
+              )}
+            />
+          )}
+        />
+      )}
 
       {hasNextPage && (
         <div ref={ref}>
