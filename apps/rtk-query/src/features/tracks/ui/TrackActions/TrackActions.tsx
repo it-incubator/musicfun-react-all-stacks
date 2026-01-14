@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { useMeQuery } from '@/features/auth'
 import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { ChoosePlaylistModal } from '@/features/playlists/ui/ChoosePlaylistModal/ChoosePlaylistModal'
 import {
+  TrackActionsMenu,
   useAddTrackToPlaylistMutation,
   useDislikeTrackMutation,
   useLikeTrackMutation,
@@ -12,7 +12,6 @@ import {
   useRemoveTrackMutation,
   useUnReactionTrackMutation,
 } from '@/features/tracks'
-import { TrackActionsMenu } from '@/features/tracks'
 import { ReactionButtons, type ReactionButtonsSize } from '@/shared/components'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
 
@@ -50,7 +49,10 @@ export const TrackActions = ({
   const [isOpenChoosePlaylistModal, setIsOpenChoosePlaylistModal] = useState(false)
   const { handleOpenEditTrackModal } = useEditTrackModal()
 
-  const { data: playlists } = useFetchPlaylistsQuery({ trackId })
+  const { data: playlists } = useFetchPlaylistsQuery(
+    { trackId },
+    { skip: !isOpenChoosePlaylistModal }
+  )
 
   // This "server status" is the original list of playlists in which the track is located.
   const originalPlaylistIds = useMemo(

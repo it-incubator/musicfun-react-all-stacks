@@ -17,6 +17,7 @@ export const TrackRowContainer = ({ trackRow, userId, playlistId }: TrackRowCont
   return (
     <TrackRow
       trackRow={trackRow}
+      isPlaying={false} // TODO: Implement real isPlaying logic if this need
       playingTrackId={'mock'}
       playingTrackProgress={20}
       renderActionsCell={(row) => (

@@ -1,34 +1,41 @@
 .box {
-  display: flex;
-  gap: 21px;
+    display: flex;
+    gap: 21px;
 }
 
 .image {
-  flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .image img {
-  object-fit: cover;
+    object-fit: cover;
 }
 
 .info {
-  width: 228px;
+    width: 228px;
 }
 
 .title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .title.playing {
-  color: var(--color-accent);
+    color: var(--color-accent);
 }
 
 .artists {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.image:hover {
+    transform: scale(0.95);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
 }

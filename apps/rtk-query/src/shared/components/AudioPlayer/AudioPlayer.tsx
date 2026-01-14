@@ -1,6 +1,8 @@
 import { clsx } from 'clsx'
 import type { ComponentProps } from 'react'
 
+import type { RepeatMode } from '@/player'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import {
   PauseIcon,
   PlayIcon,
@@ -11,6 +13,7 @@ import {
   VolumeIcon,
   VolumeMuteIcon,
 } from '@/shared/icons'
+import { IconOneRepeat } from '@/shared/icons/IconOneRepeat.tsx'
 
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
@@ -25,7 +28,7 @@ export type PlayerProps = {
   onPrevious: () => void
   onTogglePlay: () => void
   isShuffle: boolean
-  isRepeat: boolean
+  isRepeat: RepeatMode
   onShuffle: () => void
   onRepeat: () => void
   duration: number
@@ -36,7 +39,7 @@ export type PlayerProps = {
 } & ComponentProps<'div'>
 
 export const AudioPlayer = ({
-  cover,
+  cover = noCoverPlaceholder,
   title,
   artist,
   isPlaying,
@@ -97,8 +100,10 @@ export const AudioPlayer = ({
           <IconButton onClick={onNext}>
             <SkipNextIcon />
           </IconButton>
-          <IconButton onClick={onRepeat} className={clsx(s.iconButton, isRepeat && s.active)}>
-            <RepeatIcon />
+          <IconButton
+            onClick={onRepeat}
+            className={clsx(s.iconButton, isRepeat !== 'off' && s.active)}>
+            {isRepeat === 'one' ? <IconOneRepeat /> : <RepeatIcon />}
           </IconButton>
         </div>
 
