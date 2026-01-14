@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useMemo } from 'react'
 
 import { useMeQuery } from '@/features/auth'
 import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { ChoosePlaylistModal } from '@/features/playlists/ui/ChoosePlaylistModal/ChoosePlaylistModal'
 import {
-  TrackActionsMenu,
   useAddTrackToPlaylistMutation,
   useDislikeTrackMutation,
   useLikeTrackMutation,
@@ -12,6 +12,7 @@ import {
   useRemoveTrackMutation,
   useUnReactionTrackMutation,
 } from '@/features/tracks'
+import { TrackActionsMenu } from '@/features/tracks'
 import { ReactionButtons, type ReactionButtonsSize } from '@/shared/components'
 import type { CurrentUserReaction } from '@/shared/types/commonApi.types'
 
@@ -47,23 +48,20 @@ export const TrackActions = ({
   playlistId,
 }: TrackActionsProps) => {
   const [isOpenChoosePlaylistModal, setIsOpenChoosePlaylistModal] = useState(false)
-
   const { handleOpenEditTrackModal } = useEditTrackModal()
 
-  const { data: playlists } = useFetchPlaylistsQuery(
-    { trackId },
-    { skip: !isOpenChoosePlaylistModal }
+  const { data: playlists } = useFetchPlaylistsQuery({ trackId }, { skip: !isOpenChoosePlaylistModal })
+
+  // This "server status" is the original list of playlists in which the track is located.
+  const originalPlaylistIds = useMemo(
+    () => playlists?.data.map((playlist) => playlist.id) ?? [],
+    [playlists?.data]
   )
+
+  // This "UI state" is what the user selects in the modal window.
+  const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<string[]>([])
+
   const { data: isAuth } = useMeQuery()
-
-  const [playlistIds, setPlaylistIds] = useState<string[]>([])
-
-  // update playlistIds when playlists change
-  useEffect(() => {
-    if (playlists?.data) {
-      setPlaylistIds(playlists.data.map((playlist) => playlist.id))
-    }
-  }, [playlists?.data])
 
   const [like] = useLikeTrackMutation()
   const [dislike] = useDislikeTrackMutation()
@@ -72,6 +70,12 @@ export const TrackActions = ({
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
   const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
   const [removeTrack] = useRemoveTrackMutation()
+
+  const handleOpenChoosePlaylistModal = () => {
+    // When opening the modal window, initialize the selection state with the current state from the server.
+    setSelectedPlaylistIds(originalPlaylistIds)
+    setIsOpenChoosePlaylistModal(true)
+  }
 
   const handleDelete = () => {
     if (playlistId) {
@@ -99,19 +103,19 @@ export const TrackActions = ({
           isOwner={isOwner}
           onEdit={() => handleOpenEditTrackModal(trackId)}
           onDelete={handleDelete}
-          onAddToPlaylist={() => setIsOpenChoosePlaylistModal(true)}
+          onAddToPlaylist={handleOpenChoosePlaylistModal}
         />
       )}
       {isOpenChoosePlaylistModal && (
         <ChoosePlaylistModal
           isOpen={isOpenChoosePlaylistModal}
           setIsOpen={setIsOpenChoosePlaylistModal}
-          playlistIds={playlistIds}
-          setPlaylistIds={setPlaylistIds}
+          playlistIds={selectedPlaylistIds}
+          setPlaylistIds={setSelectedPlaylistIds}
           onChoose={() => {
             syncTrackPlaylists({
-              originalPlaylistIds: playlists?.data.map((playlist) => playlist.id) || [],
-              newPlaylistIds: playlistIds,
+              originalPlaylistIds: originalPlaylistIds,
+              newPlaylistIds: selectedPlaylistIds,
               trackId,
               addTrackToPlaylist: (params) => addTrackToPlaylist(params).unwrap(),
               removeTrackFromPlaylist: (params) => removeTrackFromPlaylist(params).unwrap(),
