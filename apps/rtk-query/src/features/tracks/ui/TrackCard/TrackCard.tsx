@@ -8,7 +8,6 @@ import {
   useUnReactionTrackMutation,
 } from '@/features/tracks'
 import { useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
-import { convertApiTrackToPlayerTrack } from '@/player/utils.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Card, IconButton, ReactionButtons, Typography } from '@/shared/components'
 import { PauseIcon, PlayIcon } from '@/shared/icons'
@@ -19,10 +18,10 @@ import s from './TrackCard.module.css'
 
 type Props = {
   track: TrackDetails<FetchTracksAttributes>
-  loadPlaylistToPLayer: (trackId: string) => void
+  handleTrackCardPlaybackClick: (trackId: string) => void
 }
 
-export const TrackCard = ({ track, loadPlaylistToPLayer }: Props) => {
+export const TrackCard = ({ track, handleTrackCardPlaybackClick }: Props) => {
   const [like] = useLikeTrackMutation({
     fixedCacheKey: `track-reaction-${track.id}`,
   })
@@ -34,7 +33,7 @@ export const TrackCard = ({ track, loadPlaylistToPLayer }: Props) => {
   })
 
   const { trackId: playerTrackId } = useCurrentTrack()
-  const { play, pause, resume } = usePlayerControls()
+  const { pause, resume } = usePlayerControls()
   const { isPlaying } = usePlaybackState()
 
   const isPlayerTrack = playerTrackId && playerTrackId === track.id
@@ -52,9 +51,7 @@ export const TrackCard = ({ track, loadPlaylistToPLayer }: Props) => {
       }
       return
     }
-    loadPlaylistToPLayer(track.id)
-    const playerTrack = convertApiTrackToPlayerTrack(track)
-    play(playerTrack, 'new-tracks')
+    handleTrackCardPlaybackClick(track.id)
   }
 
   return (

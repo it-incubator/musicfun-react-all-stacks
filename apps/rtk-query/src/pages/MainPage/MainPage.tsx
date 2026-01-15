@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useMeQuery } from '@/features/auth'
@@ -10,7 +10,7 @@ import {
 } from '@/features/playlists'
 import { TagsList, useFindTagsQuery } from '@/features/tags'
 import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
-import { selectCurrentPlaylistId, useQueueControls } from '@/player'
+import { selectCurrentPlaylistId, usePlayerControls, useQueueControls } from '@/player'
 import { convertApiTracksToPlayerTracks } from '@/player/utils.ts'
 import { useAppSelector } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
@@ -26,6 +26,7 @@ export const MainPage = () => {
   const { data: me } = useMeQuery()
   const isOwnPlaylist = (userId: string): boolean => me?.userId === userId
   const { loadPlaylist } = useQueueControls()
+  const { play } = usePlayerControls()
   const playerPlaylistId = useAppSelector(selectCurrentPlaylistId)
 
   const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery({
@@ -39,24 +40,32 @@ export const MainPage = () => {
 
   const { data: tags } = useFindTagsQuery({ value: '' })
 
+  const playerTracks = useMemo(
+    () => tracks && convertApiTracksToPlayerTracks(tracks.data),
+    [tracks]
+  )
+
   const handleTrackCardPlaybackClick = (trackId: string) => {
-    if (!tracks) {
+    if (!playerTracks) {
       return
     }
-    if (playerPlaylistId === NEW_TRACKS_PLAYLIST_ID) {
-      return
+    if (playerPlaylistId !== NEW_TRACKS_PLAYLIST_ID) {
+      const playerTrackIndex = playerTracks.findIndex((track) => track.id === trackId)
+      loadPlaylist(NEW_TRACKS_PLAYLIST_ID, playerTracks, playerTrackIndex)
     }
-    const playerTracks = convertApiTracksToPlayerTracks(tracks.data)
-    const playerTrackIndex = playerTracks.findIndex((track) => track.id === trackId)
-    loadPlaylist(NEW_TRACKS_PLAYLIST_ID, playerTracks, playerTrackIndex)
+    const playerTrack = playerTracks.find((track) => track.id === trackId)
+    if (playerTrack) {
+      play(playerTrack, NEW_TRACKS_PLAYLIST_ID)
+    }
   }
 
   useEffect(() => {
-    if (playerPlaylistId === NEW_TRACKS_PLAYLIST_ID && tracks) {
-      const playerTracks = convertApiTracksToPlayerTracks(tracks.data)
+    if (playerPlaylistId === NEW_TRACKS_PLAYLIST_ID && playerTracks) {
       loadPlaylist(NEW_TRACKS_PLAYLIST_ID, playerTracks)
     }
-  }, [tracks, loadPlaylist])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playerTracks, loadPlaylist])
+  //deps without playerPlaylistId to avoid double load playlist after 54 line, when NEW_TRACKS_PLAYLIST_ID set in playerPlaylistId and condition in useEffect become true
 
   return (
     <PageWithHeader className={s.mainPage}>
@@ -95,7 +104,7 @@ export const MainPage = () => {
         title={t('tracks.title.new_tracks')}
         data={tracks?.data}
         renderItem={(track) => (
-          <TrackCard track={track} loadPlaylistToPLayer={handleTrackCardPlaybackClick} />
+          <TrackCard track={track} handleTrackCardPlaybackClick={handleTrackCardPlaybackClick} />
         )}
       />
     </PageWithHeader>
