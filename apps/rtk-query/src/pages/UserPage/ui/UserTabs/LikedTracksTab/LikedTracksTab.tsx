@@ -1,14 +1,11 @@
 import { MOCK_TRACKS } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { TracksTable } from '@/features/tracks/ui/TracksTable/TracksTable'
-import { usePlaybackState } from '@/player'
 import { ReactionButtons } from '@/shared/components'
 import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components'
 import { MoreIcon } from '@/shared/icons'
 
 export const LikedTracksTab = () => {
-  const { playbackState } = usePlaybackState()
-
   return (
     // FIXME: temporary build fix, need to add url
     <TracksTable
@@ -27,7 +24,6 @@ export const LikedTracksTab = () => {
       }))}
       renderTrackRow={(trackRow) => (
         <TrackRow
-          playbackState={playbackState}
           trackRow={trackRow}
           isPlaying={trackRow.id === MOCK_TRACKS[0].id}
           playingTrackId={MOCK_TRACKS[0].id}

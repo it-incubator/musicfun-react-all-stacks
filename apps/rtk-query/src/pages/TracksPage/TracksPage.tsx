@@ -37,20 +37,32 @@ export const TracksPage = () => {
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
   const { data: me } = useMeQuery()
-  const { play } = usePlayerControls()
+  const { play, resume, pause } = usePlayerControls()
   const { loadPlaylist, addToQueue } = useQueueControls()
   const { playingTrackProgress } = usePlayingTrackProgress()
   const currentPlaylistId = useAppSelector((state) => state.player.currentPlaylistId)
 
-  const handleTrackPlayClick = async (trackId: string) => {
-    const playingTrack = pages.find((track) => track.id === trackId)
+  const handleTrackPlayClick = (trackId: string) => {
+    const clickedTrack = pages.find((track) => track.id === trackId)
 
-    if (playingTrack) {
-      const playerTrack = convertApiTrackToPlayerTrack(playingTrack)
-      const tracksForPlayer = convertApiTracksToPlayerTracks(pages)
-
-      play(playerTrack, 'all-tracks', tracksForPlayer)
+    if (!clickedTrack) {
+      return
     }
+
+    if (currentTrack?.id === trackId) {
+      if (isPlaying) {
+        pause()
+      } else {
+        resume()
+      }
+
+      return
+    }
+
+    const playerTrack = convertApiTrackToPlayerTrack(clickedTrack)
+    const tracksForPlayer = convertApiTracksToPlayerTracks(pages)
+
+    play(playerTrack, 'all-tracks', tracksForPlayer)
   }
 
   const { ref, inView } = useInView({
