@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 
 import s from './spinner.module.css'

@@ -1,8 +1,10 @@
 import { audio } from './player'
 import {
   handleTrackEnded,
+  nextTrack,
   pause,
   playTrack,
+  previousTrack,
   resume,
   seek,
   setDuration,
@@ -54,6 +56,30 @@ export const playerMiddleware = (store: any) => (next: any) => (action: any) => 
         })
     } else {
       store.dispatch(setError('Track URL not found'))
+    }
+  } else if (
+    nextTrack.match(action) ||
+    previousTrack.match(action) ||
+    handleTrackEnded.match(action)
+  ) {
+    // Handle track switching - get the new current track and play it
+    const newState = store.getState()
+    const newCurrentTrackId = newState.player.currentTrackId
+    const newTrack = newCurrentTrackId ? newState.player.tracks[newCurrentTrackId] : null
+
+    if (newTrack && newTrack.url) {
+      audio.src = newTrack.url
+      audio.currentTime = 0
+      audio
+        .play()
+        .then(() => {
+          store.dispatch(setPlaybackState('playing'))
+        })
+        .catch((error: Error) => {
+          store.dispatch(setError(error.message || 'Failed to play next track'))
+        })
+    } else {
+      store.dispatch(setError('Next track URL not found'))
     }
   } else if (pause.match(action)) {
     audio.pause()

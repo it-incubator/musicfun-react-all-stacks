@@ -29,6 +29,7 @@ export const LikedTracksTab = () => {
         <TrackRow
           playbackState={playbackState}
           trackRow={trackRow}
+          isPlaying={trackRow.id === MOCK_TRACKS[0].id}
           playingTrackId={MOCK_TRACKS[0].id}
           playingTrackProgress={20}
           renderActionsCell={() => (

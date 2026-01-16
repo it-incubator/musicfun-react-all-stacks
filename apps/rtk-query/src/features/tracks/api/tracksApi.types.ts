@@ -89,6 +89,8 @@ export type FetchPlaylistsTracksResponse = {
   meta: Meta
 }
 
+export type ApiTrack = TrackDetails<FetchTracksAttributes>
+
 // Arguments
 export type FetchTracksArgs = {
   pageSize?: number

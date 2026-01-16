@@ -185,5 +185,8 @@
     "tracks_count_few": "{{count}} трека",
     "tracks_count_many": "{{count}} треков",
     "tracks_count_other": "{{count}} треков"
+  },
+  "player": {
+    "unknown_artist": "Неизвестный исполнитель"
   }
 }

@@ -8,6 +8,10 @@
   flex-shrink: 0;
   width: 52px;
   height: 52px;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .image img {
@@ -32,6 +36,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.image:hover {
+  transform: scale(0.95);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .playButton {

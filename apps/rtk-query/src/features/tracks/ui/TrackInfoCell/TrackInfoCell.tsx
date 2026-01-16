@@ -14,7 +14,7 @@ type TrackInfoCellProps = {
   artists: string[]
   isPlaying: boolean
   id: string
-  onTrackPlayClick?: () => void
+  onTrackPlayClick?: (trackId: string) => void
 }
 
 export const TrackInfoCell = ({
@@ -32,10 +32,10 @@ export const TrackInfoCell = ({
         <div className={s.image}>
           <img src={imageSrc} alt={title} />
           <button
-            type="button"
+            aria-label="Play track"
             className={s.playButton}
-            onClick={onTrackPlayClick}
-            aria-label="Play track">
+            type="button"
+            onClick={() => onTrackPlayClick?.(id)}>
             {isPlaying ? <PauseIcon /> : <PlayIcon />}
           </button>
         </div>
