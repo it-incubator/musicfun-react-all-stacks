@@ -1,8 +1,7 @@
 import { MOCK_TRACKS } from '@/features/tracks'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { TracksTable } from '@/features/tracks/ui/TracksTable/TracksTable'
-import { ReactionButtons } from '@/shared/components'
-import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components'
+import { DropdownMenu, DropdownMenuTrigger, ReactionButtons } from '@/shared/components'
 import { MoreIcon } from '@/shared/icons'
 
 export const LikedTracksTab = () => {
@@ -25,9 +24,6 @@ export const LikedTracksTab = () => {
       renderTrackRow={(trackRow) => (
         <TrackRow
           trackRow={trackRow}
-          isPlaying={trackRow.id === MOCK_TRACKS[0].id}
-          playingTrackId={MOCK_TRACKS[0].id}
-          playingTrackProgress={20}
           renderActionsCell={() => (
             <>
               <ReactionButtons
