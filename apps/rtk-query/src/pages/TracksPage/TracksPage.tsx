@@ -10,8 +10,8 @@ import {
 } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { useCurrentTrack, usePlaybackState, usePlayerControls } from '@/player'
-import { usePlayingTrackProgress, useQueueControls } from '@/player/playerHooks.ts'
+import { usePlayerControls } from '@/player'
+import { useQueueControls } from '@/player/playerHooks.ts'
 import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
@@ -26,8 +26,6 @@ import s from './TracksPage.module.css'
 export const TracksPage = () => {
   const { t } = useTranslation()
 
-  const { track: currentTrack } = useCurrentTrack()
-  const { isPlaying } = usePlaybackState()
   const {
     data: tracksData,
     hasNextPage,
@@ -39,7 +37,6 @@ export const TracksPage = () => {
   const { data: me } = useMeQuery()
   const { play, resume, pause } = usePlayerControls()
   const { loadPlaylist, addToQueue } = useQueueControls()
-  const { playingTrackProgress } = usePlayingTrackProgress()
   const currentPlaylistId = useAppSelector((state) => state.player.currentPlaylistId)
 
   const handleTrackPlayClick = (trackId: string) => {
@@ -152,10 +149,8 @@ export const TracksPage = () => {
           })}
           renderTrackRow={(trackRow) => (
             <TrackRow
-              playingTrackProgress={playingTrackProgress}
               key={trackRow.id}
               trackRow={trackRow}
-              isPlaying={isPlaying && currentTrack?.id === trackRow.id}
               onTrackPlayClick={handleTrackPlayClick}
               renderActionsCell={() => (
                 <TrackActions

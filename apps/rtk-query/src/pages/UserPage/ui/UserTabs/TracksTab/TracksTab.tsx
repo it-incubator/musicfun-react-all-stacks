@@ -1,21 +1,45 @@
 import { t } from 'i18next'
+import { useMemo } from 'react'
 
 import { TracksTable, useCreateTrackModal } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { useOwnerData } from '@/pages/UserPage/hooks'
+import { selectCurrentPlaylistId, usePlayerControls, useQueueControls } from '@/player'
+import { convertApiTracksToPlayerTracks } from '@/player/utils.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Button } from '@/shared/components'
+import { useAppSelector } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import s from './TracksTab.module.css'
 
 export const TracksTab = () => {
-  const { isProfileOwner, tracks } = useOwnerData()
+  const { isProfileOwner, tracks, pageOwnerId } = useOwnerData()
   const { handleOpenCreateTrackModal } = useCreateTrackModal()
+  const { play } = usePlayerControls()
+  const { loadPlaylist } = useQueueControls()
+  const playerPlaylistId = useAppSelector(selectCurrentPlaylistId)
 
-  // FIXME: temporary build fix, need to add url
+  const currentPlaylistId = `${pageOwnerId}-user-tracks`
+  const playerTracks = useMemo(
+    () => tracks && convertApiTracksToPlayerTracks(tracks.data),
+    [tracks]
+  )
+
+  const handleTrackPlayClick = (trackId: string) => {
+    if (!playerTracks) return
+    const playerTrackIndex = playerTracks.findIndex((track) => track.id === trackId)
+    if (playerPlaylistId !== currentPlaylistId) {
+      loadPlaylist(currentPlaylistId, playerTracks, playerTrackIndex)
+    }
+    const playerTrack = playerTracks.find((track) => track.id === trackId)
+    if (playerTrack) {
+      play(playerTrack, currentPlaylistId)
+    }
+  }
+
   return (
     <>
       {isProfileOwner && (
@@ -27,8 +51,6 @@ export const TracksTab = () => {
         trackRows={
           tracks?.data?.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
-            console.log(image, track.attributes.images)
-
             return {
               index,
               id: track.id,
@@ -37,10 +59,10 @@ export const TracksTab = () => {
               addedAt: track.attributes.addedAt,
               artists: ['Artist 1', 'Artist 2'],
               duration: 100,
-              likesCount: 100,
-              dislikesCount: 100,
+              likesCount: track.attributes.likesCount,
+              dislikesCount: track.attributes.dislikesCount,
               currentUserReaction: track.attributes.currentUserReaction,
-              url: '',
+              url: track.attributes.attachments[0].url,
             }
           }) ?? []
         }
@@ -48,9 +70,7 @@ export const TracksTab = () => {
           <TrackRow
             key={trackRow.id}
             trackRow={trackRow}
-            isPlaying={trackRow.id === 'TEST_ID'}
-            playingTrackId={'TEST_ID'}
-            playingTrackProgress={20}
+            onTrackPlayClick={handleTrackPlayClick}
             renderActionsCell={() => (
               <TrackActions
                 trackId={trackRow.id}
