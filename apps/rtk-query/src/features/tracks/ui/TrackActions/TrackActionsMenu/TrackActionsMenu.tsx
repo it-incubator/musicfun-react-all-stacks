@@ -10,6 +10,8 @@ import {
 import { Paths } from '@/shared/configs'
 import { useCurrentPage } from '@/shared/hooks'
 import { AddToPlaylistIcon, DeleteIcon, EditIcon, MoreIcon, TextIcon } from '@/shared/icons'
+import {useState} from "react";
+import {ConfirmationDialog} from "@/shared/components/Modal/ConfirmationDialog.tsx";
 
 type TrackActionsMenuProps = {
   trackId: string
@@ -17,6 +19,7 @@ type TrackActionsMenuProps = {
   onEdit: () => void
   onDelete: () => void
   onAddToPlaylist: () => void
+  trackTitle?: string
 }
 
 export const TrackActionsMenu = ({
@@ -24,11 +27,13 @@ export const TrackActionsMenu = ({
   isOwner,
   onEdit,
   onDelete,
+  trackTitle,
   onAddToPlaylist,
 }: TrackActionsMenuProps) => {
   const { t } = useTranslation()
   const { isTrackPage, isPlaylistPage } = useCurrentPage()
   const navigate = useNavigate()
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const showDelete = !isTrackPage
   const showLyrics = isTrackPage
@@ -36,6 +41,7 @@ export const TrackActionsMenu = ({
   const deleteLabel = isPlaylistPage ? 'tracks.button.delete_from_playlist' : 'tracks.button.delete'
 
   return (
+    <>
     <DropdownMenu>
       <DropdownMenuTrigger>
         <MoreIcon />
@@ -67,5 +73,15 @@ export const TrackActionsMenu = ({
         )}
       </DropdownMenuContent>
     </DropdownMenu>
+  {showDelete && (
+    <ConfirmationDialog
+      open={isDeleteDialogOpen}
+      onOpenChange={setIsDeleteDialogOpen}
+      onConfirm={onDelete}
+      entityType="track"
+      entityName={trackTitle}
+    />
+  )}
+  </>
   )
 }

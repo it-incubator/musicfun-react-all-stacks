@@ -33,7 +33,7 @@ export const PlaylistsTab = () => {
                 id={playlist.id}
                 title={playlist.attributes.title}
                 imageSrc={image?.url}
-                actions={isProfileOwner && <PlaylistActions playlistId={playlist.id} />}
+                actions={isProfileOwner && <PlaylistActions playlistId={playlist.id} playlistTitle={playlist.attributes.title} />}
               />
             )
           }}

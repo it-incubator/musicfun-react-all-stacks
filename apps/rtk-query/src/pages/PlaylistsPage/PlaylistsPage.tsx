@@ -67,7 +67,7 @@ export const PlaylistsPage = () => {
               shouldShowCreatedDate
               actions={
                 isOwnPlaylist(playlist.attributes.user.id) && (
-                  <PlaylistActions playlistId={playlist.id} />
+                  <PlaylistActions playlistId={playlist.id} playlistTitle={playlist.attributes.title} />
                 )
               }
             />
