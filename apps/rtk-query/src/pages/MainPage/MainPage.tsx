@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useMeQuery } from '@/features/auth'
@@ -58,14 +58,6 @@ export const MainPage = () => {
       play(playerTrack, NEW_TRACKS_PLAYLIST_ID)
     }
   }
-
-  useEffect(() => {
-    if (playerPlaylistId === NEW_TRACKS_PLAYLIST_ID && playerTracks) {
-      loadPlaylist(NEW_TRACKS_PLAYLIST_ID, playerTracks)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playerTracks, loadPlaylist])
-  //deps without playerPlaylistId to avoid double load playlist after 54 line, when NEW_TRACKS_PLAYLIST_ID set in playerPlaylistId and condition in useEffect become true
 
   return (
     <PageWithHeader className={s.mainPage}>
