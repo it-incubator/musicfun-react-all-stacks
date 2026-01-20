@@ -1,5 +1,5 @@
 import { t } from 'i18next'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { TracksTable, useCreateTrackModal } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
@@ -27,6 +27,7 @@ export const TracksTab = () => {
     () => tracks && convertApiTracksToPlayerTracks(tracks.data),
     [tracks]
   )
+
   const handleTrackPlayClick = (trackId: string) => {
     if (!playerTracks) return
     const playerTrackIndex = playerTracks.findIndex((track) => track.id === trackId)
@@ -38,14 +39,6 @@ export const TracksTab = () => {
       play(playerTrack, currentPlaylistId)
     }
   }
-
-  useEffect(() => {
-    if (playerPlaylistId === currentPlaylistId && playerTracks) {
-      loadPlaylist(currentPlaylistId, playerTracks)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadPlaylist, currentPlaylistId, playerTracks])
-  //deps without playerPlaylistId to avoid double load playlist after 34 line, when currentPlaylistId set in playerPlaylistId and condition in useEffect become true
 
   return (
     <>
