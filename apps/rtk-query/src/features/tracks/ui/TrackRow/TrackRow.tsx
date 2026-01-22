@@ -46,7 +46,7 @@ export const TrackRow = <T extends TrackRowData>({
         imageSrc={trackRow.imageSrc}
         title={trackRow.title}
         artists={trackRow.artists}
-        isPlaying={isPlayerTrack}
+        isPlaying={isTrackRowPlaying}
         onTrackPlayClick={onTrackPlayClick}
       />
       <TableCell>
