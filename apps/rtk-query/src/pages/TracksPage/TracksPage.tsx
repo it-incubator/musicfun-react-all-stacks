@@ -10,8 +10,8 @@ import {
 } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { usePlayerControls } from '@/player'
-import { useQueueControls } from '@/player/playerHooks.ts'
+import { usePlaybackState, usePlayerControls } from '@/player'
+import { useCurrentTrack, useQueueControls } from '@/player/playerHooks.ts'
 import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
@@ -34,9 +34,14 @@ export const TracksPage = () => {
     isLoading,
   } = useFetchTracksByScrollInfiniteQuery()
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
+
   const { data: me } = useMeQuery()
+
   const { play, resume, pause } = usePlayerControls()
   const { loadPlaylist, addToQueue } = useQueueControls()
+  const { track: currentTrack } = useCurrentTrack()
+  const { isPlaying } = usePlaybackState()
+
   const currentPlaylistId = useAppSelector((state) => state.player.currentPlaylistId)
 
   const handleTrackPlayClick = (trackId: string) => {
