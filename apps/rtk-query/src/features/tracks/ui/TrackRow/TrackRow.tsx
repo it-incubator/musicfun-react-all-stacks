@@ -24,22 +24,22 @@ export const TrackRow = <T extends TrackRowData>({
   const [ref, isHovered] = useHover<HTMLTableRowElement>()
 
   const { trackId, isPlaying } = useCurrentTrack()
-  const { progress } = usePlaybackProgress()
 
+  const { progress } = usePlaybackProgress()
   const isPlayerTrack = trackRow.id === trackId
+
   const isTrackRowPlaying = isPlayerTrack && isPlaying
-  const tableCellIcon = isTrackRowPlaying ? (
-    <LiveWaveIcon />
-  ) : isPlayerTrack ? (
-    <StaticWaveIcon />
-  ) : (
-    trackRow.index + 1
-  )
+
+  const getTableCellIcon = () => {
+    if (isTrackRowPlaying) return <LiveWaveIcon />
+    if (isPlayerTrack) return <StaticWaveIcon />
+    return trackRow.index + 1
+  }
 
   return (
     /*<TableRow ref={ref} className={clsx({ [s.active]: isPlaying })}>*/
     <TableRow ref={ref} className={clsx({ [s.active]: isTrackRowPlaying })}>
-      <TableCell className={clsx(isPlayerTrack && s.playing)}>{tableCellIcon}</TableCell>
+      <TableCell className={clsx(isPlayerTrack && s.playing)}>{getTableCellIcon()}</TableCell>
       <TrackInfoCell
         id={trackRow.id}
         isHovered={isHovered}
