@@ -37,7 +37,8 @@ export const TrackRow = <T extends TrackRowData>({
   )
 
   return (
-    <TableRow ref={ref} className={clsx({ [s.active]: isPlaying })}>
+    /*<TableRow ref={ref} className={clsx({ [s.active]: isPlaying })}>*/
+    <TableRow ref={ref} className={clsx({ [s.active]: isTrackRowPlaying })}>
       <TableCell className={clsx(isPlayerTrack && s.playing)}>{tableCellIcon}</TableCell>
       <TrackInfoCell
         id={trackRow.id}
