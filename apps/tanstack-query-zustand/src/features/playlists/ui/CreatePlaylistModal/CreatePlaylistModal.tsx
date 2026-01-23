@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { useCreatePlaylist } from '@/pages/PlaylistsPage/model/useCreatePlaylist'
@@ -21,6 +22,8 @@ import {
 import s from './CreatePlaylistModal.module.css'
 
 export const CreatePlaylistModal = ({ onClose }: { onClose: () => void }) => {
+  const { t } = useTranslation()
+
   const { mutate } = useCreatePlaylist()
   const { mutate: uploadPlaylistCover } = useUploadPlaylistCover()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -43,11 +46,17 @@ export const CreatePlaylistModal = ({ onClose }: { onClose: () => void }) => {
 
         if (selectedFile && playlistId) {
           uploadPlaylistCover(
-            { playlistId, file: selectedFile },
+            {
+              playlistId,
+              file: selectedFile,
+            },
             {
               onSuccess: () => {
                 onClose()
-                toast('Success Upload', { type: 'success', theme: 'colored' })
+                toast('Success Upload', {
+                  type: 'success',
+                  theme: 'colored',
+                })
                 setSelectedFile(null)
                 reset()
               },
@@ -65,7 +74,10 @@ export const CreatePlaylistModal = ({ onClose }: { onClose: () => void }) => {
         } else {
           onClose()
           reset()
-          toast('Success Upload w/o image', { type: 'success', theme: 'colored' })
+          toast('Success Upload w/o image', {
+            type: 'success',
+            theme: 'colored',
+          })
         }
       },
     })
@@ -78,32 +90,37 @@ export const CreatePlaylistModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <Dialog open onClose={onClose} className={s.dialog}>
       <DialogHeader>
-        <Typography variant="h2">Create Playlist</Typography>
+        <Typography variant="h2">{t('playlists.title.create_playlist')}</Typography>
       </DialogHeader>
 
       <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
         <DialogContent className={s.content}>
           <ImageUploader className={s.imageUploader} onImageSelect={handleImageSelect} />
           <TextField
-            label="Title"
-            placeholder="Enter playlist title"
+            label={t('title.title')}
+            placeholder={t('playlists.placeholder.enter_playlist_title')}
             {...register('title', { required: true })}
           />
           <Textarea
             rows={3}
-            label="Description"
-            placeholder="Enter playlist description"
+            label={t('description.label.description')}
+            placeholder={t('playlists.placeholder.enter_playlist_description')}
             {...register('description', { required: true })}
           />
-          <TagEditor label="Hashtags" value={tags} onTagsChange={handleTagsChange} maxTags={5} />
+          <TagEditor
+            label={t('tags.label')}
+            value={tags}
+            onTagsChange={handleTagsChange}
+            maxTags={5}
+          />
         </DialogContent>
 
         <DialogFooter>
           <Button variant="secondary" onClick={onClose} type="button">
-            Cancel
+            {t('button.cancel')}
           </Button>
           <Button variant="primary" type="submit">
-            Create
+            {t('button.create')}
           </Button>
         </DialogFooter>
       </form>

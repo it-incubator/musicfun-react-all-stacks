@@ -1,5 +1,6 @@
 import { LoginButtonAndModal, ProfileDropdownMenu } from '@/features/auth'
 import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
+import { LanguageSwitcher } from '@/shared/components'
 
 import s from './Header.module.css'
 
@@ -9,7 +10,10 @@ export const Header = () => {
   return (
     <header className={s.header}>
       <div className={s.logo}>Musicfun</div>
-      {data ? <ProfileDropdownMenu avatar={'//unsplash.it/100/100'} /> : <LoginButtonAndModal />}
+      <div className={s.actions}>
+        <LanguageSwitcher />
+        {data ? <ProfileDropdownMenu avatar={'//unsplash.it/100/100'} /> : <LoginButtonAndModal />}
+      </div>
     </header>
   )
 }

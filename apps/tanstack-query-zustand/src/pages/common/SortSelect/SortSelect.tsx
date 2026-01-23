@@ -1,18 +1,33 @@
 import { Select, type SelectProps } from '@/shared/components'
+import { useTranslation } from 'react-i18next'
 
 import s from './SortSelect.module.css'
 
 export const SortSelect = (props: Omit<SelectProps, 'options'>) => {
+  const { t } = useTranslation()
+
   return (
     <label className={s.selectLabel}>
-      Sort By
+      {t('sort.label')}
       <Select
         {...props}
         options={[
-          { value: 'newest', label: 'Newest first' },
-          { value: 'oldest', label: 'Oldest first' },
-          { value: 'mostLiked', label: 'Most liked' },
-          { value: 'leastLiked', label: 'Least liked' },
+          {
+            value: 'newest',
+            label: t('sort.newest_first'),
+          },
+          {
+            value: 'oldest',
+            label: t('sort.oldest_first'),
+          },
+          {
+            value: 'mostLiked',
+            label: t('sort.most_liked'),
+          },
+          {
+            value: 'leastLiked',
+            label: t('sort.least_liked'),
+          },
         ]}
         className={s.select}
       />

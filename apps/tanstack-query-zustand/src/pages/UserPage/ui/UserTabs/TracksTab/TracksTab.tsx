@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import { TracksTable } from '@/features/tracks'
@@ -26,10 +27,11 @@ const PAGE_SIZE = 10
 const DEFAULT_PAGE = 1
 
 export const TracksTab = () => {
-  const [isUploadTrackModalOpen, setIsUploadTrackModalOpen] = useState(false) // STATE FOR TESTING
-
-  const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
+  const { t } = useTranslation()
   const { id: userId } = useParams<{ id: string }>()
+
+  const [isUploadTrackModalOpen, setIsUploadTrackModalOpen] = useState(false) // STATE FOR TESTING
+  const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
 
   const queryParams = useMemo<SchemaGetTracksRequestPayload>(
     () => ({
@@ -65,14 +67,14 @@ export const TracksTab = () => {
   return (
     <>
       <Button className={s.uploadTrackButton} onClick={openUploadTrackModal}>
-        Upload Track
+        {t('tracks.button.upload_track')}
       </Button>
       {isUploadTrackModalOpen && (
         <CreateTrackModal onClose={() => setIsUploadTrackModalOpen(false)} />
       )}
 
-      {isLoading && <div>Loading tracks...</div>}
-      {isError && <div>Failed to load tracks</div>}
+      {isLoading && <div>{t('common.loading')}</div>}
+      {isError && <div>{t('tracks.label.load_error')}</div>}
       {!isLoading && !isError && tracks.length > 0 && (
         <TracksTable
           trackRows={tracks.map((track, index) => ({
@@ -95,16 +97,18 @@ export const TracksTab = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     {/* todo:task if it's current logined user track, show edit popup and implement edit */}
-                    <DropdownMenuItem onClick={() => alert('Edit clicked!')}>Edit</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => alert('Edit clicked!')}>
+                      {t('button.edit')}
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => {
                         // todo:task implement feature
                         alert('Add to playlist clicked!')
                       }}>
-                      Add to playlist
+                      {t('tracks.button.add_to_playlist')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
-                      Show text song
+                      {t('tracks.button.show_text_song')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

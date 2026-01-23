@@ -10,36 +10,12 @@ import {
 } from '@/shared/components'
 import { ClockIcon } from '@/shared/icons'
 import { VU } from '@/shared/utils'
+import { useTranslation } from 'react-i18next'
 
 type TableColumn = {
   title: ReactNode
   width?: string
 }
-
-const TABLE_COLUMNS: TableColumn[] = [
-  {
-    title: '#',
-    width: '40px',
-  },
-  {
-    title: 'Track',
-  },
-  {
-    title: '',
-  },
-  {
-    title: 'Date added',
-    width: '120px',
-  },
-  {
-    title: 'Actions',
-    width: '150px',
-  },
-  {
-    title: <ClockIcon />,
-    width: '60px',
-  },
-]
 
 export type TracksTableProps<T extends TrackRowData> = {
   trackRows: T[]
@@ -73,6 +49,33 @@ export const TracksTable = <T extends TrackRowData>({
   trackRows,
   renderTrackRow,
 }: TracksTableProps<T>) => {
+  const { t } = useTranslation()
+
+  const TABLE_COLUMNS: TableColumn[] = [
+    {
+      title: '#',
+      width: '40px',
+    },
+    {
+      title: t('tracks.table.track'),
+    },
+    {
+      title: '',
+    },
+    {
+      title: t('tracks.table.date_added'),
+      width: '120px',
+    },
+    {
+      title: t('tracks.table.actions'),
+      width: '150px',
+    },
+    {
+      title: <ClockIcon />,
+      width: '60px',
+    },
+  ]
+
   if (!VU.isNotEmptyArray(trackRows)) {
     return null
   }

@@ -6,6 +6,7 @@ import s from '@/features/auth/ui/LoginModal/LoginModal.module.css'
 import { Button, Dialog, DialogContent, DialogHeader, Typography } from '@/shared/components'
 import { CURRENT_APP_DOMAIN } from '@/shared/config/config.ts'
 import { joinUrl } from '@/shared/utils/join-url.ts'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   onClose: () => void
@@ -13,6 +14,7 @@ type Props = {
 
 export const LoginModal = ({ onClose }: Props) => {
   const { mutate } = useLoginMutation()
+  const { t } = useTranslation()
 
   const loginHandler = () => {
     const segments = [window.location.origin]
@@ -36,7 +38,12 @@ export const LoginModal = ({ onClose }: Props) => {
         // тут можно вызвать setToken(accessToken) или dispatch(login)
         //popup?.close()
         window.removeEventListener('message', receiveMessage)
-        mutate({ code, accessTokenTTL: '10s', redirectUri, rememberMe: true })
+        mutate({
+          code,
+          accessTokenTTL: '10s',
+          redirectUri,
+          rememberMe: true,
+        })
         onClose()
       }
     }
@@ -49,14 +56,12 @@ export const LoginModal = ({ onClose }: Props) => {
       <DialogHeader />
 
       <DialogContent className={s.content}>
-        <Typography variant="h2">
-          Millions of Songs. <br /> Free on Musicfun.
-        </Typography>
+        <Typography variant="h2">{t('auth.modal.title')}</Typography>
 
         <div className={s.icon}>😊</div>
 
         <Button className={clsx(s.button, s.secondary)} fullWidth onClick={onClose}>
-          Continue without Sign in
+          {t('auth.button.continue_without_sign_in')}
         </Button>
         <Button
           as="button"
@@ -65,7 +70,7 @@ export const LoginModal = ({ onClose }: Props) => {
           variant="primary"
           fullWidth
           onClick={loginHandler}>
-          Sign in with APIHub
+          {t('auth.button.sign_in_with_apihub')}
         </Button>
       </DialogContent>
     </Dialog>

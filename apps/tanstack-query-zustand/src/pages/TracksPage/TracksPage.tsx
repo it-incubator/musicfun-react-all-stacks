@@ -11,6 +11,7 @@ import { usePlayerStore } from '@/player/model/player-store.ts'
 import { Autocomplete, Typography } from '@/shared/components'
 import { useDebounceValue, useInfiniteScroll } from '@/shared/hooks'
 import { VU } from '@/shared/utils'
+import { useTranslation } from 'react-i18next'
 
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
@@ -19,6 +20,8 @@ import s from './TracksPage.module.css'
 const PAGE_SIZE = 10
 
 export const TracksPage = () => {
+  const { t } = useTranslation()
+
   const [hashtags, setHashtags] = React.useState<string[]>([])
   const [artists, setArtists] = React.useState<string[]>([])
   const [search, setSearch] = useState('')
@@ -104,20 +107,23 @@ export const TracksPage = () => {
   })
 
   if (isPending) {
-    return <div>Loading...</div>
+    return <div>{t('common.loading')}</div>
   }
   if (isError) {
-    return <div>Error...</div>
+    return <div>{t('tracks.label.load_error')}</div>
   }
 
   return (
     <PageWrapper>
       <Typography variant="h2" as="h1" className={s.title}>
-        All Tracks
+        {t('tracks.title.all_tracks')}
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField placeholder="Search tracks" onChange={handleSearchTrack} />
+          <SearchTextField
+            placeholder={t('tracks.placeholder.search_tracks')}
+            onChange={handleSearchTrack}
+          />
           <SortSelect onChange={handleSortTracks} value={sort} />
         </div>
         <div className={s.controlsRow}>
@@ -128,8 +134,8 @@ export const TracksPage = () => {
             }))}
             value={hashtags}
             onChange={setHashtags}
-            label="Hashtags"
-            placeholder="Search by hashtags"
+            label={t('tags.label')}
+            placeholder={t('tags.placeholder')}
             className={s.autocomplete}
           />
           <Autocomplete
@@ -139,8 +145,8 @@ export const TracksPage = () => {
             }))}
             value={artists}
             onChange={setArtists}
-            label="Artists"
-            placeholder="Search by artists"
+            label={t('artists.label')}
+            placeholder={t('artists.placeholder')}
             className={s.autocomplete}
           />
         </div>
@@ -161,11 +167,11 @@ export const TracksPage = () => {
           }}
         />
 
-        {tracks.length === 0 && <div>No tracks found</div>}
+        {tracks.length === 0 && <div>{t('tracks.title.tracks_not_found')}</div>}
         {hasNextPage && (
           <div ref={triggerRef}>
             {/* // Todo: change to little loader */}
-            <div>Loading...</div>
+            <div>{t('common.loading')}</div>
           </div>
         )}
       </div>

@@ -7,11 +7,14 @@ import {
   PathsPlaylistsGetParametersQuerySortBy,
   PathsPlaylistsGetParametersQuerySortDirection,
 } from '@/shared/api/schema.ts'
+import { useTranslation } from 'react-i18next'
 
 import { ContentList, PageWrapper } from '../common'
 import s from './MainPage.module.css'
 
 export const MainPage = () => {
+  const { t } = useTranslation()
+
   const { data: playlistsResponse } = usePlaylists({
     pageSize: 10,
     sortBy: PathsPlaylistsGetParametersQuerySortBy.addedAt,
@@ -40,7 +43,7 @@ export const MainPage = () => {
     <PageWrapper className={s.mainPage}>
       <TagsList tags={MOCK_HASHTAGS} />
       <ContentList
-        title="New playlists"
+        title={t('playlists.title.new_playlists')}
         data={playlists}
         renderItem={(playlist) => (
           <PlaylistCard
@@ -52,11 +55,11 @@ export const MainPage = () => {
         )}
       />
       <ContentList
-        title="New tracks"
+        title={t('tracks.title.new_tracks')}
         data={tracks}
         renderItem={(track) => (
           <TrackCard
-            artists={trackDetails.artists?.[0]?.name || 'Artist'}
+            artists={trackDetails.artists?.[0]?.name || t('tracks.label.artist')}
             currentReaction={track.attributes.currentUserReaction}
             id={track.id}
             image={

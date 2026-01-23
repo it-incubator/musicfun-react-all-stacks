@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import { useLogoutMutation } from '@/features/auth/api/use-logout.mutation.ts'
@@ -16,6 +17,7 @@ import s from './ProfileDropdownMenu.module.css'
 export const ProfileDropdownMenu = ({ avatar }: { avatar: string }) => {
   const { data } = useMeQuery()
   const logoutMutation = useLogoutMutation()
+  const { t } = useTranslation()
 
   const handleLogout = () => {
     logoutMutation.mutate()
@@ -34,11 +36,13 @@ export const ProfileDropdownMenu = ({ avatar }: { avatar: string }) => {
       <DropdownMenuContent align="end">
         <DropdownMenuItem as={Link} to={`/user/${data!.userId}`}>
           <ProfileIcon />
-          <span>My Profile</span>
+          <span>{t('auth.title.my_profile')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleLogout} disabled={logoutMutation.isPending}>
           <LogoutIcon />
-          <span>{logoutMutation.isPending ? 'Logging out...' : 'Logout'}</span>
+          <span>
+            {logoutMutation.isPending ? t('auth.button.logging_out') : t('auth.title.logout')}
+          </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
