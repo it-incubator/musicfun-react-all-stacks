@@ -123,6 +123,6 @@ export type {
 } from './types/player.types'
 
 // Utilities
-export { formatTime, parseTime } from './utils/formatTime'
+export { formatTime, parseTime } from './utils/format-time.ts'
 export { shuffle, shuffleWithCurrentItem } from './utils/shuffle'
 export { debounce, throttle } from './utils/throttle'

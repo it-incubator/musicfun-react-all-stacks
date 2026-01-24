@@ -374,7 +374,7 @@ export const playerSlice = createSlice({
       state.originalQueue = trackIds
       state.queue = state.shuffleMode ? shuffle(trackIds) : trackIds
       state.queueIndex = Math.max(0, Math.min(startIndex, tracks.length - 1))
-      state.currentTrackId = state.queue[state.queueIndex]
+      state.currentTrackId = null
       state.currentTime = 0
       state.playbackState = 'loading'
 

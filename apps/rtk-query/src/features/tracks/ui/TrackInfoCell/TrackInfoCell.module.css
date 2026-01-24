@@ -1,41 +1,74 @@
 .box {
-    display: flex;
-    gap: 21px;
+  display: flex;
+  gap: 21px;
 }
 
 .image {
-    flex-shrink: 0;
-    width: 52px;
-    height: 52px;
-    cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .image img {
-    object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .info {
-    width: 228px;
+  width: 228px;
 }
 
 .title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .title.playing {
-    color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .artists {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .image:hover {
-    transform: scale(0.95);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+  transform: scale(0.95);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: var(--color-bg-card);
+  border: none;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.boxHovered .playButton {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.playButton svg {
+  width: var(--font-size-xxl);
+  height: var(--font-size-xxl);
 }

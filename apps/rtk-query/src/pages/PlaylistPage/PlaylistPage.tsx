@@ -5,6 +5,7 @@ import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
 import { TrackRowContainer, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
 import { usePageBackgroundColor, usePageSearchParams } from '@/pages/common/hooks'
+import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
@@ -12,7 +13,6 @@ import { PageWithoutHeader, SearchTextField } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
 import { PlaylistPageSkeleton } from './ui/PlaylistPageSkeleton'
-import { Typography } from '@/shared/components'
 
 export const PlaylistPage = () => {
   const { t } = useTranslation()

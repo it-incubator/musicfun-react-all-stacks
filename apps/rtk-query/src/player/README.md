@@ -334,7 +334,7 @@ src/player/
 │   └── player.types.ts     # TypeScript types
 └── utils/
     ├── shuffle.ts          # Shuffle algorithms
-    ├── formatTime.ts       # Time formatting
+    ├── format-time.ts       # Time formatting
     ├── throttle.ts         # Throttle/debounce
     └── index.ts            # Utils exports
 ```

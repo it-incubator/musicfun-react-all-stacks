@@ -2,30 +2,42 @@ import clsx from 'clsx'
 import { Link } from 'react-router'
 
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
-import { TableCell, Typography } from '@/shared/components'
+import { IconButton, TableCell, Typography } from '@/shared/components'
+import { PauseIcon, PlayIcon } from '@/shared/icons'
 
 import s from './TrackInfoCell.module.css'
 
-export const TrackInfoCell = ({
-  imageSrc = noCoverPlaceholder,
-  title,
-  artists,
-  isPlaying,
-  id,
-  onTrackPlayClick,
-}: {
+type TrackInfoCellProps = {
   imageSrc?: string
+  isHovered: boolean
   title: string
   artists: string[]
   isPlaying: boolean
   id: string
   onTrackPlayClick?: (trackId: string) => void
-}) => {
+}
+
+export const TrackInfoCell = ({
+  imageSrc = noCoverPlaceholder,
+  title,
+  artists,
+  isHovered,
+  isPlaying,
+  id,
+  onTrackPlayClick,
+}: TrackInfoCellProps) => {
   return (
     <TableCell>
-      <div className={s.box}>
+      <div className={clsx(s.box, { [s.boxHovered]: isHovered })}>
         <div className={s.image}>
-          <img src={imageSrc} alt={title} onClick={() => onTrackPlayClick?.(id)} />
+          <img src={imageSrc} alt={title} />
+          <IconButton
+            aria-label="Play track"
+            className={s.playButton}
+            type="button"
+            onClick={() => onTrackPlayClick?.(id)}>
+            {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          </IconButton>
         </div>
         <div className={s.info}>
           <Typography

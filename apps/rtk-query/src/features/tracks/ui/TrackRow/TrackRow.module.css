@@ -1,3 +1,7 @@
+.active {
+  background-color: var(--color-bg-interactive-secondary);
+}
+
 .playing {
   color: var(--color-accent);
 }
