@@ -3,6 +3,7 @@ import { type ChangeEvent, type DragEvent, useRef, useState } from 'react'
 
 import { CoverImage } from '@/shared/components'
 import { ImageUploadIcon } from '@/shared/icons'
+import { useTranslation } from 'react-i18next'
 
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
@@ -21,8 +22,10 @@ export const ImageUploader = ({
   onImageSelect,
   acceptedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
   maxSizeInMB = 5,
-  placeholder = 'Upload Cover Image',
+  placeholder,
 }: ImageUploaderProps) => {
+  const { t } = useTranslation()
+
   const [isDragOver, setIsDragOver] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -30,12 +33,12 @@ export const ImageUploader = ({
 
   const validateFile = (file: File): string | null => {
     if (!acceptedFormats.includes(file.type)) {
-      return `Only ${acceptedFormats.join(', ')} files are allowed`
+      return t('image_uploader.error.invalid_format', { formats: acceptedFormats.join(', ') })
     }
 
     const maxSizeInBytes = maxSizeInMB * 1024 * 1024
     if (file.size > maxSizeInBytes) {
-      return `File size must be less than ${maxSizeInMB}MB`
+      return t('image_uploader.error.file_too_large', { size: maxSizeInMB })
     }
 
     return null
@@ -144,7 +147,7 @@ export const ImageUploader = ({
               <ImageUploadIcon width={24} height={24} />
             </div>
             <Typography variant="body2" className={s.uploadText}>
-              {placeholder}
+              {placeholder || t('placeholder.upload_cover_image')}
             </Typography>
           </div>
         )}

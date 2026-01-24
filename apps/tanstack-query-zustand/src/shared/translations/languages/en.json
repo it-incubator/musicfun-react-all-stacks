@@ -1,0 +1,212 @@
+{
+  "artists": {
+    "label": "Artists",
+    "placeholder": "Search by artists"
+  },
+  "auth": {
+    "button": {
+      "continue_without_sign_in": "Continue without Sign in",
+      "sign_in": "Sign in",
+      "sign_in_with_apihub": "Sign in with APIHub",
+      "logging_out": "Logging out..."
+    },
+    "title": {
+      "logout": "Logout",
+      "my_profile": "My Profile"
+    },
+    "modal": {
+      "title": "Millions of Songs. Free on Musicfun."
+    }
+  },
+  "button": {
+    "choose": "Choose",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "update": "Update",
+    "edit_profile": "Edit profile",
+    "saving": "Saving...",
+    "save_changes": "Save Changes"
+  },
+  "description": {
+    "label": {
+      "description": "Description"
+    },
+    "title": {
+      "max_value": "Description must be less than {{ quantity }} characters"
+    }
+  },
+  "playlists": {
+    "button": {
+      "choose_playlist": "Choose playlist",
+      "create_playlist": "Create playlist",
+      "edit": "Edit"
+    },
+    "placeholder": {
+      "enter_playlist_description": "Enter playlist description",
+      "enter_playlist_title": "Enter playlist title",
+      "search_playlist": "Search playlist"
+    },
+    "title": {
+      "all_playlists": "All Playlists",
+      "create_playlist": "Create Playlist",
+      "edit_playlist": "Edit Playlist",
+      "new_playlists": "New playlists",
+      "no_playlists": "No playlists yet",
+      "playlists_not_found": "No playlists found"
+    },
+    "label": {
+      "load_error": "Unable to load the playlist"
+    },
+    "aria_labels": {
+      "open_playlist": "Open playlist {{title}}"
+    }
+  },
+  "sidebar": {
+    "all_playlists": "All Playlists",
+    "all_tracks": "All Tracks",
+    "create_playlist": "Create Playlist",
+    "home": "Home",
+    "upload_track": "Upload Track",
+    "your_library": "Your Library"
+  },
+  "tabs": {
+    "playlists": "Playlists",
+    "tracks": "Tracks",
+    "liked_playlists": "Liked Playlists",
+    "liked_tracks": "Liked Tracks",
+    "possessive_case": "'s"
+  },
+  "tags": {
+    "label": "Hashtags",
+    "placeholder": "Search by hashtags",
+    "add_tag_placeholder": "Add tag and press Enter"
+  },
+  "title": {
+    "max_value": "Title must be less than {{ quantity }} characters",
+    "min_value": "Title must be at least {{ quantity }} characters",
+    "required": "Title is required",
+    "title": "Title"
+  },
+  "tracks": {
+    "button": {
+      "add_to_playlist": "Add to playlist",
+      "all_tracks": "All Tracks",
+      "cancel": "Cancel",
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "show_text_song": "Show text song",
+      "upload": "Upload",
+      "choose_track": "Choose track",
+      "upload_track": "Upload track",
+      "go_back": "Go back",
+      "delete_from_playlist": "Delete from playlist"
+    },
+    "label": {
+      "lyrics": "Lyrics",
+      "title": "Title",
+      "no_tracks": "No tracks",
+      "load_error": "Unable to load the track",
+      "audio": "Audio",
+      "artist": "Artist"
+    },
+    "placeholder": {
+      "lyrics": "Enter track lyrics",
+      "search_tracks": "Search tracks",
+      "title": "Enter track title",
+      "no_lyrics": "No lyrics available for this track"
+    },
+    "title": {
+      "all_tracks": "All tracks",
+      "create": "Create Track",
+      "edit": "Edit Track",
+      "new_tracks": "New tracks",
+      "tracks_not_found": "Tracks not found"
+    },
+    "table": {
+      "track": "Track",
+      "date_added": "Date added",
+      "actions": "Actions",
+      "duration": "Duration"
+    },
+    "release": "Release date",
+    "error": {
+      "need_select_file": "Need select a file",
+      "incorrect_audio_format": "Please select correct audio-format",
+      "file_too_large": "The file is too large. Max size is {{size}} MB",
+      "upload_cover": "Error upload cover"
+    },
+    "success": {
+      "upload_cover": "Success Upload Cover",
+      "uploaded_successfully": "Track uploaded successfully"
+    }
+  },
+  "sort": {
+    "label": "Sort by",
+    "newest_first": "Newest first",
+    "oldest_first": "Oldest first",
+    "most_liked": "Most liked",
+    "least_liked": "Least liked"
+  },
+  "placeholder": {
+    "upload_cover_image": "Upload Cover Image",
+    "search_and_select": "Search and select...",
+    "selected": "selected",
+    "no_options_found": "No options found",
+    "all_options_selected": "All options selected",
+    "which_playlist": "In which playlist is the track?"
+  },
+  "profile": {
+    "title": {
+      "edit_profile": "Edit profile",
+      "max_value_name": "Name must be less than {{ quantity }} characters",
+      "min_value_name": "Name must be at least {{ quantity }} characters",
+      "max_value_surname": "Surname must be less than {{ quantity }} characters",
+      "min_value_surname": "Surname must be at least {{ quantity }} characters",
+      "required_name": "Name is required",
+      "required_surname": "Surname is required"
+    },
+    "placeholder": {
+      "enter_profile_name": "Enter profile name",
+      "enter_profile_surname": "Enter profile surname",
+      "upload_avatar": "Upload Avatar"
+    },
+    "label": {
+      "name": "Name",
+      "surname": "Surname",
+      "avatar": "User avatar"
+    },
+    "stats": {
+      "playlists_one": "Playlist",
+      "playlists_other": "Playlists",
+      "tracks_one": "Track",
+      "tracks_other": "Tracks"
+    }
+  },
+  "date": {
+    "today": "today",
+    "dayAgo": "{{addedAt}} day ago",
+    "daysAgo": "{{addedAt}} days ago",
+    "monthAgo": "{{addedAt}} month ago",
+    "monthsAgo": "{{addedAt}} months ago",
+    "created": "Created"
+  },
+  "playlist": {
+    "made_for": "Made for",
+    "tracks_count_one": "{{count}} track",
+    "tracks_count_other": "{{count}} tracks"
+  },
+  "common": {
+    "loading": "Loading...",
+    "loading_tags": "Loading tags..."
+  },
+  "image_uploader": {
+    "error": {
+      "invalid_format": "Only {{formats}} files are allowed",
+      "file_too_large": "File size must be less than {{size}}MB"
+    }
+  }
+}
