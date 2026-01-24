@@ -12,7 +12,10 @@ import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { usePlaybackState, usePlayerControls } from '@/player'
 import { useCurrentTrack, useQueueControls } from '@/player/playerHooks.ts'
-import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils.ts'
+import {
+  convertApiTracksToPlayerTracks,
+  convertApiTrackToPlayerTrack,
+} from '@/player/utils/convert-api-track-to-player-track.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { Typography } from '@/shared/components'
 import { Spinner } from '@/shared/components/Spinner/Spinner.tsx'

@@ -9,7 +9,10 @@ import {
   usePlayerControls,
   useVolumeControl,
 } from '@/player'
-import { convertApiTracksToPlayerTracks, convertApiTrackToPlayerTrack } from '@/player/utils'
+import {
+  convertApiTracksToPlayerTracks,
+  convertApiTrackToPlayerTrack,
+} from '@/player/utils/convert-api-track-to-player-track.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { AudioPlayer } from '@/shared/components'
 import { AudioPlayerSkeleton } from '@/shared/components/AudioPlayer/AudioPlayerSceleton/AudioPlayerSkeleton.tsx'

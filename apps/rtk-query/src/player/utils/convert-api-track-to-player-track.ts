@@ -1,8 +1,8 @@
-import { type ApiTrack } from '@/features/tracks/api/tracksApi.types'
-import { type Images, ImageType } from '@/shared/types/commonApi.types'
+import { type ApiTrack } from '@/features/tracks/api/tracksApi.types.ts'
+import { type Images, ImageType } from '@/shared/types/commonApi.types.ts'
 import { getImageByType } from '@/shared/utils'
 
-import type { Track } from './types/player.types'
+import type { Track } from '../types/player.types.ts'
 
 /**
  * Converts API track response to Player Track format

@@ -11,7 +11,7 @@ import {
 import { TagsList, useFindTagsQuery } from '@/features/tags'
 import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
 import { selectCurrentPlaylistId, usePlayerControls, useQueueControls } from '@/player'
-import { convertApiTracksToPlayerTracks } from '@/player/utils.ts'
+import { convertApiTracksToPlayerTracks } from '@/player/utils/convert-api-track-to-player-track.ts'
 import { useAppSelector } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
