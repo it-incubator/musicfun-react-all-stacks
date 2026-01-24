@@ -29,15 +29,16 @@ export const TrackRow = <T extends TrackRowData>({
   const isPlayerTrack = trackRow.id === trackId
 
   const isTrackRowPlaying = isPlayerTrack && isPlaying
+  const isTrackSelected = isPlayerTrack && !isPlaying
 
   const getTableCellIcon = () => {
     if (isTrackRowPlaying) return <LiveWaveIcon />
-    if (isPlayerTrack) return <StaticWaveIcon />
+    if (isTrackSelected) return <StaticWaveIcon />
+
     return trackRow.index + 1
   }
 
   return (
-    /*<TableRow ref={ref} className={clsx({ [s.active]: isPlaying })}>*/
     <TableRow ref={ref} className={clsx({ [s.active]: isTrackRowPlaying })}>
       <TableCell className={clsx(isPlayerTrack && s.playing)}>{getTableCellIcon()}</TableCell>
       <TrackInfoCell
@@ -50,7 +51,7 @@ export const TrackRow = <T extends TrackRowData>({
         onTrackPlayClick={onTrackPlayClick}
       />
       <TableCell>
-        {isPlayerTrack && (
+        {isTrackRowPlaying && (
           <Progress className={s.progress} value={progress ?? 0} max={trackRow.duration} />
         )}
       </TableCell>
