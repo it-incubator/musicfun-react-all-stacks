@@ -34,10 +34,9 @@ export const SearchTags = ({ type, className, label, placeholder }: SearchTagsPr
     { value: debouncedSearchTerm },
     { skip: type !== 'tags' }
   )
-  const { data: artistsData } = useFindArtistsQuery(
-    debouncedSearchTerm,
-    {skip: type !== 'artists',}
-  )
+  const { data: artistsData } = useFindArtistsQuery(debouncedSearchTerm, {
+    skip: type !== 'artists',
+  })
 
   const data = type === 'tags' ? tagsData : artistsData
 

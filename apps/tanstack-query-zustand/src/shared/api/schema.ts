@@ -109,8 +109,28 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Get list of all tracks in all playlists */
+    /**
+     * Get list of all tracks in all playlists.
+     * @description Query-parameters schema → [`GetTracksRequestPayload`](#model-GetTracksRequestPayload)
+     */
     get: operations['TracksPublicController_getAllTracks']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/playlists/tracks/count/{userId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get tracks count for a user */
+    get: operations['TracksPublicController_getTracksCount']
     put?: never
     post?: never
     delete?: never
@@ -201,6 +221,23 @@ export interface paths {
     post?: never
     /** Remove user reaction from a track */
     delete: operations['TracksPublicController_removeTrackReaction']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/playlists/count/{userId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get playlists count for a user */
+    get: operations['PlaylistsPublicController_getPlaylistsCount']
+    put?: never
+    post?: never
+    delete?: never
     options?: never
     head?: never
     patch?: never
@@ -352,7 +389,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /** Create a track with MP3 file upload */
+    /** Create a track with MP3 file upload. Allowed file extensions: mp3, max size: 1 MB */
     post: operations['TracksController_uploadTrackMp3']
     delete?: never
     options?: never
@@ -420,8 +457,7 @@ export interface paths {
     }
     /**
      * OAuth redirect
-     * @description The callback URL to redirect after granting access, <a target="_blank"
-     *   href="https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid">https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid</a>
+     * @description The callback URL to redirect after granting access, <a target="_blank" href="https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid">https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid</a>
      */
     get: operations['AuthController_OauthRedirect']
     put?: never
@@ -500,6 +536,57 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/auth/simple/login': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Simple login with login/password, returns access and refresh tokens */
+    post: operations['SimpleAuthController_login']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/auth/simple/refresh': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Simple refresh: rotate access and refresh tokens */
+    post: operations['SimpleAuthController_refresh']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/auth/simple/logout': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Simple logout: revoke refresh token */
+    post: operations['SimpleAuthController_logout']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/tags': {
     parameters: {
       query?: never
@@ -555,7 +642,7 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
-    UserOutputDTO: {
+    UserRef: {
       /** @description Unique identifier of the user */
       id: string
       /** @description Name of the user */
@@ -566,7 +653,7 @@ export interface components {
      * @enum {string}
      */
     ImageSizeType: ImageSizeType
-    ImageDto: {
+    ImageVariant: {
       /** @description Type of the image size (e.g., original, thumbnail variants) */
       type: components['schemas']['ImageSizeType']
       /** @description Image width in pixels */
@@ -580,9 +667,9 @@ export interface components {
     }
     PlaylistImagesOutputDTO: {
       /** @description Original images and thumbnail previews */
-      main?: components['schemas']['ImageDto'][]
+      main?: components['schemas']['ImageVariant'][]
     }
-    GetTagOutput: {
+    TagRef: {
       /** @description Unique identifier of the tag */
       id: string
       /** @description Original name of the tag */
@@ -593,11 +680,9 @@ export interface components {
      * @enum {number}
      */
     ReactionValue: ReactionValue
-    PlaylistAttributesDto: {
+    PlaylistListItemAttributes: {
       /** @description Title of the playlist */
       title: string
-      /** @description Description of the playlist */
-      description: string | null
       /**
        * Format: date-time
        * @description Date and time when the playlist was added (ISO 8601)
@@ -611,19 +696,21 @@ export interface components {
       /** @description Order index of the playlist */
       order: number
       /** @description User who created the playlist */
-      user: components['schemas']['UserOutputDTO']
+      user: components['schemas']['UserRef']
       /** @description Images associated with the playlist */
       images: components['schemas']['PlaylistImagesOutputDTO']
       /** @description Tags linked to the playlist */
-      tags: components['schemas']['GetTagOutput'][]
+      tags: components['schemas']['TagRef'][]
       /** @description Total number of likes for this playlist */
       likesCount: number
       /** @description Total number of dislikes for this playlist */
       dislikesCount: number
       /** @description User reaction: 0 – guest or no reaction; 1 – like; -1 – dislike */
       currentUserReaction: components['schemas']['ReactionValue']
+      /** @description Total number of tracks in the playlist */
+      tracksCount: number
     }
-    PlaylistListItemJsonApiData: {
+    PlaylistListItemResource: {
       /** @description Unique identifier of the playlist */
       id: string
       /**
@@ -631,20 +718,27 @@ export interface components {
        * @example playlists
        */
       type: string
-      /** @description Attributes of the playlist resource */
-      attributes: components['schemas']['PlaylistAttributesDto']
+      attributes: components['schemas']['PlaylistListItemAttributes']
     }
     GetMyPlaylistsOutput: {
       /** @description Array of playlist resource objects owned by the current user */
-      data: components['schemas']['PlaylistListItemJsonApiData'][]
+      data: components['schemas']['PlaylistListItemResource'][]
     }
-    CreatePlaylistRequestPayload: {
+    CreatePlaylistAttributes: {
       /** @description Playlist title (1 to 100 characters) */
       title: string
       /** @description Playlist description (up to 1000 characters) */
       description: string | null
     }
-    PlaylistOutputAttributes: {
+    CreatePlaylistData: {
+      /** @example playlists */
+      type: string
+      attributes: components['schemas']['CreatePlaylistAttributes']
+    }
+    CreatePlaylistRequestPayload: {
+      data: components['schemas']['CreatePlaylistData']
+    }
+    PlaylistAttributes: {
       /** @description Title of the playlist */
       title: string
       /** @description Description of the playlist */
@@ -662,19 +756,21 @@ export interface components {
       /** @description Order index of the playlist */
       order: number
       /** @description User who created the playlist */
-      user: components['schemas']['UserOutputDTO']
+      user: components['schemas']['UserRef']
       /** @description Images associated with the playlist */
       images: components['schemas']['PlaylistImagesOutputDTO']
       /** @description Tags linked to the playlist */
-      tags: components['schemas']['GetTagOutput'][]
+      tags: components['schemas']['TagRef'][]
       /** @description Total number of likes for this playlist */
       likesCount: number
       /** @description Total number of dislikes for this playlist */
       dislikesCount: number
       /** @description User reaction: 0 – guest or no reaction; 1 – like; -1 – dislike */
       currentUserReaction: components['schemas']['ReactionValue']
+      /** @description Total number of tracks in the playlist */
+      tracksCount: number
     }
-    PlaylistOutput: {
+    PlaylistResource: {
       /** @description Unique identifier of the playlist */
       id: string
       /**
@@ -682,14 +778,12 @@ export interface components {
        * @example playlists
        */
       type: string
-      /** @description Playlist attributes object */
-      attributes: components['schemas']['PlaylistOutputAttributes']
+      attributes: components['schemas']['PlaylistAttributes']
     }
     GetPlaylistOutput: {
-      /** @description JSON:API single-resource response wrapper */
-      data: components['schemas']['PlaylistOutput']
+      data: components['schemas']['PlaylistResource']
     }
-    UpdatePlaylistRequestPayload: {
+    UpdatePlaylistAttributes: {
       /** @description Playlist title (1 – 100 characters) */
       title: string
       /**
@@ -700,17 +794,24 @@ export interface components {
       /** @description Tag IDs to associate with the playlist (0 – 5 items; [] = clear tags) */
       tagIds: string[]
     }
+    UpdatePlaylistData: {
+      /** @example playlists */
+      type: string
+      attributes: components['schemas']['UpdatePlaylistAttributes']
+    }
+    UpdatePlaylistRequestPayload: {
+      data: components['schemas']['UpdatePlaylistData']
+    }
     ReorderPlaylistsRequestPayload: {
       /**
        * Format: uuid
-       * @description ID of the playlist after which the current playlist should be inserted. Send null to place the
-       *   playlist at the beginning of the list.
+       * @description ID of the playlist after which the current playlist should be inserted. Send null to place the playlist at the beginning of the list.
        */
       putAfterItemId: string | null
     }
-    GetImagesOutput: {
+    TrackImages: {
       /** @description List of original images and thumbnail versions (e.g., original, 320x180, etc.) */
-      main?: components['schemas']['ImageDto'][]
+      main?: components['schemas']['ImageVariant'][]
     }
     GetTracksRequestPayload: {
       /**
@@ -798,7 +899,7 @@ export interface components {
       /** @description e.g. timestamp, path, traceId, etc. */
       meta?: Record<string, never>
     }
-    AttachmentDto: {
+    TrackAttachment: {
       /** @description Unique identifier of the entity */
       id: string
       /**
@@ -834,20 +935,28 @@ export interface components {
        */
       fileSize: number
     }
-    TrackListItemOutputAttributes: {
+    TrackListItemAttributes: {
       title: string
+      /**
+       * Format: date-time
+       * @description Date and time when the track was added (ISO 8601)
+       */
       addedAt: string
       likesCount: number
-      attachments: components['schemas']['AttachmentDto'][]
-      images: components['schemas']['GetImagesOutput']
-      user: components['schemas']['UserOutputDTO']
+      attachments: components['schemas']['TrackAttachment'][]
+      images: components['schemas']['TrackImages']
+      user: components['schemas']['UserRef']
       /**
        * @description 0 – не залогинен или не реагировал; 1 – лайк; −1 – дизлайк
        * @enum {number}
        */
       currentUserReaction: ReactionValue
       isPublished: boolean
-      publishedAt?: string
+      /**
+       * Format: date-time
+       * @description Date and time when the track was published (ISO 8601)
+       */
+      publishedAt?: string | null
     }
     ArtistRelationship: {
       id: string
@@ -859,11 +968,11 @@ export interface components {
     TrackRelationships: {
       artists: components['schemas']['ArtistsRelationship']
     }
-    TrackListItemOutput: {
+    TrackListItemResource: {
       id: string
       /** @example tracks */
       type: string
-      attributes: components['schemas']['TrackListItemOutputAttributes']
+      attributes: components['schemas']['TrackListItemAttributes']
       relationships: components['schemas']['TrackRelationships']
     }
     JsonApiMetaWithPagingAndCursor: {
@@ -886,51 +995,63 @@ export interface components {
       attributes: components['schemas']['OmitTypeClass']
     }
     GetTrackListOutput: {
-      data: components['schemas']['TrackListItemOutput'][]
+      data: components['schemas']['TrackListItemResource'][]
       meta: components['schemas']['JsonApiMetaWithPagingAndCursor']
       included: components['schemas']['IncludedArtistOutput'][]
     }
-    PlaylistTrackAttributes: {
+    GetTracksCountOutput: {
+      /**
+       * @description Total number of tracks for the user
+       * @example 12
+       */
+      count: number
+    }
+    TrackListItemAttributesForPlaylist: {
       /** @description Title of the track */
       title: string
       /** @description Order index of the track in the playlist */
       order: number
       /**
        * Format: date-time
-       * @description Date and time when the track was added to the playlist (ISO 8601)
+       * @description Date and time when the track was added (ISO 8601)
        */
       addedAt: string
       /**
        * Format: date-time
-       * @description Date and time when the track was last updated in the playlist (ISO 8601)
+       * @description Date and time when the track was last updated (ISO 8601)
        */
       updatedAt: string
       /** @description Attachments related to the track */
-      attachments: components['schemas']['AttachmentDto'][]
+      attachments: components['schemas']['TrackAttachment'][]
       /** @description Images associated with the track */
-      images: components['schemas']['GetImagesOutput']
+      images: components['schemas']['TrackImages']
       /**
        * @description User reaction: 0 – guest or no reaction; 1 – liked; -1 – disliked
        * @enum {number|null}
        */
       currentUserReaction: ReactionValue
+      /**
+       * Format: date-time
+       * @description Date and time when the track was published (ISO 8601)
+       */
+      publishedAt?: string | null
     }
-    GetPlaylistTrackListOutputData: {
+    TrackListItemResourceForPlaylist: {
       id: string
       /** @example tracks */
       type: string
-      attributes: components['schemas']['PlaylistTrackAttributes']
+      attributes: components['schemas']['TrackListItemAttributesForPlaylist']
       relationships: components['schemas']['TrackRelationships']
     }
     JsonApiMeta: {
       totalCount: number
     }
-    GetPlaylistTrackListOutput: {
-      data: components['schemas']['GetPlaylistTrackListOutputData'][]
+    GetTracksForPlaylistOutput: {
+      data: components['schemas']['TrackListItemResourceForPlaylist'][]
       meta: components['schemas']['JsonApiMeta']
       included: components['schemas']['IncludedArtistOutput'][]
     }
-    GetArtistOutput: {
+    ArtistRef: {
       /** @description Unique identifier of the artist */
       id: string
       /** @description Name of the artist */
@@ -966,14 +1087,13 @@ export interface components {
        */
       dislikesCount: number
       /** @description List of attachments related to the track */
-      attachments: components['schemas']['AttachmentDto'][]
-      /** @description Images associated with the track */
-      images: components['schemas']['GetImagesOutput']
+      attachments: components['schemas']['TrackAttachment'][]
+      images: components['schemas']['TrackImages']
       /** @description Tags associated with the track */
-      tags: components['schemas']['GetTagOutput'][]
+      tags: components['schemas']['TagRef'][]
       /** @description Artists associated with the track */
-      artists: components['schemas']['GetArtistOutput'][]
-      user: components['schemas']['UserOutputDTO']
+      artists: components['schemas']['ArtistRef'][]
+      user: components['schemas']['UserRef']
       /** @description Publication status of the track */
       isPublished: boolean
       /**
@@ -987,7 +1107,7 @@ export interface components {
        */
       currentUserReaction: ReactionValue
     }
-    TrackDetailsData: {
+    TrackDetailsResource: {
       /** @description Unique identifier of the track */
       id: string
       /**
@@ -995,12 +1115,10 @@ export interface components {
        * @example tracks
        */
       type: string
-      /** @description Detailed attributes of the track resource */
       attributes: components['schemas']['TrackDetailsAttributes']
     }
     GetTrackDetailsOutput: {
-      /** @description JSON:API single-track details response wrapper */
-      data: components['schemas']['TrackDetailsData']
+      data: components['schemas']['TrackDetailsResource']
     }
     ReactionOutput: {
       objectId: string
@@ -1049,20 +1167,25 @@ export interface components {
     }
     GetPlaylistsOutput: {
       /** @description Array of playlist resource objects */
-      data: components['schemas']['PlaylistListItemJsonApiData'][]
-      /** @description Pagination metadata for the playlists list */
+      data: components['schemas']['PlaylistListItemResource'][]
       meta: components['schemas']['JsonApiMetaWithPaging']
+    }
+    GetPlaylistsCountOutput: {
+      /**
+       * @description Total number of playlists for the user
+       * @example 5
+       */
+      count: number
     }
     ReorderTracksRequestPayload: {
       /**
        * Format: uuid
-       * @description ID of the track after which the current track should be inserted. Send null to place the track at
-       *   the beginning of the list.
+       * @description ID of the track after which the current track should be inserted. Send null to place the track at the beginning of the list.
        * @example a1b2c3d4-e5f6-7890-abcd-1234567890ef
        */
       putAfterItemId: string | null
     }
-    UpdateTrackRequestPayload: {
+    UpdateTrackAttributes: {
       /** @description Track title (1 to 100 characters) */
       title: string
       /** @description Track lyrics (up to 5000 characters) */
@@ -1077,79 +1200,37 @@ export interface components {
       /** @description Array of artist IDs to associate with the track (up to 5) */
       artistsIds: string[]
     }
-    TrackOutputAttributes: {
-      /** @description Track title */
-      title: string
-      /** @description Track lyrics text */
-      lyrics?: string | null
-      /**
-       * Format: date-time
-       * @description Release date in ISO 8601 format
-       */
-      releaseDate?: string | null
-      /**
-       * Format: date-time
-       * @description Date and time when the track was added (ISO 8601)
-       */
-      addedAt: string
-      /**
-       * Format: date-time
-       * @description Date and time when the track was last updated (ISO 8601)
-       */
-      updatedAt: string
-      /** @description Duration of the track in seconds */
-      duration: number
-      /** @description Total number of likes for this track */
-      likesCount: number
-      /**
-       * @deprecated
-       * @description Total number of dislikes for this track
-       */
-      dislikesCount: number
-      /** @description List of attachments related to the track */
-      attachments: components['schemas']['AttachmentDto'][]
-      /** @description Images associated with the track */
-      images: components['schemas']['GetImagesOutput']
-      /** @description Tags associated with the track */
-      tags: components['schemas']['GetTagOutput'][]
-      /** @description Artists associated with the track */
-      artists: components['schemas']['GetArtistOutput'][]
-      user: components['schemas']['UserOutputDTO']
-      /** @description Publication status of the track */
-      isPublished: boolean
-      /**
-       * Format: date-time
-       * @description Publication date in ISO 8601 format
-       */
-      publishedAt?: string | null
-      /**
-       * @description User reaction: 0 – guest or no reaction; 1 – user liked; -1 – user disliked
-       * @enum {number}
-       */
-      currentUserReaction: ReactionValue
-    }
-    TrackOutput: {
-      /** @description Unique identifier of the track */
-      id: string
-      /**
-       * @description Resource type (should be "tracks")
-       * @example tracks
-       */
+    UpdateTrackData: {
+      /** @example tracks */
       type: string
-      /** @description Attributes of the track resource */
-      attributes: components['schemas']['TrackOutputAttributes']
+      attributes: components['schemas']['UpdateTrackAttributes']
     }
-    GetTrackOutput: {
-      /** @description JSON:API single-track response wrapper */
-      data: components['schemas']['TrackOutput']
+    UpdateTrackRequestPayload: {
+      data: components['schemas']['UpdateTrackData']
     }
-    AddTrackToPlaylistRequestPayload: {
+    AddTrackToPlaylistAttributes: {
       /** @description ID of the track to add to the playlist */
       trackId: string
     }
-    CreateArtistRequestPayload: {
+    AddTrackToPlaylistData: {
+      /** @example playlist-tracks */
+      type: string
+      attributes: components['schemas']['AddTrackToPlaylistAttributes']
+    }
+    AddTrackToPlaylistRequestPayload: {
+      data: components['schemas']['AddTrackToPlaylistData']
+    }
+    CreateArtistAttributes: {
       /** @description Artist name (must be between 2 and 30 characters) */
       name: string
+    }
+    CreateArtistData: {
+      /** @example artists */
+      type: string
+      attributes: components['schemas']['CreateArtistAttributes']
+    }
+    CreateArtistRequestPayload: {
+      data: components['schemas']['CreateArtistData']
     }
     LoginRequestPayload: {
       /** @description Authorization code received from OAuth server after redirect */
@@ -1183,9 +1264,61 @@ export interface components {
       userId: string
       login: string
     }
-    CreateTagRequestPayload: {
+    SimpleLoginRequestPayload: {
+      /** @description User login */
+      login: string
+      /** @description User password */
+      password: string
+      /**
+       * @description Refresh token lifetime: if true, 7 days; if false, 30 minutes
+       * @default true
+       */
+      rememberMe: boolean
+    }
+    SimpleLoginOutput: {
+      accessToken: string
+      refreshToken: string
+    }
+    SimpleRefreshRequestPayload: {
+      /** @description Refresh token */
+      refreshToken: string
+    }
+    SimpleLogoutRequestPayload: {
+      /** @description Refresh token to invalidate */
+      refreshToken: string
+    }
+    CreateTagAttributes: {
       /** @description Tag name (2 to 30 characters) */
       name: string
+    }
+    CreateTagData: {
+      /** @example tags */
+      type: string
+      attributes: components['schemas']['CreateTagAttributes']
+    }
+    CreateTagRequestPayload: {
+      data: components['schemas']['CreateTagData']
+    }
+    TagAttributes: {
+      /** @description Original name of the tag */
+      name: string
+    }
+    TagResource: {
+      /** @description Unique identifier of the tag */
+      id: string
+      /**
+       * @description Resource type (should be "tags")
+       * @example tags
+       */
+      type: string
+      attributes: components['schemas']['TagAttributes']
+    }
+    GetTagOutput: {
+      data: components['schemas']['TagResource']
+    }
+    GetTagsOutput: {
+      /** @description Array of tag resource objects */
+      data: components['schemas']['TagResource'][]
     }
     /**
      * Format: binary
@@ -1199,61 +1332,69 @@ export interface components {
   headers: never
   pathItems: never
 }
-export type SchemaUserOutputDto = components['schemas']['UserOutputDTO']
-export type SchemaImageSizeType = components['schemas']['ImageSizeType']
-export type SchemaImageDto = components['schemas']['ImageDto']
+export type SchemaUserRef = components['schemas']['UserRef']
+export type SchemaImageVariant = components['schemas']['ImageVariant']
 export type SchemaPlaylistImagesOutputDto = components['schemas']['PlaylistImagesOutputDTO']
-export type SchemaGetTagOutput = components['schemas']['GetTagOutput']
-export type SchemaReactionValue = components['schemas']['ReactionValue']
-export type SchemaPlaylistAttributesDto = components['schemas']['PlaylistAttributesDto']
-export type SchemaPlaylistListItemJsonApiData = components['schemas']['PlaylistListItemJsonApiData']
+export type SchemaTagRef = components['schemas']['TagRef']
+export type SchemaPlaylistListItemAttributes = components['schemas']['PlaylistListItemAttributes']
+export type SchemaPlaylistListItemResource = components['schemas']['PlaylistListItemResource']
 export type SchemaGetMyPlaylistsOutput = components['schemas']['GetMyPlaylistsOutput']
+export type SchemaCreatePlaylistAttributes = components['schemas']['CreatePlaylistAttributes']
+export type SchemaCreatePlaylistData = components['schemas']['CreatePlaylistData']
 export type SchemaCreatePlaylistRequestPayload =
   components['schemas']['CreatePlaylistRequestPayload']
-export type SchemaPlaylistOutputAttributes = components['schemas']['PlaylistOutputAttributes']
-export type SchemaPlaylistOutput = components['schemas']['PlaylistOutput']
+export type SchemaPlaylistAttributes = components['schemas']['PlaylistAttributes']
+export type SchemaPlaylistResource = components['schemas']['PlaylistResource']
 export type SchemaGetPlaylistOutput = components['schemas']['GetPlaylistOutput']
+export type SchemaUpdatePlaylistAttributes = components['schemas']['UpdatePlaylistAttributes']
+export type SchemaUpdatePlaylistData = components['schemas']['UpdatePlaylistData']
 export type SchemaUpdatePlaylistRequestPayload =
   components['schemas']['UpdatePlaylistRequestPayload']
 export type SchemaReorderPlaylistsRequestPayload =
   components['schemas']['ReorderPlaylistsRequestPayload']
-export type SchemaGetImagesOutput = components['schemas']['GetImagesOutput']
+export type SchemaTrackImages = components['schemas']['TrackImages']
 export type SchemaGetTracksRequestPayload = components['schemas']['GetTracksRequestPayload']
 export type SchemaJsonApiErrorSource = components['schemas']['JsonApiErrorSource']
 export type SchemaJsonApiError = components['schemas']['JsonApiError']
 export type SchemaJsonApiErrorDocument = components['schemas']['JsonApiErrorDocument']
-export type SchemaAttachmentDto = components['schemas']['AttachmentDto']
-export type SchemaTrackListItemOutputAttributes =
-  components['schemas']['TrackListItemOutputAttributes']
+export type SchemaTrackAttachment = components['schemas']['TrackAttachment']
+export type SchemaTrackListItemAttributes = components['schemas']['TrackListItemAttributes']
 export type SchemaArtistRelationship = components['schemas']['ArtistRelationship']
 export type SchemaArtistsRelationship = components['schemas']['ArtistsRelationship']
 export type SchemaTrackRelationships = components['schemas']['TrackRelationships']
-export type SchemaTrackListItemOutput = components['schemas']['TrackListItemOutput']
+export type SchemaTrackListItemResource = components['schemas']['TrackListItemResource']
 export type SchemaJsonApiMetaWithPagingAndCursor =
   components['schemas']['JsonApiMetaWithPagingAndCursor']
 export type SchemaOmitTypeClass = components['schemas']['OmitTypeClass']
 export type SchemaIncludedArtistOutput = components['schemas']['IncludedArtistOutput']
 export type SchemaGetTrackListOutput = components['schemas']['GetTrackListOutput']
-export type SchemaPlaylistTrackAttributes = components['schemas']['PlaylistTrackAttributes']
-export type SchemaGetPlaylistTrackListOutputData =
-  components['schemas']['GetPlaylistTrackListOutputData']
+export type SchemaGetTracksCountOutput = components['schemas']['GetTracksCountOutput']
+export type SchemaTrackListItemAttributesForPlaylist =
+  components['schemas']['TrackListItemAttributesForPlaylist']
+export type SchemaTrackListItemResourceForPlaylist =
+  components['schemas']['TrackListItemResourceForPlaylist']
 export type SchemaJsonApiMeta = components['schemas']['JsonApiMeta']
-export type SchemaGetPlaylistTrackListOutput = components['schemas']['GetPlaylistTrackListOutput']
-export type SchemaGetArtistOutput = components['schemas']['GetArtistOutput']
+export type SchemaGetTracksForPlaylistOutput = components['schemas']['GetTracksForPlaylistOutput']
+export type SchemaArtistRef = components['schemas']['ArtistRef']
 export type SchemaTrackDetailsAttributes = components['schemas']['TrackDetailsAttributes']
-export type SchemaTrackDetailsData = components['schemas']['TrackDetailsData']
+export type SchemaTrackDetailsResource = components['schemas']['TrackDetailsResource']
 export type SchemaGetTrackDetailsOutput = components['schemas']['GetTrackDetailsOutput']
 export type SchemaReactionOutput = components['schemas']['ReactionOutput']
 export type SchemaGetPlaylistsRequestPayload = components['schemas']['GetPlaylistsRequestPayload']
 export type SchemaJsonApiMetaWithPaging = components['schemas']['JsonApiMetaWithPaging']
 export type SchemaGetPlaylistsOutput = components['schemas']['GetPlaylistsOutput']
+export type SchemaGetPlaylistsCountOutput = components['schemas']['GetPlaylistsCountOutput']
 export type SchemaReorderTracksRequestPayload = components['schemas']['ReorderTracksRequestPayload']
+export type SchemaUpdateTrackAttributes = components['schemas']['UpdateTrackAttributes']
+export type SchemaUpdateTrackData = components['schemas']['UpdateTrackData']
 export type SchemaUpdateTrackRequestPayload = components['schemas']['UpdateTrackRequestPayload']
-export type SchemaTrackOutputAttributes = components['schemas']['TrackOutputAttributes']
-export type SchemaTrackOutput = components['schemas']['TrackOutput']
-export type SchemaGetTrackOutput = components['schemas']['GetTrackOutput']
+export type SchemaAddTrackToPlaylistAttributes =
+  components['schemas']['AddTrackToPlaylistAttributes']
+export type SchemaAddTrackToPlaylistData = components['schemas']['AddTrackToPlaylistData']
 export type SchemaAddTrackToPlaylistRequestPayload =
   components['schemas']['AddTrackToPlaylistRequestPayload']
+export type SchemaCreateArtistAttributes = components['schemas']['CreateArtistAttributes']
+export type SchemaCreateArtistData = components['schemas']['CreateArtistData']
 export type SchemaCreateArtistRequestPayload = components['schemas']['CreateArtistRequestPayload']
 export type SchemaLoginRequestPayload = components['schemas']['LoginRequestPayload']
 export type SchemaRefreshOutput = components['schemas']['RefreshOutput']
@@ -1262,7 +1403,17 @@ export type SchemaUnauthorizedException = components['schemas']['UnauthorizedExc
 export type SchemaRefreshRequestPayload = components['schemas']['RefreshRequestPayload']
 export type SchemaLogoutRequestPayload = components['schemas']['LogoutRequestPayload']
 export type SchemaGetMeOutput = components['schemas']['GetMeOutput']
+export type SchemaSimpleLoginRequestPayload = components['schemas']['SimpleLoginRequestPayload']
+export type SchemaSimpleLoginOutput = components['schemas']['SimpleLoginOutput']
+export type SchemaSimpleRefreshRequestPayload = components['schemas']['SimpleRefreshRequestPayload']
+export type SchemaSimpleLogoutRequestPayload = components['schemas']['SimpleLogoutRequestPayload']
+export type SchemaCreateTagAttributes = components['schemas']['CreateTagAttributes']
+export type SchemaCreateTagData = components['schemas']['CreateTagData']
 export type SchemaCreateTagRequestPayload = components['schemas']['CreateTagRequestPayload']
+export type SchemaTagAttributes = components['schemas']['TagAttributes']
+export type SchemaTagResource = components['schemas']['TagResource']
+export type SchemaGetTagOutput = components['schemas']['GetTagOutput']
+export type SchemaGetTagsOutput = components['schemas']['GetTagsOutput']
 export type SchemaBinaryFile = components['schemas']['BinaryFile']
 export type $defs = Record<string, never>
 export interface operations {
@@ -1518,7 +1669,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['GetImagesOutput']
+          'application/json': components['schemas']['TrackImages']
         }
       }
       /** @description Bad Request: Invalid image format or dimensions */
@@ -1623,6 +1774,29 @@ export interface operations {
       }
     }
   }
+  TracksPublicController_getTracksCount: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description ID of the user */
+        userId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK: Tracks count retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['GetTracksCountOutput']
+        }
+      }
+    }
+  }
   TracksPublicController_getPlaylistTracks: {
     parameters: {
       query?: never
@@ -1641,7 +1815,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['GetPlaylistTrackListOutput']
+          'application/json': components['schemas']['GetTracksForPlaylistOutput']
         }
       }
       /** @description Not Found: Playlist with the specified ID not found */
@@ -1704,7 +1878,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['GetTrackOutput']
+          'application/json': components['schemas']['GetTrackDetailsOutput']
         }
       }
       /** @description Bad Request: Tag or artist limit exceeded */
@@ -1876,6 +2050,29 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+    }
+  }
+  PlaylistsPublicController_getPlaylistsCount: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description ID of the user */
+        userId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK: Playlists count retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['GetPlaylistsCountOutput']
+        }
       }
     }
   }
@@ -2171,10 +2368,12 @@ export interface operations {
       }
       cookie?: never
     }
-    /** @description Image file:<br/>
+    /**
+     * @description Image file:<br/>
      *             • Field name — <code>cover</code><br/>
      *             • Allowed MIME types — <code>image/jpeg</code>, <code>image/png</code>, <code>image/gif</code><br/>
-     *             • Maximum size — <code>100 KB</code> */
+     *             • Maximum size — <code>100 KB</code>
+     */
     requestBody: {
       content: {
         'multipart/form-data': {
@@ -2190,7 +2389,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['GetImagesOutput']
+          'application/json': components['schemas']['TrackImages']
         }
       }
       /** @description Bad Request: Invalid file or size exceeded */
@@ -2274,7 +2473,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['GetTrackOutput']
+          'application/json': components['schemas']['GetTrackDetailsOutput']
         }
       }
       /** @description Bad Request: Invalid file format or file size exceeded */
@@ -2312,7 +2511,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['GetArtistOutput']
+          'application/json': components['schemas']['ArtistRef']
         }
       }
       /** @description Bad Request: Validation error or invalid input */
@@ -2362,7 +2561,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['GetArtistOutput'][]
+          'application/json': components['schemas']['ArtistRef'][]
         }
       }
     }
@@ -2403,11 +2602,12 @@ export interface operations {
   }
   AuthController_OauthRedirect: {
     parameters: {
-      query?: {
-        /** @description The callback URL to redirect after grand access,
+      query: {
+        /**
+         * @description The callback URL to redirect after grand access,
          *          https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=musicfun&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid
-         * */
-        callbackUrl?: string
+         */
+        callbackUrl: string
       }
       header?: never
       path?: never
@@ -2548,6 +2748,94 @@ export interface operations {
       }
     }
   }
+  SimpleAuthController_login: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SimpleLoginRequestPayload']
+      }
+    }
+    responses: {
+      /** @description OK: Token pair retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SimpleLoginOutput']
+        }
+      }
+      /** @description Unauthorized: Invalid login or password */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['UnauthorizedException']
+        }
+      }
+    }
+  }
+  SimpleAuthController_refresh: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SimpleRefreshRequestPayload']
+      }
+    }
+    responses: {
+      /** @description OK: Token pair refreshed successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SimpleLoginOutput']
+        }
+      }
+      /** @description Unauthorized: Refresh token is invalid, expired, or revoked */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['UnauthorizedException']
+        }
+      }
+    }
+  }
+  SimpleAuthController_logout: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SimpleLogoutRequestPayload']
+      }
+    }
+    responses: {
+      /** @description No Content: Refresh token has been revoked */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
   TagsController_createTag: {
     parameters: {
       query?: never
@@ -2618,7 +2906,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['GetTagOutput'][]
+          'application/json': components['schemas']['GetTagsOutput']
         }
       }
       /** @description Bad Request: Invalid search query */
@@ -2694,9 +2982,8 @@ export enum ImageSizeType {
   thumbnail = 'thumbnail',
   medium = 'medium',
 }
-
 export enum ReactionValue {
-  None = 0,
-  Like = 1,
-  Dislike = -1,
+  Value0 = 0,
+  Value1 = 1,
+  ValueMinus1 = -1,
 }

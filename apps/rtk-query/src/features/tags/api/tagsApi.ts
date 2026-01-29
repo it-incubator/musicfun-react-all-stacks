@@ -19,16 +19,30 @@ export type TagDto = {
 
 import { baseApi } from '@/app/api/base-api.ts'
 
-import type { Tag } from './tagsApi.types.ts'
+import type { GetTagResponse, GetTagsResponse, Tag } from './tagsApi.types.ts'
 
 export const tagsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     findTags: build.query<Tag[], { value: string }>({
       query: ({ value }) => `/tags/search?search=${value}`,
+      transformResponse: (response: GetTagsResponse) =>
+        response.data.map((tag) => ({
+          id: tag.id,
+          name: tag.attributes.name,
+        })),
       providesTags: ['Tag'],
     }),
-    createTag: build.mutation<void, { name: string }>({
-      query: (body) => ({ url: '/tags', method: 'POST', body }),
+    createTag: build.mutation<GetTagResponse, { name: string }>({
+      query: ({ name }) => ({
+        url: '/tags',
+        method: 'POST',
+        body: {
+          data: {
+            type: 'tags',
+            attributes: { name },
+          },
+        },
+      }),
       invalidatesTags: ['Tag'],
     }),
     removeTag: build.mutation<Tag, { id: string }>({

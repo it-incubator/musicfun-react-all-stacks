@@ -7,10 +7,18 @@ export function useCreatePlaylist() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (payload: { title: string; description: string | null }) => {
+    mutationFn: async (payload: { title: string; description: string | null; tags?: string[] }) => {
       const res = await unwrap(
         getClient().POST('/playlists', {
-          body: payload,
+          body: {
+            data: {
+              type: 'playlists',
+              attributes: {
+                title: payload.title,
+                description: payload.description,
+              },
+            },
+          },
         })
       )
       return res.data

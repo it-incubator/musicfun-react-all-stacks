@@ -76,7 +76,8 @@ export const tracksAPI = baseApi.injectEndpoints({
     >({
       query: ({ title, file }) => {
         const formData = new FormData()
-        formData.append('title', title)
+        formData.append('data[type]', 'tracks')
+        formData.append('data[attributes][title]', title)
         formData.append('file', file)
 
         return {
@@ -94,7 +95,12 @@ export const tracksAPI = baseApi.injectEndpoints({
       query: ({ trackId, payload }) => ({
         url: `playlists/tracks/${trackId}`,
         method: 'PUT',
-        body: payload,
+        body: {
+          data: {
+            type: 'tracks',
+            attributes: payload,
+          },
+        },
       }),
 
       invalidatesTags: ['Track'],
@@ -104,7 +110,12 @@ export const tracksAPI = baseApi.injectEndpoints({
         url: `playlists/${playlistId}/relationships/tracks`,
         method: 'POST',
         body: {
-          trackId: trackId,
+          data: {
+            type: 'playlist-tracks',
+            attributes: {
+              trackId: trackId,
+            },
+          },
         },
       }),
       invalidatesTags: ['Track', 'Playlist'],
