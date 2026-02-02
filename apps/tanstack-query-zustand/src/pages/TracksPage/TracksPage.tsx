@@ -9,7 +9,7 @@ import { TracksTable } from '@/features/tracks'
 import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackRowContainer.tsx'
 import { tracksSortFunction } from '@/pages/TracksPage/TracksSortFunction.ts'
 import { usePlayerStore } from '@/player/model/player-store.ts'
-import { Autocomplete, Typography } from '@/shared/components'
+import { Autocomplete, Spinner, Typography } from '@/shared/components'
 import { useDebounceValue } from '@/shared/hooks'
 import { VU } from '@/shared/utils'
 
@@ -88,13 +88,13 @@ export const TracksPage = () => {
   )
 
   const targetRef = useOnInView(
-    (inView) => {
+    (inView: boolean) => {
       if (inView && hasNextPage && !isFetchingNextPage && !isFetching) {
         void fetchNextPage()
       }
     },
     {
-      threshold: 0,
+      threshold: 0.1,
       rootMargin: '300px',
       triggerOnce: false,
     }
@@ -161,8 +161,7 @@ export const TracksPage = () => {
         {tracks.length === 0 && <div>No tracks found</div>}
         {hasNextPage && (
           <div ref={targetRef}>
-            {/* // Todo: change to little loader */}
-            <div>Loading...</div>
+            {isFetchingNextPage ? <Spinner size={50} /> : <div style={{ height: '10px' }} />}
           </div>
         )}
       </div>
