@@ -51,6 +51,9 @@
       "new_playlists": "New playlists",
       "playlists_not_found": "No playlists found"
     },
+    "label": {
+      "load_error": "Unable to load the playlist"
+    },
     "aria_labels": {
       "open_playlist": "Open playlist {{title}}"
     }
@@ -99,7 +102,8 @@
     "label": {
       "lyrics": "Lyrics",
       "title": "Title",
-      "no_tracks": "No tracks"
+      "no_tracks": "No tracks",
+      "load_error": "Unable to load the track"
     },
     "placeholder": {
       "lyrics": "Enter track lyrics",
@@ -119,7 +123,8 @@
       "date_added": "Date added",
       "actions": "Actions",
       "duration": "Duration"
-    }
+    },
+    "release": "Release date"
   },
   "sort": {
     "label": "Sort by",
@@ -174,5 +179,8 @@
     "made_for": "Made for",
     "tracks_count_one": "{{count}} track",
     "tracks_count_other": "{{count}} tracks"
+  },
+  "player": {
+    "unknown_artist": "Unknown Artist"
   }
 }

@@ -13,6 +13,7 @@ import {
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
 import { useDebounceValue } from '@/shared/hooks'
 import { VU } from '@/shared/utils'
+import { useTranslation } from 'react-i18next'
 
 import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
 import s from './PlaylistsPage.module.css'
@@ -41,6 +42,8 @@ const sortConfig: Record<SortOption, ISortConfig> = {
 } as const
 
 export const PlaylistsPage = () => {
+  const { t } = useTranslation()
+
   const hasTokens = !!localStorage.getItem('accessToken') || !!localStorage.getItem('refreshToken')
   const { data: me, isPending: isMeLoading } = useMeQuery()
   const playlistsEnabled = !hasTokens || (!isMeLoading && !!me)
@@ -88,11 +91,11 @@ export const PlaylistsPage = () => {
 
   const tagsOptions = useMemo(
     () =>
-      tagsData?.data?.map((tag) => ({
-        label: tag.name,
+      tagsData?.data?.data?.map((tag) => ({
+        label: tag.attributes.name,
         value: tag.id,
       })) || [],
-    [tagsData?.data]
+    [tagsData?.data?.data]
   )
   const content = useMemo(() => {
     if (!VU.isValid(data?.data)) {
@@ -100,15 +103,15 @@ export const PlaylistsPage = () => {
     }
 
     if (isPending) {
-      return <>Loading...</>
+      return <>{t('common.loading')}</>
     }
 
     if (isError) {
-      return <>Playlist loading error. Please try again later.</>
+      return <>{t('playlists.label.load_error')}</>
     }
 
     if (!VU.isNotEmptyArray(data?.data?.data)) {
-      return <>No results found for your search.</>
+      return <>{t('playlists.title.playlists_not_found')}</>
     }
 
     return (
@@ -119,17 +122,17 @@ export const PlaylistsPage = () => {
         }}
       />
     )
-  }, [data?.data, isError, isPending])
+  }, [data?.data, isError, isPending, t])
 
   return (
     <PageWrapper>
       <Typography variant="h2" as="h1" className={s.title}>
-        All Playlists
+        {t('playlists.title.all_playlists')}
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
           <SearchTextField
-            placeholder="Search playlists"
+            placeholder={t('playlists.placeholder.search_playlist')}
             onChange={handleSearchChange}
             value={search}
           />
@@ -139,8 +142,8 @@ export const PlaylistsPage = () => {
           options={tagsOptions}
           value={hashtags}
           onChange={handleHashtagsChange}
-          label="Hashtags"
-          placeholder={isTagsLoading ? 'Loading tags...' : 'Search by hashtags'}
+          label={t('tags.label')}
+          placeholder={isTagsLoading ? t('common.loading_tags') : t('tags.placeholder')}
           disabled={isTagsLoading}
           className={s.autocomplete}
         />

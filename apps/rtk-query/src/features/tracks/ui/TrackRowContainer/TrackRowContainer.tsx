@@ -17,8 +17,6 @@ export const TrackRowContainer = ({ trackRow, userId, playlistId }: TrackRowCont
   return (
     <TrackRow
       trackRow={trackRow}
-      playingTrackId={'mock'}
-      playingTrackProgress={20}
       renderActionsCell={(row) => (
         <TrackActions
           likesCount={row.likesCount ?? 0}

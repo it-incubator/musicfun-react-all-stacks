@@ -1,0 +1,218 @@
+{
+  "artists": {
+    "label": "Артисты",
+    "placeholder": "Поиск по артистам"
+  },
+  "auth": {
+    "button": {
+      "continue_without_sign_in": "Продолжить без входа",
+      "sign_in": "Войти",
+      "sign_in_with_apihub": "Войти через APIHub",
+      "logging_out": "Выход..."
+    },
+    "title": {
+      "logout": "Выйти",
+      "my_profile": "Мой профиль"
+    },
+    "modal": {
+      "title": "Миллионы песен. Бесплатно на Musicfun."
+    }
+  },
+  "button": {
+    "choose": "Выбрать",
+    "create": "Создать",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "cancel": "Отмена",
+    "update": "Обновить",
+    "edit_profile": "Редактировать профиль",
+    "saving": "Сохранение...",
+    "save_changes": "Сохранить изменения"
+  },
+  "description": {
+    "label": {
+      "description": "Описание"
+    },
+    "title": {
+      "max_value": "Описание должно быть короче {{ quantity }} символов"
+    }
+  },
+  "playlists": {
+    "button": {
+      "choose_playlist": "Выбрать плейлист",
+      "create_playlist": "Создать плейлист"
+    },
+    "placeholder": {
+      "enter_playlist_description": "Введите описание плейлиста",
+      "enter_playlist_title": "Введите название плейлиста",
+      "search_playlist": "Поиск плейлиста"
+    },
+    "title": {
+      "all_playlists": "Все плейлисты",
+      "create_playlist": "Создать плейлист",
+      "edit_playlist": "Редактировать плейлист",
+      "new_playlists": "Новые плейлисты",
+      "no_playlists": "Здесь пока нет плейлистов",
+      "playlists_not_found": "Плейлисты не найдены"
+    },
+    "label": {
+      "load_error": "Не удалось загрузить плейлист"
+    },
+    "aria_labels": {
+      "open_playlist": "Открыть плейлист {{title}}"
+    }
+  },
+  "sidebar": {
+    "all_playlists": "Все плейлисты",
+    "all_tracks": "Все треки",
+    "create_playlist": "Создать плейлист",
+    "home": "Главная",
+    "upload_track": "Загрузить трек",
+    "your_library": "Ваша библиотека"
+  },
+  "tabs": {
+    "playlists": "Плейлисты",
+    "tracks": "Треки",
+    "liked_playlists": "Любимые плейлисты",
+    "liked_tracks": "Любимые треки",
+    "possessive_case": ""
+  },
+  "tags": {
+    "label": "Хэштеги",
+    "placeholder": "Поиск по хэштегам",
+    "add_tag_placeholder": "Добавьте тег и нажмите Enter"
+  },
+  "title": {
+    "max_value": "Название должно быть короче {{ quantity }} символов",
+    "min_value": "Название должно содержать не менее {{ quantity }} символов",
+    "required": "Название обязательно",
+    "title": "Название"
+  },
+  "tracks": {
+    "button": {
+      "add_to_playlist": "Добавить в плейлист",
+      "all_tracks": "Все треки",
+      "cancel": "Отмена",
+      "create": "Создать",
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "save": "Сохранить",
+      "show_text_song": "Показать текст песни",
+      "upload": "Загрузить",
+      "choose_track": "Выбрать трек",
+      "upload_track": "Загрузить трек",
+      "go_back": "Назад",
+      "delete_from_playlist": "Удалить из плейлиста"
+    },
+    "label": {
+      "lyrics": "Текст песни",
+      "title": "Название",
+      "no_tracks": "Нет треков",
+      "load_error": "Не удалось загрузить трек",
+      "audio": "Аудио",
+      "artist": "Артист"
+    },
+    "placeholder": {
+      "lyrics": "Введите текст песни",
+      "search_tracks": "Поиск треков",
+      "title": "Введите название трека",
+      "no_lyrics": "Для данного трека нет текста"
+    },
+    "title": {
+      "all_tracks": "Все треки",
+      "create": "Создать трек",
+      "edit": "Редактировать трек",
+      "new_tracks": "Новые треки",
+      "tracks_not_found": "Треки не найдены"
+    },
+    "table": {
+      "track": "Трек",
+      "date_added": "Дата добавления",
+      "actions": "Действия",
+      "duration": "Длительность"
+    },
+    "release": "Дата релиза",
+    "error": {
+      "need_select_file": "Необходимо выбрать файл",
+      "incorrect_audio_format": "Пожалуйста, выберите правильный аудио-формат",
+      "file_too_large": "Файл слишком большой. Максимальный размер {{size}} МБ",
+      "upload_cover": "Ошибка загрузки обложки"
+    },
+    "success": {
+      "upload_cover": "Обложка успешно загружена",
+      "uploaded_successfully": "Трек успешно загружен"
+    }
+  },
+  "date": {
+    "today": "сегодня",
+    "yesterday": "вчера",
+    "dayAgo": "{{addedAt}} день назад",
+    "fewDaysAgo": "{{addedAt}} дня назад",
+    "daysAgo": "{{addedAt}} дней назад",
+    "monthAgo": "{{addedAt}} месяц назад",
+    "fewMonthAgo": "{{addedAt}} месяца назад",
+    "monthsAgo": "{{addedAt}} месяцев назад",
+    "created": "Создан"
+  },
+  "sort": {
+    "label": "Сортировать по",
+    "newest_first": "Сначала новые",
+    "oldest_first": "Сначала старые",
+    "most_liked": "Самые популярные",
+    "least_liked": "Наименее популярные"
+  },
+  "placeholder": {
+    "upload_cover_image": "Загрузить обложку",
+    "search_and_select": "Найти и выбрать...",
+    "selected": "выбрано",
+    "no_options_found": "Ничего не найдено",
+    "all_options_selected": "Выбраны все",
+    "which_playlist": "В каком плейлисте находится трек?"
+  },
+  "profile": {
+    "title": {
+      "edit_profile": "Редактировать профиль",
+      "required_name": "Имя обязательно",
+      "required_surname": "Фамилия обязательна",
+      "max_value_name": "Имя должно быть меньше {{ quantity }} символов",
+      "min_value_name": "Имя должно содержать не менее {{ quantity }} символов",
+      "max_value_surname": "Фамилия должна быть меньше {{ quantity }} символов",
+      "min_value_surname": "Фамилия должна содержать не менее {{ quantity }} символов"
+    },
+    "placeholder": {
+      "enter_profile_name": "Введите имя профиля",
+      "enter_profile_surname": "Введите фамилию профиля",
+      "upload_avatar": "Загрузить аватар"
+    },
+    "label": {
+      "name": "Имя",
+      "surname": "Фамилия",
+      "avatar": "Аватар пользователя"
+    },
+    "stats": {
+      "playlists_one": "Плейлист",
+      "playlists_few": "Плейлиста",
+      "playlists_many": "Плейлистов",
+      "tracks_one": "Трек",
+      "tracks_few": "Трека",
+      "tracks_many": "Треков"
+    }
+  },
+  "playlist": {
+    "made_for": "Сделан для",
+    "tracks_count_one": "{{count}} трек",
+    "tracks_count_few": "{{count}} трека",
+    "tracks_count_many": "{{count}} треков",
+    "tracks_count_other": "{{count}} треков"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "loading_tags": "Загрузка тегов..."
+  },
+  "image_uploader": {
+    "error": {
+      "invalid_format": "Разрешены только файлы {{formats}}",
+      "file_too_large": "Размер файла должен быть меньше {{size}}МБ"
+    }
+  }
+}

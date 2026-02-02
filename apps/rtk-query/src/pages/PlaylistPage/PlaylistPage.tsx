@@ -4,25 +4,27 @@ import { useParams } from 'react-router'
 import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
 import { TrackRowContainer, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
-import { usePageSearchParams } from '@/pages/common/hooks'
+import { usePageBackgroundColor, usePageSearchParams } from '@/pages/common/hooks'
+import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { PageWithoutHeader, SearchTextField } from '../common'
 import s from './PlaylistPage.module.css'
 import { ControlPanel } from './ui/ControlPanel'
+import { PlaylistPageSkeleton } from './ui/PlaylistPageSkeleton'
 
 export const PlaylistPage = () => {
   const { t } = useTranslation()
   const { debouncedSearch } = usePageSearchParams()
 
   const { id } = useParams()
-  const { data: playlist } = useFetchPlaylistByIdQuery(id!)
+  const { data: playlist, isLoading: isPlaylistLoading, isSuccess } = useFetchPlaylistByIdQuery(id!)
   const { data: me } = useMeQuery()
 
   const isOwnPlaylist = me?.userId === playlist?.data.attributes.user.id
 
-  const { data: tracks } = useFetchTracksInPlaylistQuery({
+  const { data: tracks, isLoading: isTracksLoading } = useFetchTracksInPlaylistQuery({
     playlistId: id!,
   })
 
@@ -33,13 +35,30 @@ export const PlaylistPage = () => {
       track.attributes.title.toLowerCase().includes(debouncedSearch.toLowerCase())
     ) ?? []
 
-  if (!playlist) {
-    return <div>{t('playlists.title.playlists_not_found')}</div>
+  const playlistCover =
+    playlist?.data.attributes.images &&
+    getImageByType(playlist?.data.attributes.images, ImageType.ORIGINAL)
+
+  const { dominantColor, canvasRef } = usePageBackgroundColor(playlistCover?.url, isSuccess)
+
+  if (isPlaylistLoading || isTracksLoading) {
+    return <PlaylistPageSkeleton />
   }
-  const playlistCover = getImageByType(playlist?.data.attributes.images, ImageType.ORIGINAL)
+
+  if (!playlist) {
+    return (
+      <PageWithoutHeader className={s.trackPage}>
+        <Typography variant="h1" className={s.errorMessage}>
+          {t('playlists.label.load_error')}
+        </Typography>
+      </PageWithoutHeader>
+    )
+  }
 
   return (
-    <PageWithoutHeader className={s.playlistPage}>
+    <PageWithoutHeader backgroundColor={dominantColor || 'var(--color-bg-primary)'}>
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
+
       <PlaylistOverview
         className={s.playlistOverview}
         title={playlist.data.attributes.title}

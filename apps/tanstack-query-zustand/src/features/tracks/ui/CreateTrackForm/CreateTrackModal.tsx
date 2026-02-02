@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import s from '@/features/playlists/ui/CreatePlaylistModal/CreatePlaylistModal.module.css'
@@ -23,6 +24,7 @@ type UploadTrackData = {
 }
 
 export const CreateTrackModal = ({ onClose }: { onClose: () => void }) => {
+  const { t } = useTranslation()
   const { mutate } = useCreateTrack()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const { mutate: mutateUploadCover } = useUploadTrackCover()
@@ -31,7 +33,10 @@ export const CreateTrackModal = ({ onClose }: { onClose: () => void }) => {
 
   const onSubmit: SubmitHandler<UploadTrackData> = (data) => {
     if (!data.file || data.file.length === 0) {
-      toast('Need select a file', { type: 'error', theme: 'colored' })
+      toast(t('tracks.error.need_select_file'), {
+        type: 'error',
+        theme: 'colored',
+      })
       return
     }
 
@@ -41,12 +46,15 @@ export const CreateTrackModal = ({ onClose }: { onClose: () => void }) => {
     const fileExtension = file!.name.toLowerCase().slice(file!.name.lastIndexOf('.'))
 
     if (!allowedExtensions.includes(fileExtension)) {
-      toast('Please select correct audio-format', { type: 'error', theme: 'colored' })
+      toast(t('tracks.error.incorrect_audio_format'), {
+        type: 'error',
+        theme: 'colored',
+      })
       return
     }
 
     if (file!.size > maxSize) {
-      toast(`The file is too large. Max size is ${Math.round(maxSize / (1024 * 1024))} MB`, {
+      toast(t('tracks.error.file_too_large', { size: Math.round(maxSize / (1024 * 1024)) }), {
         type: 'error',
         theme: 'colored',
       })
@@ -54,30 +62,45 @@ export const CreateTrackModal = ({ onClose }: { onClose: () => void }) => {
     }
 
     mutate(
-      { title: data.title, file: file! },
+      {
+        title: data.title,
+        file: file!,
+      },
       {
         onSuccess: (response) => {
           const trackId = response.id
 
           if (selectedFile && trackId) {
             mutateUploadCover(
-              { trackId, cover: selectedFile },
+              {
+                trackId,
+                cover: selectedFile,
+              },
               {
                 onSuccess: () => {
                   onClose()
-                  toast('Success Upload Cover', { type: 'success', theme: 'colored' })
+                  toast(t('tracks.success.upload_cover'), {
+                    type: 'success',
+                    theme: 'colored',
+                  })
                   setSelectedFile(null)
                 },
                 onError: () => {
                   onClose()
-                  toast('Error upload cover', { type: 'success', theme: 'colored' })
+                  toast(t('tracks.error.upload_cover'), {
+                    type: 'error',
+                    theme: 'colored',
+                  })
                   setSelectedFile(null)
                 },
               }
             )
           }
 
-          toast('Track uploaded successfully', { type: 'success', theme: 'colored' })
+          toast(t('tracks.success.uploaded_successfully'), {
+            type: 'success',
+            theme: 'colored',
+          })
           onClose()
           reset()
         },
@@ -86,38 +109,49 @@ export const CreateTrackModal = ({ onClose }: { onClose: () => void }) => {
   }
 
   const handleImageSelect = (fileCover: File) => {
-    if (fileCover.size > 100 * 1024) return
+    if (fileCover.size > 100 * 1024) {
+      return
+    }
     setSelectedFile(fileCover)
   }
 
   return (
     <Dialog open onClose={onClose} className={s.dialog}>
       <DialogHeader>
-        <Typography variant="h2">Create New Track</Typography>
+        <Typography variant="h2">{t('tracks.title.create')}</Typography>
       </DialogHeader>
 
       <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
         <DialogContent className={s.content}>
-          <TextField type={'file'} label="Audlio" placeholder="Added track" {...register('file')} />
+          <TextField
+            type={'file'}
+            label={t('tracks.label.audio')}
+            placeholder={t('tracks.button.upload')}
+            {...register('file')}
+          />
           <ImageUploader
             className={s.imageUploader}
             onImageSelect={handleImageSelect}
             maxSizeInMB={0.1}
           />
           <TextField
-            label="Title"
-            placeholder="Enter playlist title"
+            label={t('title.title')}
+            placeholder={t('tracks.placeholder.title')}
             {...register('title', { required: true })}
           />
-          <Textarea rows={3} label="Lyrics" placeholder="Enter Lyrics description" />
+          <Textarea
+            rows={3}
+            label={t('tracks.label.lyrics')}
+            placeholder={t('tracks.placeholder.lyrics')}
+          />
         </DialogContent>
 
         <DialogFooter>
           <Button variant="secondary" onClick={onClose} type="button">
-            Cancel
+            {t('button.cancel')}
           </Button>
           <Button variant="primary" type="submit">
-            Create
+            {t('button.create')}
           </Button>
         </DialogFooter>
       </form>

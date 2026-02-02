@@ -1,44 +1,43 @@
 import clsx from 'clsx'
-import { useDispatch } from 'react-redux'
 import { Link } from 'react-router'
 
-import { playTrack } from '@/player'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
-import { TableCell, Typography } from '@/shared/components'
+import { IconButton, TableCell, Typography } from '@/shared/components'
+import { PauseIcon, PlayIcon } from '@/shared/icons'
 
 import s from './TrackInfoCell.module.css'
 
-export const TrackInfoCell = ({
-  imageSrc = noCoverPlaceholder,
-  title,
-  artists,
-  isPlaying,
-  id,
-  onTrackPlayClick,
-  url,
-}: {
+type TrackInfoCellProps = {
   imageSrc?: string
+  isHovered: boolean
   title: string
   artists: string[]
   isPlaying: boolean
   id: string
   onTrackPlayClick?: (trackId: string) => void
-  url: string
-}) => {
-  const dispatch = useDispatch()
-  const handleImageClick = () => {
-    onTrackPlayClick?.(id)
-    // TODO: Update to pass full track object with url
-    dispatch(
-      playTrack({ track: { id, title, artist: '', url, duration: 100, albumArt: imageSrc } })
-    )
-  }
+}
 
+export const TrackInfoCell = ({
+  imageSrc = noCoverPlaceholder,
+  title,
+  artists,
+  isHovered,
+  isPlaying,
+  id,
+  onTrackPlayClick,
+}: TrackInfoCellProps) => {
   return (
     <TableCell>
-      <div className={s.box}>
+      <div className={clsx(s.box, { [s.boxHovered]: isHovered })}>
         <div className={s.image}>
-          <img src={imageSrc} alt={title} onClick={handleImageClick} />
+          <img src={imageSrc} alt={title} />
+          <IconButton
+            aria-label="Play track"
+            className={s.playButton}
+            type="button"
+            onClick={() => onTrackPlayClick?.(id)}>
+            {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          </IconButton>
         </div>
         <div className={s.info}>
           <Typography

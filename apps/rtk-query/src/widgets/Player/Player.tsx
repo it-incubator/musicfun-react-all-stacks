@@ -1,33 +1,90 @@
-import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
+import { useFetchTracksQuery } from '@/features/tracks'
+import {
+  useCurrentTrack,
+  usePlaybackModes,
+  usePlaybackProgress,
+  usePlaybackState,
+  usePlayerControls,
+  useVolumeControl,
+} from '@/player'
+import {
+  convertApiTracksToPlayerTracks,
+  convertApiTrackToPlayerTrack,
+} from '@/player/utils/convert-api-track-to-player-track.ts'
+import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { AudioPlayer } from '@/shared/components'
+import { AudioPlayerSkeleton } from '@/shared/components/AudioPlayer/AudioPlayerSceleton/AudioPlayerSkeleton.tsx'
 
 import s from './Player.module.css'
 
-const MOCK_TRACK = {
-  src: 'https://cdn.uppbeat.io/audio-files/c636d7c86452449b1203fc0bded83e29/4358717fc9da477a52fb18a6cbd3afcc/d154b5ce5ff1a05ae8115a3c678062e8/STREAMING-dreamland-matrika-main-version-31140-02-25.mp3',
-  cover: 'https://unsplash.it/112/112',
-  title: 'Play It Safe',
-  artist: 'Julia Wolf',
-}
-
 export const Player = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isShuffle, setIsShuffle] = useState(false)
-  const [isRepeat, setIsRepeat] = useState(false)
+  const { t } = useTranslation()
+  const { track: currentTrack } = useCurrentTrack()
+  const { shuffleMode, repeatMode, setRepeatMode, toggleShuffle } = usePlaybackModes()
+  const { isPlaying } = usePlaybackState()
+  const { seek, pause, resume, next, previous, play } = usePlayerControls()
+  const { currentTime, duration } = usePlaybackProgress()
+  const { volume, setVolume } = useVolumeControl()
 
-  return (
+  const { data: tracks, isLoading: isApiTracksLoading } = useFetchTracksQuery({
+    pageSize: 10,
+    pageNumber: 1,
+  })
+
+  const firstTrack = tracks?.data[0]
+  const playerTrack = firstTrack ? convertApiTrackToPlayerTrack(firstTrack) : null
+  const allPlayerTracks = tracks?.data ? convertApiTracksToPlayerTracks(tracks.data) : []
+  const cover = firstTrack?.attributes.images.main[1]?.url // if you use 0 - image is blurred, if you use 1 - image is clear
+  const title = firstTrack?.attributes.title
+  const artistName = playerTrack?.artist || t('player.unknown_artist')
+
+  const handleNextTrack = () => {
+    next()
+  }
+  const handlePreviousTrack = () => {
+    previous()
+  }
+  const handleTogglePlay = () => {
+    if (currentTrack) {
+      return isPlaying ? pause() : resume()
+    }
+
+    if (firstTrack && allPlayerTracks.length > 0) {
+      return play(playerTrack!, undefined, allPlayerTracks)
+    }
+
+    return undefined
+  }
+  const handleToggleShuffle = () => {
+    toggleShuffle()
+  }
+  const handleSetRepeatMode = () => {
+    setRepeatMode()
+  }
+
+  return isApiTracksLoading ? (
+    <AudioPlayerSkeleton />
+  ) : (
     <AudioPlayer
-      {...MOCK_TRACK}
+      cover={currentTrack?.albumArt || (currentTrack ? noCoverPlaceholder : cover!)}
+      title={currentTrack?.title || title!}
+      artist={currentTrack?.artist || artistName}
       isPlaying={isPlaying}
-      setIsPlaying={setIsPlaying}
-      onNext={() => {}}
-      onPrevious={() => {}}
-      isShuffle={isShuffle}
-      isRepeat={isRepeat}
-      onShuffle={() => setIsShuffle(!isShuffle)}
-      onRepeat={() => setIsRepeat(!isRepeat)}
+      onNext={handleNextTrack}
+      onPrevious={handlePreviousTrack}
+      onTogglePlay={handleTogglePlay}
+      isShuffle={shuffleMode}
+      isRepeat={repeatMode}
+      onShuffle={handleToggleShuffle}
+      onRepeat={handleSetRepeatMode}
       className={s.player}
+      duration={duration}
+      currentTime={currentTime}
+      volume={volume}
+      onTimeSeek={seek}
+      onVolumeSet={setVolume}
     />
   )
 }

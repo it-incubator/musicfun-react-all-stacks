@@ -61,6 +61,13 @@ import type { RepeatMode, Track, TrackPlaybackState, TrackProgress } from './typ
 // Playback Control Hooks
 // ========================================
 
+export const usePlayingTrackProgress = () => {
+  const currentTime = useSelector(selectCurrentTime)
+  const duration = useSelector(selectDuration)
+  const playingTrackProgress = duration > 0 ? (currentTime / duration) * 100 : 0
+  return { playingTrackProgress }
+}
+
 /**
  * Hook for controlling playback (play, pause, stop, etc.)
  */
@@ -342,12 +349,17 @@ export function usePlaybackModes() {
   const shuffleMode = useSelector(selectShuffleMode)
   const modeDescription = useSelector(selectPlaybackModeDescription)
 
-  const setRepeatModeValue = useCallback(
-    (mode: RepeatMode) => {
-      dispatch(setRepeatMode(mode))
-    },
-    [dispatch]
-  )
+  const setRepeatModeValue = useCallback(() => {
+    if (repeatMode === 'off') {
+      dispatch(setRepeatMode('one'))
+    }
+    if (repeatMode === 'one') {
+      dispatch(setRepeatMode('all'))
+    }
+    if (repeatMode === 'all') {
+      dispatch(setRepeatMode('off'))
+    }
+  }, [dispatch, repeatMode])
 
   const toggleShuffleValue = useCallback(() => {
     dispatch(toggleShuffle())

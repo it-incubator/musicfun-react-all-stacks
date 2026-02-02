@@ -9,7 +9,8 @@ export const useCreateTrack = () => {
   return useMutation({
     mutationFn: async ({ title, file }: { title: string; file: File }) => {
       const formData = new FormData()
-      formData.append('title', title)
+      formData.append('data[type]', 'tracks')
+      formData.append('data[attributes][title]', title)
       formData.append('file', file)
 
       const res = await unwrap(

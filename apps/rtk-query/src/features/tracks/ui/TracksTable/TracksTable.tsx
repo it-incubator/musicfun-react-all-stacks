@@ -45,6 +45,15 @@ export type TrackRowData = {
   url: string
 } & ReactionsProps
 
+const TABLE_COLUMNS: TableColumn[] = [
+  { title: '#', width: '40px' },
+  { title: t('tracks.table.track') },
+  { title: '' },
+  { title: t('tracks.table.date_added'), width: '120px' },
+  { title: t('tracks.table.actions'), width: '150px' },
+  { title: <ClockIcon />, width: '60px' },
+]
+
 export const TracksTable = <T extends TrackRowData>({
   trackRows = [],
   renderTrackRow,
@@ -52,15 +61,6 @@ export const TracksTable = <T extends TrackRowData>({
   if (trackRows.length === 0) {
     return <div>{t('tracks.label.no_tracks')}</div>
   }
-
-  const TABLE_COLUMNS: TableColumn[] = [
-    { title: '#', width: '40px' },
-    { title: t('tracks.table.track') },
-    { title: '' },
-    { title: t('tracks.table.date_added'), width: '120px' },
-    { title: t('tracks.table.actions'), width: '150px' },
-    { title: <ClockIcon />, width: '60px' },
-  ]
 
   return (
     <Table>

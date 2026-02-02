@@ -5,11 +5,11 @@ import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { useFetchTracksQuery } from '@/features/tracks'
 
 export const useOwnerData = () => {
-  const { data: user, isLoading } = useMeQuery()
+  const { data: user, isLoading, isSuccess: isMeQuerySuccess } = useMeQuery()
   const { userId: pageOwnerId } = useParams()
   const isProfileOwner = user?.userId === pageOwnerId
 
-  const { data: tracks } = useFetchTracksQuery(
+  const { data: tracks, isLoading: isTracksLoading } = useFetchTracksQuery(
     {
       pageSize: 10,
       pageNumber: 1,
@@ -19,7 +19,10 @@ export const useOwnerData = () => {
     { skip: isLoading }
   )
 
-  const { data: playlists } = useFetchPlaylistsQuery({ userId: pageOwnerId }, { skip: isLoading })
+  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery(
+    { userId: pageOwnerId },
+    { skip: isLoading }
+  )
 
   let userLogin = isProfileOwner ? user?.login : ''
 
@@ -31,5 +34,14 @@ export const useOwnerData = () => {
     userLogin = tracks.data[0].attributes.user.name
   }
 
-  return { isProfileOwner, userLogin, tracks, playlists }
+  return {
+    isProfileOwner,
+    userLogin,
+    tracks,
+    playlists,
+    isMeQuerySuccess,
+    isLoading,
+    isContentLoading: isPlaylistsLoading || isTracksLoading || isLoading,
+    pageOwnerId,
+  }
 }

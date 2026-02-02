@@ -1,0 +1,38 @@
+.skeleton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  grid-column: 1 / -1;
+}
+
+.mySection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.infoTrack {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.titleArtist {
+  padding-top: 15px;
+}
+
+.PlayBar {
+  display: flex;
+  flex-direction: row;
+  gap: 55px;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.volume {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 10px;
+}

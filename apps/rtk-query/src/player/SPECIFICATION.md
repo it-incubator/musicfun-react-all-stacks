@@ -760,7 +760,7 @@ src/player/
 ├── playerHooks.ts          // Custom React hooks
 ├── utils/
 │   ├── shuffle.ts          // Fisher-Yates shuffle
-│   ├── formatTime.ts       // Time formatting
+│   ├── format-time.ts       // Time formatting
 │   └── throttle.ts         // Throttle utility
 ├── components/
 │   ├── PlayerControls.tsx
