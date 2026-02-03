@@ -191,15 +191,18 @@ export const usePlayerStore = create<PlayerStore>()(
           }
 
           // Load and play the track
-          audioManager.loadTrack(track).then(() => {
-            audioManager.play()
-            set({ playbackState: 'playing' })
-          }).catch((error) => {
-            set({
-              playbackState: 'error',
-              error: error.message,
+          audioManager
+            .loadTrack(track)
+            .then(() => {
+              audioManager.play()
+              set({ playbackState: 'playing' })
             })
-          })
+            .catch((error) => {
+              set({
+                playbackState: 'error',
+                error: error.message,
+              })
+            })
         } else if (state.playbackState === 'paused') {
           // Same track, just resume
           audioManager.play()
@@ -269,15 +272,18 @@ export const usePlayerStore = create<PlayerStore>()(
             // Play next track
             const track = state.tracks[newTrackId]
             if (track) {
-              audioManager.loadTrack(track).then(() => {
-                audioManager.play()
-                set({ playbackState: 'playing' })
-              }).catch((error) => {
-                set({
-                  playbackState: 'error',
-                  error: error.message,
+              audioManager
+                .loadTrack(track)
+                .then(() => {
+                  audioManager.play()
+                  set({ playbackState: 'playing' })
                 })
-              })
+                .catch((error) => {
+                  set({
+                    playbackState: 'error',
+                    error: error.message,
+                  })
+                })
             }
           } else {
             // Stop playback
@@ -300,15 +306,18 @@ export const usePlayerStore = create<PlayerStore>()(
 
           const track = state.tracks[newTrackId]
           if (track) {
-            audioManager.loadTrack(track).then(() => {
-              audioManager.play()
-              set({ playbackState: 'playing' })
-            }).catch((error) => {
-              set({
-                playbackState: 'error',
-                error: error.message,
+            audioManager
+              .loadTrack(track)
+              .then(() => {
+                audioManager.play()
+                set({ playbackState: 'playing' })
               })
-            })
+              .catch((error) => {
+                set({
+                  playbackState: 'error',
+                  error: error.message,
+                })
+              })
           }
         }
         get().updateQueueMetadata()
@@ -341,15 +350,18 @@ export const usePlayerStore = create<PlayerStore>()(
 
             const track = state.tracks[newTrackId]
             if (track) {
-              audioManager.loadTrack(track).then(() => {
-                audioManager.play()
-                set({ playbackState: 'playing' })
-              }).catch((error) => {
-                set({
-                  playbackState: 'error',
-                  error: error.message,
+              audioManager
+                .loadTrack(track)
+                .then(() => {
+                  audioManager.play()
+                  set({ playbackState: 'playing' })
                 })
-              })
+                .catch((error) => {
+                  set({
+                    playbackState: 'error',
+                    error: error.message,
+                  })
+                })
             }
           } else {
             // Restart current track
@@ -369,15 +381,18 @@ export const usePlayerStore = create<PlayerStore>()(
 
           const track = state.tracks[newTrackId]
           if (track) {
-            audioManager.loadTrack(track).then(() => {
-              audioManager.play()
-              set({ playbackState: 'playing' })
-            }).catch((error) => {
-              set({
-                playbackState: 'error',
-                error: error.message,
+            audioManager
+              .loadTrack(track)
+              .then(() => {
+                audioManager.play()
+                set({ playbackState: 'playing' })
               })
-            })
+              .catch((error) => {
+                set({
+                  playbackState: 'error',
+                  error: error.message,
+                })
+              })
           }
         }
         get().updateQueueMetadata()
@@ -396,15 +411,18 @@ export const usePlayerStore = create<PlayerStore>()(
 
           const track = state.tracks[trackId]
           if (track) {
-            audioManager.loadTrack(track).then(() => {
-              audioManager.play()
-              set({ playbackState: 'playing' })
-            }).catch((error) => {
-              set({
-                playbackState: 'error',
-                error: error.message,
+            audioManager
+              .loadTrack(track)
+              .then(() => {
+                audioManager.play()
+                set({ playbackState: 'playing' })
               })
-            })
+              .catch((error) => {
+                set({
+                  playbackState: 'error',
+                  error: error.message,
+                })
+              })
           }
         }
         get().updateQueueMetadata()
@@ -562,15 +580,18 @@ export const usePlayerStore = create<PlayerStore>()(
         const trackId = newQueue[newQueueIndex]
         const track = newTracks[trackId]
         if (track) {
-          audioManager.loadTrack(track).then(() => {
-            audioManager.play()
-            set({ playbackState: 'playing' })
-          }).catch((error) => {
-            set({
-              playbackState: 'error',
-              error: error.message,
+          audioManager
+            .loadTrack(track)
+            .then(() => {
+              audioManager.play()
+              set({ playbackState: 'playing' })
             })
-          })
+            .catch((error) => {
+              set({
+                playbackState: 'error',
+                error: error.message,
+              })
+            })
         }
         get().updateQueueMetadata()
       },
@@ -719,7 +740,8 @@ export const usePlayerStore = create<PlayerStore>()(
         const hasNextTrack = !isAtEnd || state.repeatMode === 'all' || state.repeatMode === 'one'
 
         // Has previous if not at beginning, or if repeat mode is 'all', or if more than 3 seconds into track
-        const hasPreviousTrack = !isAtBeginning || state.repeatMode === 'all' || state.currentTime > 3
+        const hasPreviousTrack =
+          !isAtBeginning || state.repeatMode === 'all' || state.currentTime > 3
 
         set({ hasNextTrack, hasPreviousTrack })
       },
@@ -742,38 +764,58 @@ export const usePlayerStore = create<PlayerStore>()(
 // ========================================
 
 let audioListenersSetup = false
+let cleanupListeners: (() => void) | null = null
 
 export function setupAudioListeners() {
   if (audioListenersSetup) return
+
   audioListenersSetup = true
 
-  audioManager.on('timeupdate', (time) => {
+  const timeupdateHandler = (time: number) => {
     usePlayerStore.setState({ currentTime: time })
-  })
+  }
 
-  audioManager.on('loadedmetadata', ({ duration }) => {
+  const loadedmetadataHandler = ({ duration }: { duration: number }) => {
     usePlayerStore.setState({ duration, isLoadingTrack: false })
-  })
+  }
 
-  audioManager.on('ended', () => {
+  const endedHandler = () => {
     usePlayerStore.getState().handleTrackEnded()
-  })
+  }
 
-  audioManager.on('error', (error) => {
+  const errorHandler = (error: string) => {
     usePlayerStore.setState({
       playbackState: 'error',
       error,
       isLoadingTrack: false,
     })
-  })
+  }
 
-  audioManager.on('waiting', () => {
+  const waitingHandler = () => {
     usePlayerStore.setState({ isLoadingTrack: true })
-  })
+  }
 
-  audioManager.on('canplay', () => {
+  const canplayHandler = () => {
     usePlayerStore.setState({ isLoadingTrack: false })
-  })
+  }
+
+  audioManager.on('timeupdate', timeupdateHandler)
+  audioManager.on('loadedmetadata', loadedmetadataHandler)
+  audioManager.on('ended', endedHandler)
+  audioManager.on('error', errorHandler)
+  audioManager.on('waiting', waitingHandler)
+  audioManager.on('canplay', canplayHandler)
+
+  // Return cleanup function
+  cleanupListeners = () => {
+    audioManager.off('timeupdate', timeupdateHandler)
+    audioManager.off('loadedmetadata', loadedmetadataHandler)
+    audioManager.off('ended', endedHandler)
+    audioManager.off('error', errorHandler)
+    audioManager.off('waiting', waitingHandler)
+    audioManager.off('canplay', canplayHandler)
+    audioListenersSetup = false
+  }
 }
 
 // Initialize audio listeners on first use
@@ -781,5 +823,10 @@ export function initializePlayer() {
   setupAudioListeners()
 }
 
-// Call initialization at module level
-initializePlayer()
+// Cleanup function for testing or unmount
+export function cleanupPlayer() {
+  if (cleanupListeners) {
+    cleanupListeners()
+    cleanupListeners = null
+  }
+}
