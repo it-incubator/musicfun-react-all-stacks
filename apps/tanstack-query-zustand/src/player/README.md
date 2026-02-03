@@ -329,7 +329,7 @@ src/player/
 ├── model/
 │   ├── player-store.ts       # Zustand store with all state and actions
 │   ├── player-selectors.ts   # Selector functions
-│   ├── track-selectors.ts    # Track-specific selectors (performance)
+│   ├── player-track-hooks.ts # Track-specific selectors (performance)
 │   ├── player-hooks.ts       # Custom React hooks
 │   ├── audio-manager.ts      # Singleton Audio wrapper
 │   └── utils/

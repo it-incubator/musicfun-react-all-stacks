@@ -1,10 +1,6 @@
 import { usePlayerStore } from './player-store'
 import type { TrackPlaybackState, TrackProgress } from '../types/player.types'
 
-// ========================================
-// Track-Specific Selectors (Performance Critical)
-// ========================================
-
 /**
  * Hook that returns playback state for a specific track
  * This ensures only the specific track component rerenders when its state changes
@@ -19,7 +15,7 @@ export function useTrackPlaybackState(trackId: string): TrackPlaybackState {
     isCurrentTrack: state.currentTrackId === trackId,
     isPlaying: state.currentTrackId === trackId && state.playbackState === 'playing',
     isPaused: state.currentTrackId === trackId && state.playbackState === 'paused',
-    playbackState: state.currentTrackId === trackId ? state.playbackState : 'idle' as const,
+    playbackState: state.currentTrackId === trackId ? state.playbackState : ('idle' as const),
   }))
 }
 

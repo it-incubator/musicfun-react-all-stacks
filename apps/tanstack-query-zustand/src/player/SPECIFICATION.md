@@ -13,7 +13,7 @@ src/player/
 ├── model/
 │   ├── player-store.ts      # Main Zustand store
 │   ├── player-selectors.ts  # Selector functions
-│   ├── track-selectors.ts  # Track-specific selectors (performance)
+│   ├── player-track-hooks.ts # Track-specific selectors (performance)
 │   ├── player-hooks.ts     # Custom React hooks
 │   ├── audio-manager.ts    # Singleton Audio wrapper
 │   └── utils/
@@ -313,7 +313,7 @@ const { isPlaying } = useTrackPlaybackState(trackId)
 **Solution**: Use track-specific selectors that only return data for specific tracks.
 
 ```typescript
-// In track-selectors.ts
+// In player-track-hooks.ts
 export function useTrackPlaybackState(trackId: string): TrackPlaybackState {
   const currentTrackId = usePlayerStore.getState().currentTrackId
   const playbackState = usePlayerStore.getState().playbackState
