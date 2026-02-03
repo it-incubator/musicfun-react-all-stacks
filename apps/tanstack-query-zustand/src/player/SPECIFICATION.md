@@ -475,11 +475,11 @@ export default React.memo(TrackItem)
 import { usePlayerControls, usePlaybackState, useCurrentTrack, useTrackNavigation, useVolumeControl, usePlaybackModes } from '@/player'
 
 function PlayerControls() {
-  const { togglePlayPause } = usePlayerControls()
+  const { togglePlayPause, setVolume, toggleMute } = usePlayerControls()
   const { isPlaying, isLoading, error } = usePlaybackState()
   const { track } = useCurrentTrack()
   const { next, previous, hasNext, hasPrevious } = useTrackNavigation()
-  const { volume, isMuted, setVolume, toggleMute } = useVolumeControl()
+  const { volume, isMuted } = useVolumeControl()
   const { repeatMode, shuffleMode, cycleRepeatMode, toggleShuffle } = usePlaybackModes()
 
   return (

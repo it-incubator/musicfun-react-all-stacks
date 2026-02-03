@@ -110,10 +110,11 @@ function ProgressBar() {
 #### Volume Control Component
 
 ```tsx
-import { useVolumeControl } from '@/player'
+import { useVolumeControl, usePlayerControls } from '@/player'
 
 function VolumeControl() {
-  const { volume, isMuted, volumePercentage, setVolume, toggleMute } = useVolumeControl()
+  const { volume, isMuted, volumePercentage } = useVolumeControl()
+  const { setVolume, toggleMute } = usePlayerControls()
 
   return (
     <div className="volume-control">
@@ -185,7 +186,7 @@ function PlaylistView({ playlistId, tracks }: { playlistId: string; tracks: Trac
 ### Core Hooks
 
 - **`usePlayer()`** - All-in-one hook with complete player functionality
-- **`usePlayerControls()`** - Play, pause, stop, seek, navigation controls
+- **`usePlayerControls()`** - Play, pause, stop, seek, navigation, volume and mute controls
 - **`usePlaybackState()`** - Current playback state (playing, paused, loading, etc.)
 - **`useCurrentTrack()`** - Current playing track information
 - **`usePlaybackProgress()`** - Time, duration, progress percentage
@@ -201,7 +202,7 @@ function PlaylistView({ playlistId, tracks }: { playlistId: string; tracks: Trac
 
 ### Feature-Specific Hooks
 
-- **`useVolumeControl()`** - Volume and mute controls
+- **`useVolumeControl()`** - Volume and mute state (read-only)
 - **`usePlayerQueue()`** - Queue state and manipulation
 - **`usePlaybackModes()`** - Repeat and shuffle modes
 - **`useTrackNavigation()`** - Next/previous track navigation

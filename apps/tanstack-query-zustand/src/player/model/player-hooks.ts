@@ -254,6 +254,8 @@ export function usePlayerControls() {
       previous: () => usePlayerStore.getState().previousTrack(),
       playAtIndex: (index: number) => usePlayerStore.getState().playTrackAtIndex(index),
       seek: (time: number) => usePlayerStore.getState().seek(time),
+      setVolume: (volume: number) => usePlayerStore.getState().setVolume(volume),
+      toggleMute: () => usePlayerStore.getState().toggleMute(),
     }),
     []
   )
