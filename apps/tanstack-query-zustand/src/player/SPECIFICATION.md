@@ -12,13 +12,14 @@ This specification defines a Zustand store that wraps the HTML5 Audio API to cre
 src/player/
 ├── model/
 │   ├── player-store.ts      # Main Zustand store
-│   ├── player-selectors.ts  # Selector functions
-│   ├── player-track-hooks.ts # Track-specific selectors (performance)
-│   ├── player-hooks.ts     # Custom React hooks
+│   ├── player-track-hooks.ts # Track-specific hooks (performance critical)
+│   ├── player-hooks.ts     # Global React hooks
 │   ├── audio-manager.ts    # Singleton Audio wrapper
 │   └── utils/
 │       ├── shuffle.ts      # Fisher-Yates shuffle
-│       └── format-time.ts  # Time formatting
+│       ├── format-time.ts  # Time formatting
+│       ├── track-navigation.ts # Queue navigation logic
+│       └── convert-api-track-to-player-track.ts # API mappers
 ├── types/
 │   └── player.types.ts     # TypeScript interfaces
 └── index.ts                # Main exports
@@ -26,12 +27,13 @@ src/player/
 
 ### 2.2 State Management Pattern
 
-The store uses `zustand/react` with signals for reactive state updates:
+The store uses `zustand` with persistence middleware:
 
 ```typescript
-import { createWithSignal } from 'zustand/react'
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
-export const usePlayerStore = createWithSignal<PlayerStore>()(
+export const usePlayerStore = create<PlayerStore>()(
   persist(
     (set, get) => ({
       // State and actions
@@ -40,7 +42,10 @@ export const usePlayerStore = createWithSignal<PlayerStore>()(
       name: 'musicfun-player',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        // Persist only these fields
+        // Persist only volume and modes
+        volume: state.volume,
+        repeatMode: state.repeatMode,
+        shuffleMode: state.shuffleMode,
       }),
     }
   )
@@ -291,54 +296,34 @@ clearError()
 
 ## 6. Performance Optimization
 
-### 6.1 Selector Pattern
+### 6.1 Atomic Selection Pattern
 
-The store uses two types of selectors:
-
-1. **Basic Selectors**: Functions that return single values
-2. **Track-Specific Selectors**: Functions that return reactive state for specific tracks
+The store uses atomic state selection to minimize re-renders. Hooks subscribe only to specific primitives, and complex objects are memoized using `useMemo`.
 
 ```typescript
-// Basic selector - returns current value
-const isPlaying = selectIsPlaying()
+// Hook example using atomic selection
+export function usePlaybackState() {
+  const isPlaying = usePlayerStore((state) => state.playbackState === 'playing')
+  const playbackState = usePlayerStore((state) => state.playbackState)
 
-// Track-specific hook - triggers re-render only when THIS track's state changes
-const { isPlaying } = useTrackPlaybackState(trackId)
+  return { isPlaying, playbackState }
+}
 ```
 
 ### 6.2 Track List Optimization
 
-**Problem**: With hundreds of tracks on page, we need to avoid re-rendering all track components when only one track's state changes.
+**Problem**: With hundreds of tracks on page, we need to avoid re-rendering all track components when only one track's state changes or when `currentTime` updates.
 
-**Solution**: Use track-specific selectors that only return data for specific tracks.
+**Solution**: Use track-specific hooks that perform checks inside the selector.
 
 ```typescript
 // In player-track-hooks.ts
 export function useTrackPlaybackState(trackId: string): TrackPlaybackState {
-  const currentTrackId = usePlayerStore.getState().currentTrackId
-  const playbackState = usePlayerStore.getState().playbackState
-
-  return {
-    isCurrentTrack: currentTrackId === trackId,
-    isPlaying: currentTrackId === trackId && playbackState === 'playing',
-    isPaused: currentTrackId === trackId && playbackState === 'paused',
-    playbackState: currentTrackId === trackId ? playbackState : 'idle',
-  }
-}
-
-export function useTrackProgress(trackId: string): TrackProgress {
-  const currentTrackId = usePlayerStore.getState().currentTrackId
-  const currentTime = usePlayerStore.getState().currentTime
-  const duration = usePlayerStore.getState().duration
-
-  if (currentTrackId !== trackId) {
-    return { progress: 0, currentTime: 0 }
-  }
-
-  return {
-    progress: duration > 0 ? (currentTime / duration) * 100 : 0,
-    currentTime,
-  }
+  return usePlayerStore((state) => ({
+    isCurrentTrack: state.currentTrackId === trackId,
+    isPlaying: state.currentTrackId === trackId && state.playbackState === 'playing',
+    // ...
+  }))
 }
 ```
 
@@ -427,29 +412,31 @@ export const audioManager = AudioManager.get()
 
 ### 7.2 Audio Event Listeners
 
+The store subscribes to `audioManager` events to update state:
+
 ```typescript
-audio.addEventListener('timeupdate', () => {
-  // Throttled update
+audioManager.on('timeupdate', (time) => {
+  usePlayerStore.setState({ currentTime: time })
 })
 
-audio.addEventListener('loadedmetadata', () => {
-  store.setDuration(audio.duration)
+audioManager.on('loadedmetadata', ({ duration }) => {
+  usePlayerStore.setState({ duration, isLoadingTrack: false })
 })
 
-audio.addEventListener('ended', () => {
-  store.handleTrackEnded()
+audioManager.on('ended', () => {
+  usePlayerStore.getState().handleTrackEnded()
 })
 
-audio.addEventListener('error', () => {
-  store.setError(audio.error?.message || 'Playback error')
+audioManager.on('error', (error) => {
+  usePlayerStore.setState({ playbackState: 'error', error })
 })
 
-audio.addEventListener('waiting', () => {
-  store.setLoadingState(true)
+audioManager.on('waiting', () => {
+  usePlayerStore.setState({ isLoadingTrack: true })
 })
 
-audio.addEventListener('canplay', () => {
-  store.setLoadingState(false)
+audioManager.on('canplay', () => {
+  usePlayerStore.setState({ isLoadingTrack: false })
 })
 ```
 

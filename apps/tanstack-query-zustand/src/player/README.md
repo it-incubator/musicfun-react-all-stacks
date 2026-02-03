@@ -6,13 +6,21 @@ This folder contains the complete business logic for the music player, implement
 
 ### 1. Initialize Player
 
-Import and call the initialization function once in your app:
+Import and call the initialization function once in your app (e.g., in `main.tsx`):
 
 ```typescript
-// src/main.tsx or App.tsx
+// src/main.tsx
 import { initializePlayer } from '@/player'
 
 initializePlayer()
+```
+
+You can also clean up listeners when needed (e.g., in tests or hot reload):
+
+```typescript
+import { cleanupPlayer } from '@/player'
+
+cleanupPlayer()
 ```
 
 ### 2. Basic Usage in Components
@@ -266,54 +274,30 @@ removeFromQueue(index)
 clearQueue()
 ```
 
-## Selectors
-
-All selectors are functions that return values from the store:
-
-```typescript
-import { selectIsPlaying, selectCurrentTrack, selectProgress } from '@/player'
-
-const isPlaying = selectIsPlaying()
-const track = selectCurrentTrack()
-const progress = selectProgress()
-```
-
-### Track-Specific Selectors (Performance Critical)
-
-For track-specific state, use the hook versions to prevent unnecessary re-renders:
-
-```typescript
-import { useTrackPlaybackState, useTrackProgress } from '@/player'
-
-// In component:
-const { isPlaying } = useTrackPlaybackState(trackId)
-const { progress } = useTrackProgress(trackId)
-```
-
 ## Performance Considerations
 
 ### Track List Optimization
 
-When rendering lists of tracks, use track-specific hooks to prevent unnecessary re-renders:
+When rendering lists of tracks, use track-specific hooks to prevent unnecessary re-renders. These hooks are optimized with `useMemo` and atomic state selection.
 
 ```tsx
-// ✅ Good - only re-renders when this track's state changes
-function TrackItem({ trackId }) {
-  const { isPlaying } = useTrackPlaybackState(trackId)
+// ✅ Good - only re-renders when THIS track's state changes
+function TrackItem({ track }) {
+  const { isPlaying, isCurrentTrack } = useTrackPlayer(track)
   // ...
 }
 
-// ❌ Bad - re-renders on any player state change
-function TrackItem({ trackId }) {
-  const currentTrackId = selectCurrentTrackId()
-  const isPlaying = currentTrackId === trackId
+// ❌ Bad - re-renders on any player state change (like currentTime updating)
+function TrackItem({ track }) {
+  const state = usePlayerStore()
+  const isPlaying = state.currentTrackId === track.id && state.playbackState === 'playing'
   // ...
 }
 ```
 
 ### Component Memoization
 
-Wrap track components in `React.memo`:
+Wrap track components in `React.memo` to ensure they only re-render when their props (like the `track` object) or the hooks they use trigger an update.
 
 ```tsx
 export default React.memo(TrackItem)
@@ -328,14 +312,15 @@ src/player/
 ├── task.md                   # Original task specification
 ├── model/
 │   ├── player-store.ts       # Zustand store with all state and actions
-│   ├── player-selectors.ts   # Selector functions
-│   ├── player-track-hooks.ts # Track-specific selectors (performance)
-│   ├── player-hooks.ts       # Custom React hooks
+│   ├── player-track-hooks.ts # Track-specific hooks (performance critical)
+│   ├── player-hooks.ts       # Global React hooks
 │   ├── audio-manager.ts      # Singleton Audio wrapper
 │   └── utils/
 │       ├── index.ts          # Utils exports
 │       ├── shuffle.ts        # Shuffle algorithms
-│       └── format-time.ts    # Time formatting
+│       ├── format-time.ts    # Time formatting
+│       ├── track-navigation.ts # Queue navigation logic
+│       └── convert-api-track-to-player-track.ts # API mappers
 └── types/
     └── player.types.ts       # TypeScript types
 ```
