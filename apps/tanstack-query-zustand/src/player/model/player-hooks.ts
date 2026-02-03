@@ -1,13 +1,13 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useEffect } from 'react'
 import type { RepeatMode, Track } from '../types/player.types'
 import {
   useTrackPlaybackState,
   useTrackProgress,
-  useIsCurrentTrack,
   useTrackQueuePosition,
-} from './track-selectors'
+} from './player-track-hooks'
 import { formatTime } from '../utils'
 import { usePlayerStore } from './player-store'
+import { getNextTrackId, getPreviousTrackId, getQueuePosition } from '../utils/track-navigation'
 
 // ========================================
 // Hooks that use reactive state (trigger re-renders)
@@ -16,17 +16,27 @@ import { usePlayerStore } from './player-store'
 export function usePlayingTrackProgress() {
   const currentTime = usePlayerStore((state) => state.currentTime)
   const duration = usePlayerStore((state) => state.duration)
-  const playingTrackProgress = usePlayerStore((state) => {
-    const { currentTime, duration } = state
+
+  const playingTrackProgress = useMemo(() => {
     return duration > 0 ? (currentTime / duration) * 100 : 0
-  })
-  return { playingTrackProgress, currentTime, duration }
+  }, [currentTime, duration])
+
+  return useMemo(
+    () => ({
+      playingTrackProgress,
+      currentTime,
+      duration,
+    }),
+    [playingTrackProgress, currentTime, duration]
+  )
 }
 
 export function usePlaybackState() {
   const isPlaying = usePlayerStore((state) => state.playbackState === 'playing')
   const isPaused = usePlayerStore((state) => state.playbackState === 'paused')
-  const isLoading = usePlayerStore((state) => state.playbackState === 'loading' || state.isLoadingTrack)
+  const isLoading = usePlayerStore(
+    (state) => state.playbackState === 'loading' || state.isLoadingTrack
+  )
   const playbackState = usePlayerStore((state) => state.playbackState)
   const error = usePlayerStore((state) => state.error)
 
@@ -41,35 +51,39 @@ export function usePlaybackState() {
 
 export function useCurrentTrack() {
   const trackId = usePlayerStore((state) => state.currentTrackId)
-  const track = usePlayerStore((state) => 
+  const track = usePlayerStore((state) =>
     state.currentTrackId ? state.tracks[state.currentTrackId] || null : null
   )
   const isPlaying = usePlayerStore((state) => state.playbackState === 'playing')
   const isPaused = usePlayerStore((state) => state.playbackState === 'paused')
 
-  return {
-    trackId,
-    track,
-    isPlaying,
-    isPaused,
-  }
+  return useMemo(
+    () => ({
+      trackId,
+      track,
+      isPlaying,
+      isPaused,
+    }),
+    [trackId, track, isPlaying, isPaused]
+  )
 }
 
 export function usePlaybackProgress() {
   const currentTime = usePlayerStore((state) => state.currentTime)
   const duration = usePlayerStore((state) => state.duration)
-  const progress = usePlayerStore((state) => {
-    const { currentTime, duration } = state
+
+  const progress = useMemo(() => {
     if (!duration || duration === 0) return 0
     return (currentTime / duration) * 100
-  })
-  const formattedTime = usePlayerStore((state) => {
-    const { currentTime, duration } = state
-    return {
+  }, [currentTime, duration])
+
+  const formattedTime = useMemo(
+    () => ({
       current: formatTime(currentTime),
       duration: formatTime(duration),
-    }
-  })
+    }),
+    [currentTime, duration]
+  )
 
   return {
     currentTime,
@@ -82,56 +96,53 @@ export function usePlaybackProgress() {
 export function useVolumeControl() {
   const volume = usePlayerStore((state) => state.volume)
   const isMuted = usePlayerStore((state) => state.isMuted)
-  const effectiveVolume = usePlayerStore((state) => state.isMuted ? 0 : state.volume)
-  const volumePercentage = usePlayerStore((state) => Math.round(state.volume * 100))
 
-  return {
-    volume,
-    isMuted,
-    effectiveVolume,
-    volumePercentage,
-  }
+  const effectiveVolume = useMemo(() => {
+    return isMuted ? 0 : volume
+  }, [volume, isMuted])
+
+  const volumePercentage = useMemo(() => {
+    return Math.round(volume * 100)
+  }, [volume])
+
+  return useMemo(
+    () => ({
+      volume,
+      isMuted,
+      effectiveVolume,
+      volumePercentage,
+    }),
+    [volume, isMuted, effectiveVolume, volumePercentage]
+  )
 }
 
 export function useQueue() {
   const queue = usePlayerStore((state) => state.queue)
   const queueIndex = usePlayerStore((state) => state.queueIndex)
+  const repeatMode = usePlayerStore((state) => state.repeatMode)
   const queueTracks = usePlayerStore((state) => {
     if (!state.queue.length) return []
     return state.queue
       .map((trackId: string) => state.tracks[trackId])
       .filter((track): track is Track => track !== undefined)
   })
-  const queuePosition = usePlayerStore((state) => {
-    const { queueIndex, queue } = state
-    return {
-      current: queueIndex + 1,
-      total: queue.length,
-      isFirst: queueIndex === 0,
-      isLast: queueIndex >= queue.length - 1,
-    }
-  })
   const hasNext = usePlayerStore((state) => state.hasNextTrack)
   const hasPrevious = usePlayerStore((state) => state.hasPreviousTrack)
-  const nextTrackId = usePlayerStore((state) => {
-    if (state.queue.length === 0) return null
-    const isAtEnd = state.queueIndex >= state.queue.length - 1
-    if (isAtEnd) {
-      if (state.repeatMode === 'one') return state.queue[state.queueIndex]
-      if (state.repeatMode === 'all') return state.queue[0]
-      return null
-    }
-    return state.queue[state.queueIndex + 1]
-  })
-  const previousTrackId = usePlayerStore((state) => {
-    if (state.queue.length === 0) return null
-    const isAtBeginning = state.queueIndex <= 0
-    if (isAtBeginning) {
-      if (state.repeatMode === 'all') return state.queue[state.queue.length - 1]
-      return state.queue[0]
-    }
-    return state.queue[state.queueIndex - 1]
-  })
+
+  const queuePosition = useMemo(
+    () => getQueuePosition(queueIndex, queue.length),
+    [queueIndex, queue.length]
+  )
+
+  const nextTrackId = useMemo(
+    () => getNextTrackId(queue, queueIndex, repeatMode),
+    [queue, queueIndex, repeatMode]
+  )
+
+  const previousTrackId = useMemo(
+    () => getPreviousTrackId(queue, queueIndex, repeatMode),
+    [queue, queueIndex, repeatMode]
+  )
 
   return {
     queue,
@@ -148,16 +159,23 @@ export function useQueue() {
 export function usePlaybackModes() {
   const repeatMode = usePlayerStore((state) => state.repeatMode)
   const shuffleMode = usePlayerStore((state) => state.shuffleMode)
-  const modeDescription = usePlayerStore((state) => {
+
+  const modeDescription = useMemo(() => {
     const parts: string[] = []
-    if (state.shuffleMode) parts.push('Shuffle')
-    switch (state.repeatMode) {
-      case 'one': parts.push('Repeat One'); break
-      case 'all': parts.push('Repeat All'); break
-      case 'off': parts.push('No Repeat'); break
+    if (shuffleMode) parts.push('Shuffle')
+    switch (repeatMode) {
+      case 'one':
+        parts.push('Repeat One')
+        break
+      case 'all':
+        parts.push('Repeat All')
+        break
+      case 'off':
+        parts.push('No Repeat')
+        break
     }
     return parts.join(', ')
-  })
+  }, [shuffleMode, repeatMode])
 
   return {
     repeatMode,
@@ -288,25 +306,19 @@ export function usePlayer() {
 export function useTrackNavigation() {
   const hasNext = usePlayerStore((state) => state.hasNextTrack)
   const hasPrevious = usePlayerStore((state) => state.hasPreviousTrack)
-  const nextTrackId = usePlayerStore((state) => {
-    if (state.queue.length === 0) return null
-    const isAtEnd = state.queueIndex >= state.queue.length - 1
-    if (isAtEnd) {
-      if (state.repeatMode === 'one') return state.queue[state.queueIndex]
-      if (state.repeatMode === 'all') return state.queue[0]
-      return null
-    }
-    return state.queue[state.queueIndex + 1]
-  })
-  const previousTrackId = usePlayerStore((state) => {
-    if (state.queue.length === 0) return null
-    const isAtBeginning = state.queueIndex <= 0
-    if (isAtBeginning) {
-      if (state.repeatMode === 'all') return state.queue[state.queue.length - 1]
-      return state.queue[0]
-    }
-    return state.queue[state.queueIndex - 1]
-  })
+  const queue = usePlayerStore((state) => state.queue)
+  const queueIndex = usePlayerStore((state) => state.queueIndex)
+  const repeatMode = usePlayerStore((state) => state.repeatMode)
+
+  const nextTrackId = useMemo(
+    () => getNextTrackId(queue, queueIndex, repeatMode),
+    [queue, queueIndex, repeatMode]
+  )
+
+  const previousTrackId = useMemo(
+    () => getPreviousTrackId(queue, queueIndex, repeatMode),
+    [queue, queueIndex, repeatMode]
+  )
 
   const goNext = useCallback(() => {
     usePlayerStore.getState().nextTrack()
@@ -316,14 +328,17 @@ export function useTrackNavigation() {
     usePlayerStore.getState().previousTrack()
   }, [])
 
-  return {
-    hasNext,
-    hasPrevious,
-    nextTrackId,
-    previousTrackId,
-    next: goNext,
-    previous: goPrevious,
-  }
+  return useMemo(
+    () => ({
+      hasNext,
+      hasPrevious,
+      nextTrackId,
+      previousTrackId,
+      next: goNext,
+      previous: goPrevious,
+    }),
+    [hasNext, hasPrevious, nextTrackId, previousTrackId, goNext, goPrevious]
+  )
 }
 
 // ========================================
@@ -331,20 +346,16 @@ export function useTrackNavigation() {
 // ========================================
 
 export function useSetRepeatMode() {
-  return useCallback(
-    (mode: RepeatMode) => {
-      usePlayerStore.getState().setRepeatMode(mode)
-    },
-    []
-  )
+  return useCallback((mode: RepeatMode) => {
+    usePlayerStore.getState().setRepeatMode(mode)
+  }, [])
 }
 
 export function useCycleRepeatMode() {
   const repeatMode = usePlayerStore((state) => state.repeatMode)
 
   return useCallback(() => {
-    const nextMode: RepeatMode =
-      repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off'
+    const nextMode: RepeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off'
     usePlayerStore.getState().setRepeatMode(nextMode)
   }, [repeatMode])
 }
@@ -370,11 +381,7 @@ export function usePlayerKeyboardControls(enabled = true) {
 
       // Don't trigger if user is typing in an input
       const target = e.target as HTMLElement
-      if (
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA' ||
-        target.isContentEditable
-      ) {
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
         return
       }
 
@@ -427,7 +434,7 @@ export function usePlayerKeyboardControls(enabled = true) {
   )
 
   // Set up keyboard event listener
-  useMemo(() => {
+  useEffect(() => {
     if (typeof window === 'undefined') return
 
     if (enabled) {
@@ -435,33 +442,4 @@ export function usePlayerKeyboardControls(enabled = true) {
       return () => window.removeEventListener('keydown', handleKeyPress)
     }
   }, [enabled, handleKeyPress])
-}
-
-
-// ========================================
-// Export all hooks
-// ========================================
-
-export default {
-  usePlayer,
-  usePlayerControls,
-  usePlaybackState,
-  useCurrentTrack,
-  usePlaybackProgress,
-  usePlayingTrackProgress,
-  useTrackPlaybackState,
-  useTrackProgress,
-  useIsCurrentTrack,
-  useTrackQueuePosition,
-  useTrackPlayer,
-  useVolumeControl,
-  useQueue,
-  useQueueControls,
-  usePlayerQueue,
-  usePlaybackModes,
-  useTrackNavigation,
-  useSetRepeatMode,
-  useCycleRepeatMode,
-  useToggleShuffle,
-  usePlayerKeyboardControls,
 }
