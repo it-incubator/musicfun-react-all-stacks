@@ -4,5 +4,5 @@ import type { components } from '@/shared/api/schema.ts'
 export type CurrentUserReaction = components['schemas']['ReactionValue']
 
 export interface PlaylistItemProps {
-  playlist: components['schemas']['PlaylistListItemJsonApiData']
+  playlist: components['schemas']['PlaylistListItemResource']
 }

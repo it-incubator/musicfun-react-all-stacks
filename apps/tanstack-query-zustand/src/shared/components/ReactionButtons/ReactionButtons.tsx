@@ -1,7 +1,7 @@
 import { clsx } from 'clsx'
 import * as React from 'react'
 
-import { ReactionValue, type SchemaReactionValue } from '@/shared/api/schema.ts'
+import { ReactionValue } from '@/shared/api/schema.ts'
 import { DislikeIcon, LikeIcon, LikeIconFill } from '@/shared/icons'
 import { VU } from '@/shared/utils'
 
@@ -9,7 +9,7 @@ import { IconButton } from '../IconButton'
 import s from './ReactionButtons.module.css'
 
 // duplication of the CurrentUserReaction type to decouple the shared layer from the features layer
-export type CurrentUserReaction = SchemaReactionValue
+export type CurrentUserReaction = ReactionValue
 
 export interface ReactionButtonsProps {
   entityId: string
@@ -30,7 +30,7 @@ const SIZE_MAP = {
 export const ReactionButtons: React.FC<ReactionButtonsProps> = (props) => {
   const {
     entityId,
-    currentReaction = ReactionValue.None,
+    currentReaction = ReactionValue.Value0,
     onLike,
     onDislike,
     onRemoveReaction,
@@ -49,9 +49,9 @@ export const ReactionButtons: React.FC<ReactionButtonsProps> = (props) => {
         switch (true) {
           case reaction === currentReaction:
             return onRemoveReaction?.(entityId)
-          case reaction === ReactionValue.Like:
+          case reaction === ReactionValue.Value1:
             return onLike?.(entityId)
-          case reaction === ReactionValue.Dislike:
+          case reaction === ReactionValue.ValueMinus1:
             return onDislike?.(entityId)
           default:
             return
@@ -72,7 +72,7 @@ export const ReactionButtons: React.FC<ReactionButtonsProps> = (props) => {
           onClick={(e) => {
             e.preventDefault()
 
-            setReaction(ReactionValue.Like)
+            setReaction(ReactionValue.Value1)
           }}
           className={clsx(s.button, isLiked && s.liked, size === 'large' && s.large)}
           aria-label={isLiked ? 'Remove like' : 'Like'}
@@ -89,7 +89,7 @@ export const ReactionButtons: React.FC<ReactionButtonsProps> = (props) => {
         onClick={(e) => {
           e.preventDefault()
 
-          setReaction(ReactionValue.Dislike)
+          setReaction(ReactionValue.ValueMinus1)
         }}
         className={clsx(s.button, isDisliked && s.disliked, size === 'large' && s.large)}
         aria-label={isDisliked ? 'Remove dislike' : 'Dislike'}

@@ -3,7 +3,7 @@ import { type Query, type QueryKey, useMutation, useQueryClient } from '@tanstac
 import type {
   SchemaGetTrackListOutput,
   SchemaReactionOutput,
-  SchemaTrackListItemOutput,
+  SchemaTrackListItemResource,
 } from '@/shared/api/schema'
 import { tracksKeys } from '@/features/tracks/api/query-key-factory.ts'
 
@@ -19,7 +19,7 @@ interface UseEntityReactionsConfig {
   }
 }
 
-type Track = SchemaTrackListItemOutput
+type Track = SchemaTrackListItemResource
 type TrackPage = SchemaGetTrackListOutput
 
 export function useEntityReactions({ entityId, api, keys }: UseEntityReactionsConfig) {

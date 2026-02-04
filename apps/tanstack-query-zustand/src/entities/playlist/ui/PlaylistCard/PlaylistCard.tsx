@@ -22,7 +22,7 @@ interface PlaylistCardProps {
   id: string
   title?: string
   images?: SchemaPlaylistImagesOutputDto
-  description: string | null
+  description?: string | null
   footer?: React.ReactNode
   canEdit?: boolean
 }
