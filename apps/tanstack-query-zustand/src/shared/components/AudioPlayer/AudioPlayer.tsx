@@ -1,7 +1,13 @@
 import { clsx } from 'clsx'
 import * as React from 'react'
 
-import { usePlayerStore } from '@/player/model/player-store.ts'
+import {
+  useCurrentTrack,
+  usePlaybackProgress,
+  usePlaybackState,
+  usePlayerControls,
+  useVolumeControl,
+} from '@/player'
 import { CoverImage } from '@/shared/components'
 import { useThrottleCallback } from '@/shared/hooks'
 import {
@@ -40,27 +46,17 @@ export const AudioPlayer = ({
   className,
   ...props
 }: PlayerProps) => {
-  const {
-    currentTrack: track,
-    currentState,
-    duration,
-    play,
-    pause,
-    currentTime,
-    seek,
-    volume,
-    isMuted,
-    setVolume,
-    toggleMute,
-  } = usePlayerStore()
-
-  const isPlaying = currentState === 'playing'
+  const { track: currentTrack } = useCurrentTrack()
+  const { isPlaying } = usePlaybackState()
+  const { currentTime, duration, formattedTime } = usePlaybackProgress()
+  const { volume, isMuted } = useVolumeControl()
+  const { play, pause, seek, setVolume, toggleMute } = usePlayerControls()
 
   const handlePlayPause = () => {
     if (isPlaying) {
       pause()
     } else {
-      play(track!)
+      if (currentTrack) play(currentTrack)
     }
   }
 
@@ -71,9 +67,6 @@ export const AudioPlayer = ({
   const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = Number(e.target.value) / durationSliderCoefficients
     setThrottledTime(time)
-    // if (audioRef.current) {
-    //   audioRef.current.currentTime = time
-    // }
   }
 
   const setThrottledVolume = useThrottleCallback((newVolume) => {
@@ -89,29 +82,22 @@ export const AudioPlayer = ({
     toggleMute()
   }
 
-  if (!track) {
+  if (!currentTrack) {
     return null
   }
 
   return (
     <div className={clsx(s.player, className)} {...props}>
-      {/*<audio*/}
-      {/*  ref={audioRef}*/}
-      {/*  src={track.src}*/}
-      {/*  onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}*/}
-      {/*  onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}*/}
-      {/*/>*/}
-
       <div className={s.trackInfo}>
         <div className={s.cover}>
-          <CoverImage imageSrc={track.coverSrc} imageDescription={'cover'} />
+          <CoverImage imageSrc={currentTrack.albumArt} imageDescription={'cover'} />
         </div>
         <div className={s.info}>
           <Typography variant="body1" as="h3">
-            {track.title}
+            {currentTrack.title}
           </Typography>
           <Typography variant="body2" as="p">
-            {track.artist}
+            {currentTrack.artist}
           </Typography>
         </div>
       </div>
@@ -136,7 +122,7 @@ export const AudioPlayer = ({
         </div>
 
         <div className={s.progressBar}>
-          <span className={s.time}>{format(currentTime)}</span>
+          <span className={s.time}>{formattedTime.current}</span>
           <input
             type="range"
             min={0}
@@ -145,7 +131,7 @@ export const AudioPlayer = ({
             onChange={handleChangeTime}
             className={clsx(s.progress, s.trackProgress)}
           />
-          <span className={s.time}>{format(duration)}</span>
+          <span className={s.time}>{formattedTime.duration}</span>
         </div>
       </div>
 
@@ -165,10 +151,4 @@ export const AudioPlayer = ({
       </div>
     </div>
   )
-}
-
-const format = (sec: number) => {
-  const m = Math.floor(sec / 60)
-  const s = Math.floor(sec % 60)
-  return `${m}:${s.toString().padStart(2, '0')}`
 }

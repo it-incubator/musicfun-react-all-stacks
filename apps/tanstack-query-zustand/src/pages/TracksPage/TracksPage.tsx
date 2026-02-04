@@ -17,6 +17,12 @@ import { useTranslation } from 'react-i18next'
 import { PageWrapper, SearchTextField, SortSelect } from '../common'
 import { useTracksInfinityQuery } from './model/useTracksInfinityQuery.ts'
 import s from './TracksPage.module.css'
+import {
+  convertApiTrackToPlayerTrack,
+  useCurrentTrack,
+  usePlaybackProgress,
+  usePlayerControls,
+} from '@/player'
 
 const PAGE_SIZE = 10
 
@@ -41,7 +47,9 @@ export const TracksPage = () => {
       sortBy,
       sortDirection,
     })
-  const { play, currentTrack, currentTime } = usePlayerStore()
+  const { currentTime } = usePlaybackProgress()
+  const { play } = usePlayerControls()
+  const { track: currentTrack } = useCurrentTrack()
 
   const tracks = React.useMemo(() => {
     return VU.isNotEmptyArray(data?.pages) ? data.pages.map((page) => page.data).flat() : []
@@ -78,13 +86,7 @@ export const TracksPage = () => {
         : void 0
 
       if (track) {
-        play({
-          artist: 'artist',
-          coverSrc: track.attributes.images.main?.[0]?.url,
-          id: track.id,
-          src: track.attributes.attachments[0].url,
-          title: track.attributes.title,
-        })
+        play(convertApiTrackToPlayerTrack(track))
       }
     },
     [tracks, play]

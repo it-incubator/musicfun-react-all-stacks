@@ -14,8 +14,12 @@ import { setClientConfig } from '@/shared/api/client.ts'
 import { API_BASE_URL, API_KEY, CURRENT_APP_DOMAIN } from '@/shared/config/config.ts'
 import { PrerenderReady } from '@/shared/ui/prerender-ready.tsx'
 import { authStorage } from '@/shared/utils/authStorage.ts'
+import { initializePlayer } from '@/player/model/player-store.ts'
 
 import { App } from '../App.tsx'
+
+// Initialize player audio listeners
+initializePlayer()
 
 export type MutationMeta = {
   /**
