@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { type ChangeEvent, useCallback, useState } from 'react'
+import { type ChangeEvent, useState } from 'react'
+import { useOnInView } from 'react-intersection-observer'
 
 import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
@@ -8,8 +9,8 @@ import { TracksTable } from '@/features/tracks'
 import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackRowContainer.tsx'
 import { tracksSortFunction } from '@/pages/TracksPage/TracksSortFunction.ts'
 import { usePlayerStore } from '@/player/model/player-store.ts'
-import { Autocomplete, Typography } from '@/shared/components'
-import { useDebounceValue, useInfiniteScroll } from '@/shared/hooks'
+import { Autocomplete, Spinner, Typography } from '@/shared/components'
+import { useDebounceValue } from '@/shared/hooks'
 import { VU } from '@/shared/utils'
 import { useTranslation } from 'react-i18next'
 
@@ -35,9 +36,6 @@ export const TracksPage = () => {
   const [sort, setSort] = useState('newest')
 
   const { sortBy, sortDirection } = tracksSortFunction(sort)
-
-  const triggerRef = React.useRef<HTMLDivElement | null>(null)
-  const wrapperRef = React.useRef<HTMLDivElement | null>(null)
 
   // todo: task search tracks filter w/o trhotling/debounce
   // todo: add sorting;
@@ -94,19 +92,18 @@ export const TracksPage = () => {
     [tracks, play]
   )
 
-  const infinityFetchNextPage = () => {
-    if (!isFetching && hasNextPage && !isFetchingNextPage) {
-      void fetchNextPage()
+  const targetRef = useOnInView(
+    (inView: boolean) => {
+      if (inView && hasNextPage && !isFetchingNextPage && !isFetching) {
+        void fetchNextPage()
+      }
+    },
+    {
+      threshold: 0.1,
+      rootMargin: '300px',
+      triggerOnce: false,
     }
-  }
-
-  useInfiniteScroll({
-    targetElement: triggerRef.current,
-    rootElement: wrapperRef.current,
-    callBack: infinityFetchNextPage,
-    rootMargin: '300px',
-    threshold: 0.1,
-  })
+  )
 
   if (isPending) {
     return <div>{t('common.loading')}</div>
@@ -153,7 +150,7 @@ export const TracksPage = () => {
           />
         </div>
       </div>
-      <div ref={wrapperRef}>
+      <div>
         <TracksTable
           trackRows={tracksRowsData}
           renderTrackRow={(trackRow) => {
@@ -171,9 +168,8 @@ export const TracksPage = () => {
 
         {tracks.length === 0 && <div>{t('tracks.title.tracks_not_found')}</div>}
         {hasNextPage && (
-          <div ref={triggerRef}>
-            {/* // Todo: change to little loader */}
-            <div>{t('common.loading')}</div>
+          <div ref={targetRef}>
+            {isFetchingNextPage ? <Spinner size={50} /> : <div style={{ height: '10px' }} />}
           </div>
         )}
       </div>

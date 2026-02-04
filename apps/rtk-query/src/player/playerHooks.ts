@@ -68,7 +68,6 @@ export const usePlayingTrackProgress = () => {
   return { playingTrackProgress }
 }
 
-
 /**
  * Hook for controlling playback (play, pause, stop, etc.)
  */

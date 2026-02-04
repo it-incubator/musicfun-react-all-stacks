@@ -15,7 +15,12 @@ export const artistsApi = baseApi.injectEndpoints({
       query: (name) => ({
         url: `/artists`,
         method: 'POST',
-        body: { name },
+        body: {
+          data: {
+            type: 'artists',
+            attributes: { name },
+          },
+        },
       }),
       invalidatesTags: ['Artist'],
     }),

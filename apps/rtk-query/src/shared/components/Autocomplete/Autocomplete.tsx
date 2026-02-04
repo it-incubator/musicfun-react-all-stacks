@@ -10,15 +10,15 @@ import {
 import { createPortal } from 'react-dom'
 
 import { useGetId } from '@/shared/hooks'
-import {ArrowDownIcon, SearchIcon} from '@/shared/icons'
+import { ArrowDownIcon, SearchIcon } from '@/shared/icons'
 
-import {IconButton} from '../IconButton'
-import {Typography} from '../Typography'
+import { IconButton } from '../IconButton'
+import { Typography } from '../Typography'
 import s from './Autocomplete.module.css'
-import {t} from 'i18next'
-import {CheckedIcon} from "@/shared/icons/CheckedIcon.tsx";
-import {UncheckedIcon} from "@/shared/icons/UncheckedIcon.tsx";
-import {DeleteTagIconButton} from "@/shared/icons/DeleteTagIconButton.tsx";
+import { t } from 'i18next'
+import { CheckedIcon } from '@/shared/icons/CheckedIcon.tsx'
+import { UncheckedIcon } from '@/shared/icons/UncheckedIcon.tsx'
+import { DeleteTagIconButton } from '@/shared/icons/DeleteTagIconButton.tsx'
 
 export type AutocompleteOption = {
   value: string
@@ -42,24 +42,24 @@ export type AutocompleteProps = {
 } & Omit<ComponentProps<'div'>, 'onChange'>
 
 export const Autocomplete = ({
-                               label,
-                               placeholder = t('placeholder.search_and_select'),
-                               options,
-                               value,
-                               searchTerm,
-                               setSearchTerm,
-                               onChange,
-                               disabled = false,
-                               maxTags,
-                               errorMessage,
-                               className,
-                               isRenderInPortal = false,
-                               ...props
-                             }: AutocompleteProps) => {
+  label,
+  placeholder = t('placeholder.search_and_select'),
+  options,
+  value,
+  searchTerm,
+  setSearchTerm,
+  onChange,
+  disabled = false,
+  maxTags,
+  errorMessage,
+  className,
+  isRenderInPortal = false,
+  ...props
+}: AutocompleteProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(-1)
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const hiddenTagsBlockRef = useRef<HTMLDivElement>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const hiddenTagsBlockRef = useRef<HTMLDivElement>(null)
 
   // For detecting clicks outside component to close dropdown
   const containerRef = useRef<HTMLDivElement>(null)
@@ -144,7 +144,7 @@ export const Autocomplete = ({
     const isSelected = value.includes(option.value)
 
     if (isSelected) {
-      onChange(value.filter(v => v !== option.value))
+      onChange(value.filter((v) => v !== option.value))
     } else if (!isMaxTagsReached) {
       onChange([...value, option.value])
     }
@@ -171,14 +171,13 @@ export const Autocomplete = ({
   const maxVisibleTags = 4
   const visibleTags = selectedOptions.slice(0, maxVisibleTags)
   const hiddenTagsCount = selectedOptions.length - maxVisibleTags
-  const hiddenTags = selectedOptions.slice(maxVisibleTags);
-
+  const hiddenTags = selectedOptions.slice(maxVisibleTags)
 
   useEffect(() => {
     if (isPopupOpen && hiddenTagsBlockRef.current) {
-      hiddenTagsBlockRef.current.focus();
+      hiddenTagsBlockRef.current.focus()
     }
-  }, [isPopupOpen]);
+  }, [isPopupOpen])
 
   return (
     <div className={clsx(s.container, className)} ref={containerRef} {...props}>
@@ -199,12 +198,10 @@ export const Autocomplete = ({
           showError && s.error,
           disabled && s.disabled
         )}
-        ref={inputWrapperRef}
-      >
+        ref={inputWrapperRef}>
         <div className={s.tagsWrapper}>
           {visibleTags.map((option) => (
-            <div key={option.value} className={s.tag}
-                 title={option.label}>
+            <div key={option.value} className={s.tag} title={option.label}>
               <Typography variant="body2" className={s.tagText} as="label">
                 #{option.label}
               </Typography>
@@ -214,9 +211,8 @@ export const Autocomplete = ({
                   onClick={() => removeTag(option.value)}
                   className={s.deleteButton}
                   type="button"
-                  tabIndex={-1}
-                >
-                  <DeleteTagIconButton/>
+                  tabIndex={-1}>
+                  <DeleteTagIconButton />
                 </IconButton>
               )}
             </div>
@@ -226,9 +222,8 @@ export const Autocomplete = ({
             <div className={s.hidenTags}>
               <Typography variant="body2" className={s.tagText}>
                 and{' '}
-                <button className={s.underlinedPart}
-                        onClick={() => setIsPopupOpen(!isPopupOpen)}>
-                 {hiddenTagsCount} more
+                <button className={s.underlinedPart} onClick={() => setIsPopupOpen(!isPopupOpen)}>
+                  {hiddenTagsCount} more
                 </button>
               </Typography>
             </div>
@@ -236,23 +231,22 @@ export const Autocomplete = ({
         </div>
         {isPopupOpen && hiddenTagsCount > 0 && (
           <div
-               className={s.hiddenTagsBlock}
-               ref={hiddenTagsBlockRef}
-               tabIndex={0}
-               autoFocus
-               onBlur={(e) => {
-                 if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                   setIsPopupOpen(false);
-                 }
-               }}
-               onKeyDown={(e) => {
-                 if (e.key === 'Escape') {
-                   setIsPopupOpen(false);
-                 }
-               }}>
+            className={s.hiddenTagsBlock}
+            ref={hiddenTagsBlockRef}
+            tabIndex={0}
+            autoFocus
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                setIsPopupOpen(false)
+              }
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setIsPopupOpen(false)
+              }
+            }}>
             {hiddenTags.map((option) => (
-              <div key={option.value} className={s.tag}
-                   title={option.label}>
+              <div key={option.value} className={s.tag} title={option.label}>
                 <Typography variant="body2" className={s.tagText} as="label">
                   #{option.label}
                 </Typography>
@@ -262,9 +256,8 @@ export const Autocomplete = ({
                     onClick={() => removeTag(option.value)}
                     className={s.deleteButton}
                     type="button"
-                    tabIndex={-1}
-                  >
-                    <DeleteTagIconButton/>
+                    tabIndex={-1}>
+                    <DeleteTagIconButton />
                   </IconButton>
                 )}
               </div>
@@ -274,7 +267,7 @@ export const Autocomplete = ({
 
         {/* Search input */}
         <div className={s.inputContainer}>
-          <SearchIcon width={20} height={20}/>
+          <SearchIcon width={20} height={20} />
           <input
             id={id}
             ref={inputRef}
@@ -350,12 +343,9 @@ export const Autocomplete = ({
                     onMouseEnter={() => setFocusedIndex(index)}
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => !option.disabled && toggleOption(option)}
-                    onMouseLeave={() => setFocusedIndex(-1)}
-                  >
-                    {isSelected ? <CheckedIcon/> : <UncheckedIcon/>}
-                    <Typography variant="body2">
-                      #{option.label}
-                    </Typography>
+                    onMouseLeave={() => setFocusedIndex(-1)}>
+                    {isSelected ? <CheckedIcon /> : <UncheckedIcon />}
+                    <Typography variant="body2">#{option.label}</Typography>
                   </div>
                 )
               })

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 
 import { useCreatePlaylist } from '@/pages/PlaylistsPage/model/useCreatePlaylist'
 import { useUploadPlaylistCover } from '@/pages/PlaylistsPage/model/useUploadPlaylistCover'
-import type { SchemaCreatePlaylistRequestPayload } from '@/shared/api/schema'
+import type { SchemaCreatePlaylistAttributes } from '@/shared/api/schema'
 import {
   Button,
   Dialog,
@@ -32,9 +32,9 @@ export const CreatePlaylistModal = ({ onClose }: { onClose: () => void }) => {
   const handleTagsChange = (tags: string[]) => {
     setTags(tags)
   }
-  const { register, handleSubmit, reset } = useForm<SchemaCreatePlaylistRequestPayload>()
+  const { register, handleSubmit, reset } = useForm<SchemaCreatePlaylistAttributes>()
 
-  const onSubmit: SubmitHandler<SchemaCreatePlaylistRequestPayload> = (data) => {
+  const onSubmit: SubmitHandler<SchemaCreatePlaylistAttributes> = (data) => {
     const formData = {
       ...data,
       tags,

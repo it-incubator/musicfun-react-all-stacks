@@ -72,7 +72,6 @@ export const PlaylistsTab = () => {
             <PlaylistCard
               //Todo: playlist editing will work when the data is not mock.
               canEdit={canEditPlaylist}
-              description={playlist.attributes.description}
               id={playlist.id}
               images={playlist.attributes.images || { main: [] }}
               key={playlist.id}

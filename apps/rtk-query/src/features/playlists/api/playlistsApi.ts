@@ -6,6 +6,7 @@ import type {
   CreatePlaylistArgs,
   FetchPlaylistsArgs,
   Playlist,
+  PlaylistDetail,
   PlaylistsResponse,
   UpdatePlaylistArgs,
 } from './playlistsApi.types.ts'
@@ -16,15 +17,20 @@ export const playlistsAPI = baseApi.injectEndpoints({
       query: (params) => ({ url: 'playlists', params }),
       providesTags: ['Playlist', 'Track'],
     }),
-    fetchPlaylistById: build.query<{ data: Playlist }, string>({
+    fetchPlaylistById: build.query<{ data: PlaylistDetail }, string>({
       query: (playlistId) => ({ url: `playlists/${playlistId}` }),
       providesTags: (_result, _error, playlistId) => [{ type: 'Playlist', id: playlistId }],
     }),
-    createPlaylist: build.mutation<{ data: Playlist }, CreatePlaylistArgs>({
-      query: (body) => ({
+    createPlaylist: build.mutation<{ data: PlaylistDetail }, CreatePlaylistArgs>({
+      query: ({ title, description }) => ({
         url: 'playlists',
         method: 'POST',
-        body,
+        body: {
+          data: {
+            type: 'playlists',
+            attributes: { title, description },
+          },
+        },
       }),
       invalidatesTags: ['Playlist'],
     }),
@@ -32,7 +38,12 @@ export const playlistsAPI = baseApi.injectEndpoints({
       query: ({ playlistId, payload }) => ({
         url: `playlists/${playlistId}`,
         method: 'PUT',
-        body: payload,
+        body: {
+          data: {
+            type: 'playlists',
+            attributes: payload,
+          },
+        },
       }),
       invalidatesTags: (_result, _error, { playlistId }) => [
         { type: 'Playlist', id: playlistId },
