@@ -50,7 +50,6 @@ export const MainPage = () => {
             id={playlist.id}
             title={playlist.attributes.title}
             images={playlist.attributes.images}
-            description={playlist.attributes.description}
           />
         )}
       />
