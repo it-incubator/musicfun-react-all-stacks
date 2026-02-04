@@ -5,7 +5,10 @@ import { getImageByType } from '@/shared/utils/get-image-by-type.ts'
  * Gets track cover image
  */
 export const getCoverUrl = (
-  images: components['schemas']['GetImagesOutput'] | undefined
+  images:
+    | components['schemas']['TrackImages']
+    | components['schemas']['PlaylistImagesOutputDTO']
+    | undefined
 ): string => {
   // Try to get medium-sized image
   const mediumImage = getImageByType(images, 'medium')

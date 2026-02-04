@@ -4,7 +4,7 @@ import type { components } from '@/shared/api/schema.ts'
  * Extracts audio URL from track attachments
  */
 export const getAudioUrl = (
-  attachments: components['schemas']['AttachmentDto'][] | undefined
+  attachments: components['schemas']['TrackAttachment'][] | undefined
 ): string => {
   if (!attachments || attachments.length === 0) return ''
 

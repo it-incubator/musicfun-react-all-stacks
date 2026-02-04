@@ -5,13 +5,13 @@ import type { components } from '@/shared/api/schema.ts'
  */
 export const getArtistName = (
   attributes:
-    | components['schemas']['TrackListItemOutputAttributes']
+    | components['schemas']['TrackListItemAttributes']
     | components['schemas']['TrackDetailsAttributes'],
-  user?: components['schemas']['UserOutputDTO']
+  user?: components['schemas']['UserRef']
 ): string => {
-  // TrackDetailsAttributes has artist field
-  if ('artist' in attributes && attributes.artist && typeof attributes.artist === 'string') {
-    return attributes.artist
+  // TrackDetailsAttributes has artists array
+  if ('artists' in attributes && attributes.artists && attributes.artists.length > 0) {
+    return attributes.artists.map((a) => a.name).join(', ')
   }
 
   // Otherwise use user name

@@ -4,9 +4,12 @@ import type { components } from '@/shared/api/schema.ts'
  * Gets image of specific type from images array
  */
 export const getImageByType = (
-  images: components['schemas']['GetImagesOutput'] | undefined,
+  images:
+    | components['schemas']['TrackImages']
+    | components['schemas']['PlaylistImagesOutputDTO']
+    | undefined,
   preferredType: string
-): components['schemas']['ImageDto'] | undefined => {
+): components['schemas']['ImageVariant'] | undefined => {
   if (!images?.main) return undefined
 
   // Search image by type
