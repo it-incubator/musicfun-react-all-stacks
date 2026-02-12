@@ -43,10 +43,10 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "prettier --check"
+      "prettier --write ."
     ],
     "**/*.{json,css,scss,md}": [
-      "prettier --check"
+      "prettier --write ."
     ]
   },
   "dependencies": {}
