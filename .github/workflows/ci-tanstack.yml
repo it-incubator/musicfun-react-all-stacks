@@ -1,0 +1,28 @@
+name: CI - TanStack Query Build
+
+on:
+  pull_request:
+    paths:
+      - 'apps/tanstack-query-zustand/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        working-directory: apps/tanstack-query-zustand
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build app
+        working-directory: apps/tanstack-query-zustand
+        run: pnpm build
