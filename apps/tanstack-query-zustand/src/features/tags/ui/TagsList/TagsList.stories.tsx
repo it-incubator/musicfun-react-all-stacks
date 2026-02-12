@@ -14,6 +14,6 @@ type Story = StoryObj<typeof TagsList>
 
 export const Default: Story = {
   args: {
-    tags: MOCK_HASHTAGS,
+    tags: MOCK_HASHTAGS.map((name, index) => ({ id: String(index), name })),
   },
 }

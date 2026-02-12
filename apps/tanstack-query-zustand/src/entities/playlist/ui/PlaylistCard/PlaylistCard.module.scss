@@ -2,39 +2,40 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-height: 100%;
+
   width: 264px;
+  min-height: 225px;
+}
 
-  & .image {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
-    transition:
-      opacity 0.2s,
-      transform 0.4s;
+.card:hover .image {
+  transform: scale(1.02);
+  opacity: 0.8;
+}
 
-    & img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
+.image {
+  overflow: hidden;
+  height: 153px;
+  transition:
+    opacity 0.2s,
+    transform 0.4s;
 
-  &:hover .image {
-    transform: scale(1.02);
-    opacity: 0.92;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
 .titleWrapper {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
 
-  > .title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .menuIcon {
@@ -54,5 +55,82 @@
 .description {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.withReactionButtons {
+  min-height: 267px;
+}
+
+.reactionButtons {
+  margin-top: auto;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detailsRow {
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+}
+
+.dot::before {
+  content: '•';
+  margin: 0 4px;
+  font-size: 17px;
+  opacity: 0.7;
+}
+
+.madeFor {
+  overflow: hidden;
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.userLink {
+  cursor: pointer;
+
+  overflow: hidden;
+  display: inline-block;
+  flex-shrink: 1;
+
+  min-width: 0;
+  max-width: 100%;
+
+  line-height: inherit;
+  color: white;
+  text-decoration: underline;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  background: none;
+
+  transition: transform 0.4s;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(1.005);
+  }
+}
+
+.created {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.madeForText {
+  flex-shrink: 0;
   white-space: nowrap;
 }

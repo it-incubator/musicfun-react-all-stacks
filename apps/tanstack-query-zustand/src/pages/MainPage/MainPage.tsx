@@ -1,21 +1,55 @@
-import { PlaylistCard } from '@/entities/playlist'
+import { PlaylistCard, PlaylistCardSkeleton } from '@/entities/playlist'
 import { usePlaylists } from '@/features/playlists/api/use-playlists.query'
-import { MOCK_HASHTAGS, TagsList } from '@/features/tags'
+import { usePlaylistReactions } from '@/features/playlists/model/usePlaylistReactions'
+import { TagsList, useTags } from '@/features/tags'
 import { TrackCard } from '@/features/tracks'
 import { useTracksQuery } from '@/pages/TracksPage/model/useTracksQuery'
+import type { components } from '@/shared/api/schema.ts'
 import {
   PathsPlaylistsGetParametersQuerySortBy,
   PathsPlaylistsGetParametersQuerySortDirection,
 } from '@/shared/api/schema.ts'
+import { ReactionButtons } from '@/shared/components'
 import { useTranslation } from 'react-i18next'
 
 import { ContentList, PageWrapper } from '../common'
 import s from './MainPage.module.css'
 
+type PlaylistListItem = components['schemas']['PlaylistListItemResource']
+
+const PlaylistMainPageCard = ({ playlist }: { playlist: PlaylistListItem }) => {
+  const { handleLike, handleDislike, handleRemoveReaction } = usePlaylistReactions(playlist.id)
+
+  return (
+    <PlaylistCard
+      id={playlist.id}
+      title={playlist.attributes.title}
+      images={playlist.attributes.images}
+      userName={playlist.attributes.user.name}
+      userId={playlist.attributes.user.id}
+      addedAt={playlist.attributes.addedAt}
+      shouldShowOwnerName
+      shouldShowCreatedDate
+      footer={
+        <ReactionButtons
+          entityId={playlist.id}
+          currentReaction={playlist.attributes.currentUserReaction}
+          likesCount={playlist.attributes.likesCount}
+          onLike={handleLike}
+          onDislike={handleDislike}
+          onRemoveReaction={handleRemoveReaction}
+        />
+      }
+    />
+  )
+}
+
 export const MainPage = () => {
   const { t } = useTranslation()
 
-  const { data: playlistsResponse } = usePlaylists({
+  const { data: tags } = useTags('')
+
+  const { data: playlistsResponse, isLoading: isPlaylistsLoading } = usePlaylists({
     pageSize: 10,
     sortBy: PathsPlaylistsGetParametersQuerySortBy.addedAt,
     sortDirection: PathsPlaylistsGetParametersQuerySortDirection.desc,
@@ -41,17 +75,13 @@ export const MainPage = () => {
 
   return (
     <PageWrapper className={s.mainPage}>
-      <TagsList tags={MOCK_HASHTAGS} />
+      <TagsList tags={tags || []} />
       <ContentList
         title={t('playlists.title.new_playlists')}
         data={playlists}
-        renderItem={(playlist) => (
-          <PlaylistCard
-            id={playlist.id}
-            title={playlist.attributes.title}
-            images={playlist.attributes.images}
-          />
-        )}
+        isLoading={isPlaylistsLoading}
+        skeleton={<PlaylistCardSkeleton showReactionButtons />}
+        renderItem={(playlist) => <PlaylistMainPageCard playlist={playlist} />}
       />
       <ContentList
         title={t('tracks.title.new_tracks')}

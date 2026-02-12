@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import type { ComponentProps } from 'react'
 
-import noCoverPlaceholder from '@/assets/img/no-cover.png'
+import noCoverPlaceholder from '@/assets/img/no-cover-placeholder.avif'
 
 import s from './CoverImage.styles.module.scss'
 

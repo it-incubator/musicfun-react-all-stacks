@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { type ComponentProps } from 'react'
 
-import { TagsList } from '@/features/tags'
+import { type TagDto, TagsList } from '@/features/tags'
 import { CoverImage, Typography } from '@/shared/components'
 
 import s from './TrackOverview.module.css'
@@ -11,7 +11,7 @@ type TrackOverviewProps = {
   image: string
   releaseDate: string
   artists: string[]
-  tags: string[]
+  tags: TagDto[]
 } & ComponentProps<'div'>
 
 export const TrackOverview = ({
