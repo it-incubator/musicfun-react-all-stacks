@@ -74,10 +74,18 @@ export type TrackAttachment = {
   fileSize: number
 }
 
+// Included
+export type IncludedArtist = {
+  id: string
+  type: string
+  attributes: { name: string }
+}
+
 // Response
 export type FetchTracksResponse = {
   data: TrackDetails<FetchTracksAttributes>[]
   meta: Meta
+  included: IncludedArtist[]
 }
 
 export type FetchTrackByIdResponse = {

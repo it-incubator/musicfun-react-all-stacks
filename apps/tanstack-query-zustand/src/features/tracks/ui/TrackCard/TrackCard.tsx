@@ -3,10 +3,12 @@ import { Link } from 'react-router'
 import {
   Card,
   CoverImage,
+  IconButton,
   ReactionButtons,
   type ReactionButtonsProps,
   Typography,
 } from '@/shared/components'
+import { PauseIcon, PlayIcon } from '@/shared/icons'
 
 import s from './TrackCard.module.css'
 
@@ -15,6 +17,8 @@ type Props = {
   image: string
   title: string
   artists: string
+  onPlaybackClick: () => void
+  isPlaying: boolean
 } & Omit<ReactionButtonsProps, 'className' | 'entityId'>
 
 export const TrackCard = ({
@@ -22,6 +26,8 @@ export const TrackCard = ({
   image,
   title,
   artists,
+  onPlaybackClick,
+  isPlaying,
   currentReaction,
   onRemoveReaction,
   onLike,
@@ -29,12 +35,15 @@ export const TrackCard = ({
   likesCount,
 }: Props) => {
   return (
-    <Card as={Link} to={`/tracks/${id}`} className={s.card}>
+    <Card className={s.card}>
       <div className={s.image}>
         <CoverImage imageSrc={image} imageDescription={title} />
+        <IconButton className={s.playback} onClick={onPlaybackClick}>
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+        </IconButton>
       </div>
 
-      <Typography variant="h3" className={s.title}>
+      <Typography variant="h3" className={s.title} as={Link} to={`/tracks/${id}`}>
         {title}
       </Typography>
 

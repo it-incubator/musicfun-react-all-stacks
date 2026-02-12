@@ -9,7 +9,7 @@ import {
   useFetchPlaylistsQuery,
 } from '@/features/playlists'
 import { TagsList, useFindTagsQuery } from '@/features/tags'
-import { TrackCard, useFetchTracksQuery } from '@/features/tracks'
+import { type IncludedArtist, TrackCard, useFetchTracksQuery } from '@/features/tracks'
 import { selectCurrentPlaylistId, usePlayerControls, useQueueControls } from '@/player'
 import { convertApiTracksToPlayerTracks } from '@/player/utils/convert-api-track-to-player-track.ts'
 import { useAppSelector } from '@/shared/hooks'
@@ -20,6 +20,17 @@ import { ContentList, PageWithHeader } from '../common'
 import s from './MainPage.module.css'
 
 const NEW_TRACKS_PLAYLIST_ID = 'new-tracks'
+
+const getArtistsByTrack = (
+  track: { relationships: { artists: { data: { id: string }[] } } },
+  included: IncludedArtist[]
+): string => {
+  const artistIds = track.relationships.artists.data.map((a) => a.id)
+  return included
+    .filter((artist) => artistIds.includes(artist.id))
+    .map((artist) => artist.attributes.name)
+    .join(', ')
+}
 
 export const MainPage = () => {
   const { t } = useTranslation()
@@ -97,7 +108,11 @@ export const MainPage = () => {
         title={t('tracks.title.new_tracks')}
         data={tracks?.data}
         renderItem={(track) => (
-          <TrackCard track={track} handleTrackCardPlaybackClick={handleTrackCardPlaybackClick} />
+          <TrackCard
+            track={track}
+            artists={getArtistsByTrack(track, tracks?.included || [])}
+            handleTrackCardPlaybackClick={handleTrackCardPlaybackClick}
+          />
         )}
       />
     </PageWithHeader>

@@ -18,10 +18,11 @@ import s from './TrackCard.module.css'
 
 type Props = {
   track: TrackDetails<FetchTracksAttributes>
+  artists: string
   handleTrackCardPlaybackClick: (trackId: string) => void
 }
 
-export const TrackCard = ({ track, handleTrackCardPlaybackClick }: Props) => {
+export const TrackCard = ({ track, artists, handleTrackCardPlaybackClick }: Props) => {
   const [like] = useLikeTrackMutation({
     fixedCacheKey: `track-reaction-${track.id}`,
   })
@@ -68,7 +69,7 @@ export const TrackCard = ({ track, handleTrackCardPlaybackClick }: Props) => {
       </Typography>
 
       <Typography variant="body3" className={s.artists}>
-        {['Freddie Mercury', 'John Lennon'].join(', ')}
+        {artists}
       </Typography>
       <ReactionButtons
         reaction={track.attributes.currentUserReaction}
