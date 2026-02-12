@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { MOCK_5_HASHTAGS } from '@/features/tags'
+import { MOCK_5_HASHTAGS } from '@/features/tags/api/tags-api'
 
 import { PlaylistOverview } from '../PlaylistOverview'
+
+const MOCK_TAGS = MOCK_5_HASHTAGS.map((name, index) => ({ id: String(index), name }))
 
 const meta: Meta<typeof PlaylistOverview> = {
   title: 'entities/PlaylistOverview',
@@ -18,7 +20,7 @@ export const Default: Story = {
     title: 'Chill Mix',
     image: 'https://unsplash.it/297/297',
     description: 'Julia Wolf, ayokay, Khalid and more',
-    tags: MOCK_5_HASHTAGS,
+    tags: MOCK_TAGS,
   },
 }
 
@@ -27,6 +29,6 @@ export const LongTitle: Story = {
     title: 'This is a Very Long Playlist Title That Should Scale Responsively',
     image: 'https://unsplash.it/299/299',
     description: 'A collection of amazing tracks from various artists around the world',
-    tags: MOCK_5_HASHTAGS,
+    tags: MOCK_TAGS,
   },
 }

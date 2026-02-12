@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { MOCK_5_HASHTAGS } from '@/features/tags'
+import { MOCK_5_HASHTAGS } from '@/features/tags/api/tags-api'
 
 import { TrackOverview } from './TrackOverview'
+
+const MOCK_TAGS = MOCK_5_HASHTAGS.map((name, index) => ({ id: String(index), name }))
 
 const meta: Meta<typeof TrackOverview> = {
   title: 'entities/TrackOverview',
@@ -19,7 +21,7 @@ export const Default: Story = {
     image: 'https://unsplash.it/297/297',
     releaseDate: '2025-01-01',
     artists: ['Julia Wolf', 'ayokay', 'Khalid'],
-    tags: MOCK_5_HASHTAGS,
+    tags: MOCK_TAGS,
   },
 }
 
@@ -29,6 +31,6 @@ export const LongTitle: Story = {
     image: 'https://unsplash.it/299/299',
     releaseDate: '2025-01-01',
     artists: ['Julia Wolf', 'ayokay', 'Khalid'],
-    tags: MOCK_5_HASHTAGS,
+    tags: MOCK_TAGS,
   },
 }

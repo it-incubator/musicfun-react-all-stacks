@@ -4,7 +4,7 @@ import { useOnInView } from 'react-intersection-observer'
 
 import { MOCK_ARTISTS } from '@/features/artists/api/artists-api'
 import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
-import { MOCK_HASHTAGS } from '@/features/tags'
+import { MOCK_HASHTAGS } from '@/features/tags/api/tags-api'
 import { TracksTable } from '@/features/tracks'
 import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackRowContainer.tsx'
 import { tracksSortFunction } from '@/pages/TracksPage/TracksSortFunction.ts'

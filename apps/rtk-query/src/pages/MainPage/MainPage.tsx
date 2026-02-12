@@ -80,6 +80,7 @@ export const MainPage = () => {
               userName={playlist.attributes.user.name}
               userId={playlist.attributes.user.id}
               addedAt={playlist.attributes.addedAt}
+              tracksCount={playlist.attributes.tracksCount}
               shouldShowOwnerName
               shouldShowCreatedDate
               actions={

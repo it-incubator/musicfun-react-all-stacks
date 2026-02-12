@@ -91,11 +91,11 @@ export const PlaylistsPage = () => {
 
   const tagsOptions = useMemo(
     () =>
-      tagsData?.data?.data?.map((tag) => ({
-        label: tag.attributes.name,
+      tagsData?.map((tag) => ({
+        label: tag.name,
         value: tag.id,
       })) || [],
-    [tagsData?.data?.data]
+    [tagsData]
   )
   const content = useMemo(() => {
     if (!VU.isValid(data?.data)) {

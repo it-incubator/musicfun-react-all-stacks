@@ -22,6 +22,7 @@ type PlaylistCardPropsBase = {
   userName?: string
   userId?: string
   addedAt?: string
+  tracksCount?: number
   shouldShowOwnerName?: boolean
   shouldShowCreatedDate?: boolean
 }
@@ -47,6 +48,7 @@ export const PlaylistCard = ({
   userName,
   userId,
   addedAt,
+  tracksCount,
   shouldShowOwnerName = false,
   shouldShowCreatedDate = false,
   ...props
@@ -93,10 +95,11 @@ export const PlaylistCard = ({
         )}
 
         <div className={s.detailsRow}>
-          <Typography variant="body2" className={s.tracks}>
-            {/* TODO: Replace 0 with tracksCount when backend is ready */}
-            {t('playlist.tracks_count', { count: 143 })}
-          </Typography>
+          {tracksCount != null && (
+            <Typography variant="body2" className={s.tracks}>
+              {t('playlist.tracks_count', { count: tracksCount })}
+            </Typography>
+          )}
           {shouldShowCreatedDate && (
             <>
               <span className={s.dot} aria-hidden="true" />

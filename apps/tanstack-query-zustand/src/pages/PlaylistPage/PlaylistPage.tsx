@@ -20,7 +20,7 @@ export const PlaylistPage = () => {
         title={playlist.data.attributes.title}
         image={playlist.data.attributes.images.main?.[0]?.url || ''}
         description={playlist.data.attributes.description || ''}
-        tags={playlist.data.attributes.tags.map((tag) => tag.name)}
+        tags={playlist.data.attributes.tags.map((tag) => ({ id: tag.id, name: tag.name }))}
       />
       <ControlPanel playlistId={playlistId!} />
       <TracksTable

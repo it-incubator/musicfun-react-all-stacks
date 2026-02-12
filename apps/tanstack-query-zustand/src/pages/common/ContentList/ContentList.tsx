@@ -6,17 +6,29 @@ import s from './ContentList.module.css'
 
 type ContentListProps<T> = {
   title?: string
-  data: T[]
+  data?: T[]
   renderItem: (item: T) => React.ReactNode
   listClassName?: string
+  isLoading?: boolean
+  skeleton?: React.ReactNode
+  emptyMessage?: string
 }
+
+const SKELETON_ITEM_COUNT = 10
 
 export const ContentList = <T,>({
   title,
-  data,
+  data = [],
   renderItem,
   listClassName,
+  isLoading,
+  skeleton,
+  emptyMessage,
 }: ContentListProps<T>) => {
+  if (data.length === 0 && !isLoading && emptyMessage) {
+    return <Typography variant="body2">{emptyMessage}</Typography>
+  }
+
   return (
     <section>
       {title && (
@@ -25,9 +37,9 @@ export const ContentList = <T,>({
         </Typography>
       )}
       <ul className={clsx(s.list, listClassName)}>
-        {data.map((item, index) => (
-          <li key={index}>{renderItem(item)}</li>
-        ))}
+        {isLoading && skeleton
+          ? Array.from({ length: SKELETON_ITEM_COUNT }).map((_, i) => <li key={i}>{skeleton}</li>)
+          : data.map((item, index) => <li key={index}>{renderItem(item)}</li>)}
       </ul>
     </section>
   )
