@@ -29,6 +29,7 @@ interface PlaylistCardProps {
   userName?: string
   userId?: string
   addedAt?: string
+  tracksCount?: number
   shouldShowOwnerName?: boolean
   shouldShowCreatedDate?: boolean
 }
@@ -44,6 +45,7 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
     userName,
     userId,
     addedAt,
+    tracksCount,
     shouldShowOwnerName = false,
     shouldShowCreatedDate = false,
   } = props
@@ -97,22 +99,27 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
             <Typography variant="body2" as="span" className={s.madeForText}>
               {t('playlist.made_for')}{' '}
             </Typography>
-            <Link
-              to={`/profile/${userId}`}
-              className={s.userLink}
-              onClick={handleUserNameClick}>
+            <Link to={`/profile/${userId}`} className={s.userLink} onClick={handleUserNameClick}>
               {userName}
             </Link>
           </div>
         )}
 
-        {shouldShowCreatedDate && (
-          <div className={s.detailsRow}>
-            <Typography variant="body2" className={s.created}>
-              {formatCreatedDate(addedAt)}
+        <div className={s.detailsRow}>
+          {tracksCount != null && (
+            <Typography variant="body2" className={s.tracks}>
+              {t('playlist.tracks_count', { count: tracksCount })}
             </Typography>
-          </div>
-        )}
+          )}
+          {shouldShowCreatedDate && (
+            <>
+              <span className={s.dot} aria-hidden="true" />
+              <Typography variant="body2" className={s.created}>
+                {formatCreatedDate(addedAt)}
+              </Typography>
+            </>
+          )}
+        </div>
       </div>
 
       {footer}

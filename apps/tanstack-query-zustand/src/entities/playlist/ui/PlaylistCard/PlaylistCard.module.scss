@@ -124,6 +124,10 @@
   }
 }
 
+.tracks {
+  flex-shrink: 0;
+}
+
 .created {
   overflow: hidden;
   text-overflow: ellipsis;

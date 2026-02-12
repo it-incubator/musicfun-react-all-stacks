@@ -16,7 +16,11 @@ export const TrackPage = () => {
         image="https://unsplash.it/297/297"
         releaseDate="2025-01-01"
         artists={['Julia Wolf', 'ayokay', 'Khalid']}
-        tags={[{ id: '1', name: 'chill' }, { id: '2', name: 'mood' }, { id: '3', name: 'relax' }]}
+        tags={[
+          { id: '1', name: 'chill' },
+          { id: '2', name: 'mood' },
+          { id: '3', name: 'relax' },
+        ]}
       />
 
       <ControlPanel />

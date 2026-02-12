@@ -16,22 +16,22 @@
 
 ### Секции на странице
 
-| Секция         | RTK Query                    | TanStack Query + Zustand | TODO (TanStack) |
-| -------------- | ---------------------------- | ------------------------ | --------------- |
+| Секция         | RTK Query                    | TanStack Query + Zustand | TODO (TanStack)                 |
+| -------------- | ---------------------------- | ------------------------ | ------------------------------- |
 | Tags (хештеги) | API (useFetchTagsQuery)      | MOCK (MOCK_HASHTAGS)     | Заменить на реальный API запрос |
 | New Playlists  | API (useFetchPlaylistsQuery) | MOCK (MOCK_PLAYLISTS)    | Заменить на реальный API запрос |
-| New Tracks     | API (useFetchTracksQuery)    | API (useTracksQuery)     | OK |
+| New Tracks     | API (useFetchTracksQuery)    | API (useTracksQuery)     | OK                              |
 
 ### Различия в компонентах
 
-| Аспект                | RTK Query                                               | TanStack Query + Zustand                                     | TODO (TanStack) |
-| --------------------- | ------------------------------------------------------- | ------------------------------------------------------------ | --------------- |
-| TagsList принимает    | `Tag[]` (объекты `{id, name}`)                          | `string[]` (просто строки)                                   | Сделать как в RTK: принимать `Tag[]` |
-| Ссылка из тега        | `/${entity}?tags=${tag.id}`                             | `/${entity}?tag=${tag}`                                      | Сделать как в RTK: `?tags=${tag.id}` |
+| Аспект                | RTK Query                                               | TanStack Query + Zustand                                     | TODO (TanStack)                                    |
+| --------------------- | ------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
+| TagsList принимает    | `Tag[]` (объекты `{id, name}`)                          | `string[]` (просто строки)                                   | Сделать как в RTK: принимать `Tag[]`               |
+| Ссылка из тега        | `/${entity}?tags=${tag.id}`                             | `/${entity}?tag=${tag}`                                      | Сделать как в RTK: `?tags=${tag.id}`               |
 | Плейлисты на MainPage | PlaylistCard с полными данными (reactions, owner, date) | PlaylistCard с базовыми данными (title, images, description) | Сделать как в RTK: добавить reactions, owner, date |
-| Скелетон плейлистов   | PlaylistCardSkeleton (при загрузке)                     | Нет скелетонов                                               | Добавить скелетон |
-| TrackCard             | С reaction buttons (like/dislike)                       | С reaction buttons (like/dislike)                            | OK |
-| ContentList layout    | Есть variant `listRow`                                  | Только стандартный flex-wrap                                 | - |
+| Скелетон плейлистов   | PlaylistCardSkeleton (при загрузке)                     | Нет скелетонов                                               | Добавить скелетон                                  |
+| TrackCard             | С reaction buttons (like/dislike)                       | С reaction buttons (like/dislike)                            | OK                                                 |
+| ContentList layout    | Есть variant `listRow`                                  | Только стандартный flex-wrap                                 | -                                                  |
 
 ### Запуск воспроизведения на MainPage
 

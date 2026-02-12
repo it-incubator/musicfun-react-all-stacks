@@ -28,6 +28,7 @@ const PlaylistMainPageCard = ({ playlist }: { playlist: PlaylistListItem }) => {
       userName={playlist.attributes.user.name}
       userId={playlist.attributes.user.id}
       addedAt={playlist.attributes.addedAt}
+      tracksCount={playlist.attributes.tracksCount}
       shouldShowOwnerName
       shouldShowCreatedDate
       footer={
