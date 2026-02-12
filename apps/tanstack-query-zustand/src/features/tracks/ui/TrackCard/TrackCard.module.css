@@ -2,15 +2,23 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+
   width: 128px;
+
+  transition: background-color 0.2s;
 }
 
 .image {
+  position: relative;
   overflow: hidden;
   height: 103px;
   transition:
     opacity 0.2s,
     transform 0.4s;
+}
+
+.card:has(> .image:hover) {
+  background-color: var(--color-bg-input-hover);
 }
 
 .card:hover .image {
@@ -22,6 +30,25 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.playback {
+  position: absolute;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 50%;
+  height: 50%;
+
+  opacity: 0;
+
+  transition: opacity 0.2s;
+}
+
+.image:hover .playback {
+  opacity: 1;
 }
 
 .title {

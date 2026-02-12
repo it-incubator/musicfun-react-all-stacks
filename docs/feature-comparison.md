@@ -16,22 +16,22 @@
 
 ### Секции на странице
 
-| Секция         | RTK Query                    | TanStack Query + Zustand | TODO (TanStack)                 |
-| -------------- | ---------------------------- | ------------------------ | ------------------------------- |
-| Tags (хештеги) | API (useFetchTagsQuery)      | MOCK (MOCK_HASHTAGS)     | Заменить на реальный API запрос |
-| New Playlists  | API (useFetchPlaylistsQuery) | MOCK (MOCK_PLAYLISTS)    | Заменить на реальный API запрос |
-| New Tracks     | API (useFetchTracksQuery)    | API (useTracksQuery)     | OK                              |
+| Секция         | RTK Query                    | TanStack Query + Zustand | TODO (TanStack) |
+| -------------- | ---------------------------- | ------------------------ | --------------- |
+| Tags (хештеги) | API (useFetchTagsQuery)      | API (useTags)            | OK              |
+| New Playlists  | API (useFetchPlaylistsQuery) | API (usePlaylists)       | OK              |
+| New Tracks     | API (useFetchTracksQuery)    | API (useTracksQuery)     | OK              |
 
 ### Различия в компонентах
 
-| Аспект                | RTK Query                                               | TanStack Query + Zustand                                     | TODO (TanStack)                                    |
-| --------------------- | ------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-| TagsList принимает    | `Tag[]` (объекты `{id, name}`)                          | `string[]` (просто строки)                                   | Сделать как в RTK: принимать `Tag[]`               |
-| Ссылка из тега        | `/${entity}?tags=${tag.id}`                             | `/${entity}?tag=${tag}`                                      | Сделать как в RTK: `?tags=${tag.id}`               |
-| Плейлисты на MainPage | PlaylistCard с полными данными (reactions, owner, date) | PlaylistCard с базовыми данными (title, images, description) | Сделать как в RTK: добавить reactions, owner, date |
-| Скелетон плейлистов   | PlaylistCardSkeleton (при загрузке)                     | Нет скелетонов                                               | Добавить скелетон                                  |
-| TrackCard             | С reaction buttons (like/dislike)                       | С reaction buttons (like/dislike)                            | OK                                                 |
-| ContentList layout    | Есть variant `listRow`                                  | Только стандартный flex-wrap                                 | -                                                  |
+| Аспект                | RTK Query                                                            | TanStack Query + Zustand                                             | TODO (TanStack) |
+| --------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------- |
+| TagsList принимает    | `Tag[]` (объекты `{id, name}`)                                       | `TagDto[]` (объекты `{id, name}`)                                    | OK              |
+| Ссылка из тега        | `/${entity}?tags=${tag.id}`                                          | `/${entity}?tags=${tag.id}`                                          | OK              |
+| Плейлисты на MainPage | PlaylistCard с полными данными (reactions, owner, date, tracksCount) | PlaylistCard с полными данными (reactions, owner, date, tracksCount) | OK              |
+| Скелетон плейлистов   | PlaylistCardSkeleton (при загрузке)                                  | PlaylistCardSkeleton (при загрузке)                                  | OK              |
+| TrackCard             | С reaction buttons (like/dislike)                                    | С reaction buttons (like/dislike)                                    | OK              |
+| ContentList layout    | Есть variant `listRow`                                               | Только стандартный flex-wrap                                         | -               |
 
 ### Запуск воспроизведения на MainPage
 
@@ -180,7 +180,7 @@
 | --------------------------- | --------------------------- | ------------------------ |
 | Button                      | Да                          | Да                       |
 | Card                        | Да                          | Да                       |
-| Skeleton                    | Да                          | Да                       |
+| Skeleton                    | Да                          | Да (shimmer animation)   |
 | Typography                  | Да                          | Да                       |
 | Tabs                        | Да                          | Да                       |
 | Pagination                  | Да                          | Да                       |
@@ -194,7 +194,7 @@
 | ReactionButtons             | Да                          | Да                       |
 | Autocomplete                | Нет (использует SearchTags) | Да (отдельный компонент) |
 | ImageUploader               | Да                          | Нужно проверить          |
-| PlaylistCardSkeleton        | Да                          | Нет                      |
+| PlaylistCardSkeleton        | Да                          | Да                       |
 | TracksTableSkeleton         | Да                          | Нет                      |
 
 ---
@@ -203,12 +203,12 @@
 
 ### RTK Query
 
-| Где                        | Что                                  | Файл                         |
-| -------------------------- | ------------------------------------ | ---------------------------- |
-| MainPage tracks (fallback) | MOCK_TRACKS                          | features/tracks/api/mocks    |
-| Playlists (fallback)       | MOCK_PLAYLISTS, MOCK_PLAYLIST        | features/playlists/api/mocks |
-| Tracks artists             | Hardcoded `['Artist 1', 'Artist 2']` | inline                       |
-| Track duration             | Hardcoded `100`                      | inline                       |
+| Где                        | Что                           | Файл                         |
+| -------------------------- | ----------------------------- | ---------------------------- |
+| MainPage tracks (fallback) | MOCK_TRACKS                   | features/tracks/api/mocks    |
+| Playlists (fallback)       | MOCK_PLAYLISTS, MOCK_PLAYLIST | features/playlists/api/mocks |
+| Tracks artists             | API (`included` artists)      | inline                       |
+| Track duration             | Hardcoded `100`               | inline                       |
 
 > В целом RTK Query проект использует API повсеместно, моки только как fallback.
 
@@ -216,18 +216,16 @@
 
 | Где                      | Что                         | Файл                             |
 | ------------------------ | --------------------------- | -------------------------------- |
-| MainPage tags            | MOCK_HASHTAGS               | features/tags/index              |
-| MainPage playlists       | MOCK_PLAYLISTS              | features/playlists/api/mocks     |
-| TracksPage tag filter    | MOCK_HASHTAGS               | features/tags/index              |
+| TracksPage tag filter    | MOCK_HASHTAGS               | features/tags/api/tags-api       |
 | TracksPage artist filter | MOCK_ARTISTS                | features/artists/api/artists-api |
 | UserPage info            | Hardcoded                   | pages/UserPage/ui/UserInfo       |
 | UserPage all tabs        | MOCK_TRACKS, MOCK_PLAYLISTS | pages/UserPage/ui/UserTabs/\*    |
 | Track duration           | Hardcoded `0`               | inline                           |
 | Track dislikesCount      | Hardcoded `0`               | inline                           |
-| Track artists            | `[]` (пустой массив)        | inline                           |
+| Track artists            | API (`included` artists)    | inline                           |
 | isProfileOwner           | Hardcoded `true`            | pages/UserPage/ui/UserTabs       |
 
-> TanStack Query проект активно использует моки для тегов, артистов, UserPage.
+> TanStack Query проект использует моки для фильтров на TracksPage, UserPage.
 
 ---
 
@@ -240,7 +238,7 @@
 | TracksPage: загрузка очереди                   | Все треки загружаются в queue, добавляются при скролле | Играет один трек, нет очереди                        | TBD               |
 | PlaylistsPage: URL-sync фильтров               | Да (usePageSearchParams синхр. с URL)                  | Нет (state теряется при навигации)                   | TBD               |
 | UserPage: реальные данные или моки             | API                                                    | Hardcoded/Mocks                                      | TBD               |
-| Скелетоны при загрузке                         | Да (PlaylistCardSkeleton, TracksTableSkeleton)         | Нет (текст "Loading...")                             | TBD               |
+| Скелетоны при загрузке                         | Да (PlaylistCardSkeleton, TracksTableSkeleton)         | Да (PlaylistCardSkeleton), TracksTableSkeleton — нет | TBD               |
 | SearchTags vs Autocomplete                     | SearchTags (API-backed, tag-style)                     | Autocomplete (dropdown, может использовать mock/API) | TBD               |
 | Track lyrics page                              | Есть (/tracks/:id/lyrics)                              | Нет                                                  | TBD               |
 
@@ -254,7 +252,7 @@
 2. **ProfileSlice** (avatar, name management + localStorage sync)
 3. **playerMiddleware** (Redux middleware для side-effects плеера)
 4. **Optimistic updates** для реакций (like/dislike кэш обновляется мгновенно)
-5. **PlaylistCardSkeleton** / **TracksTableSkeleton**
+5. **TracksTableSkeleton**
 6. **SearchTags component** (API-backed tag search)
 7. **usePageSearchParams** (URL sync для фильтров/поиска/пагинации)
 8. **ContentList listRow variant** (вертикальный layout)

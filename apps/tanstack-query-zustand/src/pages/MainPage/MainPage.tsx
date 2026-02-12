@@ -1,21 +1,36 @@
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { PlaylistCard, PlaylistCardSkeleton } from '@/entities/playlist'
 import { usePlaylists } from '@/features/playlists/api/use-playlists.query'
 import { usePlaylistReactions } from '@/features/playlists/model/usePlaylistReactions'
 import { TagsList, useTags } from '@/features/tags'
 import { TrackCard } from '@/features/tracks'
+import { useTrackReactions } from '@/features/tracks/model/useTrackReactions'
 import { useTracksQuery } from '@/pages/TracksPage/model/useTracksQuery'
-import type { components } from '@/shared/api/schema.ts'
 import {
+  useCurrentTrack,
+  usePlaybackState,
+  usePlayerControls,
+  usePlayerStore,
+  useQueueControls,
+} from '@/player'
+import { convertApiTracksToPlayerTracks } from '@/player/utils/convert-api-track-to-player-track'
+import type { SchemaIncludedArtistOutput, SchemaTrackListItemResource } from '@/shared/api/schema'
+import {
+  type components,
   PathsPlaylistsGetParametersQuerySortBy,
   PathsPlaylistsGetParametersQuerySortDirection,
-} from '@/shared/api/schema.ts'
+} from '@/shared/api/schema'
 import { ReactionButtons } from '@/shared/components'
-import { useTranslation } from 'react-i18next'
+import { getArtistsByTrack } from '@/shared/utils'
 
 import { ContentList, PageWrapper } from '../common'
 import s from './MainPage.module.css'
 
 type PlaylistListItem = components['schemas']['PlaylistListItemResource']
+
+const NEW_TRACKS_PLAYLIST_ID = 'new-tracks'
 
 const PlaylistMainPageCard = ({ playlist }: { playlist: PlaylistListItem }) => {
   const { handleLike, handleDislike, handleRemoveReaction } = usePlaylistReactions(playlist.id)
@@ -45,8 +60,50 @@ const PlaylistMainPageCard = ({ playlist }: { playlist: PlaylistListItem }) => {
   )
 }
 
+const TrackMainPageCard = ({
+  track,
+  included,
+  onPlaybackClick,
+}: {
+  track: SchemaTrackListItemResource
+  included: SchemaIncludedArtistOutput[]
+  onPlaybackClick: (trackId: string) => void
+}) => {
+  const { handleLike, handleDislike, handleRemoveReaction } = useTrackReactions(track.id)
+  const { trackId: playerTrackId } = useCurrentTrack()
+  const { isPlaying } = usePlaybackState()
+
+  const isPlayerTrack = playerTrackId === track.id
+  const isTrackPlaying = isPlayerTrack && isPlaying
+
+  const handlePlayback = () => {
+    onPlaybackClick(track.id)
+  }
+
+  return (
+    <TrackCard
+      id={track.id}
+      image={track.attributes.images.main?.[0]?.url || ''}
+      title={track.attributes.title}
+      artists={getArtistsByTrack(track, included)}
+      isPlaying={isTrackPlaying}
+      onPlaybackClick={handlePlayback}
+      currentReaction={track.attributes.currentUserReaction}
+      likesCount={track.attributes.likesCount}
+      onLike={handleLike}
+      onDislike={handleDislike}
+      onRemoveReaction={handleRemoveReaction}
+    />
+  )
+}
+
 export const MainPage = () => {
   const { t } = useTranslation()
+  const { loadPlaylist } = useQueueControls()
+  const { play, pause, resume } = usePlayerControls()
+  const { trackId: playerTrackId } = useCurrentTrack()
+  const { isPlaying } = usePlaybackState()
+  const currentPlaylistId = usePlayerStore((state) => state.currentPlaylistId)
 
   const { data: tags } = useTags('')
 
@@ -63,16 +120,32 @@ export const MainPage = () => {
   })
 
   const tracks = TracksResponse?.data || []
+  const included = TracksResponse?.included || []
 
-  const trackDetails = tracks.reduce(
-    (acc, query) => {
-      if (query.id) {
-        acc[query.id] = query
+  const playerTracks = useMemo(() => convertApiTracksToPlayerTracks(tracks), [tracks])
+
+  const handleTrackCardPlaybackClick = (trackId: string) => {
+    const isPlayerTrack = playerTrackId === trackId
+
+    if (isPlayerTrack) {
+      if (isPlaying) {
+        pause()
+      } else {
+        resume()
       }
-      return acc
-    },
-    {} as Record<string, any>
-  )
+      return
+    }
+
+    if (currentPlaylistId !== NEW_TRACKS_PLAYLIST_ID) {
+      const playerTrackIndex = playerTracks.findIndex((track) => track.id === trackId)
+      loadPlaylist(NEW_TRACKS_PLAYLIST_ID, playerTracks, playerTrackIndex)
+    }
+
+    const playerTrack = playerTracks.find((track) => track.id === trackId)
+    if (playerTrack) {
+      play(playerTrack, NEW_TRACKS_PLAYLIST_ID)
+    }
+  }
 
   return (
     <PageWrapper className={s.mainPage}>
@@ -88,19 +161,10 @@ export const MainPage = () => {
         title={t('tracks.title.new_tracks')}
         data={tracks}
         renderItem={(track) => (
-          <TrackCard
-            artists={trackDetails.artists?.[0]?.name || t('tracks.label.artist')}
-            currentReaction={track.attributes.currentUserReaction}
-            id={track.id}
-            image={
-              trackDetails?.data?.attributes?.images?.main?.[0]?.url ||
-              track.attributes.images.main?.[0]?.url
-            }
-            likesCount={track.attributes.likesCount}
-            onDislike={() => {}}
-            onLike={() => {}}
-            onRemoveReaction={() => {}}
-            title={track.attributes.title}
+          <TrackMainPageCard
+            track={track}
+            included={included}
+            onPlaybackClick={handleTrackCardPlaybackClick}
           />
         )}
       />
