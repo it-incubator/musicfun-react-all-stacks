@@ -181,8 +181,8 @@
     "tracks_count_other": "{{count}} tracks"
   },
   "confirm": {
-    "deletePlaylist": "Are you sure you want to delete playlist \"{{name}}\"?",
-    "deleteTrack": "Are you sure you want to delete track \"{{name}}\"?"
+    "deletePlaylistQuestion": "Are you sure you want to delete this playlist?",
+    "deleteTrackQuestion": "Are you sure you want to delete this track?"
   },
   "player": {
     "unknown_artist": "Unknown Artist"

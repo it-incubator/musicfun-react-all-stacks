@@ -166,6 +166,7 @@ export const TracksPage = () => {
                   likesCount={trackRow.likesCount}
                   trackId={trackRow.id}
                   isOwner={trackRow.isOwner}
+                  trackTitle={trackRow.title}
                 />
               )}
             />

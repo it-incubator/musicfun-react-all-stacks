@@ -108,7 +108,7 @@ export const TrackActions = ({
           onEdit={() => handleOpenEditTrackModal(trackId)}
           onDelete={handleDelete}
           onAddToPlaylist={handleOpenChoosePlaylistModal}
-           trackTitle={trackTitle}
+          trackTitle={trackTitle}
         />
       )}
       {isOpenChoosePlaylistModal && (
