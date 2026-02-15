@@ -186,6 +186,10 @@
     "tracks_count_many": "{{count}} треков",
     "tracks_count_other": "{{count}} треков"
   },
+  "confirm": {
+    "deletePlaylistQuestion": "Вы уверены, что хотите удалить плейлист?",
+    "deleteTrackQuestion": "Вы уверены, что хотите удалить трек?"
+  },
   "player": {
     "unknown_artist": "Неизвестный исполнитель"
   }

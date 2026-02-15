@@ -77,6 +77,8 @@ export const TracksTab = () => {
                 isOwner={isProfileOwner}
                 reaction={undefined}
                 likesCount={undefined}
+                trackTitle={trackRow.title}
+
               />
               // <DropdownMenu>
               //   <DropdownMenuTrigger>

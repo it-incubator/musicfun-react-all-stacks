@@ -1,0 +1,52 @@
+.content {
+  width: min(520px, calc(100vw - 32px));
+}
+
+.title {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+.entityName {
+  overflow: hidden;
+
+  margin: 8px 0 0;
+
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header {
+  min-width: 0;
+}
+
+.header > div {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.body {
+  display: flex;
+  justify-content: center;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+
+  padding-top: 20px;
+}
+
+.cancelButton {
+  min-width: 80px;
+}
+
+.confirmButton {
+  min-width: 80px;
+}

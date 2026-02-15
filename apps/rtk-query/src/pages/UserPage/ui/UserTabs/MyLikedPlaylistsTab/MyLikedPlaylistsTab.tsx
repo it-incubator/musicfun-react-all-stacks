@@ -1,9 +1,9 @@
 import { t } from 'i18next'
+import { useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
 import {
   PlaylistCard,
-  useCreatePlaylistModal,
   useEditPlaylistModal,
   useFetchPlaylistsQuery,
   useRemovePlaylistMutation,
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
   Pagination,
 } from '@/shared/components'
+import { DeleteConfirmationDialog } from '@/shared/components/DeleteConfirmationDialog'
 import { MoreIcon } from '@/shared/icons'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
@@ -24,7 +25,8 @@ export const MyLikedPlaylistsTab = () => {
   const { userId } = useParams()
 
   const { handleOpenEditPlaylistModal } = useEditPlaylistModal()
-  const [removePlaylist] = useRemovePlaylistMutation()
+  const [removePlaylist, { isLoading: isDeleteLoading }] = useRemovePlaylistMutation()
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null)
 
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -41,6 +43,13 @@ export const MyLikedPlaylistsTab = () => {
       }
       return prev
     })
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return
+
+    await removePlaylist(deleteTarget.id).unwrap()
+    setDeleteTarget(null)
   }
 
   return (
@@ -77,7 +86,10 @@ export const MyLikedPlaylistsTab = () => {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => {
-                          removePlaylist(playlist.id)
+                          setDeleteTarget({
+                            id: playlist.id,
+                            title: playlist.attributes.title,
+                          })
                         }}>
                         {t('button.delete')}
                       </DropdownMenuItem>
@@ -89,6 +101,18 @@ export const MyLikedPlaylistsTab = () => {
           }}
         />
       )}
+      <DeleteConfirmationDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null)
+          }
+        }}
+        onConfirm={handleDeleteConfirm}
+        entityType="playlist"
+        entityName={deleteTarget?.title ?? ''}
+        isLoading={isDeleteLoading}
+      />
       <Pagination page={pageNumber} pagesCount={pagesCount} onPageChange={handlePageChange} />
     </>
   )

@@ -156,7 +156,7 @@
   cursor: pointer;
 
   position: absolute;
-  z-index: 2;
+  z-index: 1;
   right: 8px;
   bottom: 4px;
 

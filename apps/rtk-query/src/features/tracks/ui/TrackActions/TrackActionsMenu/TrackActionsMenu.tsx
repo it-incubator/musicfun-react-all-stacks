@@ -7,9 +7,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/components'
+import { DeleteConfirmationDialog } from '@/shared/components/DeleteConfirmationDialog'
 import { Paths } from '@/shared/configs'
 import { useCurrentPage } from '@/shared/hooks'
 import { AddToPlaylistIcon, DeleteIcon, EditIcon, MoreIcon, TextIcon } from '@/shared/icons'
+import { useState } from 'react'
 
 type TrackActionsMenuProps = {
   trackId: string
@@ -17,6 +19,7 @@ type TrackActionsMenuProps = {
   onEdit: () => void
   onDelete: () => void
   onAddToPlaylist: () => void
+  trackTitle?: string
 }
 
 export const TrackActionsMenu = ({
@@ -24,11 +27,13 @@ export const TrackActionsMenu = ({
   isOwner,
   onEdit,
   onDelete,
+  trackTitle,
   onAddToPlaylist,
 }: TrackActionsMenuProps) => {
   const { t } = useTranslation()
   const { isTrackPage, isPlaylistPage } = useCurrentPage()
   const navigate = useNavigate()
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const showDelete = !isTrackPage
   const showLyrics = isTrackPage
@@ -36,36 +41,47 @@ export const TrackActionsMenu = ({
   const deleteLabel = isPlaylistPage ? 'tracks.button.delete_from_playlist' : 'tracks.button.delete'
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <MoreIcon />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {isOwner && (
-          <>
-            <DropdownMenuItem onClick={onEdit}>
-              <EditIcon />
-              {t('tracks.button.edit')}
-            </DropdownMenuItem>
-            {showDelete && (
-              <DropdownMenuItem onClick={onDelete}>
-                <DeleteIcon width={24} height={24} />
-                {t(deleteLabel)}
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <MoreIcon />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {isOwner && (
+            <>
+              <DropdownMenuItem onClick={onEdit}>
+                <EditIcon />
+                {t('tracks.button.edit')}
               </DropdownMenuItem>
-            )}
-          </>
-        )}
-        <DropdownMenuItem onClick={onAddToPlaylist}>
-          <AddToPlaylistIcon />
-          {t('tracks.button.add_to_playlist')}
-        </DropdownMenuItem>
-        {showLyrics && (
-          <DropdownMenuItem onClick={() => navigate(`${Paths.TracksLyrics}/${trackId}`)}>
-            <TextIcon />
-            {t('tracks.button.show_text_song')}
+              {showDelete && (
+                <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
+                  <DeleteIcon width={24} height={24} />
+                  {t(deleteLabel)}
+                </DropdownMenuItem>
+              )}
+            </>
+          )}
+          <DropdownMenuItem onClick={onAddToPlaylist}>
+            <AddToPlaylistIcon />
+            {t('tracks.button.add_to_playlist')}
           </DropdownMenuItem>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+          {showLyrics && (
+            <DropdownMenuItem onClick={() => navigate(`${Paths.TracksLyrics}/${trackId}`)}>
+              <TextIcon />
+              {t('tracks.button.show_text_song')}
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {showDelete && (
+        <DeleteConfirmationDialog
+          open={isDeleteDialogOpen}
+          onOpenChange={setIsDeleteDialogOpen}
+          onConfirm={onDelete}
+          entityType="track"
+          entityName={trackTitle ?? ''}
+        />
+      )}
+    </>
   )
 }

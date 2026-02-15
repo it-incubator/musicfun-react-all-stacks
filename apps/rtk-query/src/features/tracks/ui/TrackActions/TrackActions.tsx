@@ -22,6 +22,7 @@ type TrackActionsPropsBase = {
   trackId: string
   isOwner?: boolean
   playlistId?: string
+  trackTitle?: string
 }
 
 type TrackActionsPropsWithReactions = TrackActionsPropsBase & {
@@ -42,6 +43,7 @@ export const TrackActions = ({
   reaction,
   likesCount,
   trackId,
+  trackTitle,
   sizeReactionButtons = 'small',
   isOwner = false,
   playlistId,
@@ -106,6 +108,7 @@ export const TrackActions = ({
           onEdit={() => handleOpenEditTrackModal(trackId)}
           onDelete={handleDelete}
           onAddToPlaylist={handleOpenChoosePlaylistModal}
+          trackTitle={trackTitle}
         />
       )}
       {isOpenChoosePlaylistModal && (
