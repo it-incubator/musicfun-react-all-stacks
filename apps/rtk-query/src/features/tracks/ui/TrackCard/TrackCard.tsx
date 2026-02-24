@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import {
@@ -23,6 +24,7 @@ type Props = {
 }
 
 export const TrackCard = ({ track, artists, handleTrackCardPlaybackClick }: Props) => {
+  const { t } = useTranslation()
   const [like] = useLikeTrackMutation({
     fixedCacheKey: `track-reaction-${track.id}`,
   })
@@ -69,7 +71,7 @@ export const TrackCard = ({ track, artists, handleTrackCardPlaybackClick }: Prop
       </Typography>
 
       <Typography variant="body3" className={s.artists}>
-        {artists}
+        {artists || t('player.unknown_artist')}
       </Typography>
       <ReactionButtons
         reaction={track.attributes.currentUserReaction}

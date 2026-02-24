@@ -203,6 +203,9 @@
     "loading": "Loading...",
     "loading_tags": "Loading tags..."
   },
+  "player": {
+    "unknown_artist": "Unknown Artist"
+  },
   "image_uploader": {
     "error": {
       "invalid_format": "Only {{formats}} files are allowed",
