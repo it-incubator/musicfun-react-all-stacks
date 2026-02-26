@@ -28,7 +28,6 @@ export const Default: Story = {
         },
       ],
     },
-    description: 'A playlist for relaxing and unwinding.',
   },
 }
 
@@ -47,7 +46,6 @@ export const WithReactions: Story = {
         },
       ],
     },
-    description: 'A playlist for relaxing and unwinding.',
   },
 }
 
@@ -66,7 +64,5 @@ export const WithLongTextContent: Story = {
         },
       ],
     },
-    description:
-      'A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding. A playlist for relaxing and unwinding.',
   },
 }
