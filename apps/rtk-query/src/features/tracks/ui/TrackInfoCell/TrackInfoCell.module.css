@@ -22,7 +22,12 @@
 }
 
 .info {
-  width: 228px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  max-width: 280px;
+  min-width: 0;
 }
 
 .title {

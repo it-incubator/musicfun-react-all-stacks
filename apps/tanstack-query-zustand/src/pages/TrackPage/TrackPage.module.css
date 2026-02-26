@@ -1,7 +1,3 @@
-.trackPage {
-  --page-gradient-color: #9a3426;
-}
-
 .trackOverview {
   margin-bottom: 46px;
 }
@@ -12,4 +8,9 @@
 
 .search {
   margin-bottom: 24px;
+}
+
+.errorMessage {
+  text-align: center;
+  font-size: var(--font-size-xxxl);
 }

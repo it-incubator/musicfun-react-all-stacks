@@ -14,6 +14,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
 }
 
 .content {
@@ -21,6 +22,7 @@
   flex: 1;
   flex-direction: column;
   min-width: 0;
+  justify-content: flex-end;
 }
 
 .title {
@@ -34,13 +36,29 @@
   font-size: clamp(var(--font-size-xxl), 8vw, var(--font-size-xxxl));
   font-weight: 900;
   white-space: pre-wrap;
+  line-height: 1;
 }
 
 .description {
   opacity: 0.7;
+  margin-bottom: 8px;
 }
 
 .info {
-  margin-top: auto;
+  margin-top: 8px;
   overflow-wrap: break-word;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dot {
+  opacity: 0.7;
+}
+
+.userName strong {
+  font-weight: 600;
 }

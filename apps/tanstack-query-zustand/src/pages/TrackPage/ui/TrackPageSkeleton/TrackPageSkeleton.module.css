@@ -1,0 +1,30 @@
+.trackPage {
+  --page-gradient-color: #9a3426;
+}
+
+.trackOverview {
+  margin-bottom: 46px;
+  display: flex;
+  gap: 24px;
+  height: 300px;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 30px;
+  min-width: 0;
+}
+
+.title {
+  padding-top: 16px;
+  margin-bottom: 18px;
+}
+
+.playlists {
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

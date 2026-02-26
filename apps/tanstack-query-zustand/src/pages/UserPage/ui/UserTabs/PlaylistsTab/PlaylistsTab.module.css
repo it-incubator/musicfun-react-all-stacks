@@ -13,3 +13,17 @@
   color: #888;
   font-size: 16px;
 }
+
+.playlistsList {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.playlistsList > li {
+  min-width: 0;
+}
+
+.playlistsList > li > * {
+  width: 100% !important;
+}

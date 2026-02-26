@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
+import { useUpdatePlaylistMutation } from '@/features/playlists/api/use-playlist-mutations'
+import { usePlaylist } from '@/features/playlists/api/use-playlist.query'
 import { useCreatePlaylist } from '@/pages/PlaylistsPage/model/useCreatePlaylist'
 import { useUploadPlaylistCover } from '@/pages/PlaylistsPage/model/useUploadPlaylistCover'
 import type { SchemaCreatePlaylistAttributes } from '@/shared/api/schema'
@@ -18,13 +20,20 @@ import {
   TextField,
   Typography,
 } from '@/shared/components'
+import { useUIStore } from '@/shared/model/ui-store'
 
 import s from './CreatePlaylistModal.module.css'
 
 export const CreatePlaylistModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation()
+  const { editingPlaylistId } = useUIStore()
+  const isEditMode = !!editingPlaylistId
 
   const { mutate } = useCreatePlaylist()
+  const { mutate: updatePlaylist } = useUpdatePlaylistMutation()
+  const { data: playlistResponse } = usePlaylist(editingPlaylistId || '')
+  const playlist = playlistResponse?.data
+  const playlistCoverUrl = playlist?.attributes.images.main?.[0]?.url
   const { mutate: uploadPlaylistCover } = useUploadPlaylistCover()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [tags, setTags] = useState<string[]>([])
@@ -34,7 +43,60 @@ export const CreatePlaylistModal = ({ onClose }: { onClose: () => void }) => {
   }
   const { register, handleSubmit, reset } = useForm<SchemaCreatePlaylistAttributes>()
 
+  useEffect(() => {
+    if (!isEditMode || !playlist) {
+      return
+    }
+
+    reset({
+      title: playlist.attributes.title,
+      description: playlist.attributes.description || '',
+    })
+    setTags(playlist.attributes.tags.map((tag) => tag.name))
+  }, [isEditMode, playlist, reset])
+
   const onSubmit: SubmitHandler<SchemaCreatePlaylistAttributes> = (data) => {
+    if (isEditMode) {
+      if (!editingPlaylistId || !playlist) {
+        return
+      }
+
+      const payload = {
+        data: {
+          type: 'playlists',
+          attributes: {
+            title: data.title,
+            description: data.description || null,
+            tagIds: playlist.attributes.tags.map((tag) => tag.id),
+          },
+        },
+      } as const
+
+      updatePlaylist(
+        { playlistId: editingPlaylistId, payload },
+        {
+          onSuccess: () => {
+            if (selectedFile) {
+              uploadPlaylistCover(
+                { playlistId: editingPlaylistId, file: selectedFile },
+                {
+                  onSettled: () => {
+                    onClose()
+                    reset()
+                    setSelectedFile(null)
+                  },
+                }
+              )
+              return
+            }
+            onClose()
+            reset()
+          },
+        }
+      )
+      return
+    }
+
     const formData = {
       ...data,
       tags,
@@ -90,12 +152,20 @@ export const CreatePlaylistModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <Dialog open onClose={onClose} className={s.dialog}>
       <DialogHeader>
-        <Typography variant="h2">{t('playlists.title.create_playlist')}</Typography>
+        <Typography variant="h2">
+          {isEditMode ? t('button.edit') : t('playlists.title.create_playlist')}
+        </Typography>
       </DialogHeader>
 
       <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
         <DialogContent className={s.content}>
-          <ImageUploader className={s.imageUploader} onImageSelect={handleImageSelect} />
+          <ImageUploader
+            className={s.imageUploader}
+            onImageSelect={handleImageSelect}
+            enableCrop
+            cropShape="rect"
+            initialImageUrl={isEditMode ? playlistCoverUrl : undefined}
+          />
           <TextField
             label={t('title.title')}
             placeholder={t('playlists.placeholder.enter_playlist_title')}

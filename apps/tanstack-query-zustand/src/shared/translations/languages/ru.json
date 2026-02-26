@@ -205,6 +205,9 @@
     "tracks_count_many": "{{count}} треков",
     "tracks_count_other": "{{count}} треков"
   },
+  "player": {
+    "unknown_artist": "Неизвестный исполнитель"
+  },
   "common": {
     "loading": "Загрузка...",
     "loading_tags": "Загрузка тегов..."

@@ -8,7 +8,7 @@ import { getArtistId } from '@/shared/utils/get-artist-id'
 /**
  * Converts API track response to Player Track format
  */
-export const convertApiTrackToPlayerTrack = <T extends ApiTrack>(apiTrack: T): Track => {
+export const convertApiTrackToPlayerTrack = (apiTrack: any): Track => {
   // Extract attributes based on type
   const attributes = apiTrack.attributes
 
@@ -45,6 +45,6 @@ export const convertApiTrackToPlayerTrack = <T extends ApiTrack>(apiTrack: T): T
 /**
  * Converts array of API tracks to Player Track format
  */
-export const convertApiTracksToPlayerTracks = <T extends ApiTrack>(apiTracks: T[]): Track[] => {
+export const convertApiTracksToPlayerTracks = (apiTracks: any[]): Track[] => {
   return apiTracks.map(convertApiTrackToPlayerTrack)
 }

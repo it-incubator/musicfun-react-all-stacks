@@ -210,7 +210,11 @@ export const CreateEditTrackModal = () => {
         promises.push(publishTrack({ trackId: trackIdToUpdate }).unwrap())
       }
 
-      await Promise.all(promises)
+      try {
+        await Promise.all(promises)
+      } catch (error) {
+        console.error('Failed to perform some track actions:', error)
+      }
       dispatch(closeCreateEditTrackModal())
     } catch (error) {
       console.error('Error saving track:', error)
@@ -242,6 +246,8 @@ export const CreateEditTrackModal = () => {
             <ImageUploader
               onImageSelect={handleImageSelect}
               className={s.imageUploader}
+              enableCrop
+              cropShape="rect"
               initialImageUrl={isEditMode ? trackCoverUrl : undefined}
             />
 

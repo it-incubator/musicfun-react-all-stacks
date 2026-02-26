@@ -1,0 +1,24 @@
+.playlistPage {
+  --page-gradient-color: #adbf22;
+}
+
+.playlistOverview {
+  margin-bottom: 46px;
+  display: flex;
+  gap: 24px;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 40px;
+  min-width: 0;
+}
+
+.playlistToolbar {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  margin-bottom: 25px;
+}

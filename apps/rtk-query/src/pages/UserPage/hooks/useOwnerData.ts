@@ -5,43 +5,42 @@ import { useFetchPlaylistsQuery } from '@/features/playlists'
 import { useFetchTracksQuery } from '@/features/tracks'
 
 export const useOwnerData = () => {
-  const { data: user, isLoading, isSuccess: isMeQuerySuccess } = useMeQuery()
+  const { data: user, isLoading: isMeLoading } = useMeQuery()
   const { userId: pageOwnerId } = useParams()
   const isProfileOwner = user?.userId === pageOwnerId
 
-  const { data: tracks, isLoading: isTracksLoading } = useFetchTracksQuery(
+  const { data: tracksResponse, isLoading: isTracksLoading } = useFetchTracksQuery(
     {
-      pageSize: 10,
+      pageSize: 1,
       pageNumber: 1,
       userId: pageOwnerId,
-      includeDrafts: isProfileOwner ? true : undefined,
     },
-    { skip: isLoading }
+    { skip: isMeLoading || !pageOwnerId }
   )
 
-  const { data: playlists, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery(
-    { userId: pageOwnerId },
-    { skip: isLoading }
+  const { data: playlistsResponse, isLoading: isPlaylistsLoading } = useFetchPlaylistsQuery(
+    { userId: pageOwnerId, pageSize: 1 },
+    { skip: isMeLoading || !pageOwnerId }
   )
 
   let userLogin = isProfileOwner ? user?.login : ''
 
-  if (!isProfileOwner && playlists?.data[0]) {
-    userLogin = playlists.data[0].attributes.user.name
+  if (!isProfileOwner && playlistsResponse?.data?.[0]) {
+    userLogin = playlistsResponse.data[0].attributes.user.name
   }
 
-  if (!isProfileOwner && !playlists?.data[0] && tracks?.data[0]) {
-    userLogin = tracks.data[0].attributes.user.name
+  if (!isProfileOwner && !userLogin && tracksResponse?.data?.[0]) {
+    userLogin = tracksResponse.data[0].attributes.user.name
   }
 
   return {
     isProfileOwner,
     userLogin,
-    tracks,
-    playlists,
-    isMeQuerySuccess,
-    isLoading,
-    isContentLoading: isPlaylistsLoading || isTracksLoading || isLoading,
+    playlistsCount: playlistsResponse?.meta.totalCount || 0,
+    tracksCount: tracksResponse?.meta.totalCount || 0,
+    isInitialLoading: isMeLoading || isPlaylistsLoading || isTracksLoading,
+    isContentLoading: isPlaylistsLoading || isTracksLoading || isMeLoading,
+    isMeQuerySuccess: !isMeLoading,
     pageOwnerId,
   }
 }

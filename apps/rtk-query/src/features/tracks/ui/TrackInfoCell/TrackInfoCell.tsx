@@ -1,6 +1,8 @@
 import clsx from 'clsx'
 import { Link } from 'react-router'
 
+import { useTranslation } from 'react-i18next'
+
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
 import { IconButton, TableCell, Typography } from '@/shared/components'
 import { PauseIcon, PlayIcon } from '@/shared/icons'
@@ -26,6 +28,8 @@ export const TrackInfoCell = ({
   id,
   onTrackPlayClick,
 }: TrackInfoCellProps) => {
+  const { t } = useTranslation()
+
   return (
     <TableCell>
       <div className={clsx(s.box, { [s.boxHovered]: isHovered })}>
@@ -48,7 +52,7 @@ export const TrackInfoCell = ({
             {title}
           </Typography>
           <Typography className={s.artists} variant="body2">
-            {artists.join(', ')}
+            {artists.length > 0 ? artists.join(', ') : t('player.unknown_artist')}
           </Typography>
         </div>
       </div>

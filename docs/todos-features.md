@@ -1,60 +1,112 @@
 # TODO: Features
 
-## Актуальные статусы (проверка кода от 2026-02-20)
+## Актуальные статусы (проверка кода от 2026-02-23)
 
-Ниже — фактический список незавершённых или частично незавершённых задач в `tanstack-query-zustand` относительно RTK-референса.
+Ниже — фактический статус задач в `tanstack-query-zustand` относительно RTK-референса.
+
+## Закрытые задачи последнего цикла
+
+- [x] **UserPage: background color extraction как в RTK**
+
+  - ✅ В `useUserPageBackgroundColor` подключён avatar из profile store + `decodeFileFromBase64`.
+  - ✅ Логика вычисления dominant color приведена к RTK-подходу (для owner-профиля).
+
+- [x] **UserPage tabs: pagination через URL как в RTK**
+
+  - ✅ `PlaylistsTab`, `TracksTab`, `LikedTracksTab`, `MyLikedPlaylistsTab` переведены с `useState(pageNumber)` на `searchParams(page)`.
+  - ✅ Восстановление состояния страницы после reload/back-forward теперь работает через URL.
+
+- [x] **UserPage > MyLikedPlaylistsTab: owner actions parity**
+
+  - ✅ Для карточек в табе включены owner actions (edit/delete) через `canEdit`.
+
+- [x] **PlaylistPage tracks: унифицирован fallback для duration**
+
+  - ✅ До исправления API выставлен единый с RTK fallback (`duration: 100`).
+
+- [x] **PlaylistsPage (tanstack): project-specific token gate**
+  - ✅ Проверка наличия токенов оставлена через raw `localStorage` ключи (`musicfun-access-token`, `musicfun-refresh-token`).
+  - ✅ Это осознанная проектная реализация для `tanstack-query-zustand` (гейт для initial me-запроса, а не token lifecycle API).
 
 ### Критично: паритет поведения
 
-- [ ] **TracksPage (tanstack): воспроизведение и очередь как в RTK**
+- [x] **TracksPage (tanstack): воспроизведение и очередь как в RTK**
 
-  - Сейчас есть запуск `play(track)`, но нет полного паритета с RTK по `all-tracks` queue / дополняемой очереди при infinite scroll / toggle play-pause текущего трека.
+  - ✅ Добавлен toggle play/pause для текущего трека.
+  - ✅ Добавлен запуск с `playlistId = all-tracks` и полной очередью.
+  - ✅ Добавлено дописывание новых треков в queue при infinite scroll, если активен `all-tracks`.
 
-- [ ] **UserPage > TracksTab / LikedTracksTab (tanstack): playback**
-  - В табах треков остаётся `onPlayClick={() => {}}` (playback не подключён).
+- [x] **UserPage > TracksTab / LikedTracksTab (tanstack): playback**
+  - ✅ Подключён реальный `onPlayClick` в обоих табах.
+  - ✅ Добавлены play/pause/resume для текущего трека.
+  - ✅ Добавлена загрузка/использование playlist queue для табов.
 
-### Важные незавершённые действия
+### Паритет UI/flows
 
-- [ ] **TrackActions (tanstack): Edit track**
+- [x] **TrackActions (tanstack): Edit track**
 
-  - В `TrackActions` остаётся `onEdit={() => {}}`.
+  - ✅ Реализован prefill в modal по `editingTrackId`.
+  - ✅ Реализован `PUT /playlists/tracks/{trackId}` при сохранении.
 
-- [ ] **TrackPage (tanstack): кнопка Play в ControlPanel**
+- [x] **TrackPage (tanstack): кнопка Play в ControlPanel**
 
-  - Кнопка рендерится, но обработчик воспроизведения не подключён.
+  - ✅ Подключён обработчик Play/Pause для текущего трека.
 
-- [ ] **PlaylistPage (tanstack): Edit playlist из ControlPanel**
+- [x] **PlaylistPage (tanstack): Edit playlist из ControlPanel**
 
-  - В owner dropdown пункт Edit с пустым обработчиком.
+  - ✅ Реализован prefill в modal по `editingPlaylistId`.
+  - ✅ Реализован `PUT /playlists/{playlistId}` при сохранении.
 
-- [ ] **PlaylistCard (tanstack): Edit в карточке**
-  - В dropdown карточки плейлиста пункт Edit без обработчика.
+- [x] **PlaylistCard (tanstack): Edit в карточке**
+
+  - ✅ Использует тот же рабочий edit-flow через `editingPlaylistId` + update mutation.
+
+- [x] **UserPage (tanstack): редактирование профиля (как в RTK)**
+
+  - ✅ Подключён `EditProfileModal` через `Layout`.
+  - ✅ Подключена гидрация profile state из `localStorage` по текущему пользователю.
+  - ✅ Кнопка `Edit profile` в `UserInfo` открывает модалку и сохраняет изменения в `profile-store`.
+
+- [x] **Header (tanstack): поведение AccountMenu как в RTK**
+
+  - ✅ В хедере добавлен skeleton для auth-action блока во время `me` loading.
+  - ✅ `ProfileDropdownMenu` использует `avatar/fullName/login` и fallback-логику имени как в RTK.
+  - ✅ На logout выполняется очистка `profile-store`.
+
+- [x] **UserPage tabs (tanstack): активный таб сохраняется в URL**
+  - ✅ Текущий таб берётся из `?tab=...`.
+  - ✅ При переключении таба URL обновляется.
+  - ✅ После reload восстанавливается актуальный таб.
 
 ### UX / данные / скелетоны (частичный паритет)
 
-- [ ] **UserPage (tanstack): реальный avatar вместо hardcoded**
+- [x] **UserPage (tanstack): реальный avatar вместо hardcoded**
 
-  - В `UserInfo` используется `https://unsplash.it/192/192`.
+  - ✅ Убран hardcoded `unsplash` в `UserInfo` и `Header`.
+  - ✅ Добавлен общий `Avatar` компонент с fallback инициалов (как в RTK-подходе).
+  - ℹ️ API `/auth/me` не возвращает avatar URL, поэтому используется корректный fallback без фиктивной картинки.
 
-- [ ] **UserPage (tanstack): skeleton в табах при initial loading**
+- [x] **UserPage (tanstack): skeleton в табах при initial loading**
 
-  - Сейчас `UserTabs` возвращает `null` при `isInitialLoading`.
+  - ✅ Вместо `null` добавлен `UserTabsSkeleton`.
 
-- [ ] **TrackPage / PlaylistPage (tanstack): skeleton parity**
+- [x] **TrackPage / PlaylistPage (tanstack): skeleton parity**
 
-  - Используется текст `common.loading` вместо отдельных skeleton-страниц.
+  - ✅ Добавлены `TrackPageSkeleton` и `PlaylistPageSkeleton`.
 
-- [ ] **TrackPage / PlaylistPage (tanstack): background color extraction parity**
+- [x] **TrackPage / PlaylistPage (tanstack): background color extraction parity**
 
-  - В RTK используется `usePageBackgroundColor`; в tanstack на этих страницах нет паритета.
+  - ✅ Подключён `usePageBackgroundColor` на обеих страницах (`canvasRef` + `backgroundColor`).
 
-- [ ] **PlaylistPage (tanstack): поиск по трекам в таблице**
+- [x] **PlaylistPage (tanstack): поиск по трекам в таблице**
 
-  - В RTK есть `SearchTextField` + фильтрация треков; в tanstack это отсутствует.
+  - ✅ Добавлен `SearchTextField` и фильтрация треков по названию.
+  - ✅ При поиске queue/play-all работают от отфильтрованного списка.
 
-- [ ] **TracksPage (tanstack): синхронизация selected sort с URL**
+- [x] **TracksPage (tanstack): синхронизация selected sort с URL**
 
-  - Локальный `sort` и URL-параметры могут расходиться при прямом заходе по ссылке с query params.
+  - ✅ Значение `SortSelect` вычисляется из `sortBy/sortDirection` из URL.
 
-- [ ] **UserPage tracks data (tanstack): частичные заглушки**
-  - В `TracksTab` и `LikedTracksTab` остаются `duration: 0` и `dislikesCount: 0`.
+- [x] **UserPage tracks data (tanstack): заглушки убраны**
+  - ✅ Значения `duration`/`dislikesCount` читаются из API с fallback.
+  - ✅ Жёстко прописанные mock-значения в `UserPage` табах устранены.

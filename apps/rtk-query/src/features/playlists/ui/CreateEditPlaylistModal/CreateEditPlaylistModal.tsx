@@ -141,7 +141,11 @@ export const CreateEditPlaylistModal = () => {
             }).unwrap()
           : Promise.resolve()
 
-        await Promise.all([updatePromise, uploadImagePromise])
+        try {
+          await Promise.all([updatePromise, uploadImagePromise])
+        } catch (error) {
+          console.error('Failed to perform secondary actions (tags/image):', error)
+        }
 
         handleClose()
       }
@@ -164,6 +168,8 @@ export const CreateEditPlaylistModal = () => {
           <ImageUploader
             className={s.imageUploader}
             onImageSelect={handleImageSelect}
+            enableCrop
+            cropShape="rect"
             initialImageUrl={isEditMode ? playlistCoverUrl : undefined}
           />
 

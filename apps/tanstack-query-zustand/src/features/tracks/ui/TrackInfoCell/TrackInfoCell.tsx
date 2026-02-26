@@ -1,8 +1,10 @@
 import clsx from 'clsx'
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 import { usePlayerStore } from '@/player/model/player-store.ts'
-import { CoverImage, TableCell, Typography } from '@/shared/components'
+import { CoverImage, IconButton, TableCell, Typography } from '@/shared/components'
+import { PauseIcon, PlayIcon } from '@/shared/icons'
 
 import s from './TrackInfoCell.module.css'
 
@@ -11,6 +13,7 @@ export const TrackInfoCell = ({
   title,
   artists,
   isPlaying,
+  isHovered,
   id,
   onPlayClick,
 }: {
@@ -18,18 +21,30 @@ export const TrackInfoCell = ({
   title: string
   artists: string[]
   isPlaying: boolean
+  isHovered: boolean
   id: string
   onPlayClick?: (trackId: string) => void
 }) => {
+  const { t } = useTranslation()
   const handlePlayClick = () => {
     onPlayClick?.(id)
   }
 
   return (
     <TableCell>
-      <div className={s.box}>
+      <div className={clsx(s.box, isHovered && s.boxHovered)}>
         <div className={s.image} onClick={handlePlayClick}>
           <CoverImage imageSrc={image} imageDescription={title} />
+          <IconButton
+            aria-label="Play track"
+            className={s.playButton}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              handlePlayClick()
+            }}>
+            {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          </IconButton>
         </div>
         <div className={s.info}>
           <Typography
@@ -40,7 +55,7 @@ export const TrackInfoCell = ({
             {title}
           </Typography>
           <Typography className={s.artists} variant="body2">
-            {artists.join(', ')}
+            {artists.length > 0 ? artists.join(', ') : t('player.unknown_artist')}
           </Typography>
         </div>
       </div>

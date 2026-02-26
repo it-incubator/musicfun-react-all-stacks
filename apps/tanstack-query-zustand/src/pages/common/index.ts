@@ -1,4 +1,6 @@
 export * from './ContentList'
 export * from './PageWrapper'
+export * from './PageWithHeader/PageWithHeader'
+export * from './PageWithoutHeader/PageWithoutHeader'
 export * from './SearchTextField'
 export * from './SortSelect'

@@ -16,6 +16,29 @@ export const tracksApi = {
     getClient().DELETE('/playlists/tracks/{trackId}/reactions', {
       params: { path: { trackId } },
     }),
+
+  addTrackToPlaylist: (playlistId: string, trackId: string) =>
+    getClient().POST('/playlists/{playlistId}/relationships/tracks', {
+      params: { path: { playlistId } },
+      body: {
+        data: {
+          type: 'playlist-tracks',
+          attributes: {
+            trackId,
+          },
+        },
+      },
+    }),
+
+  unbindTrackFromPlaylist: (playlistId: string, trackId: string) =>
+    getClient().DELETE('/playlists/{playlistId}/relationships/tracks/{trackId}', {
+      params: { path: { playlistId, trackId } },
+    }),
+
+  removeTrack: (trackId: string) =>
+    getClient().DELETE('/playlists/tracks/{trackId}', {
+      params: { path: { trackId } },
+    }),
 }
 
 export const MOCK_TRACKS = [

@@ -117,7 +117,7 @@ export const DropdownMenuTrigger = ({
   asChild = false,
   onClick,
 }: DropdownMenuTriggerProps) => {
-  const { onToggle, triggerRef } = useDropdownMenuContext()
+  const { isOpen, onToggle, triggerRef } = useDropdownMenuContext()
 
   const handleClick = (e: React.MouseEvent) => {
     onToggle()
@@ -129,7 +129,8 @@ export const DropdownMenuTrigger = ({
       <div
         ref={triggerRef as React.RefObject<HTMLDivElement>}
         onClick={handleClick}
-        className={className}>
+        className={className}
+        data-open={isOpen ? '' : undefined}>
         {children}
       </div>
     )
@@ -140,6 +141,7 @@ export const DropdownMenuTrigger = ({
       ref={triggerRef as React.RefObject<HTMLButtonElement>}
       type="button"
       onClick={handleClick}
+      data-open={isOpen ? '' : undefined}
       className={clsx(s.trigger, className)}>
       {children}
     </button>

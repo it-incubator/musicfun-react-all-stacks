@@ -10,6 +10,8 @@ import { CreateTrackModal } from '@/features/tracks/ui/CreateTrackForm/CreateTra
 import { HomeIcon, LibraryIcon, PlaylistIcon, TrackIcon, UploadIcon } from '@/shared/icons'
 import { CreateIcon } from '@/shared/icons/CreateIcon'
 
+import { useUIStore } from '@/shared/model/ui-store'
+
 import s from './MenuLinks.module.css'
 
 type MenuLink = {
@@ -28,9 +30,17 @@ export const MenuLinks = () => {
   const { data: user } = useMeQuery()
   const { t } = useTranslation()
 
-  const [isCreatePlaylistOpen, setIsCreatePlaylistOpen] = useState<boolean>(false)
-  const [isCreateTrackOpen, setIsCreateTrackOpen] = useState<boolean>(false)
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
+  const {
+    isCreatePlaylistModalOpen,
+    isCreateTrackModalOpen,
+    isAuthModalOpen,
+    openCreatePlaylistModal,
+    closeCreatePlaylistModal,
+    openCreateTrackModal,
+    closeCreateTrackModal,
+    openAuthModal,
+    closeAuthModal,
+  } = useUIStore()
 
   const createLinks: MenuLink[] = useMemo(
     () => [
@@ -52,18 +62,18 @@ export const MenuLinks = () => {
     () => [
       {
         // todo:task, implement upload track
-        onClick: user ? () => setIsCreateTrackOpen(true) : () => setIsLoginModalOpen(true),
+        onClick: user ? () => openCreateTrackModal() : () => openAuthModal(),
         icon: <UploadIcon />,
         label: t('sidebar.upload_track'),
       },
       {
         // todo:task, implement upload playlist
-        onClick: user ? () => setIsCreatePlaylistOpen(true) : () => setIsLoginModalOpen(true),
+        onClick: user ? () => openCreatePlaylistModal() : () => openAuthModal(),
         icon: <CreateIcon />,
         label: t('sidebar.create_playlist'),
       },
     ],
-    [user, t]
+    [user, t, openCreateTrackModal, openCreatePlaylistModal, openAuthModal]
   )
 
   return (
@@ -88,7 +98,7 @@ export const MenuLinks = () => {
           ) : (
             <li>
               <SidebarButton
-                onClick={() => setIsLoginModalOpen(true)}
+                onClick={() => openAuthModal()}
                 icon={<LibraryIcon />}
                 label={t('sidebar.your_library')}
               />
@@ -110,11 +120,9 @@ export const MenuLinks = () => {
           ))}
         </ul>
       </nav>
-      {isCreatePlaylistOpen && (
-        <CreatePlaylistModal onClose={() => setIsCreatePlaylistOpen(false)} />
-      )}
-      {isCreateTrackOpen && <CreateTrackModal onClose={() => setIsCreateTrackOpen(false)} />}
-      {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
+      {isCreatePlaylistModalOpen && <CreatePlaylistModal onClose={closeCreatePlaylistModal} />}
+      {isCreateTrackModalOpen && <CreateTrackModal onClose={closeCreateTrackModal} />}
+      {isAuthModalOpen && <LoginModal onClose={closeAuthModal} />}
     </>
   )
 }

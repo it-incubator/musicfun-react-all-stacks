@@ -15,7 +15,11 @@ import type {
 
 export const tracksAPI = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchTracksByScroll: build.infiniteQuery<FetchTracksResponse, void, string | undefined>({
+    fetchTracksByScroll: build.infiniteQuery<
+      FetchTracksResponse,
+      FetchTracksArgs | void,
+      string | undefined
+    >({
       infiniteQueryOptions: {
         initialPageParam: undefined,
         getNextPageParam: (lastPage) => {
@@ -23,14 +27,18 @@ export const tracksAPI = baseApi.injectEndpoints({
         },
       },
 
-      query: ({ pageParam }) => ({
-        url: 'playlists/tracks',
-        params: {
-          cursor: pageParam,
-          paginationType: 'cursor',
-          pageSize: FETCH_TRACK_BY_SCROLL_PAGE_SIZE,
-        },
-      }),
+      query: (args) => {
+        const { pageParam, ...params } = args as any
+        return {
+          url: 'playlists/tracks',
+          params: {
+            cursor: pageParam,
+            paginationType: 'cursor',
+            pageSize: FETCH_TRACK_BY_SCROLL_PAGE_SIZE,
+            ...params,
+          },
+        }
+      },
       providesTags: (result) =>
         result
           ? [

@@ -13,7 +13,8 @@ import s from './UserInfo.module.css'
 export const UserInfo = () => {
   const { t } = useTranslation()
 
-  const { isProfileOwner, userLogin, playlists, tracks, isContentLoading } = useOwnerData()
+  const { isProfileOwner, userLogin, playlistsCount, tracksCount, isInitialLoading } =
+    useOwnerData()
 
   const { handleOpenEditProfileModal } = useEditProfileModal()
   const profileAvatarUrl = useAppSelector(selectProfileAvatar)
@@ -24,28 +25,30 @@ export const UserInfo = () => {
       ? `${profileFullName.name} ${profileFullName.surname}`
       : userLogin
 
-  if (isContentLoading) {
+  if (isInitialLoading) {
     return <UserInfoSkeleton />
   }
 
   return (
     <div className={s.box}>
       <Avatar
+        className={s.avatar}
         src={isProfileOwner ? profileAvatarUrl : undefined}
         fullName={isProfileOwner ? profileFullName : undefined}
         userLogin={userLogin}
       />
-      <Typography variant="h2">{userFullName}</Typography>
+      <Typography variant="h2" className={s.userName}>
+        {userFullName}
+      </Typography>
       {isProfileOwner && (
         <Button className={s.editButton} variant="secondary" onClick={handleOpenEditProfileModal}>
           <EditIcon />
           {t('button.edit_profile')}
         </Button>
       )}
-      <UserStats
-        playlistsCount={playlists?.meta.totalCount}
-        tracksCount={tracks?.meta.totalCount}
-      />
+      <div className={s.stats}>
+        <UserStats playlistsCount={playlistsCount} tracksCount={tracksCount} />
+      </div>
     </div>
   )
 }

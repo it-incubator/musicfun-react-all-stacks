@@ -8,3 +8,14 @@
   gap: var(--list-gap, 8px);
   padding-bottom: 8px;
 }
+
+.listRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 40px 0;
+}
+
+.listRow li {
+  width: 100%;
+}

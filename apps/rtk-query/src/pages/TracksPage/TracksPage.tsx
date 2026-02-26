@@ -24,10 +24,13 @@ import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { PageWithHeader, SearchTags, SearchTextField, SortSelect } from '../common'
+import { usePageSearchParams } from '../common/hooks'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
   const { t } = useTranslation()
+
+  const { debouncedSearch, sortBy, sortDirection, tagsIds, artistsIds } = usePageSearchParams()
 
   const {
     data: tracksData,
@@ -35,7 +38,13 @@ export const TracksPage = () => {
     isFetchingNextPage,
     fetchNextPage,
     isLoading,
-  } = useFetchTracksByScrollInfiniteQuery()
+  } = useFetchTracksByScrollInfiniteQuery({
+    search: debouncedSearch,
+    sortBy,
+    sortDirection,
+    tagsIds,
+    artistsIds,
+  })
   const pages = tracksData?.pages.flatMap((p) => p.data) || []
 
   const { data: me } = useMeQuery()
@@ -119,11 +128,8 @@ export const TracksPage = () => {
       </Typography>
       <div className={s.controls}>
         <div className={s.controlsRow}>
-          <SearchTextField
-            placeholder={t('tracks.placeholder.search_tracks')}
-            onChange={() => {}}
-          />
-          <SortSelect onChange={() => {}} />
+          <SearchTextField placeholder={t('tracks.placeholder.search_tracks')} />
+          <SortSelect />
         </div>
         <div className={s.controlsRow}>
           <SearchTags type="tags" />

@@ -1,22 +1,22 @@
 import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
-import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
-import { ReactionButtons } from '@/shared/components'
-import { DropdownMenu, DropdownMenuTrigger } from '@/shared/components'
-import { MoreIcon } from '@/shared/icons'
-
+import { TrackRow, TrackActions } from '@/features/tracks'
 import { useTrackReactions } from '../../model/useTrackReactions'
 import type { TrackRowData } from '..'
+import s from './TrackRowContainer.module.css'
+
 export interface TrackRowContainerProps {
   trackRow: TrackRowData
   currentTrack: { id: string } | null
   currentTime: number
   onPlayClick: (id: string) => void
+  playlistId?: string
 }
 export const TrackRowContainer = ({
   trackRow,
   currentTrack,
   currentTime,
   onPlayClick,
+  playlistId,
 }: TrackRowContainerProps) => {
   const { handleLike, handleDislike, handleRemoveReaction } = useTrackReactions(trackRow.id)
 
@@ -30,24 +30,18 @@ export const TrackRowContainer = ({
       playingTrackProgress={currentTime}
       onPlayClick={onPlayClick}
       renderActionsCell={() => (
-        <>
-          <ReactionButtons
-            entityId={trackRow.id}
+        <div className={s.actionsCell}>
+          <TrackActions
+            trackId={trackRow.id}
             currentReaction={trackRow.currentUserReaction}
             likesCount={trackRow.likesCount}
-            onDislike={handleDislike}
             onLike={handleLike}
+            onDislike={handleDislike}
             onRemoveReaction={handleRemoveReaction}
+            isOwner={trackRow.ownerId === currentUserId}
+            playlistId={playlistId}
           />
-          {trackRow.ownerId === currentUserId && (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                {/* implement add to playlist (via popup, see figma) */}
-                <MoreIcon />
-              </DropdownMenuTrigger>
-            </DropdownMenu>
-          )}
-        </>
+        </div>
       )}
     />
   )

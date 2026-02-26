@@ -3,6 +3,7 @@ import * as React from 'react'
 
 import type { TrackRowData } from '@/features/tracks'
 import { Progress, TableCell, TableRow, Typography } from '@/shared/components'
+import { useHover } from '@/shared/hooks'
 import { LiveWaveIcon } from '@/shared/icons'
 
 import { TrackInfoCell } from '../TrackInfoCell'
@@ -21,6 +22,7 @@ export const TrackRow = <T extends TrackRowData>({
   playingTrackProgress?: number
   onPlayClick?: (trackId: string) => void
 }) => {
+  const [ref, isHovered] = useHover<HTMLTableRowElement>()
   const isPlaying = playingTrackId === trackRow.id
 
   const handleRowClick = (e: React.MouseEvent<HTMLTableRowElement>) => {
@@ -39,7 +41,10 @@ export const TrackRow = <T extends TrackRowData>({
   }
 
   return (
-    <TableRow onClick={handleRowClick} className={s.tableRow}>
+    <TableRow
+      ref={ref}
+      onClick={handleRowClick}
+      className={clsx(s.tableRow, isPlaying && s.active)}>
       <TableCell className={clsx(isPlaying && s.playing)}>
         {isPlaying ? <LiveWaveIcon /> : trackRow.index + 1}
       </TableCell>
@@ -49,6 +54,7 @@ export const TrackRow = <T extends TrackRowData>({
         title={trackRow.title}
         artists={trackRow.artists}
         isPlaying={isPlaying}
+        isHovered={isHovered}
         onPlayClick={onPlayClick}
       />
       <TableCell>
