@@ -5,6 +5,7 @@ import { usePlaylists } from '@/features/playlists/api/use-playlists.query'
 import { ChoosePlaylistModal } from '@/features/playlists/ui/ChoosePlaylistModal/ChoosePlaylistModal'
 import {
   useAddTrackToPlaylistMutation,
+  usePublishTrackMutation,
   useRemoveTrackFromPlaylistMutation,
   useRemoveTrackMutation,
 } from '@/features/tracks/api/use-track-mutations'
@@ -17,6 +18,7 @@ import { TrackActionsMenu } from '../TrackActionsMenu/TrackActionsMenu'
 type TrackActionsProps = {
   trackId: string
   isOwner?: boolean
+  isPublished?: boolean
   playlistId?: string
 } & Partial<Omit<ReactionButtonsProps, 'entityId'>>
 
@@ -28,6 +30,7 @@ export const TrackActions = ({
   onRemoveReaction,
   trackId,
   isOwner = false,
+  isPublished,
   playlistId,
 }: TrackActionsProps) => {
   const [isOpenChoosePlaylistModal, setIsOpenChoosePlaylistModal] = useState(false)
@@ -50,6 +53,7 @@ export const TrackActions = ({
   const { mutateAsync: addTrackToPlaylist } = useAddTrackToPlaylistMutation()
   const { mutateAsync: removeTrackFromPlaylist } = useRemoveTrackFromPlaylistMutation()
   const { mutate: removeTrack } = useRemoveTrackMutation()
+  const { mutate: publishTrack } = usePublishTrackMutation()
   const { openCreateTrackModal } = useUIStore()
 
   const handleOpenChoosePlaylistModal = () => {
@@ -81,9 +85,11 @@ export const TrackActions = ({
         <TrackActionsMenu
           trackId={trackId}
           isOwner={isOwner}
+          isPublished={isPublished}
           onEdit={() => openCreateTrackModal(trackId)}
           onDelete={handleDelete}
           onAddToPlaylist={handleOpenChoosePlaylistModal}
+          onPublish={() => publishTrack(trackId)}
         />
       )}
       {isOpenChoosePlaylistModal && (

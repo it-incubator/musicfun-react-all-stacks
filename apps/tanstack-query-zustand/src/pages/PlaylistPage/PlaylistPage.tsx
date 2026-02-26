@@ -148,6 +148,7 @@ export const PlaylistPage = () => {
             dislikesCount: Number(attributes.dislikesCount ?? 0),
             currentUserReaction: track.attributes.currentUserReaction,
             ownerId: attributes.user?.id ?? playlist.attributes.user.id,
+            isPublished: attributes.isPublished,
           }
         })}
         renderTrackRow={(trackRow) => (

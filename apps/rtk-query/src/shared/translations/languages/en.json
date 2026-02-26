@@ -97,7 +97,9 @@
       "choose_track": "Choose track",
       "upload_track": "Upload track",
       "go_back": "Go back",
-      "delete_from_playlist": "Delete from playlist"
+      "delete_from_playlist": "Delete from playlist",
+      "publish": "Publish",
+      "draft": "Draft"
     },
     "label": {
       "lyrics": "Lyrics",

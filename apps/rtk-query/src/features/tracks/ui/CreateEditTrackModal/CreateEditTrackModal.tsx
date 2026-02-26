@@ -11,7 +11,6 @@ import {
   useAddTrackToPlaylistMutation,
   useCreateTrackMutation,
   useFetchTrackByIdQuery,
-  usePublishTrackMutation,
   useRemoveTrackFromPlaylistMutation,
   useUpdateTrackMutation,
 } from '@/features/tracks'
@@ -47,7 +46,6 @@ import s from './CreateEditTrackModal.module.css'
  * - Загружаем изображение
  * - Добавляем трек в каждый из выбранных плейлистов
  * - Обновляем данные по треку (заголовок, теги, текс)
- * - Публикуем трек
  */
 
 type FormData = {
@@ -72,7 +70,6 @@ export const CreateEditTrackModal = () => {
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
   const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
   const [addCoverToTrack] = useAddCoverToTrackMutation()
-  const [publishTrack] = usePublishTrackMutation()
 
   const editingTrackId = useAppSelector(selectEditingTrackId)
 
@@ -204,10 +201,6 @@ export const CreateEditTrackModal = () => {
             cover: selectedImage,
           }).unwrap()
         )
-      }
-
-      if (!trackData?.data.attributes.releaseDate) {
-        promises.push(publishTrack({ trackId: trackIdToUpdate }).unwrap())
       }
 
       try {

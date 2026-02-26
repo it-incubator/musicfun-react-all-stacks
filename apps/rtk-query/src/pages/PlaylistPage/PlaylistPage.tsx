@@ -108,6 +108,7 @@ export const PlaylistPage = () => {
             dislikesCount: track.attributes.dislikesCount,
             currentUserReaction: track.attributes.currentUserReaction,
             url: track.attributes.attachments[0].url,
+            isPublished: track.attributes.isPublished,
           }))}
           renderTrackRow={(trackRow) => (
             <TrackRowContainer

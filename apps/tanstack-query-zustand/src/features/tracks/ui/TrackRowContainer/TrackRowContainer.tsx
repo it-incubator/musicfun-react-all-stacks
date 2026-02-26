@@ -39,6 +39,7 @@ export const TrackRowContainer = ({
             onDislike={handleDislike}
             onRemoveReaction={handleRemoveReaction}
             isOwner={trackRow.ownerId === currentUserId}
+            isPublished={trackRow.isPublished}
             playlistId={playlistId}
           />
         </div>

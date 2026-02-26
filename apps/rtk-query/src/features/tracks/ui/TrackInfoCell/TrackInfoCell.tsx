@@ -15,6 +15,7 @@ type TrackInfoCellProps = {
   title: string
   artists: string[]
   isPlaying: boolean
+  isPublished?: boolean
   id: string
   onTrackPlayClick?: (trackId: string) => void
 }
@@ -25,6 +26,7 @@ export const TrackInfoCell = ({
   artists,
   isHovered,
   isPlaying,
+  isPublished,
   id,
   onTrackPlayClick,
 }: TrackInfoCellProps) => {
@@ -44,13 +46,18 @@ export const TrackInfoCell = ({
           </IconButton>
         </div>
         <div className={s.info}>
-          <Typography
-            variant="body1"
-            as={Link}
-            className={clsx(s.title, isPlaying && s.playing)}
-            to={`/tracks/${id}`}>
-            {title}
-          </Typography>
+          <div className={s.titleRow}>
+            <Typography
+              variant="body1"
+              as={Link}
+              className={clsx(s.title, isPlaying && s.playing)}
+              to={`/tracks/${id}`}>
+              {title}
+            </Typography>
+            {isPublished === false && (
+              <span className={s.draftBadge}>{t('tracks.button.draft')}</span>
+            )}
+          </div>
           <Typography className={s.artists} variant="body2">
             {artists.length > 0 ? artists.join(', ') : t('player.unknown_artist')}
           </Typography>

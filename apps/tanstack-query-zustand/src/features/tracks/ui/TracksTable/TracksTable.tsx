@@ -43,6 +43,7 @@ export type TrackRowData = {
   artists: string[]
   duration: number
   ownerId: string
+  isPublished?: boolean
 } & ReactionsProps
 
 export const TracksTable = <T extends TrackRowData>({

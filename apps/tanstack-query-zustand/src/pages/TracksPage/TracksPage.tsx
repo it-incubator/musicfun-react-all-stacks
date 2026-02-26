@@ -103,6 +103,7 @@ export const TracksPage = () => {
         dislikesCount: ('dislikesCount' in attributes ? attributes.dislikesCount : 0) || 0,
         currentUserReaction: track.attributes.currentUserReaction,
         ownerId: track.attributes.user.id,
+        isPublished: track.attributes.isPublished,
       }
     })
   }, [tracks, included])

@@ -76,6 +76,7 @@ export const TrackPage = () => {
         track={playerTrack}
         trackId={track.id}
         isOwnTrack={!!isTrackOwner}
+        isPublished={track.attributes.isPublished}
         currentReaction={track.attributes.currentUserReaction}
         likesCount={track.attributes.likesCount}
       />

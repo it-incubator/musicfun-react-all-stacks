@@ -30,6 +30,7 @@ export type BaseAttributes = {
   currentUserReaction: CurrentUserReaction
   dislikesCount: number
   likesCount: number
+  isPublished: boolean
 }
 
 export type FetchTracksAttributes = BaseAttributes & {

@@ -15,6 +15,7 @@ export const TrackInfoCell = ({
   isPlaying,
   isHovered,
   id,
+  isPublished,
   onPlayClick,
 }: {
   image?: string
@@ -23,6 +24,7 @@ export const TrackInfoCell = ({
   isPlaying: boolean
   isHovered: boolean
   id: string
+  isPublished?: boolean
   onPlayClick?: (trackId: string) => void
 }) => {
   const { t } = useTranslation()
@@ -47,13 +49,18 @@ export const TrackInfoCell = ({
           </IconButton>
         </div>
         <div className={s.info}>
-          <Typography
-            variant="body1"
-            as={Link}
-            className={clsx(s.title, isPlaying && s.playing)}
-            to={`/tracks/${id}`}>
-            {title}
-          </Typography>
+          <div className={s.titleRow}>
+            <Typography
+              variant="body1"
+              as={Link}
+              className={clsx(s.title, isPlaying && s.playing)}
+              to={`/tracks/${id}`}>
+              {title}
+            </Typography>
+            {isPublished === false && (
+              <span className={s.draftBadge}>{t('tracks.button.draft')}</span>
+            )}
+          </div>
           <Typography className={s.artists} variant="body2">
             {artists.length > 0 ? artists.join(', ') : t('player.unknown_artist')}
           </Typography>

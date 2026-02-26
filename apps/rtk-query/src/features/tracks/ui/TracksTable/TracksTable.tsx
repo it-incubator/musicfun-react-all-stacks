@@ -42,6 +42,7 @@ export type TrackRowData = {
   artists: string[]
   duration: number
   isOwner?: boolean
+  isPublished?: boolean
   url: string
 } & ReactionsProps
 

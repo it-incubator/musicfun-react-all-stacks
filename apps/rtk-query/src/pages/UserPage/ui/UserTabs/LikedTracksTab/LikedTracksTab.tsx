@@ -67,6 +67,7 @@ export const LikedTracksTab = () => {
               dislikesCount: track.attributes.dislikesCount,
               currentUserReaction: track.attributes.currentUserReaction,
               url: track.attributes.attachments[0]?.url || '',
+              isPublished: track.attributes.isPublished,
             }
           }) ?? []
         }
@@ -79,6 +80,7 @@ export const LikedTracksTab = () => {
               <TrackActions
                 trackId={trackRow.id}
                 isOwner={isProfileOwner}
+                isPublished={trackRow.isPublished}
                 reaction={undefined}
                 likesCount={undefined}
               />

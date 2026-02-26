@@ -159,6 +159,7 @@ export const TracksPage = () => {
               currentUserReaction: track.attributes.currentUserReaction,
               url: track.attributes.attachments[0].url,
               isOwner,
+              isPublished: track.attributes.isPublished,
             }
           })}
           renderTrackRow={(trackRow) => (
@@ -172,6 +173,7 @@ export const TracksPage = () => {
                   likesCount={trackRow.likesCount}
                   trackId={trackRow.id}
                   isOwner={trackRow.isOwner}
+                  isPublished={trackRow.isPublished}
                 />
               )}
             />

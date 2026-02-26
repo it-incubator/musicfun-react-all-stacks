@@ -13,6 +13,7 @@ type ControlPanelProps = {
   track: Track
   trackId: string
   isOwnTrack: boolean
+  isPublished: boolean
   currentReaction: number
   likesCount: number
 }
@@ -21,6 +22,7 @@ export const ControlPanel = ({
   track,
   trackId,
   isOwnTrack,
+  isPublished,
   currentReaction,
   likesCount,
 }: ControlPanelProps) => {
@@ -69,6 +71,7 @@ export const ControlPanel = ({
       <TrackActions
         trackId={trackId}
         isOwner={isOwnTrack}
+        isPublished={isPublished}
         size="large"
         currentReaction={currentReaction}
         likesCount={likesCount}

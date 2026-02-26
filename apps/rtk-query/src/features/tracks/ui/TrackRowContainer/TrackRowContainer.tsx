@@ -14,15 +14,21 @@ export const TrackRowContainer = ({ trackRow, userId, playlistId }: TrackRowCont
   const { data: trackData } = useFetchTrackByIdQuery({ trackId: trackRow.id })
   const isTrackOwner = userId === trackData?.data.attributes.user.id
 
+  const trackRowWithPublished = {
+    ...trackRow,
+    isPublished: trackData?.data.attributes.isPublished,
+  }
+
   return (
     <TrackRow
-      trackRow={trackRow}
+      trackRow={trackRowWithPublished}
       renderActionsCell={(row) => (
         <TrackActions
           likesCount={row.likesCount ?? 0}
           reaction={row.currentUserReaction ?? CurrentUserReaction.None}
           trackId={row.id}
           isOwner={isTrackOwner}
+          isPublished={row.isPublished}
           playlistId={playlistId}
         />
       )}

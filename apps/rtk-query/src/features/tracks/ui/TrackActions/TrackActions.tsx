@@ -8,6 +8,7 @@ import {
   useAddTrackToPlaylistMutation,
   useDislikeTrackMutation,
   useLikeTrackMutation,
+  usePublishTrackMutation,
   useRemoveTrackFromPlaylistMutation,
   useRemoveTrackMutation,
   useUnReactionTrackMutation,
@@ -21,6 +22,7 @@ import { syncTrackPlaylists } from '../../utils/playlistSync'
 type TrackActionsPropsBase = {
   trackId: string
   isOwner?: boolean
+  isPublished?: boolean
   playlistId?: string
 }
 
@@ -44,6 +46,7 @@ export const TrackActions = ({
   trackId,
   sizeReactionButtons = 'small',
   isOwner = false,
+  isPublished,
   playlistId,
 }: TrackActionsProps) => {
   const [isOpenChoosePlaylistModal, setIsOpenChoosePlaylistModal] = useState(false)
@@ -72,6 +75,7 @@ export const TrackActions = ({
   const [addTrackToPlaylist] = useAddTrackToPlaylistMutation()
   const [removeTrackFromPlaylist] = useRemoveTrackFromPlaylistMutation()
   const [removeTrack] = useRemoveTrackMutation()
+  const [publishTrack] = usePublishTrackMutation()
 
   const handleOpenChoosePlaylistModal = () => {
     // When opening the modal window, initialize the selection state with the current state from the server.
@@ -103,9 +107,11 @@ export const TrackActions = ({
         <TrackActionsMenu
           trackId={trackId}
           isOwner={isOwner}
+          isPublished={isPublished}
           onEdit={() => handleOpenEditTrackModal(trackId)}
           onDelete={handleDelete}
           onAddToPlaylist={handleOpenChoosePlaylistModal}
+          onPublish={() => publishTrack({ trackId })}
         />
       )}
       {isOpenChoosePlaylistModal && (

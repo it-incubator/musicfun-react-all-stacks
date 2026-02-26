@@ -40,6 +40,20 @@ export const useRemoveTrackMutation = () => {
   })
 }
 
+export const usePublishTrackMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (trackId: string) =>
+      getClient().POST('/playlists/tracks/{trackId}/actions/publish', {
+        params: { path: { trackId } },
+      }),
+    onSuccess: (_, trackId) => {
+      void queryClient.invalidateQueries({ queryKey: tracksKeys.all })
+      void queryClient.invalidateQueries({ queryKey: tracksKeys.detail(trackId) })
+    },
+  })
+}
+
 export const useUpdateTrackMutation = () => {
   const queryClient = useQueryClient()
 

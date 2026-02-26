@@ -44,7 +44,11 @@ export const TrackRow = <T extends TrackRowData>({
     <TableRow
       ref={ref}
       onClick={handleRowClick}
-      className={clsx(s.tableRow, isPlaying && s.active)}>
+      className={clsx(
+        s.tableRow,
+        isPlaying && s.active,
+        trackRow.isPublished === false && s.draft
+      )}>
       <TableCell className={clsx(isPlaying && s.playing)}>
         {isPlaying ? <LiveWaveIcon /> : trackRow.index + 1}
       </TableCell>
@@ -55,6 +59,7 @@ export const TrackRow = <T extends TrackRowData>({
         artists={trackRow.artists}
         isPlaying={isPlaying}
         isHovered={isHovered}
+        isPublished={trackRow.isPublished}
         onPlayClick={onPlayClick}
       />
       <TableCell>

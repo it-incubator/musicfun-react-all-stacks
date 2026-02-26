@@ -102,7 +102,9 @@
       "choose_track": "Выбрать трек",
       "upload_track": "Загрузить трек",
       "go_back": "Назад",
-      "delete_from_playlist": "Удалить из плейлиста"
+      "delete_from_playlist": "Удалить из плейлиста",
+      "publish": "Опубликовать",
+      "draft": "Черновик"
     },
     "label": {
       "lyrics": "Текст песни",
