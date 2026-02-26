@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { useProfileStore } from '@/features/profile/model/profile-store'
 import { getClient } from '@/shared/api/client.ts'
 import { unwrap } from '@/shared/api/utils/unwrap.ts'
 import { authStorage } from '@/shared/utils/authStorage.ts'
@@ -18,6 +19,7 @@ export const useLogoutMutation = () => {
     },
     onSuccess: async () => {
       authStorage.clearTokens()
+      useProfileStore.getState().resetProfile()
 
       //qc.clear() // clear удаляет все кэшированные данные
       await qc.resetQueries({ queryKey: ['auth', 'me'] }) // resetQueries переводит query в изначальное состояние и уведомляет подписчиков — компонент получит data = undefined.

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import {
@@ -34,6 +35,8 @@ export const TrackCard = ({
   onDislike,
   likesCount,
 }: Props) => {
+  const { t } = useTranslation()
+
   return (
     <Card className={s.card}>
       <div className={s.image}>
@@ -48,7 +51,7 @@ export const TrackCard = ({
       </Typography>
 
       <Typography variant="body3" className={s.artists}>
-        {artists}
+        {artists || t('player.unknown_artist')}
       </Typography>
       <ReactionButtons
         currentReaction={currentReaction}

@@ -1,7 +1,15 @@
 import { Route, Routes } from 'react-router'
 
 import { Layout } from '@/layout'
-import { MainPage, PlaylistPage, PlaylistsPage, TrackPage, TracksPage, UserPage } from '@/pages'
+import {
+  MainPage,
+  PlaylistPage,
+  PlaylistsPage,
+  TrackLyricsPage,
+  TrackPage,
+  TracksPage,
+  UserPage,
+} from '@/pages'
 import { OAuthCallback } from '@/pages/auth/OAuthRedirect/OAuthCallback.tsx'
 
 export const Routing = () => (
@@ -12,6 +20,7 @@ export const Routing = () => (
 
       <Route path="/tracks" element={<TracksPage />} />
       <Route path="/tracks/:id" element={<TrackPage />} />
+      <Route path="/tracks/:id/lyrics" element={<TrackLyricsPage />} />
 
       <Route path="/playlists" element={<PlaylistsPage />} />
       <Route path="/playlists/:id" element={<PlaylistPage />} />

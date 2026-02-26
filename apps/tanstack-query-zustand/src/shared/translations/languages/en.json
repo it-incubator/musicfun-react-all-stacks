@@ -103,7 +103,9 @@
       "choose_track": "Choose track",
       "upload_track": "Upload track",
       "go_back": "Go back",
-      "delete_from_playlist": "Delete from playlist"
+      "delete_from_playlist": "Delete from playlist",
+      "publish": "Publish",
+      "draft": "Draft"
     },
     "label": {
       "lyrics": "Lyrics",
@@ -199,9 +201,15 @@
     "tracks_count_one": "{{count}} track",
     "tracks_count_other": "{{count}} tracks"
   },
+  "player": {
+    "unknown_artist": "Unknown Artist"
+  },
   "common": {
     "loading": "Loading...",
     "loading_tags": "Loading tags..."
+  },
+  "player": {
+    "unknown_artist": "Unknown Artist"
   },
   "image_uploader": {
     "error": {

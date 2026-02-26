@@ -1,7 +1,5 @@
-import type { ChangeEvent } from 'react'
-import { useCallback, useMemo, useState } from 'react'
-
-import { PlaylistItem } from '@/entities/playlist'
+import { type ChangeEvent, useCallback, useMemo } from 'react'
+import { PlaylistItem, PlaylistCardSkeleton } from '@/entities/playlist'
 import { useMeQuery } from '@/features/auth/api/use-me.query.ts'
 import { usePlaylists } from '@/features/playlists/api/use-playlists.query.ts'
 import { useTags } from '@/features/tags'
@@ -11,16 +9,15 @@ import {
   type SchemaGetPlaylistsRequestPayload,
 } from '@/shared/api/schema.ts'
 import { Autocomplete, Pagination, Typography } from '@/shared/components'
-import { useDebounceValue } from '@/shared/hooks'
+import { usePageSearchParams } from '@/shared/hooks'
 import { VU } from '@/shared/utils'
 import { useTranslation } from 'react-i18next'
 
-import { ContentList, PageWrapper, SearchTextField, SortSelect } from '../common'
+import { ContentList, PageWithHeader, SearchTextField, SortSelect } from '../common'
 import s from './PlaylistsPage.module.css'
 import type { ISortConfig, SortOption } from './PlaylistsPage.types.ts'
 
 const PAGE_SIZE = 5
-const DEFAULT_PAGE = 1
 
 const sortConfig: Record<SortOption, ISortConfig> = {
   newest: {
@@ -41,53 +38,69 @@ const sortConfig: Record<SortOption, ISortConfig> = {
   },
 } as const
 
+const getSortOption = (sortBy: string, sortDirection: string): SortOption => {
+  if (sortBy === PathsPlaylistsGetParametersQuerySortBy.likesCount) {
+    return sortDirection === 'asc' ? 'leastLiked' : 'mostLiked'
+  }
+  return sortDirection === 'asc' ? 'oldest' : 'newest'
+}
+
 export const PlaylistsPage = () => {
   const { t } = useTranslation()
 
-  const hasTokens = !!localStorage.getItem('accessToken') || !!localStorage.getItem('refreshToken')
+  // Intentionally keep raw localStorage presence check in tanstack-query-zustand:
+  // this page only gates the initial me-dependent fetch, not token lifecycle.
+  const hasTokens =
+    !!localStorage.getItem('musicfun-access-token') ||
+    !!localStorage.getItem('musicfun-refresh-token')
   const { data: me, isPending: isMeLoading } = useMeQuery()
   const playlistsEnabled = !hasTokens || (!isMeLoading && !!me)
-  const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
-  const [search, setSearch] = useState<string>('')
-  const [sort, setSort] = useState<SortOption>('newest')
-  const [hashtags, setHashtags] = useState<string[]>([])
 
-  const [debouncedSearch] = useDebounceValue(search)
+  const {
+    search,
+    debouncedSearch,
+    sortBy,
+    sortDirection,
+    tagsIds,
+    pageNumber,
+    handlePageChange,
+    handleSearchChange,
+    handleSortChange: handleSortUpdate,
+    handleTagsChange,
+  } = usePageSearchParams()
 
-  const { sortBy, sortDirection } = sortConfig[sort]
+  const sort = getSortOption(sortBy, sortDirection)
 
   const queryParams = useMemo(
     () => ({
       search: debouncedSearch,
       pageNumber,
       pageSize: PAGE_SIZE,
-      sortBy,
-      sortDirection,
-      tagsIds: hashtags,
+      sortBy: sortBy as PathsPlaylistsGetParametersQuerySortBy,
+      sortDirection: sortDirection as PathsPlaylistsGetParametersQuerySortDirection,
+      tagsIds,
     }),
-    [debouncedSearch, pageNumber, sortBy, sortDirection, hashtags]
+    [debouncedSearch, pageNumber, sortBy, sortDirection, tagsIds]
   )
 
   const { data, isPending, isError } = usePlaylists(queryParams, { enabled: playlistsEnabled })
   const { data: tagsData, isPending: isTagsLoading } = useTags('')
 
-  const handleSortChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value as SortOption
+  const onSortChange = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      const value = event.target.value as SortOption
+      const { sortBy, sortDirection } = sortConfig[value]
+      handleSortUpdate(sortBy, sortDirection)
+    },
+    [handleSortUpdate]
+  )
 
-    setSort(value)
-    setPageNumber(DEFAULT_PAGE)
-  }, [])
-  const handleSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value)
-    setPageNumber(DEFAULT_PAGE)
-  }, [])
-  const handlePageChange = useCallback((page: SchemaGetPlaylistsRequestPayload['pageNumber']) => {
-    setPageNumber(page)
-  }, [])
-  const handleHashtagsChange = useCallback((tags: SchemaGetPlaylistsRequestPayload['tagsIds']) => {
-    setHashtags(tags || [])
-    setPageNumber(DEFAULT_PAGE)
-  }, [])
+  const onSearchChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      handleSearchChange(event.target.value)
+    },
+    [handleSearchChange]
+  )
 
   const tagsOptions = useMemo(
     () =>
@@ -97,20 +110,22 @@ export const PlaylistsPage = () => {
       })) || [],
     [tagsData]
   )
-  const content = useMemo(() => {
-    if (!VU.isValid(data?.data)) {
-      return null
-    }
 
+  const content = useMemo(() => {
     if (isPending) {
-      return <>{t('common.loading')}</>
+      return (
+        <ContentList
+          data={[1, 2, 3, 4, 5]}
+          renderItem={() => <PlaylistCardSkeleton showReactionButtons />}
+        />
+      )
     }
 
     if (isError) {
       return <>{t('playlists.label.load_error')}</>
     }
 
-    if (!VU.isNotEmptyArray(data?.data?.data)) {
+    if (!VU.isValid(data?.data) || !VU.isNotEmptyArray(data?.data?.data)) {
       return <>{t('playlists.title.playlists_not_found')}</>
     }
 
@@ -125,7 +140,7 @@ export const PlaylistsPage = () => {
   }, [data?.data, isError, isPending, t])
 
   return (
-    <PageWrapper>
+    <PageWithHeader>
       <Typography variant="h2" as="h1" className={s.title}>
         {t('playlists.title.all_playlists')}
       </Typography>
@@ -133,15 +148,15 @@ export const PlaylistsPage = () => {
         <div className={s.controlsRow}>
           <SearchTextField
             placeholder={t('playlists.placeholder.search_playlist')}
-            onChange={handleSearchChange}
+            onChange={onSearchChange}
             value={search}
           />
-          <SortSelect onChange={handleSortChange} value={sort} />
+          <SortSelect onChange={onSortChange} value={sort} />
         </div>
         <Autocomplete
           options={tagsOptions}
-          value={hashtags}
-          onChange={handleHashtagsChange}
+          value={tagsIds}
+          onChange={handleTagsChange}
           label={t('tags.label')}
           placeholder={isTagsLoading ? t('common.loading_tags') : t('tags.placeholder')}
           disabled={isTagsLoading}
@@ -155,6 +170,6 @@ export const PlaylistsPage = () => {
         pagesCount={data?.data?.meta.pagesCount || 1}
         onPageChange={handlePageChange}
       />
-    </PageWrapper>
+    </PageWithHeader>
   )
 }

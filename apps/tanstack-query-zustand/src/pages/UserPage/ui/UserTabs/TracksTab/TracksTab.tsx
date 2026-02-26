@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router'
+import { useParams, useSearchParams } from 'react-router'
 
 import { TracksTable } from '@/features/tracks'
 import { useTracks } from '@/features/tracks/api/use-tracks.query.ts'
 import { CreateTrackModal } from '@/features/tracks/ui/CreateTrackForm/CreateTrackModal'
-import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
+import { TrackRowContainer } from '@/features/tracks/ui/TrackRowContainer/TrackRowContainer'
 import {
   PathsPlaylistsGetParametersQuerySortDirection,
   PathsPlaylistsTracksGetParametersQueryPaginationType,
@@ -13,25 +13,34 @@ import {
   type SchemaGetTracksRequestPayload,
 } from '@/shared/api/schema.ts'
 import { Button, Pagination } from '@/shared/components'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/shared/components'
-import { MoreIcon } from '@/shared/icons'
+import { useUIStore } from '@/shared/model/ui-store'
+import { useUserPageData } from '../../../hooks'
+import { useCurrentTrack, usePlaybackProgress } from '@/player'
+import { usePlaybackState, usePlayerControls } from '@/player'
+import { getArtistsByTrack } from '@/shared/utils'
+import { convertApiTrackToPlayerTrack, convertApiTracksToPlayerTracks } from '@/player'
+import { usePlayerStore } from '@/player/model/player-store.ts'
 
 import s from './TracksTab.module.css'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 5
 const DEFAULT_PAGE = 1
 
 export const TracksTab = () => {
   const { t } = useTranslation()
   const { id: userId } = useParams<{ id: string }>()
+  const { isProfileOwner } = useUserPageData()
+  const [searchParams, setSearchParams] = useSearchParams()
 
-  const [isUploadTrackModalOpen, setIsUploadTrackModalOpen] = useState(false) // STATE FOR TESTING
-  const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE)
+  const { isCreateTrackModalOpen, openCreateTrackModal, closeCreateTrackModal } = useUIStore()
+
+  const pageNumber = Number(searchParams.get('page')) || DEFAULT_PAGE
+
+  const { track: currentTrack } = useCurrentTrack()
+  const { currentTime } = usePlaybackProgress()
+  const { isPlaying } = usePlaybackState()
+  const { play, pause, resume } = usePlayerControls()
+  const currentPlaylistId = usePlayerStore((state) => state.currentPlaylistId)
 
   const queryParams = useMemo<SchemaGetTracksRequestPayload>(
     () => ({
@@ -39,41 +48,83 @@ export const TracksTab = () => {
       pageSize: PAGE_SIZE,
       sortBy: PathsPlaylistsTracksGetParametersQuerySortBy.publishedAt,
       sortDirection: PathsPlaylistsGetParametersQuerySortDirection.desc,
-      search: undefined,
-      tagsIds: undefined,
-      artistsIds: undefined,
       userId: userId || undefined,
-      includeDrafts: true,
+      includeDrafts: isProfileOwner,
       paginationType: PathsPlaylistsTracksGetParametersQueryPaginationType.offset,
-      cursor: undefined,
     }),
-    [pageNumber, userId]
+    [pageNumber, userId, isProfileOwner]
   )
 
   const { data, isLoading, isError } = useTracks(queryParams)
   const tracks = data?.data?.data ?? []
+  const included = data?.data?.included ?? []
   const totalPages = data?.data?.meta.pagesCount ?? 1
 
-  const openUploadTrackModal = () => {
-    setIsUploadTrackModalOpen(true)
-  }
+  const handlePageChange = useCallback(
+    (page: number) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev)
 
-  const handlePageChange = useCallback((page: SchemaGetTracksRequestPayload['pageNumber']) => {
-    setPageNumber(page)
-  }, [])
+        if (page === DEFAULT_PAGE) {
+          next.delete('page')
+        } else {
+          next.set('page', page.toString())
+        }
 
-  // todo:task load user tracks
+        return next
+      })
+    },
+    [setSearchParams]
+  )
+
+  const playerTracks = useMemo(() => convertApiTracksToPlayerTracks(tracks), [tracks])
+  const userTracksPlaylistId = `${userId || 'unknown'}-user-tracks`
+
+  const handlePlayTrack = useCallback(
+    (trackId: string) => {
+      const track = tracks.find((item) => item.id === trackId)
+      if (!track) return
+
+      if (currentTrack?.id === trackId) {
+        if (isPlaying) {
+          pause()
+        } else {
+          resume()
+        }
+        return
+      }
+
+      const playerTrack = convertApiTrackToPlayerTrack(track)
+      if (currentPlaylistId !== userTracksPlaylistId) {
+        play(playerTrack, userTracksPlaylistId, playerTracks)
+        return
+      }
+
+      play(playerTrack, userTracksPlaylistId)
+    },
+    [
+      currentPlaylistId,
+      currentTrack?.id,
+      isPlaying,
+      pause,
+      play,
+      playerTracks,
+      resume,
+      tracks,
+      userTracksPlaylistId,
+    ]
+  )
 
   return (
     <>
-      <Button className={s.uploadTrackButton} onClick={openUploadTrackModal}>
-        {t('tracks.button.upload_track')}
-      </Button>
-      {isUploadTrackModalOpen && (
-        <CreateTrackModal onClose={() => setIsUploadTrackModalOpen(false)} />
+      {isProfileOwner && (
+        <Button className={s.uploadTrackButton} onClick={() => openCreateTrackModal()}>
+          {t('tracks.button.upload_track')}
+        </Button>
       )}
 
-      {isLoading && <div>{t('common.loading')}</div>}
+      {isCreateTrackModalOpen && <CreateTrackModal onClose={closeCreateTrackModal} />}
+
       {isError && <div>{t('tracks.label.load_error')}</div>}
       {!isLoading && !isError && tracks.length > 0 && (
         <TracksTable
@@ -83,43 +134,33 @@ export const TracksTab = () => {
             title: track.attributes.title,
             image: track.attributes.images.main?.[0]?.url,
             addedAt: track.attributes.addedAt,
-            artists: [], // track.attributes.artists?.map((artist) => artist.name) || [],
-            duration: 0, // track.attributes.duration,
+            artists: getArtistsByTrack(track as any, included as any).split(', '),
+            duration: Number((track.attributes as any).duration ?? 0),
+            likesCount: track.attributes.likesCount,
+            dislikesCount: Number((track.attributes as any).dislikesCount ?? 0),
+            currentUserReaction: track.attributes.currentUserReaction,
             ownerId: track.attributes.user.id,
+            isPublished: track.attributes.isPublished,
           }))}
           renderTrackRow={(trackRow) => (
-            <TrackRow
+            <TrackRowContainer
+              key={trackRow.id}
               trackRow={trackRow}
-              renderActionsCell={() => (
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <MoreIcon />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {/* todo:task if it's current logined user track, show edit popup and implement edit */}
-                    <DropdownMenuItem onClick={() => alert('Edit clicked!')}>
-                      {t('button.edit')}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        // todo:task implement feature
-                        alert('Add to playlist clicked!')
-                      }}>
-                      {t('tracks.button.add_to_playlist')}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
-                      {t('tracks.button.show_text_song')}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
+              currentTrack={currentTrack}
+              currentTime={currentTime}
+              onPlayClick={handlePlayTrack}
             />
           )}
         />
       )}
 
-      {totalPages > 1 && (
-        <Pagination page={pageNumber} pagesCount={totalPages} onPageChange={handlePageChange} />
+      {!isLoading && !isError && (
+        <Pagination
+          page={pageNumber}
+          pagesCount={Math.max(1, totalPages)}
+          onPageChange={handlePageChange}
+          alwaysVisible
+        />
       )}
     </>
   )

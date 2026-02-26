@@ -1,22 +1,32 @@
 import { t } from 'i18next'
 import { useMemo } from 'react'
 
-import { TracksTable, useCreateTrackModal } from '@/features/tracks'
+import { TracksTable, useCreateTrackModal, useFetchTracksQuery } from '@/features/tracks'
 import { TrackActions } from '@/features/tracks/ui/TrackActions/TrackActions'
 import { TrackRow } from '@/features/tracks/ui/TrackRow/TrackRow'
 import { useOwnerData } from '@/pages/UserPage/hooks'
 import { selectCurrentPlaylistId, usePlayerControls, useQueueControls } from '@/player'
 import { convertApiTracksToPlayerTracks } from '@/player/utils/convert-api-track-to-player-track.ts'
 import noCoverPlaceholder from '@/shared/assets/images/no-cover-placeholder.avif'
-import { Button } from '@/shared/components'
+import { Button, Pagination } from '@/shared/components'
 import { useAppSelector } from '@/shared/hooks'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
+import { usePageSearchParams } from '@/pages/common/hooks'
 import s from './TracksTab.module.css'
 
 export const TracksTab = () => {
-  const { isProfileOwner, tracks, pageOwnerId } = useOwnerData()
+  const { isProfileOwner, pageOwnerId } = useOwnerData()
+  const { pageNumber, handlePageChange } = usePageSearchParams()
+
+  const { data: tracksResponse, isLoading } = useFetchTracksQuery({
+    userId: pageOwnerId,
+    pageNumber,
+    pageSize: 10,
+    includeDrafts: isProfileOwner ? true : undefined,
+  })
+
   const { handleOpenCreateTrackModal } = useCreateTrackModal()
   const { play } = usePlayerControls()
   const { loadPlaylist } = useQueueControls()
@@ -24,8 +34,8 @@ export const TracksTab = () => {
 
   const currentPlaylistId = `${pageOwnerId}-user-tracks`
   const playerTracks = useMemo(
-    () => tracks && convertApiTracksToPlayerTracks(tracks.data),
-    [tracks]
+    () => tracksResponse && convertApiTracksToPlayerTracks(tracksResponse.data),
+    [tracksResponse]
   )
 
   const handleTrackPlayClick = (trackId: string) => {
@@ -40,6 +50,8 @@ export const TracksTab = () => {
     }
   }
 
+  if (isLoading) return null
+
   return (
     <>
       {isProfileOwner && (
@@ -49,7 +61,7 @@ export const TracksTab = () => {
       )}
       <TracksTable
         trackRows={
-          tracks?.data?.map((track, index) => {
+          tracksResponse?.data?.map((track, index) => {
             const image = getImageByType(track.attributes.images, ImageType.MEDIUM)
             return {
               index,
@@ -63,6 +75,7 @@ export const TracksTab = () => {
               dislikesCount: track.attributes.dislikesCount,
               currentUserReaction: track.attributes.currentUserReaction,
               url: track.attributes.attachments[0].url,
+              isPublished: track.attributes.isPublished,
             }
           }) ?? []
         }
@@ -75,29 +88,22 @@ export const TracksTab = () => {
               <TrackActions
                 trackId={trackRow.id}
                 isOwner={isProfileOwner}
+                isPublished={trackRow.isPublished}
                 reaction={undefined}
                 likesCount={undefined}
               />
-              // <DropdownMenu>
-              //   <DropdownMenuTrigger>
-              //     <MoreIcon />
-              //   </DropdownMenuTrigger>
-              //   <DropdownMenuContent>
-              //     <DropdownMenuItem onClick={() => handleOpenEditTrackModal(trackRow.id)}>
-              //       Edit
-              //     </DropdownMenuItem>
-              //     <DropdownMenuItem onClick={() => alert('Add to playlist clicked!')}>
-              //       Add to playlist
-              //     </DropdownMenuItem>
-              //     <DropdownMenuItem onClick={() => alert('Show text song clicked!')}>
-              //       Show text song
-              //     </DropdownMenuItem>
-              //   </DropdownMenuContent>
-              // </DropdownMenu>
             )}
           />
         )}
       />
+      {tracksResponse && (
+        <Pagination
+          page={pageNumber}
+          pagesCount={tracksResponse.meta.pagesCount || 1}
+          onPageChange={handlePageChange}
+          alwaysVisible
+        />
+      )}
     </>
   )
 }

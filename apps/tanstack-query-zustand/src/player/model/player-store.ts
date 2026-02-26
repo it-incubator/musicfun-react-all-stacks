@@ -207,6 +207,28 @@ export const usePlayerStore = create<PlayerStore>()(
           // Same track, just resume
           audioManager.play()
           set({ playbackState: 'playing' })
+        } else if (state.playbackState === 'idle' || state.playbackState === 'error') {
+          // Same track after ended/stopped/error - reload source and play again
+          set({
+            currentTime: 0,
+            duration: 0,
+            buffered: 0,
+            playbackState: 'loading',
+            error: null,
+          })
+
+          audioManager
+            .loadTrack(track)
+            .then(() => {
+              audioManager.play()
+              set({ playbackState: 'playing' })
+            })
+            .catch((error) => {
+              set({
+                playbackState: 'error',
+                error: error.message,
+              })
+            })
         }
       },
 

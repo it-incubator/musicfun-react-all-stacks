@@ -1,0 +1,95 @@
+.playlistList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.playlistItem {
+  cursor: pointer;
+
+  display: flex;
+
+  padding: 12px;
+  border: 2px solid transparent;
+
+  background: #18181b;
+
+  transition:
+    border 0.2s,
+    opacity 0.2s,
+    background-color 0.2s;
+}
+
+.playlistItem:not(.selected):focus-within,
+.playlistItem:not(.selected):hover {
+  background-color: var(--color-bg-input-hover);
+}
+
+.selected {
+  opacity: 1;
+  background-color: rgb(255 56 182 / 30%);
+  outline: 1px solid #e052c6;
+  box-shadow: 0 0 0 2px #e052c6;
+}
+
+.playlistLabel {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+
+  outline: none;
+}
+
+.imageWrapper {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 120px;
+  height: 120px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+
+  background: #222;
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playlistTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playlistTracks {
+  font-size: 0.9rem;
+  color: #b3b3b3;
+}
+
+/* hidden checkbox for accessibility */
+.playlistLabel input[type='checkbox'] {
+  pointer-events: none;
+
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+}

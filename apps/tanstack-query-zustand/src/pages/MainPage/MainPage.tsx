@@ -60,34 +60,29 @@ const PlaylistMainPageCard = ({ playlist }: { playlist: PlaylistListItem }) => {
   )
 }
 
+type TrackMainPageCardProps = {
+  track: SchemaTrackListItemResource
+  includedArtists: SchemaIncludedArtistOutput[]
+  isPlaying: boolean
+  onPlaybackClick: (trackId: string) => void
+}
+
 const TrackMainPageCard = ({
   track,
-  included,
+  includedArtists,
+  isPlaying,
   onPlaybackClick,
-}: {
-  track: SchemaTrackListItemResource
-  included: SchemaIncludedArtistOutput[]
-  onPlaybackClick: (trackId: string) => void
-}) => {
+}: TrackMainPageCardProps) => {
   const { handleLike, handleDislike, handleRemoveReaction } = useTrackReactions(track.id)
-  const { trackId: playerTrackId } = useCurrentTrack()
-  const { isPlaying } = usePlaybackState()
-
-  const isPlayerTrack = playerTrackId === track.id
-  const isTrackPlaying = isPlayerTrack && isPlaying
-
-  const handlePlayback = () => {
-    onPlaybackClick(track.id)
-  }
 
   return (
     <TrackCard
       id={track.id}
       image={track.attributes.images.main?.[0]?.url || ''}
       title={track.attributes.title}
-      artists={getArtistsByTrack(track, included)}
-      isPlaying={isTrackPlaying}
-      onPlaybackClick={handlePlayback}
+      artists={getArtistsByTrack(track, includedArtists)}
+      isPlaying={isPlaying}
+      onPlaybackClick={() => onPlaybackClick(track.id)}
       currentReaction={track.attributes.currentUserReaction}
       likesCount={track.attributes.likesCount}
       onLike={handleLike}
@@ -101,33 +96,31 @@ export const MainPage = () => {
   const { t } = useTranslation()
   const { loadPlaylist } = useQueueControls()
   const { play, pause, resume } = usePlayerControls()
-  const { trackId: playerTrackId } = useCurrentTrack()
+  const { trackId: currentTrackId } = useCurrentTrack()
   const { isPlaying } = usePlaybackState()
   const currentPlaylistId = usePlayerStore((state) => state.currentPlaylistId)
 
-  const { data: tags } = useTags('')
+  const { data: tags = [] } = useTags('')
 
   const { data: playlistsResponse, isLoading: isPlaylistsLoading } = usePlaylists({
     pageSize: 10,
     sortBy: PathsPlaylistsGetParametersQuerySortBy.addedAt,
     sortDirection: PathsPlaylistsGetParametersQuerySortDirection.desc,
   })
+  const playlists = playlistsResponse?.data?.data ?? []
 
-  const playlists = playlistsResponse?.data?.data || []
-
-  const { data: TracksResponse } = useTracksQuery({
+  const { data: tracksResponse } = useTracksQuery({
     pageSize: 10,
   })
-
-  const tracks = TracksResponse?.data || []
-  const included = TracksResponse?.included || []
+  const tracks = tracksResponse?.data ?? []
+  const includedArtists = tracksResponse?.included ?? []
 
   const playerTracks = useMemo(() => convertApiTracksToPlayerTracks(tracks), [tracks])
 
   const handleTrackCardPlaybackClick = (trackId: string) => {
-    const isPlayerTrack = playerTrackId === trackId
+    const isCurrentTrack = currentTrackId === trackId
 
-    if (isPlayerTrack) {
+    if (isCurrentTrack) {
       if (isPlaying) {
         pause()
       } else {
@@ -163,7 +156,8 @@ export const MainPage = () => {
         renderItem={(track) => (
           <TrackMainPageCard
             track={track}
-            included={included}
+            includedArtists={includedArtists}
+            isPlaying={currentTrackId === track.id && isPlaying}
             onPlaybackClick={handleTrackCardPlaybackClick}
           />
         )}

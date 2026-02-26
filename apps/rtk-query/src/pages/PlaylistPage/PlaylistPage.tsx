@@ -5,12 +5,15 @@ import { useMeQuery } from '@/features/auth'
 import { PlaylistOverview, useFetchPlaylistByIdQuery } from '@/features/playlists'
 import { TrackRowContainer, TracksTable, useFetchTracksInPlaylistQuery } from '@/features/tracks'
 import { usePageBackgroundColor, usePageSearchParams } from '@/pages/common/hooks'
+import { usePlayerControls, useQueueControls } from '@/player'
+import { convertApiTracksToPlayerTracks } from '@/player/utils/convert-api-track-to-player-track'
 import { Typography } from '@/shared/components'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
 
 import { PageWithoutHeader, SearchTextField } from '../common'
 import s from './PlaylistPage.module.css'
+import { PlaylistRow } from '@/features/playlists/ui/PlaylistRow/PlaylistRow.tsx'
 import { ControlPanel } from './ui/ControlPanel'
 import { PlaylistPageSkeleton } from './ui/PlaylistPageSkeleton'
 
@@ -34,6 +37,18 @@ export const PlaylistPage = () => {
     tracks?.data.filter((track) =>
       track.attributes.title.toLowerCase().includes(debouncedSearch.toLowerCase())
     ) ?? []
+
+  const { play } = usePlayerControls()
+  const { loadPlaylist } = useQueueControls()
+
+  const handlePlayAll = () => {
+    if (filteredTracks.length === 0) {
+      return
+    }
+    const playerTracks = convertApiTracksToPlayerTracks(filteredTracks)
+    loadPlaylist(id!, playerTracks, 0)
+    play(playerTracks[0], id!)
+  }
 
   const playlistCover =
     playlist?.data.attributes.images &&
@@ -63,8 +78,10 @@ export const PlaylistPage = () => {
         className={s.playlistOverview}
         title={playlist.data.attributes.title}
         image={playlistCover?.url}
-        description={playlist.data.attributes.description}
+        description={playlist.data.attributes.description || ''}
         tags={playlist.data.attributes.tags}
+        userName={playlist.data.attributes.user.name}
+        tracksCount={playlist.data.attributes.tracksCount}
       />
       <div className={s.playlistToolbar}>
         <SearchTextField placeholder={t('tracks.placeholder.search_tracks')} onChange={() => {}} />
@@ -74,6 +91,7 @@ export const PlaylistPage = () => {
           isOwnPlaylist={isOwnPlaylist}
           reaction={playlist.data.attributes.currentUserReaction}
           likesCount={playlist.data.attributes.likesCount}
+          onPlayAll={handlePlayAll}
         />
       </div>
       {filteredTracks?.length > 0 ? (
@@ -90,6 +108,7 @@ export const PlaylistPage = () => {
             dislikesCount: track.attributes.dislikesCount,
             currentUserReaction: track.attributes.currentUserReaction,
             url: track.attributes.attachments[0].url,
+            isPublished: track.attributes.isPublished,
           }))}
           renderTrackRow={(trackRow) => (
             <TrackRowContainer

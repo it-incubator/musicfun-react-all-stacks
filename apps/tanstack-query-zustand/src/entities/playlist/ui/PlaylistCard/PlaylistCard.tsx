@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import type { SchemaPlaylistImagesOutputDto } from '@/shared/api/schema.ts'
+import { Paths } from '@/shared/config/paths.ts'
 import {
   Card,
   CoverImage,
@@ -23,7 +24,6 @@ interface PlaylistCardProps {
   id: string
   title?: string
   images?: SchemaPlaylistImagesOutputDto
-  description?: string | null
   footer?: React.ReactNode
   canEdit?: boolean
   userName?: string
@@ -38,7 +38,6 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
   const {
     title,
     images,
-    description,
     id,
     footer,
     canEdit = false,
@@ -56,15 +55,14 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
   const imageSrc = VU.isNotEmptyArray(images?.main) ? images.main[0].url : undefined
 
   const handleUserNameClick = (e: React.MouseEvent) => {
-    e.preventDefault()
     e.stopPropagation()
   }
 
   return (
-    <Card as={Link} to={`/playlists/${id}`} className={s.card}>
-      <div className={s.image}>
+    <Card className={s.card}>
+      <Link to={`${Paths.Playlists}/${id}`} className={s.image}>
         <CoverImage imageSrc={imageSrc} imageDescription={'cover'} aria-hidden />
-      </div>
+      </Link>
       <div className={s.titleWrapper}>
         <Typography variant="h3" className={s.title}>
           {title}
@@ -89,17 +87,16 @@ export const PlaylistCard: React.FC<PlaylistCardProps> = (props) => {
           </DropdownMenu>
         )}
       </div>
-      <Typography variant="body3" className={s.description}>
-        {description}
-      </Typography>
-
       <div className={s.details}>
         {shouldShowOwnerName && (
           <div className={s.madeFor}>
             <Typography variant="body2" as="span" className={s.madeForText}>
               {t('playlist.made_for')}{' '}
             </Typography>
-            <Link to={`/profile/${userId}`} className={s.userLink} onClick={handleUserNameClick}>
+            <Link
+              to={`${Paths.Profile}/${userId}`}
+              className={s.userLink}
+              onClick={handleUserNameClick}>
               {userName}
             </Link>
           </div>

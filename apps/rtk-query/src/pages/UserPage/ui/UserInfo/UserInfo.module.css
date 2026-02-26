@@ -1,11 +1,27 @@
 .box {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   align-items: center;
+  padding-top: 16px;
+}
+
+.avatar {
+  overflow: hidden;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+}
+
+.userName {
+  margin-top: 8px;
 }
 
 .editButton {
+  margin-top: 6px;
   border-radius: 4px;
   font-size: 14px;
+}
+
+.stats {
+  margin-top: 10px;
 }

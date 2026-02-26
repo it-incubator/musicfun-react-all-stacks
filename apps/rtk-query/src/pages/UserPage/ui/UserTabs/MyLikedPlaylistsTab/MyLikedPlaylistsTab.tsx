@@ -19,6 +19,7 @@ import {
 import { MoreIcon } from '@/shared/icons'
 import { ImageType } from '@/shared/types/commonApi.types'
 import { getImageByType } from '@/shared/utils'
+import s from './MyLikedPlaylistsTab.module.css'
 
 export const MyLikedPlaylistsTab = () => {
   const { userId } = useParams()
@@ -29,7 +30,7 @@ export const MyLikedPlaylistsTab = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const pageNumber = Number(searchParams.get('page')) || 1
-  const { data: playlists } = useFetchPlaylistsQuery({ pageNumber, userId: userId! })
+  const { data: playlists, isLoading } = useFetchPlaylistsQuery({ pageNumber, userId: userId! })
   const pagesCount = playlists?.meta.pagesCount || 1
 
   const handlePageChange = (page: number) => {
@@ -48,6 +49,7 @@ export const MyLikedPlaylistsTab = () => {
       {playlists?.data && (
         <ContentList
           data={playlists?.data}
+          listClassName={s.playlistsList}
           renderItem={(playlist) => {
             const image = getImageByType(playlist.attributes.images, ImageType.MEDIUM)
             return (
@@ -61,6 +63,7 @@ export const MyLikedPlaylistsTab = () => {
                 likesCount={playlist.attributes.likesCount}
                 userId={playlist.attributes.user.id}
                 addedAt={playlist.attributes.addedAt}
+                tracksCount={playlist.attributes.tracksCount}
                 shouldShowOwnerName
                 shouldShowCreatedDate
                 actions={
@@ -89,7 +92,14 @@ export const MyLikedPlaylistsTab = () => {
           }}
         />
       )}
-      <Pagination page={pageNumber} pagesCount={pagesCount} onPageChange={handlePageChange} />
+      {!isLoading && (
+        <Pagination
+          page={pageNumber}
+          pagesCount={pagesCount}
+          onPageChange={handlePageChange}
+          alwaysVisible
+        />
+      )}
     </>
   )
 }

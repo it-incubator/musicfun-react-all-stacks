@@ -10,6 +10,7 @@ export type PaginationProps = {
   page: number
   pagesCount: number
   onPageChange: (page: number) => void
+  alwaysVisible?: boolean
   className?: string
 } & Omit<ComponentProps<'div'>, 'children'>
 
@@ -20,43 +21,51 @@ export const Pagination = ({
 
   pagesCount,
   onPageChange,
+  alwaysVisible = false,
   className,
   ...props
 }: PaginationProps) => {
+  const normalizedPagesCount = Math.max(1, pagesCount)
+  const normalizedPage = Math.min(Math.max(1, page), normalizedPagesCount)
+
+  if (!alwaysVisible && normalizedPagesCount <= 1) {
+    return null
+  }
+
   // Helper function to generate page numbers array
   const generatePageNumbers = () => {
     const pages: (number | 'ellipsis')[] = []
 
-    if (pagesCount <= MAX_VISIBLE_PAGES) {
+    if (normalizedPagesCount <= MAX_VISIBLE_PAGES) {
       // Show all pages if total is small
-      for (let i = 1; i <= pagesCount; i++) {
+      for (let i = 1; i <= normalizedPagesCount; i++) {
         pages.push(i)
       }
     } else {
       // Always show first page
       pages.push(1)
 
-      if (page > 3) {
+      if (normalizedPage > 3) {
         pages.push('ellipsis')
       }
 
       // Show pages around current page
-      const start = Math.max(2, page - 1)
-      const end = Math.min(pagesCount - 1, page + 1)
+      const start = Math.max(2, normalizedPage - 1)
+      const end = Math.min(normalizedPagesCount - 1, normalizedPage + 1)
 
       for (let i = start; i <= end; i++) {
-        if (i !== 1 && i !== pagesCount) {
+        if (i !== 1 && i !== normalizedPagesCount) {
           pages.push(i)
         }
       }
 
-      if (page < pagesCount - 2) {
+      if (normalizedPage < normalizedPagesCount - 2) {
         pages.push('ellipsis')
       }
 
       // Always show last page if it's not already included
-      if (pagesCount > 1) {
-        pages.push(pagesCount)
+      if (normalizedPagesCount > 1) {
+        pages.push(normalizedPagesCount)
       }
     }
 
@@ -64,23 +73,19 @@ export const Pagination = ({
   }
 
   const handlePrevious = () => {
-    if (page > 1) {
-      onPageChange(page - 1)
+    if (normalizedPage > 1) {
+      onPageChange(normalizedPage - 1)
     }
   }
 
   const handleNext = () => {
-    if (page < pagesCount) {
-      onPageChange(page + 1)
+    if (normalizedPage < normalizedPagesCount) {
+      onPageChange(normalizedPage + 1)
     }
   }
 
   const handlePageClick = (pageNumber: number) => {
     onPageChange(pageNumber)
-  }
-
-  if (pagesCount <= 1) {
-    return null
   }
 
   const pageNumbers = generatePageNumbers()
@@ -94,7 +99,7 @@ export const Pagination = ({
       {/* Previous button */}
       <IconButton
         onClick={handlePrevious}
-        disabled={page === 1}
+        disabled={normalizedPage === 1}
         aria-label="Go to previous page"
         className={s.navButton}>
         <KeyboardArrowLeftIcon />
@@ -111,7 +116,7 @@ export const Pagination = ({
             )
           }
 
-          const isActive = pageNumber === page
+          const isActive = pageNumber === normalizedPage
 
           return (
             <button
@@ -130,7 +135,7 @@ export const Pagination = ({
       {/* Next button */}
       <IconButton
         onClick={handleNext}
-        disabled={page === pagesCount}
+        disabled={normalizedPage === normalizedPagesCount}
         aria-label="Go to next page"
         className={s.navButton}>
         <KeyboardArrowRightIcon />

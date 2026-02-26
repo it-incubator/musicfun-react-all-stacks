@@ -3,6 +3,14 @@
   user-select: none;
 }
 
+.active {
+  background-color: var(--color-bg-interactive-secondary);
+}
+
+.draft {
+  opacity: 0.6;
+}
+
 .playing {
   color: var(--color-accent);
 }

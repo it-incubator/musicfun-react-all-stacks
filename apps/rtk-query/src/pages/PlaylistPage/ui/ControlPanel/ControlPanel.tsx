@@ -26,6 +26,7 @@ type ControlPanelProps = {
   reaction: CurrentUserReaction
   likesCount: number
   className?: string
+  onPlayAll?: () => void
 }
 
 export const ControlPanel = ({
@@ -34,6 +35,7 @@ export const ControlPanel = ({
   reaction,
   likesCount,
   className,
+  onPlayAll,
 }: ControlPanelProps) => {
   const { t } = useTranslation()
 
@@ -45,7 +47,7 @@ export const ControlPanel = ({
 
   return (
     <div className={clsx(s.box, className)}>
-      <IconButton className={s.playButton}>
+      <IconButton className={s.playButton} onClick={onPlayAll}>
         <PlayIcon />
       </IconButton>
 

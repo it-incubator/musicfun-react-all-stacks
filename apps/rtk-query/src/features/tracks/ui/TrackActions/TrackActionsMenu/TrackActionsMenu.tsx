@@ -9,22 +9,33 @@ import {
 } from '@/shared/components'
 import { Paths } from '@/shared/configs'
 import { useCurrentPage } from '@/shared/hooks'
-import { AddToPlaylistIcon, DeleteIcon, EditIcon, MoreIcon, TextIcon } from '@/shared/icons'
+import {
+  AddToPlaylistIcon,
+  DeleteIcon,
+  EditIcon,
+  MoreIcon,
+  TextIcon,
+  UploadIcon,
+} from '@/shared/icons'
 
 type TrackActionsMenuProps = {
   trackId: string
   isOwner: boolean
+  isPublished?: boolean
   onEdit: () => void
   onDelete: () => void
   onAddToPlaylist: () => void
+  onPublish?: () => void
 }
 
 export const TrackActionsMenu = ({
   trackId,
   isOwner,
+  isPublished,
   onEdit,
   onDelete,
   onAddToPlaylist,
+  onPublish,
 }: TrackActionsMenuProps) => {
   const { t } = useTranslation()
   const { isTrackPage, isPlaylistPage } = useCurrentPage()
@@ -47,6 +58,12 @@ export const TrackActionsMenu = ({
               <EditIcon />
               {t('tracks.button.edit')}
             </DropdownMenuItem>
+            {!isPublished && onPublish && (
+              <DropdownMenuItem onClick={onPublish}>
+                <UploadIcon width={24} height={24} />
+                {t('tracks.button.publish')}
+              </DropdownMenuItem>
+            )}
             {showDelete && (
               <DropdownMenuItem onClick={onDelete}>
                 <DeleteIcon width={24} height={24} />

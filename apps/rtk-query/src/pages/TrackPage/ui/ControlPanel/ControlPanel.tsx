@@ -8,6 +8,7 @@ import s from './ControlPanel.module.css'
 export const ControlPanel = ({
   trackId,
   isOwnTrack,
+  isPublished,
   reaction,
   likesCount,
   track,
@@ -15,6 +16,7 @@ export const ControlPanel = ({
   track: Track
   trackId: string
   isOwnTrack: boolean
+  isPublished: boolean
   reaction: CurrentUserReaction
   likesCount: number
 }) => {
@@ -66,6 +68,7 @@ export const ControlPanel = ({
         likesCount={likesCount}
         sizeReactionButtons="large"
         isOwner={isOwnTrack}
+        isPublished={isPublished}
       />
     </div>
   )

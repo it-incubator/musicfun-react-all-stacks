@@ -1,0 +1,5 @@
+.wrapper {
+  min-height: calc(100vh - var(--player-height));
+  margin-top: calc(0px - var(--header-height));
+  padding: var(--header-height) 40px 0;
+}

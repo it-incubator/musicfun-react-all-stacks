@@ -10,15 +10,18 @@ import {
 import { createPortal } from 'react-dom'
 
 import { useGetId } from '@/shared/hooks'
-import { ArrowDownIcon, SearchIcon } from '@/shared/icons'
+import {
+  ArrowDownIcon,
+  SearchIcon,
+  CheckedIcon,
+  UncheckedIcon,
+  DeleteTagIconButton,
+} from '@/shared/icons'
 
 import { IconButton } from '../IconButton'
 import { Typography } from '../Typography'
 import s from './Autocomplete.module.css'
-import { t } from 'i18next'
-import { CheckedIcon } from '@/shared/icons/CheckedIcon.tsx'
-import { UncheckedIcon } from '@/shared/icons/UncheckedIcon.tsx'
-import { DeleteTagIconButton } from '@/shared/icons/DeleteTagIconButton.tsx'
+import { useTranslation } from 'react-i18next'
 
 export type AutocompleteOption = {
   value: string
@@ -31,8 +34,8 @@ export type AutocompleteProps = {
   placeholder?: string
   options: AutocompleteOption[]
   value: string[]
-  searchTerm: string
-  setSearchTerm: (value: string) => void
+  searchTerm?: string
+  setSearchTerm?: (value: string) => void
   onChange: (value: string[]) => void
   disabled?: boolean
   maxTags?: number
@@ -43,11 +46,11 @@ export type AutocompleteProps = {
 
 export const Autocomplete = ({
   label,
-  placeholder = t('placeholder.search_and_select'),
+  placeholder,
   options,
   value,
-  searchTerm,
-  setSearchTerm,
+  searchTerm: externalSearchTerm,
+  setSearchTerm: externalSetSearchTerm,
   onChange,
   disabled = false,
   maxTags,
@@ -56,14 +59,17 @@ export const Autocomplete = ({
   isRenderInPortal = false,
   ...props
 }: AutocompleteProps) => {
+  const { t } = useTranslation()
+  const [internalSearchTerm, setInternalSearchTerm] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(-1)
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const hiddenTagsBlockRef = useRef<HTMLDivElement>(null)
 
-  // For detecting clicks outside component to close dropdown
+  const searchTerm = externalSearchTerm !== undefined ? externalSearchTerm : internalSearchTerm
+  const setSearchTerm = externalSetSearchTerm || setInternalSearchTerm
+
   const containerRef = useRef<HTMLDivElement>(null)
-  // For programmatic focus management (Escape key, focus after selection)
   const inputRef = useRef<HTMLInputElement>(null)
   const inputWrapperRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
@@ -75,7 +81,6 @@ export const Autocomplete = ({
   const isMaxTagsReached = maxTags ? value.length >= maxTags : false
   const showError = Boolean(errorMessage)
 
-  // Close dropdown on outside click (учитываем портал)
   useEffect(() => {
     if (!isOpen) return
 
@@ -103,7 +108,6 @@ export const Autocomplete = ({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isOpen, isRenderInPortal])
 
-  // Handle keyboard navigation
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (disabled) return
 
@@ -168,7 +172,7 @@ export const Autocomplete = ({
 
   const selectedOptions = options.filter((option) => value.includes(option.value))
 
-  const maxVisibleTags = 4
+  const maxVisibleTags = 2
   const visibleTags = selectedOptions.slice(0, maxVisibleTags)
   const hiddenTagsCount = selectedOptions.length - maxVisibleTags
   const hiddenTags = selectedOptions.slice(maxVisibleTags)
@@ -222,7 +226,12 @@ export const Autocomplete = ({
             <div className={s.hidenTags}>
               <Typography variant="body2" className={s.tagText}>
                 and{' '}
-                <button className={s.underlinedPart} onClick={() => setIsPopupOpen(!isPopupOpen)}>
+                <button
+                  className={s.underlinedPart}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsPopupOpen(!isPopupOpen)
+                  }}>
                   {hiddenTagsCount} more
                 </button>
               </Typography>
@@ -265,7 +274,6 @@ export const Autocomplete = ({
           </div>
         )}
 
-        {/* Search input */}
         <div className={s.inputContainer}>
           <SearchIcon width={20} height={20} />
           <input
@@ -277,7 +285,7 @@ export const Autocomplete = ({
             onChange={handleInputChange}
             onFocus={handleInputFocus}
             onKeyDown={handleKeyDown}
-            placeholder={placeholder}
+            placeholder={placeholder || t('placeholder.search_and_select')}
             disabled={disabled || isMaxTagsReached}
             autoComplete="off"
           />
@@ -288,7 +296,6 @@ export const Autocomplete = ({
         />
       </div>
 
-      {/* Dropdown через портал */}
       {isRenderInPortal ? (
         <AutocompleteDropdownPortal
           anchorRef={inputWrapperRef}
@@ -296,19 +303,30 @@ export const Autocomplete = ({
           isOpen={isOpen && !disabled}>
           <div className={s.dropdown}>
             {filteredOptions.length > 0 ? (
-              filteredOptions.map((option, index) => (
-                <div
-                  key={option.value}
-                  className={clsx(
-                    s.option,
-                    index === focusedIndex && s.optionFocused,
-                    option.disabled && s.optionDisabled
-                  )}
-                  // onClick={() => !option.disabled && selectOption(option)}
-                  onMouseEnter={() => setFocusedIndex(index)}>
-                  <Typography variant="body2">{option.label}</Typography>
-                </div>
-              ))
+              filteredOptions.map((option, index) => {
+                const isSelected = value.includes(option.value)
+
+                return (
+                  <div
+                    key={option.value}
+                    role="option"
+                    aria-selected={isSelected}
+                    aria-disabled={option.disabled}
+                    className={clsx(
+                      s.option,
+                      index === focusedIndex && s.optionFocused,
+                      option.disabled && s.optionDisabled,
+                      isSelected && s.selected
+                    )}
+                    onMouseEnter={() => setFocusedIndex(index)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => !option.disabled && toggleOption(option)}
+                    onMouseLeave={() => setFocusedIndex(-1)}>
+                    {isSelected ? <CheckedIcon /> : <UncheckedIcon />}
+                    <Typography variant="body2">#{option.label}</Typography>
+                  </div>
+                )
+              })
             ) : (
               <div className={s.noResults}>
                 <Typography variant="body2" className={s.noResultsText}>
@@ -362,14 +380,12 @@ export const Autocomplete = ({
         )
       )}
 
-      {/* Error message */}
       {showError && (
         <Typography variant="error" className={s.errorMessage}>
           {errorMessage}
         </Typography>
       )}
 
-      {/* Tags counter */}
       {maxTags && (
         <Typography variant="caption" className={s.counter}>
           {value.length}/{maxTags} {t('placeholder.selected')}
@@ -379,7 +395,6 @@ export const Autocomplete = ({
   )
 }
 
-// Portal for dropdown
 type AutocompleteDropdownPortalProps = {
   anchorRef: React.RefObject<HTMLElement | null>
   dropdownRef: React.RefObject<HTMLDivElement | null>
@@ -420,6 +435,7 @@ const AutocompleteDropdownPortal = ({
         top: styles.top,
         left: styles.left,
         width: styles.width,
+        zIndex: 9999,
       }}>
       {children}
     </div>,

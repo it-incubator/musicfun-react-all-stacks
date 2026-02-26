@@ -1,34 +1,27 @@
 .box {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   align-items: center;
+  padding-top: 16px;
 }
 
 .avatar {
   overflow: hidden;
-  width: 192px;
-  height: 192px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
 }
 
-.descriptionList {
-  display: flex;
-  gap: 23px;
-  margin: 0;
+.userName {
+  margin-top: 8px;
 }
 
-.descriptionItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.editButton {
+  margin-top: 6px;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
-.descriptionItem dd {
-  margin: 0;
-}
-
-.descriptionItem dt {
-  font-size: var(--font-size-s);
-  text-transform: uppercase;
+.stats {
+  margin-top: 10px;
 }
