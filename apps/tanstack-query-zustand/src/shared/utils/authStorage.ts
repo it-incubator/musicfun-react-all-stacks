@@ -53,6 +53,6 @@ export const authStorage: AuthStorage = {
 }
 
 const localStorageKeys = {
-  refreshToken: 'musicfun-refresh-token',
-  accessToken: 'musicfun-access-token',
+  refreshToken: 'tanstack-query-musicfun-refresh-token',
+  accessToken: 'tanstack-query-musicfun-access-token',
 }
