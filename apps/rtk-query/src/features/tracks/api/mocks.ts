@@ -34,6 +34,7 @@ export const MOCK_TRACKS = [
       dislikesCount: 2,
       artists: [{ id: '1', name: 'John Doe' }],
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -65,6 +66,7 @@ export const MOCK_TRACKS = [
       dislikesCount: 2,
       artists: [{ id: '2', name: 'Jane Smith' }],
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -100,6 +102,7 @@ export const MOCK_TRACKS = [
         { id: '5', name: 'John Doe' },
       ],
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -131,6 +134,7 @@ export const MOCK_TRACKS = [
       dislikesCount: 2,
       artists: [{ id: '4', name: 'Chris Green' }],
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -162,6 +166,7 @@ export const MOCK_TRACKS = [
       dislikesCount: 2,
       artists: [{ id: '5', name: 'John Doe' }],
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -192,6 +197,7 @@ export const MOCK_TRACKS = [
       likesCount: 1,
       dislikesCount: 2,
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -223,6 +229,7 @@ export const MOCK_TRACKS = [
       dislikesCount: 2,
       artists: [{ id: '7', name: 'John Doe' }],
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -254,6 +261,7 @@ export const MOCK_TRACKS = [
       dislikesCount: 2,
       artists: [{ id: '8', name: 'John Doe' }],
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -285,6 +293,7 @@ export const MOCK_TRACKS = [
       dislikesCount: 2,
       artists: [{ id: '10', name: 'John Doe' }],
       duration: 100,
+      isPublished: true,
     },
   },
   {
@@ -316,6 +325,7 @@ export const MOCK_TRACKS = [
       dislikesCount: 2,
       artists: [{ id: '10', name: 'John Doe' }],
       duration: 100,
+      isPublished: true,
     },
   },
 ]
