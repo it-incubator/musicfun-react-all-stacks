@@ -1,6 +1,11 @@
 name: CI - TanStack Query Build
 
 on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'apps/tanstack-query-zustand/**'
   pull_request:
     paths:
       - 'apps/tanstack-query-zustand/**'

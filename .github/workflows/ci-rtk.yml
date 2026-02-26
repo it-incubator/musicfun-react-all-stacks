@@ -1,6 +1,11 @@
 name: CI - RTK Query Build
 
 on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'apps/rtk-query/**'
   pull_request:
     paths:
       - 'apps/rtk-query/**'
