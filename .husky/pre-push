@@ -1,0 +1,69 @@
+#!/usr/bin/env sh
+
+# This script runs automatically before every "git push".
+# If any build fails, the push is cancelled — broken code won't reach the remote.
+
+# ─── Step 1: Figure out which files were changed ───────────────────────────────
+#
+# @{push} is a git shorthand for "the branch on the remote that we're pushing to".
+# "git diff --name-only @{push}.." compares the remote state with our local HEAD
+# and outputs just the file paths (one per line) that differ.
+#
+# 2>/dev/null suppresses errors — for example, if the branch has no remote tracking
+# branch yet (first push), this command would fail.
+#
+# If it fails, we fall back to "git diff --name-only HEAD~1" which compares
+# the latest commit with the one before it (so at least we check the last commit).
+# ───────────────────────────────────────────────────────────────────────────────
+CHANGED=$(git diff --name-only @{push}.. 2>/dev/null || git diff --name-only HEAD~1)
+
+# ─── Step 2: Initialize flags for each project ────────────────────────────────
+#
+# We use two boolean flags to track whether each project needs to be built.
+# They start as "false" and will be set to "true" if relevant files were changed.
+# ───────────────────────────────────────────────────────────────────────────────
+RTK=false
+TANSTACK=false
+
+# ─── Step 3: Check which projects have changed files ──────────────────────────
+#
+# We pipe the list of changed files into grep.
+#   -q flag means "quiet" — grep won't print anything, it just sets the exit code:
+#     exit 0 (success) if a match is found, exit 1 (failure) if not.
+#
+# "^apps/rtk-query/" means "line starts with apps/rtk-query/" — so any file
+# inside that folder will match.
+#
+# "&&" means "if the previous command succeeded (match found), run the next command".
+# So if any changed file is inside apps/rtk-query/, we set RTK=true.
+# Same logic for tanstack-query-zustand.
+# ───────────────────────────────────────────────────────────────────────────────
+echo "$CHANGED" | grep -q "^apps/rtk-query/" && RTK=true
+echo "$CHANGED" | grep -q "^apps/tanstack-query-zustand/" && TANSTACK=true
+
+# ─── Step 4: Type-check only the projects that were changed ───────────────────
+#
+# We run only "tsc -b" (TypeScript compiler in build mode) instead of a full
+# "pnpm build" (which would also run Vite bundling). tsc catches type errors,
+# missing imports, wrong props, etc. Vite build is redundant here — it doesn't
+# check types, just bundles JS. Full build is done in CI instead.
+#
+# "|| exit 1" means: if tsc fails (returns non-zero exit code),
+# immediately exit this script with code 1. A non-zero exit from a pre-push
+# hook tells git to ABORT the push. This prevents pushing broken code.
+# ───────────────────────────────────────────────────────────────────────────────
+
+if [ "$RTK" = true ]; then
+  echo "▶ Type-checking rtk-query..."
+  pnpm --prefix apps/rtk-query exec tsc -b || exit 1
+fi
+
+if [ "$TANSTACK" = true ]; then
+  echo "▶ Type-checking tanstack-query-zustand..."
+  pnpm --prefix apps/tanstack-query-zustand exec tsc -b || exit 1
+fi
+
+# If we reach this point, either:
+#   - No projects had changes (nothing to check), or
+#   - All type checks passed.
+# In both cases the script exits with code 0 (success) and git proceeds with the push.
