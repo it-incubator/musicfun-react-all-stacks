@@ -6,14 +6,12 @@ import {
 } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
 
-import { baseApi } from '@/app/api/base-api.ts'
-
 import { handleError } from './handleError.ts'
 
 export const localStorageKeys = {
-  refreshToken: 'musicfun-refresh-token',
-  accessToken: 'musicfun-access-token',
-}
+  refreshToken: 'rtk-query-musicfun-refresh-token',
+  accessToken: 'rtk-query-musicfun-access-token',
+} as const
 
 const mutex = new Mutex()
 
