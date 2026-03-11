@@ -28,7 +28,7 @@ export const PlaylistsList = ({ isPlaylistsLoading, playlists }: Props) => {
       setPlaylistId(playlist.id)
       reset({
         title: playlist.attributes.title,
-        description: playlist.attributes.description,
+        description: playlist.attributes.description ?? '',
         tagIds: playlist.attributes.tags.map((tag) => tag.id),
       })
     } else {

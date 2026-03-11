@@ -28,6 +28,7 @@ Run `pnpm lint && pnpm build` before opening a PR.
 - Language: TypeScript (`.ts`, `.tsx`), React function components.
 - Formatting: Prettier (`singleQuote: true`, `semi: false`, `printWidth: 120`).
 - Linting: ESLint 9 + `typescript-eslint` + `react-hooks` + `react-refresh`.
+- Do not add code comments unless explicitly requested by the user.
 - Naming:
   - Components and folders: `PascalCase` (for example `PlaylistsPage.tsx`, `Header/`).
   - Hooks: `useXxx` (for example `useInfiniteScroll.ts`).

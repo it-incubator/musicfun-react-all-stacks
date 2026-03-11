@@ -11,19 +11,20 @@ export const createPlaylistSchema = z.object({
 
 export const playlistMetaSchema = z.object({
   page: z.int().positive(),
-  pageSize: z.int().positive(),
-  totalCount: z.int().positive(),
-  pagesCount: z.int().positive(),
+  pageSize: z.int().nonnegative(),
+  totalCount: z.int().nonnegative(),
+  pagesCount: z.int().nonnegative(),
 })
 
 export const playlistAttributesSchema = z.object({
   title: z.string(),
-  description: z.string(),
+  description: z.string().nullish(),
   addedAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
   order: z.int(),
   dislikesCount: z.int().nonnegative(),
   likesCount: z.int().nonnegative(),
+  tracksCount: z.int().nonnegative().optional(),
   tags: z.array(tagSchema),
   images: imagesSchema,
   user: userSchema,
