@@ -11,32 +11,38 @@ const navItems = [
 ]
 
 export const Header = () => {
-  const { data } = useGetMeQuery()
+  const { data } = useGetMeQuery(undefined)
   const [logout] = useLogoutMutation()
 
   const logoutHandler = () => logout()
 
   return (
     <header className={s.container}>
-      <nav>
-        <ul className={s.list}>
-          {navItems.map((item) => (
-            <li key={item.to}>
-              <NavLink to={item.to} className={({ isActive }) => `link ${isActive ? s.activeLink : ''}`}>
-                {item.label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      {data && (
-        <div className={s.loginContainer}>
-          <Link to={Path.Profile}>{data.login}</Link>
-          <button onClick={logoutHandler}>logout</button>
-        </div>
-      )}
+      <div className={s.shell}>
+        <nav>
+          <ul className={s.list}>
+            {navItems.map((item) => (
+              <li key={item.to}>
+                <NavLink to={item.to} className={({ isActive }) => (isActive ? `${s.link} ${s.activeLink}` : s.link)}>
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        {data && (
+          <div className={s.loginContainer}>
+            <Link to={Path.Profile} className={s.profileLink}>
+              {data.login}
+            </Link>
+            <button className="button-ghost" onClick={logoutHandler}>
+              Logout
+            </button>
+          </div>
+        )}
 
-      {!data && <Login />}
+        {!data && <Login />}
+      </div>
     </header>
   )
 }

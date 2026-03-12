@@ -22,17 +22,20 @@ export const CreatePlaylistForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Create new playlist</h2>
-      <div>
-        <input {...register('title')} placeholder={'title'} />
+    <form className={`${s.form} surface-card`} onSubmit={handleSubmit(onSubmit)}>
+      <div className={s.header}>
+        <p className={s.eyebrow}>Create playlist</p>
+        <h2 className={s.title}>Start a new collection</h2>
+      </div>
+      <div className={s.fieldWrap}>
+        <input className="field" {...register('title')} placeholder={'Title'} />
         {errors.title && <span className={s.error}>{errors.title.message}</span>}
       </div>
-      <div>
-        <input {...register('description')} placeholder={'description'} />
+      <div className={s.fieldWrap}>
+        <input className="field" {...register('description')} placeholder={'Description'} />
         {errors.description && <span className={s.error}>{errors.description.message}</span>}
       </div>
-      <button>create playlist</button>
+      <button className="button">Create playlist</button>
     </form>
   )
 }

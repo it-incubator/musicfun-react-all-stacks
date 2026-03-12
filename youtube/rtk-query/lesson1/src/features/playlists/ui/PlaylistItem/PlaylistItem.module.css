@@ -1,0 +1,16 @@
+.card {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  padding: 16px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.actions > button {
+  flex: 1 1 140px;
+}

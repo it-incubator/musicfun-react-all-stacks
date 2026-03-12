@@ -11,7 +11,7 @@
 
 .eyebrow {
   margin: 0;
-  color: var(--color-accent);
+  color: var(--color-accent-cool);
   font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.2em;
@@ -20,7 +20,7 @@
 
 .title {
   margin: 0;
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   line-height: 1;
   font-weight: 800;
   letter-spacing: -0.05em;
@@ -28,11 +28,14 @@
 
 .fieldWrap {
   display: grid;
-  gap: 8px;
 }
 
-.error {
-  color: #ff8a8a;
-  font-size: 0.88rem;
-  font-weight: 600;
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.actions > button {
+  flex: 1 1 140px;
 }

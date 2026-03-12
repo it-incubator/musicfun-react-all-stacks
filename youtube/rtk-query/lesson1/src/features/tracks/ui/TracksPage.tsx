@@ -5,7 +5,7 @@ import { TracksList } from '@/features/tracks/ui/TracksList/TracksList.tsx'
 import s from './TracksPage.module.css'
 
 export const TracksPage = () => {
-  const { data, hasNextPage, isFetching, isFetchingNextPage, fetchNextPage } = useFetchTracksInfiniteQuery()
+  const { data, hasNextPage, isFetching, isFetchingNextPage, fetchNextPage } = useFetchTracksInfiniteQuery(undefined)
 
   const { observerRef } = useInfiniteScroll({ fetchNextPage, hasNextPage, isFetching })
 

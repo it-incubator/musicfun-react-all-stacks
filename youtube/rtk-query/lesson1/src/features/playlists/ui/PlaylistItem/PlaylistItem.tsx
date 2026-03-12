@@ -1,6 +1,7 @@
 import type { PlaylistData } from '@/features/playlists/api/playlistsApi.types.ts'
 import { PlaylistCover } from '@/features/playlists/ui/PlaylistItem/PlaylistCover/PlaylistCover.tsx'
 import { PlaylistDescription } from '@/features/playlists/ui/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx'
+import s from './PlaylistItem.module.css'
 
 type Props = {
   playlist: PlaylistData
@@ -10,11 +11,17 @@ type Props = {
 
 export const PlaylistItem = ({ playlist, editPlaylistHandler, deletePlaylistHandler }: Props) => {
   return (
-    <div>
+    <article className={`${s.card} surface-card`}>
       <PlaylistCover playlistId={playlist.id} images={playlist.attributes.images} />
       <PlaylistDescription attributes={playlist.attributes} />
-      <button onClick={() => deletePlaylistHandler(playlist.id)}>delete</button>
-      <button onClick={() => editPlaylistHandler(playlist)}>update</button>
-    </div>
+      <div className={s.actions}>
+        <button className="button-ghost" onClick={() => deletePlaylistHandler(playlist.id)}>
+          Delete
+        </button>
+        <button className="button" onClick={() => editPlaylistHandler(playlist)}>
+          Update
+        </button>
+      </div>
+    </article>
   )
 }

@@ -1,22 +1,78 @@
 .container {
-  border-bottom: 1px solid black;
-  padding: 0 100px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 16px 24px 0;
+  backdrop-filter: blur(20px);
+}
+
+.shell {
+  width: min(100%, var(--container-width));
+  margin: 0 auto;
+  padding: 14px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(7, 10, 15, 0.72);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
 .list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
-  gap: 40px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  transition:
+    color var(--transition-base),
+    background-color var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .activeLink {
-  font-weight: bold;
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .loginContainer {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
+}
+
+.profileLink {
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .container {
+    padding: 12px 16px 0;
+  }
+
+  .shell {
+    border-radius: 28px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .list,
+  .loginContainer {
+    justify-content: center;
+  }
 }

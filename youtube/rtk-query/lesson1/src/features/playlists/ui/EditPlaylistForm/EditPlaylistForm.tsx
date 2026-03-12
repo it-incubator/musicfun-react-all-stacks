@@ -1,6 +1,7 @@
 import { useUpdatePlaylistMutation } from '@/features/playlists/api/playlistsApi.ts'
 import type { UpdatePlaylistArgs } from '@/features/playlists/api/playlistsApi.types.ts'
 import type { SubmitHandler, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+import s from './EditPlaylistForm.module.css'
 
 type Props = {
   playlistId: string
@@ -20,18 +21,25 @@ export const EditPlaylistForm = ({ playlistId, setPlaylistId, editPlaylist, hand
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Edit playlist</h2>
-      <div>
-        <input {...register('title')} placeholder={'title'} />
+    <form className={`${s.form} surface-card`} onSubmit={handleSubmit(onSubmit)}>
+      <div className={s.header}>
+        <p className={s.eyebrow}>Editing mode</p>
+        <h2 className={s.title}>Update playlist</h2>
       </div>
-      <div>
-        <input {...register('description')} placeholder={'description'} />
+      <div className={s.fieldWrap}>
+        <input className="field" {...register('title')} placeholder={'Title'} />
       </div>
-      <button type={'submit'}>save</button>
-      <button type={'button'} onClick={() => editPlaylist(null)}>
-        cancel
-      </button>
+      <div className={s.fieldWrap}>
+        <input className="field" {...register('description')} placeholder={'Description'} />
+      </div>
+      <div className={s.actions}>
+        <button className="button" type={'submit'}>
+          Save
+        </button>
+        <button className="button-ghost" type={'button'} onClick={() => editPlaylist(null)}>
+          Cancel
+        </button>
+      </div>
     </form>
   )
 }

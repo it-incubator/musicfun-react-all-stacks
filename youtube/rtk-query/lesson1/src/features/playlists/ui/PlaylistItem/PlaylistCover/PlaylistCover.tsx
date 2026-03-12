@@ -44,10 +44,22 @@ export const PlaylistCover = ({ playlistId, images }: Props) => {
   const deleteCoverHandler = () => deletePlaylistCover({ playlistId })
 
   return (
-    <>
-      <img src={src} alt="cover" width={'240px'} className={s.cover} />
-      <input type="file" accept={'image/jpeg,image/png,image/gif'} onChange={uploadCoverHandler} />
-      {originalCover && <button onClick={deleteCoverHandler}>delete cover</button>}
-    </>
+    <div className={s.wrap}>
+      <img src={src} alt="cover" className={s.cover} />
+      <label className={s.upload}>
+        <span>Upload cover</span>
+        <input
+          className={s.input}
+          type="file"
+          accept={'image/jpeg,image/png,image/gif'}
+          onChange={uploadCoverHandler}
+        />
+      </label>
+      {originalCover && (
+        <button className="button-ghost" onClick={deleteCoverHandler}>
+          Delete cover
+        </button>
+      )}
+    </div>
   )
 }

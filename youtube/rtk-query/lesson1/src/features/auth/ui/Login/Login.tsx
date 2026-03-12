@@ -25,8 +25,8 @@ export const Login = () => {
   }
 
   return (
-    <button type={'button'} onClick={loginHandler}>
-      login
+    <button className="button" type={'button'} onClick={loginHandler}>
+      Login
     </button>
   )
 }

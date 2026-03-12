@@ -1,12 +1,35 @@
+.card {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  min-height: 60vh;
+  padding: 32px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
 .title {
   text-align: center;
-  font-size: 250px;
+  font-size: clamp(7rem, 24vw, 15rem);
   margin: 0;
+  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.08em;
 }
 
 .subtitle {
   text-align: center;
-  font-size: 50px;
+  font-size: clamp(1.8rem, 4vw, 3rem);
   margin: 0;
   text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
 }

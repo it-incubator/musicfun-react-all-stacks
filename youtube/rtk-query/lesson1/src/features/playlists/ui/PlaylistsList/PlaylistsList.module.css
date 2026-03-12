@@ -1,12 +1,9 @@
 .items {
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 22px;
 }
 
 .item {
-  width: 240px;
-  padding: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  min-width: 0;
 }

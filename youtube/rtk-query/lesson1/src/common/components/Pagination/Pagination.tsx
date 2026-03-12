@@ -35,16 +35,16 @@ export const Pagination = ({ currentPage, setCurrentPage, pagesCount, pageSize, 
           ),
         )}
       </div>
-      <label>
-        Show
-        <select value={pageSize} onChange={(e) => changePageSize(Number(e.target.value))}>
+      <label className={s.pageSize}>
+        <span>Show</span>
+        <select className="select" value={pageSize} onChange={(e) => changePageSize(Number(e.target.value))}>
           {[2, 4, 8, 16, 32].map((size) => (
             <option value={size} key={size}>
               {size}
             </option>
           ))}
         </select>
-        per page
+        <span>per page</span>
       </label>
     </div>
   )
