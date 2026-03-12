@@ -1,5 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: dark;
+  font-family: 'Manrope', sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  --color-bg: #07090d;
+  --color-bg-elevated: rgba(16, 21, 29, 0.78);
+  --color-bg-strong: rgba(10, 14, 20, 0.92);
+  --color-surface: rgba(255, 255, 255, 0.06);
+  --color-surface-strong: rgba(255, 255, 255, 0.1);
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.22);
+  --color-text: #f5efe6;
+  --color-text-muted: rgba(245, 239, 230, 0.7);
+  --color-text-soft: rgba(245, 239, 230, 0.52);
+  --color-accent: #ffb36b;
+  --color-accent-soft: rgba(255, 179, 107, 0.18);
+  --color-accent-cool: #7cc7ff;
+  --shadow-page: 0 24px 80px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 20px 45px rgba(0, 0, 0, 0.28);
+  --shadow-card-hover: 0 28px 65px rgba(0, 0, 0, 0.4);
+  --radius-xl: 32px;
+  --radius-lg: 24px;
+  --radius-md: 18px;
+  --radius-sm: 14px;
+  --container-width: 1180px;
+  --transition-base: 220ms ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--color-text);
+  font-family: 'Manrope', sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(124, 199, 255, 0.2), transparent 30%),
+    radial-gradient(circle at 85% 15%, rgba(255, 179, 107, 0.16), transparent 28%),
+    linear-gradient(180deg, #0a1018 0%, #07090d 44%, #050608 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65), transparent 85%);
+  opacity: 0.4;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+audio {
+  width: 100%;
+  min-width: 0;
+  filter: sepia(0.18) saturate(0.9) brightness(0.95);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
