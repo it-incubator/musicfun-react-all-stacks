@@ -8,6 +8,8 @@ import { createRoot } from 'react-dom/client'
 
 import { App } from './app/App.tsx'
 
+console.log(import.meta.env.VITE_VERSION)
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

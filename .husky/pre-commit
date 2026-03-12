@@ -1,1 +1,17 @@
+# ─── Auto-increment VITE_VERSION for rtk-query ──────────────────────────────
+#
+# If any staged file inside apps/rtk-query/ changed (excluding .env itself),
+# bump VITE_VERSION in .env by 1 and stage the updated file.
+# ─────────────────────────────────────────────────────────────────────────────
+
+ENV_FILE="apps/rtk-query/.env"
+
+if git diff --cached --name-only -- 'apps/rtk-query/' | grep -qv '\.env$'; then
+  CURRENT=$(grep "^VITE_VERSION=" "$ENV_FILE" | cut -d'=' -f2)
+  NEW=$((CURRENT + 1))
+  sed -i '' "s/^VITE_VERSION=.*/VITE_VERSION=$NEW/" "$ENV_FILE"
+  git add "$ENV_FILE"
+  echo "✔ Bumped rtk-query VITE_VERSION: $CURRENT → $NEW"
+fi
+
 pnpm exec lint-staged
