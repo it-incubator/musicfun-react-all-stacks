@@ -1,0 +1,3136 @@
+{
+  "components": {
+    "schemas": {
+      "AttachmentDto": {
+        "properties": {
+          "addedAt": {
+            "description": "Date and time when the file was attached (ISO 8601)",
+            "format": "date-time",
+            "type": "string"
+          },
+          "contentType": {
+            "description": "MIME type of the file",
+            "example": "application/pdf",
+            "type": "string"
+          },
+          "fileSize": {
+            "description": "File size in bytes",
+            "type": "number"
+          },
+          "id": {
+            "description": "Unique identifier of the attachment",
+            "format": "uuid",
+            "type": "string"
+          },
+          "images": {
+            "description": "Image variants of the file: the original, then previews about a minute after upload. Empty for non-images",
+            "items": {
+              "$ref": "#/components/schemas/ImageVariant"
+            },
+            "type": "array"
+          },
+          "isImage": {
+            "description": "Whether the file is an image (has image variants)",
+            "type": "boolean"
+          },
+          "originalName": {
+            "description": "File name as uploaded",
+            "example": "spec.pdf",
+            "type": "string"
+          },
+          "url": {
+            "description": "Full public URL of the file",
+            "type": "string"
+          }
+        },
+        "required": ["id", "url", "contentType", "originalName", "fileSize", "isImage", "addedAt", "images"],
+        "type": "object"
+      },
+      "BadRequestException": {
+        "properties": {},
+        "type": "object"
+      },
+      "BinaryFile": {
+        "description": "Файл в multipart/form-data",
+        "format": "binary",
+        "type": "string"
+      },
+      "BoardAttributes": {
+        "properties": {
+          "addedAt": {
+            "description": "Date and time when the board was created (ISO 8601)",
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "description": "Board description, or null when not set",
+            "nullable": true,
+            "type": "string"
+          },
+          "images": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BoardImagesOutputDTO"
+              }
+            ],
+            "description": "Board cover images"
+          },
+          "isImportant": {
+            "description": "Whether the board is marked as important",
+            "type": "boolean"
+          },
+          "order": {
+            "description": "Position among the owner’s boards; lower comes first. Can be negative",
+            "type": "number"
+          },
+          "title": {
+            "description": "Board title",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "Date and time when the board was last updated (ISO 8601)",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["title", "description", "addedAt", "updatedAt", "order", "isImportant", "images"],
+        "type": "object"
+      },
+      "BoardImagesOutputDTO": {
+        "properties": {
+          "main": {
+            "description": "Cover image variants: the uploaded original, then a 156x156 and a 48x48 preview about a minute after upload (generated in the background). Empty when the board has no cover",
+            "items": {
+              "$ref": "#/components/schemas/ImageVariant"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["main"],
+        "type": "object"
+      },
+      "BoardResourceIdentifier": {
+        "properties": {
+          "id": {
+            "description": "ID of the board",
+            "format": "uuid",
+            "type": "string"
+          },
+          "type": {
+            "description": "Resource type (always \"boards\")",
+            "example": "boards",
+            "type": "string"
+          }
+        },
+        "required": ["id", "type"],
+        "type": "object"
+      },
+      "BoardSingleData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/BoardAttributes"
+          },
+          "id": {
+            "description": "Unique identifier of the board",
+            "format": "uuid",
+            "type": "string"
+          },
+          "type": {
+            "description": "Resource type (always \"boards\")",
+            "example": "boards",
+            "type": "string"
+          }
+        },
+        "required": ["id", "type", "attributes"],
+        "type": "object"
+      },
+      "BoardTaskListItemAttributes": {
+        "properties": {
+          "addedAt": {
+            "description": "Date and time when the task was created (ISO 8601)",
+            "format": "date-time",
+            "type": "string"
+          },
+          "attachments": {
+            "description": "Files attached to the task",
+            "items": {
+              "$ref": "#/components/schemas/AttachmentDto"
+            },
+            "type": "array"
+          },
+          "deadline": {
+            "description": "Deadline (ISO 8601), or null when not set",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "order": {
+            "description": "Position within the board; lower comes first. Can be negative",
+            "type": "number"
+          },
+          "priority": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskPriority"
+              }
+            ],
+            "description": "Task priority: 0 – Low; 1 – Middle; 2 – Hi; 3 – Urgently; 4 – Later"
+          },
+          "startDate": {
+            "description": "Planned start date (ISO 8601), or null when not set",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskStatus"
+              }
+            ],
+            "description": "Task status: 0 – New; 1 – InProgress; 2 – Completed; 3 – Draft"
+          },
+          "title": {
+            "description": "Task title",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "Date and time when the task was last updated (ISO 8601)",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "addedAt",
+          "order",
+          "status",
+          "priority",
+          "startDate",
+          "deadline",
+          "updatedAt",
+          "attachments"
+        ],
+        "type": "object"
+      },
+      "BoardTaskListItemJsonApiData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/BoardTaskListItemAttributes"
+          },
+          "id": {
+            "description": "Unique identifier of the task",
+            "format": "uuid",
+            "type": "string"
+          },
+          "relationships": {
+            "$ref": "#/components/schemas/TaskRelationships"
+          },
+          "type": {
+            "description": "Resource type (always \"tasks\")",
+            "example": "tasks",
+            "type": "string"
+          }
+        },
+        "required": ["id", "type", "attributes", "relationships"],
+        "type": "object"
+      },
+      "BoardTaskListResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/BoardTaskListItemJsonApiData"
+            },
+            "type": "array"
+          },
+          "included": {
+            "description": "The board the listed tasks belong to",
+            "items": {
+              "$ref": "#/components/schemas/IncludedBoard"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/JsonApiMeta"
+          }
+        },
+        "required": ["data", "included", "meta"],
+        "type": "object"
+      },
+      "CreateBoardAttributes": {
+        "properties": {
+          "description": {
+            "description": "Board description (up to 1000 characters). Omit or send null to leave it unset",
+            "example": "Tasks for the current sprint",
+            "maxLength": 1000,
+            "nullable": true,
+            "type": "string"
+          },
+          "title": {
+            "description": "Board title (1 to 100 characters)",
+            "example": "Sprint 12",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": ["title"],
+        "type": "object"
+      },
+      "CreateBoardData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/CreateBoardAttributes"
+          },
+          "type": {
+            "description": "Resource type (always \"boards\")",
+            "example": "boards",
+            "type": "string"
+          }
+        },
+        "required": ["type", "attributes"],
+        "type": "object"
+      },
+      "CreateBoardRequestPayload": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CreateBoardData"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "CreateTaskAttributes": {
+        "properties": {
+          "title": {
+            "description": "Task title (1 to 100 characters). A new task starts with status 0 (New) and priority 1 (Middle)",
+            "example": "Write release notes",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": ["title"],
+        "type": "object"
+      },
+      "CreateTaskData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/CreateTaskAttributes"
+          },
+          "type": {
+            "description": "Resource type (always \"tasks\")",
+            "example": "tasks",
+            "type": "string"
+          }
+        },
+        "required": ["type", "attributes"],
+        "type": "object"
+      },
+      "CreateTaskRequestPayload": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CreateTaskData"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "GetBoardOutput": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BoardSingleData"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "GetBoardsOutput": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/BoardSingleData"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/JsonApiMeta"
+          }
+        },
+        "required": ["data", "meta"],
+        "type": "object"
+      },
+      "GetMeOutput": {
+        "properties": {
+          "login": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": ["userId", "login"],
+        "type": "object"
+      },
+      "GetMyBoardsOutput": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/BoardSingleData"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "GetPaginatedItemsRequestPayload": {
+        "properties": {
+          "pageNumber": {
+            "default": 1,
+            "description": "Page number for pagination (starting from 1)",
+            "minimum": 1,
+            "type": "number"
+          },
+          "pageSize": {
+            "default": 10,
+            "description": "Page size for pagination (between 1 and 20)",
+            "maximum": 20,
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "GetTaskOutput": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TaskDetailsData"
+          },
+          "included": {
+            "description": "The board the task belongs to",
+            "items": {
+              "$ref": "#/components/schemas/IncludedBoard"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["data", "included"],
+        "type": "object"
+      },
+      "GlobalTaskListItemAttributes": {
+        "properties": {
+          "addedAt": {
+            "description": "Date and time when the task was created (ISO 8601)",
+            "format": "date-time",
+            "type": "string"
+          },
+          "attachmentsCount": {
+            "description": "Number of files attached to the task",
+            "type": "number"
+          },
+          "priority": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskPriority"
+              }
+            ],
+            "description": "Task priority: 0 – Low; 1 – Middle; 2 – Hi; 3 – Urgently; 4 – Later"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskStatus"
+              }
+            ],
+            "description": "Task status: 0 – New; 1 – InProgress; 2 – Completed; 3 – Draft"
+          },
+          "title": {
+            "description": "Task title",
+            "type": "string"
+          }
+        },
+        "required": ["title", "status", "priority", "addedAt", "attachmentsCount"],
+        "type": "object"
+      },
+      "GlobalTaskListItemJsonApiData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/GlobalTaskListItemAttributes"
+          },
+          "id": {
+            "description": "Unique identifier of the task",
+            "format": "uuid",
+            "type": "string"
+          },
+          "relationships": {
+            "$ref": "#/components/schemas/TaskRelationships"
+          },
+          "type": {
+            "description": "Resource type (always \"tasks\")",
+            "example": "tasks",
+            "type": "string"
+          }
+        },
+        "required": ["id", "type", "attributes", "relationships"],
+        "type": "object"
+      },
+      "GlobalTaskListResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/GlobalTaskListItemJsonApiData"
+            },
+            "type": "array"
+          },
+          "included": {
+            "description": "Each board referenced by the listed tasks, once",
+            "items": {
+              "$ref": "#/components/schemas/IncludedBoard"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/JsonApiMeta"
+          }
+        },
+        "required": ["data", "included", "meta"],
+        "type": "object"
+      },
+      "ImageSizeType": {
+        "description": "original – the uploaded file; medium – 156x156 preview; thumbnail – 48x48 preview. Previews appear about a minute after upload",
+        "enum": ["original", "thumbnail", "medium"],
+        "type": "string"
+      },
+      "ImageVariant": {
+        "properties": {
+          "fileSize": {
+            "description": "Image file size in bytes",
+            "type": "number"
+          },
+          "height": {
+            "description": "Image height in pixels",
+            "type": "number"
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageSizeType"
+              }
+            ],
+            "description": "original – the uploaded file; medium – 156x156 preview; thumbnail – 48x48 preview. Previews appear about a minute after upload"
+          },
+          "url": {
+            "description": "Full public URL of the image",
+            "type": "string"
+          },
+          "width": {
+            "description": "Image width in pixels",
+            "type": "number"
+          }
+        },
+        "required": ["type", "width", "height", "fileSize", "url"],
+        "type": "object"
+      },
+      "IncludedBoard": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/IncludedBoardAttributes"
+          },
+          "id": {
+            "description": "ID of the board",
+            "format": "uuid",
+            "type": "string"
+          },
+          "type": {
+            "description": "Resource type (always \"boards\")",
+            "example": "boards",
+            "type": "string"
+          }
+        },
+        "required": ["id", "type", "attributes"],
+        "type": "object"
+      },
+      "IncludedBoardAttributes": {
+        "properties": {
+          "title": {
+            "description": "Board title",
+            "type": "string"
+          }
+        },
+        "required": ["title"],
+        "type": "object"
+      },
+      "JsonApiError": {
+        "properties": {
+          "code": {
+            "description": "Application-specific error code",
+            "example": "E123",
+            "type": "object"
+          },
+          "detail": {
+            "description": "Detailed explanation",
+            "example": "User with ID 123 not found",
+            "type": "string"
+          },
+          "meta": {
+            "description": "Any extra data",
+            "type": "object"
+          },
+          "source": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonApiErrorSource"
+              }
+            ],
+            "description": "Pointer to the associated entity in the request"
+          },
+          "status": {
+            "description": "HTTP status code as a string",
+            "example": "404",
+            "type": "string"
+          },
+          "title": {
+            "description": "Short, human-readable summary",
+            "example": "Not Found",
+            "type": "string"
+          }
+        },
+        "required": ["status"],
+        "type": "object"
+      },
+      "JsonApiErrorDocument": {
+        "properties": {
+          "errors": {
+            "description": "Array of one or more errors",
+            "items": {
+              "$ref": "#/components/schemas/JsonApiError"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "description": "e.g. timestamp, path, traceId, etc.",
+            "type": "object"
+          }
+        },
+        "required": ["errors"],
+        "type": "object"
+      },
+      "JsonApiErrorSource": {
+        "properties": {
+          "parameter": {
+            "description": "e.g. \"?queryParam\"",
+            "example": "?queryParam",
+            "type": "string"
+          },
+          "pointer": {
+            "description": "e.g. \"/data/attributes/field\"",
+            "example": "/data/attributes/field",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "JsonApiMeta": {
+        "properties": {
+          "page": {
+            "description": "Current page number",
+            "type": "number"
+          },
+          "pageSize": {
+            "description": "Requested page size",
+            "type": "number"
+          },
+          "pagesCount": {
+            "description": "Total number of pages",
+            "type": "number"
+          },
+          "totalCount": {
+            "description": "Total number of items across all pages",
+            "type": "number"
+          }
+        },
+        "required": ["page", "pageSize", "totalCount", "pagesCount"],
+        "type": "object"
+      },
+      "LoginRequestPayload": {
+        "properties": {
+          "accessTokenTTL": {
+            "description": "Access token lifetime (default \"3m\"); must be a string like \"60s\", \"3m\", \"2h\", or \"1d\"",
+            "example": "3m",
+            "type": "string"
+          },
+          "code": {
+            "description": "Authorization code received from OAuth server after redirect",
+            "type": "string"
+          },
+          "redirectUri": {
+            "description": "Specify the same redirect URI used in the initial OAuth server request",
+            "example": "http://localhost:3000/oauth2/callback",
+            "type": "string"
+          },
+          "rememberMe": {
+            "description": "Refresh token lifetime: if true, 30 days; if false, 30 minutes. accessTokenTTL must not exceed the refresh token lifetime",
+            "type": "boolean"
+          }
+        },
+        "required": ["code", "redirectUri", "rememberMe"],
+        "type": "object"
+      },
+      "LogoutRequestPayload": {
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": ["refreshToken"],
+        "type": "object"
+      },
+      "MoveTaskToBoardRequestPayload": {
+        "properties": {
+          "putAfterItemId": {
+            "description": "ID of a task in the target board after which to insert the moved task; null puts it first. The key is required",
+            "format": "uuid",
+            "nullable": true,
+            "type": "string"
+          },
+          "targetBoardId": {
+            "description": "ID of the board to move the task to. Must be your board",
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": ["targetBoardId", "putAfterItemId"],
+        "type": "object"
+      },
+      "PatchBoardAttributes": {
+        "properties": {
+          "description": {
+            "description": "Board description (up to 1000 characters). Omit to keep it, null to clear it",
+            "maxLength": 1000,
+            "nullable": true,
+            "type": "string"
+          },
+          "isImportant": {
+            "description": "Whether the board is marked as important. Omit to keep it",
+            "type": "boolean"
+          },
+          "title": {
+            "description": "Board title (1 to 100 characters). Omit to keep it",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PatchBoardData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/PatchBoardAttributes"
+          },
+          "type": {
+            "description": "Resource type (always \"boards\")",
+            "example": "boards",
+            "type": "string"
+          }
+        },
+        "required": ["type", "attributes"],
+        "type": "object"
+      },
+      "PatchBoardRequestPayload": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PatchBoardData"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "PatchTaskAttributes": {
+        "properties": {
+          "deadline": {
+            "description": "Deadline (ISO 8601). Omit to keep it, null to clear it",
+            "example": "2026-11-15T18:00:00.000Z",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "description": {
+            "description": "Task description (up to 1000 characters). Omit to keep it, null to clear it",
+            "maxLength": 1000,
+            "nullable": true,
+            "type": "string"
+          },
+          "priority": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskPriority"
+              }
+            ],
+            "description": "Task priority: 0 – Low; 1 – Middle; 2 – Hi; 3 – Urgently; 4 – Later. Omit to keep it"
+          },
+          "startDate": {
+            "description": "Planned start date (ISO 8601). Omit to keep it, null to clear it",
+            "example": "2026-11-01T09:00:00.000Z",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskStatus"
+              }
+            ],
+            "description": "Task status: 0 – New; 1 – InProgress; 2 – Completed; 3 – Draft. Omit to keep it"
+          },
+          "title": {
+            "description": "Task title (1 to 100 characters). Omit to keep it",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PatchTaskData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/PatchTaskAttributes"
+          },
+          "type": {
+            "description": "Resource type (always \"tasks\")",
+            "example": "tasks",
+            "type": "string"
+          }
+        },
+        "required": ["type", "attributes"],
+        "type": "object"
+      },
+      "PatchTaskRequestPayload": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PatchTaskData"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "RefreshOutput": {
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": ["refreshToken", "accessToken"],
+        "type": "object"
+      },
+      "RefreshRequestPayload": {
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": ["refreshToken"],
+        "type": "object"
+      },
+      "ReorderBoardsRequestPayload": {
+        "properties": {
+          "putAfterItemId": {
+            "description": "ID of the element (board or task, same kind as the one being moved) after which to place the current one; null puts it first. The key is required",
+            "format": "uuid",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": ["putAfterItemId"],
+        "type": "object"
+      },
+      "ReplaceBoardAttributes": {
+        "properties": {
+          "description": {
+            "description": "Board description (up to 1000 characters); null clears it",
+            "maxLength": 1000,
+            "nullable": true,
+            "type": "string"
+          },
+          "isImportant": {
+            "description": "Whether the board is marked as important",
+            "type": "boolean"
+          },
+          "title": {
+            "description": "Board title (1 to 100 characters)",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": ["title", "description", "isImportant"],
+        "type": "object"
+      },
+      "ReplaceBoardData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/ReplaceBoardAttributes"
+          },
+          "type": {
+            "description": "Resource type (always \"boards\")",
+            "example": "boards",
+            "type": "string"
+          }
+        },
+        "required": ["type", "attributes"],
+        "type": "object"
+      },
+      "ReplaceBoardRequestPayload": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReplaceBoardData"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "ReplaceTaskAttributes": {
+        "properties": {
+          "deadline": {
+            "description": "Deadline (ISO 8601); null clears it",
+            "example": "2026-11-15T18:00:00.000Z",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "description": {
+            "description": "Task description (up to 1000 characters); null clears it",
+            "maxLength": 1000,
+            "nullable": true,
+            "type": "string"
+          },
+          "priority": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskPriority"
+              }
+            ],
+            "description": "Task priority: 0 – Low; 1 – Middle; 2 – Hi; 3 – Urgently; 4 – Later"
+          },
+          "startDate": {
+            "description": "Planned start date (ISO 8601); null clears it",
+            "example": "2026-11-01T09:00:00.000Z",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskStatus"
+              }
+            ],
+            "description": "Task status: 0 – New; 1 – InProgress; 2 – Completed; 3 – Draft"
+          },
+          "title": {
+            "description": "Task title (1 to 100 characters)",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": ["title", "description", "status", "priority", "startDate", "deadline"],
+        "type": "object"
+      },
+      "ReplaceTaskData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/ReplaceTaskAttributes"
+          },
+          "type": {
+            "description": "Resource type (always \"tasks\")",
+            "example": "tasks",
+            "type": "string"
+          }
+        },
+        "required": ["type", "attributes"],
+        "type": "object"
+      },
+      "ReplaceTaskRequestPayload": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReplaceTaskData"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "SimpleLoginOutput": {
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": ["accessToken", "refreshToken"],
+        "type": "object"
+      },
+      "SimpleLoginRequestPayload": {
+        "properties": {
+          "login": {
+            "description": "User login",
+            "type": "string"
+          },
+          "password": {
+            "description": "User password",
+            "type": "string"
+          },
+          "rememberMe": {
+            "default": true,
+            "description": "Refresh token lifetime: if true, 7 days; if false, 30 minutes",
+            "type": "boolean"
+          }
+        },
+        "required": ["login", "password", "rememberMe"],
+        "type": "object"
+      },
+      "SimpleLogoutRequestPayload": {
+        "properties": {
+          "refreshToken": {
+            "description": "Refresh token to invalidate",
+            "type": "string"
+          }
+        },
+        "required": ["refreshToken"],
+        "type": "object"
+      },
+      "SimpleRefreshRequestPayload": {
+        "properties": {
+          "refreshToken": {
+            "description": "Refresh token",
+            "type": "string"
+          }
+        },
+        "required": ["refreshToken"],
+        "type": "object"
+      },
+      "TaskBoardRelationship": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BoardResourceIdentifier"
+          }
+        },
+        "required": ["data"],
+        "type": "object"
+      },
+      "TaskDetailsAttributes": {
+        "properties": {
+          "addedAt": {
+            "description": "Date and time when the task was created (ISO 8601)",
+            "format": "date-time",
+            "type": "string"
+          },
+          "attachments": {
+            "description": "Files attached to the task, with their image variants",
+            "items": {
+              "$ref": "#/components/schemas/AttachmentDto"
+            },
+            "type": "array"
+          },
+          "deadline": {
+            "description": "Deadline (ISO 8601), or null when not set",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "description": {
+            "description": "Task description, or null when not set",
+            "nullable": true,
+            "type": "string"
+          },
+          "order": {
+            "description": "Position within the board; lower comes first. Can be negative",
+            "type": "number"
+          },
+          "priority": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskPriority"
+              }
+            ],
+            "description": "Task priority: 0 – Low; 1 – Middle; 2 – Hi; 3 – Urgently; 4 – Later"
+          },
+          "startDate": {
+            "description": "Planned start date (ISO 8601), or null when not set",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskStatus"
+              }
+            ],
+            "description": "Task status: 0 – New; 1 – InProgress; 2 – Completed; 3 – Draft"
+          },
+          "title": {
+            "description": "Task title",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "Date and time when the task was last updated (ISO 8601)",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "order",
+          "status",
+          "priority",
+          "startDate",
+          "deadline",
+          "addedAt",
+          "updatedAt",
+          "attachments"
+        ],
+        "type": "object"
+      },
+      "TaskDetailsData": {
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/TaskDetailsAttributes"
+          },
+          "id": {
+            "description": "Unique identifier of the task",
+            "format": "uuid",
+            "type": "string"
+          },
+          "relationships": {
+            "$ref": "#/components/schemas/TaskRelationships"
+          },
+          "type": {
+            "description": "Resource type (always \"tasks\")",
+            "example": "tasks",
+            "type": "string"
+          }
+        },
+        "required": ["id", "type", "attributes", "relationships"],
+        "type": "object"
+      },
+      "TaskPriority": {
+        "description": "Task priority: 0 – Low; 1 – Middle; 2 – Hi; 3 – Urgently; 4 – Later",
+        "enum": [0, 1, 2, 3, 4],
+        "type": "number"
+      },
+      "TaskRelationships": {
+        "properties": {
+          "board": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaskBoardRelationship"
+              }
+            ],
+            "description": "The board the task belongs to; its title is in the top-level `included`"
+          }
+        },
+        "required": ["board"],
+        "type": "object"
+      },
+      "TaskStatus": {
+        "description": "Task status: 0 – New; 1 – InProgress; 2 – Completed; 3 – Draft",
+        "enum": [0, 1, 2, 3],
+        "type": "number"
+      },
+      "UnauthorizedException": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "api-key": {
+        "description": "API key required to access endpoints",
+        "in": "header",
+        "name": "api-key",
+        "type": "apiKey"
+      },
+      "basic": {
+        "scheme": "basic",
+        "type": "http"
+      },
+      "bearer": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "API for learning. Create your own analogue of a popular task-management service, such as Trello or Jira.",
+    "title": "Trelly API",
+    "version": "1.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshOutput"
+                }
+              }
+            },
+            "description": "OK: Token pair retrieved successfully"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestException"
+                }
+              }
+            },
+            "description": "Bad Request: Invalid request format or required parameters are missing"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedException"
+                }
+              }
+            },
+            "description": "Unauthorized: Code is invalid, expired, missing, or redirectUri does not match"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Log in using the code received after OAuth authorization redirect",
+        "tags": ["Authentication"]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogoutRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content: Refresh token deactivated; access token remains valid."
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Deactivate refresh token",
+        "tags": ["Authentication"]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "AuthController_getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMeOutput"
+                }
+              }
+            },
+            "description": "OK: Successfully retrieved user information"
+          },
+          "401": {
+            "description": "Unauthorized: access token is missing or invalid"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Get current user by access token",
+        "tags": ["Authentication"]
+      }
+    },
+    "/auth/oauth-redirect": {
+      "get": {
+        "description": "The callback URL to redirect after granting access, <a target=\"_blank\" href=\"https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=trelly&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid\">https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=trelly&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid</a>",
+        "operationId": "AuthController_OauthRedirect",
+        "parameters": [
+          {
+            "description": "The callback URL to redirect after grand access,\n     https://oauth.apihub.it-incubator.io/realms/apihub/protocol/openid-connect/auth?client_id=trelly&response_type=code&redirect_uri=http://localhost:3000/oauth2/callback&scope=openid",
+            "in": "query",
+            "name": "callbackUrl",
+            "required": true,
+            "schema": {
+              "example": "http://localhost:3000/oauth2/callback",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK: Redirect executed successfully"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "OAuth redirect",
+        "tags": ["Authentication"]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshOutput"
+                }
+              }
+            },
+            "description": "OK: Token pair refreshed successfully"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedException"
+                }
+              }
+            },
+            "description": "Unauthorized: Refresh token is invalid, expired, or missing"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Refresh refresh/access token pair",
+        "tags": ["Authentication"]
+      }
+    },
+    "/auth/simple/login": {
+      "post": {
+        "operationId": "SimpleAuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimpleLoginRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleLoginOutput"
+                }
+              }
+            },
+            "description": "OK: Token pair retrieved successfully"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedException"
+                }
+              }
+            },
+            "description": "Unauthorized: Invalid login or password"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Simple login with login/password, returns access and refresh tokens",
+        "tags": ["Simple Authentication"]
+      }
+    },
+    "/auth/simple/logout": {
+      "post": {
+        "operationId": "SimpleAuthController_logout",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimpleLogoutRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content: Refresh token has been revoked"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Simple logout: revoke refresh token",
+        "tags": ["Simple Authentication"]
+      }
+    },
+    "/auth/simple/refresh": {
+      "post": {
+        "operationId": "SimpleAuthController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimpleRefreshRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleLoginOutput"
+                }
+              }
+            },
+            "description": "OK: Token pair refreshed successfully"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedException"
+                }
+              }
+            },
+            "description": "Unauthorized: Refresh token is invalid, expired, or revoked"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Simple refresh: rotate access and refresh tokens",
+        "tags": ["Simple Authentication"]
+      }
+    },
+    "/boards": {
+      "get": {
+        "description": "Query-parameters schema → [`GetPaginatedItemsRequestPayload`](#model-GetPaginatedItemsRequestPayload)\n\nOrdered by creation date, oldest first. No authorization required",
+        "operationId": "BoardsPublicController_getBoards",
+        "parameters": [
+          {
+            "description": "Page number for pagination (starting from 1)",
+            "in": "query",
+            "name": "pageNumber",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Page size for pagination (between 1 and 20)",
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "maximum": 20,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardsOutput"
+                }
+              }
+            },
+            "description": "OK: Paginated list of boards"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — pageNumber must be ≥ 1, pageSize 1–20"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Get list of all boards of all users",
+        "tags": ["Boards Public"]
+      },
+      "post": {
+        "description": "A user can have at most 10 boards. The new board is placed first among your boards",
+        "operationId": "BoardsController_createBoard",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBoardRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardOutput"
+                }
+              }
+            },
+            "description": "Created: Board created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — body is not { data: { type, attributes } }, title is not 1–100 characters, or description is over 1000"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: Maximum board count (10) reached"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Create a board",
+        "tags": ["Boards Owner"]
+      }
+    },
+    "/boards/my": {
+      "get": {
+        "description": "All boards of the current user, ordered by `order` (ascending). Not paginated: a user has at most 10 boards",
+        "operationId": "BoardsController_getMyBoards",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMyBoardsOutput"
+                }
+              }
+            },
+            "description": "OK: List of the current user’s boards"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Get list of my boards",
+        "tags": ["Boards Owner"]
+      }
+    },
+    "/boards/tasks": {
+      "get": {
+        "description": "Query-parameters schema → [`GetPaginatedItemsRequestPayload`](#model-GetPaginatedItemsRequestPayload)\n\nOrdered by creation date, newest first. Items are a short projection (no description, dates or attachments) — use the task details endpoint for the full task. Each task points to its board in `relationships.board`; the boards' titles are in `included`, once per board. No authorization required",
+        "operationId": "TasksPublicController_getAllTasks",
+        "parameters": [
+          {
+            "description": "Page number for pagination (starting from 1)",
+            "in": "query",
+            "name": "pageNumber",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Page size for pagination (between 1 and 20)",
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "maximum": 20,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalTaskListResponse"
+                }
+              }
+            },
+            "description": "OK: Paginated list of tasks"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — pageNumber must be ≥ 1, pageSize 1–20"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Get list of all tasks from all boards of all users",
+        "tags": ["Tasks Public"]
+      }
+    },
+    "/boards/{boardId}": {
+      "delete": {
+        "description": "Deletes the board together with all its tasks and their files",
+        "operationId": "BoardsController_deleteBoard",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content: Board deleted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: A path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Delete one of your boards",
+        "tags": ["Boards Owner"]
+      },
+      "get": {
+        "description": "Any user’s board. No authorization required",
+        "operationId": "BoardsPublicController_getBoardById",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardOutput"
+                }
+              }
+            },
+            "description": "OK: Board found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: A path id is not a UUID"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Get a board by ID",
+        "tags": ["Boards Public"]
+      },
+      "patch": {
+        "description": "Partial update: send only the attributes to change; omitted ones keep their value, null clears description",
+        "operationId": "BoardsController_patchBoard",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchBoardRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardOutput"
+                }
+              }
+            },
+            "description": "OK: Board updated"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — body is not { data: { type, attributes } }, title must be 1–100 characters, description up to 1000 or null, isImportant must be a boolean; or a path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Change some attributes of one of your boards",
+        "tags": ["Boards Owner"]
+      },
+      "put": {
+        "description": "Full replacement: every attribute is required, null clears description. To change only some attributes use PATCH",
+        "operationId": "BoardsController_updateBoard",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplaceBoardRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardOutput"
+                }
+              }
+            },
+            "description": "OK: Board replaced"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — body is not { data: { type, attributes } }, title must be 1–100 characters, description up to 1000 or null, isImportant is required; or a path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Replace one of your boards",
+        "tags": ["Boards Owner"]
+      }
+    },
+    "/boards/{boardId}/images/main": {
+      "post": {
+        "description": "Replaces the current cover. The response contains only the original; 156x156 and 48x48 previews are generated in the background about a minute later and appear in the board’s `images.main`",
+        "operationId": "BoardsController_upload",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  }
+                },
+                "required": ["file"],
+                "type": "object"
+              }
+            }
+          },
+          "description": "Image file:<br/>\n        • Field name — <code>file</code><br/>\n        • Orientation — landscape (width greater than height)<br/>\n        • Minimum height — <code>500 px</code><br/>\n        • Any format the server can decode (JPEG, PNG, WebP, GIF…); no size limit is enforced",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoardImagesOutputDTO"
+                }
+              }
+            },
+            "description": "Created: Cover uploaded"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: No file sent, the file is not a supported image, its dimensions cannot be read, the image is not landscape, it is lower than 500 px, or a path id is not a UUID (JSON:API error). A form field other than `file` returns Nest’s plain `{ statusCode, message, error }` body instead"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found"
+          },
+          "500": {
+            "description": "Internal Server Error: The file storage failed"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Upload main cover image for your board",
+        "tags": ["Boards Owner"]
+      }
+    },
+    "/boards/{boardId}/reorder": {
+      "put": {
+        "description": "Moves the board right after `putAfterItemId`, or to the first position when it is null. `putAfterItemId` is required and must be another of your boards",
+        "operationId": "BoardsController_reorder",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderBoardsRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content: Board order changed"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: putAfterItemId is missing or is not a UUID or null; or a path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found, or putAfterItemId is not one of your boards"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Change board order",
+        "tags": ["Boards Owner"]
+      }
+    },
+    "/boards/{boardId}/tasks": {
+      "get": {
+        "description": "Query-parameters schema → [`GetPaginatedItemsRequestPayload`](#model-GetPaginatedItemsRequestPayload)\n\nOrdered by `order` (ascending). Items carry no `description` — it is in the task details. The board is referenced in `relationships.board` and its title is in `included`. An unknown board ID returns an empty list, not 404. No authorization required",
+        "operationId": "TasksPublicController_getBoardTasks",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Page number for pagination (starting from 1)",
+            "in": "query",
+            "name": "pageNumber",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Page size for pagination (between 1 and 20)",
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "maximum": 20,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoardTaskListResponse"
+                }
+              }
+            },
+            "description": "OK: Paginated list of the board’s tasks"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — pageNumber must be ≥ 1, pageSize 1–20, or a path id is not a UUID"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Get list of tasks of a board",
+        "tags": ["Tasks Public"]
+      },
+      "post": {
+        "description": "A board holds at most 20 tasks. The new task is placed first, with status 0 (New) and priority 1 (Middle)",
+        "operationId": "TasksController_createTask",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTaskOutput"
+                }
+              }
+            },
+            "description": "Created: Task created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — body is not { data: { type, attributes } } or title is not 1–100 characters; or a path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The board belongs to another user, or it already has 20 tasks"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Add a task to your board",
+        "tags": ["Tasks Owner"]
+      }
+    },
+    "/boards/{boardId}/tasks/{taskId}": {
+      "delete": {
+        "description": "Deletes the task and its files",
+        "operationId": "TasksController_deleteTask",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the task. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "taskId",
+            "required": true,
+            "schema": {
+              "example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content: Task deleted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: A path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found, or no task with this ID in the board"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Delete a task from your board",
+        "tags": ["Tasks Owner"]
+      },
+      "get": {
+        "description": "Full task with attachments and their image variants. The board is referenced in `relationships.board`; its title is in `included`. No authorization required",
+        "operationId": "TasksPublicController_getTaskDetails",
+        "parameters": [
+          {
+            "description": "ID of the board. Not checked — the task is found by taskId alone, whatever board it belongs to",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the task. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "taskId",
+            "required": true,
+            "schema": {
+              "example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTaskOutput"
+                }
+              }
+            },
+            "description": "OK: Task details"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: A path id is not a UUID"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Task not found"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Get task details by ID",
+        "tags": ["Tasks Public"]
+      },
+      "patch": {
+        "description": "Partial update: send only the attributes to change, e.g. { status: 2 }; omitted ones keep their value, null clears description, startDate or deadline",
+        "operationId": "TasksController_patchTask",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the task. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "taskId",
+            "required": true,
+            "schema": {
+              "example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchTaskRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTaskOutput"
+                }
+              }
+            },
+            "description": "OK: Task updated"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — body is not { data: { type, attributes } }, title is not 1–100 characters, description over 1000, status/priority not a valid enum value, a date not ISO 8601; or a path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The task’s board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: No task with this ID in this board"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Change some attributes of a task on your board",
+        "tags": ["Tasks Owner"]
+      },
+      "put": {
+        "description": "Full replacement: every attribute is required; null clears description, startDate or deadline. To change only some attributes (e.g. just the status) use PATCH",
+        "operationId": "TasksController_updateTask",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the task. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "taskId",
+            "required": true,
+            "schema": {
+              "example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplaceTaskRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTaskOutput"
+                }
+              }
+            },
+            "description": "OK: Task replaced"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: Validation failed — body is not { data: { type, attributes } }, an attribute is missing, title is not 1–100 characters, description over 1000, status/priority not a valid enum value, a date not ISO 8601; or a path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The task’s board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: No task with this ID in this board"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Replace a task on your board",
+        "tags": ["Tasks Owner"]
+      }
+    },
+    "/boards/{boardId}/tasks/{taskId}/attachments": {
+      "post": {
+        "description": "A task holds at most 5 attachments in total. Images get 156x156 and 48x48 previews in the background about a minute later (visible in task details). The response is the updated task, as GET /boards/{boardId}/tasks/{taskId} returns it",
+        "operationId": "TasksController_uploadAttachment",
+        "parameters": [
+          {
+            "description": "ID of the task. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "taskId",
+            "required": true,
+            "schema": {
+              "example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the board. Not checked — the task is found by taskId alone",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "files": {
+                    "items": {
+                      "format": "binary",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": ["files"],
+                "type": "object"
+              }
+            }
+          },
+          "description": "Files:<br/>\n        • Field name — <code>files</code> (repeat the field for several files)<br/>\n        • Allowed MIME types — <code>image/jpeg</code>, <code>image/png</code>, <code>image/webp</code>, <code>image/gif</code>, <code>image/svg+xml</code>, <code>text/plain</code>, <code>audio/mpeg</code>, <code>audio/webm;codecs=opus</code>, <code>application/pdf</code><br/>\n        • Maximum size — <code>100 KB</code> per file<br/>\n        • At most 5 attachments per task, counting existing ones",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTaskOutput"
+                }
+              }
+            },
+            "description": "Created: Files uploaded; the task with all its attachments"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: No files sent, a file is larger than 100 KB, or a file has an unsupported MIME type, or a path id is not a UUID (JSON:API error). A form field other than `files` returns Nest’s plain `{ statusCode, message, error }` body instead"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The task’s board belongs to another user, or the task would exceed 5 attachments"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Task not found"
+          },
+          "500": {
+            "description": "Internal Server Error: The file storage failed"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Upload one or more files to your task",
+        "tags": ["Tasks Owner"]
+      }
+    },
+    "/boards/{boardId}/tasks/{taskId}/attachments/{attachmentId}": {
+      "delete": {
+        "description": "Deletes the stored file and its previews; the attachment disappears from the task and no longer counts toward the 5-files limit",
+        "operationId": "TasksController_deleteAttachment",
+        "parameters": [
+          {
+            "description": "ID of the task. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "taskId",
+            "required": true,
+            "schema": {
+              "example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the attachment. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "attachmentId",
+            "required": true,
+            "schema": {
+              "example": "7a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the board. Not checked — the task is found by taskId alone",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content: Attachment deleted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: A path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The task’s board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Task not found, or the attachment does not belong to the task"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Delete a file from your task",
+        "tags": ["Tasks Owner"]
+      }
+    },
+    "/boards/{boardId}/tasks/{taskId}/move": {
+      "put": {
+        "description": "Both boards must be yours. The task is inserted right after `putAfterItemId` in the target board, or first when it is null. `putAfterItemId` is required",
+        "operationId": "TasksController_moveTaskToBoard",
+        "parameters": [
+          {
+            "description": "ID of the board the task currently belongs to. Must be a UUID",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the task. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "taskId",
+            "required": true,
+            "schema": {
+              "example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveTaskToBoardRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content: Task moved"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: targetBoardId missing or not a UUID, putAfterItemId missing or not a UUID or null, or putAfterItemId equals the task being moved; or a path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The source or target board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Source or target board not found, the task does not exist in the source board, or putAfterItemId not found in the target board"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Move a task to another of your boards",
+        "tags": ["Tasks Owner"]
+      }
+    },
+    "/boards/{boardId}/tasks/{taskId}/reorder": {
+      "put": {
+        "description": "Moves the task right after `putAfterItemId` (a task of the same board), or to the first position when it is null. `putAfterItemId` is required",
+        "operationId": "TasksController_reorderTask",
+        "parameters": [
+          {
+            "description": "ID of the board. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "boardId",
+            "required": true,
+            "schema": {
+              "example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the task. Must be a UUID; any other value returns 400",
+            "in": "path",
+            "name": "taskId",
+            "required": true,
+            "schema": {
+              "example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderBoardsRequestPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content: Task order changed"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Bad Request: putAfterItemId is missing, is not a UUID or null, or equals the task being moved; or a path id is not a UUID"
+          },
+          "401": {
+            "description": "Unauthorized: Missing or invalid access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Forbidden: The board belongs to another user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonApiErrorDocument"
+                }
+              }
+            },
+            "description": "Not Found: Board not found, task not found in the board, or putAfterItemId not found in the board"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "api-key": []
+          }
+        ],
+        "summary": "Change task order within your board",
+        "tags": ["Tasks Owner"]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://trelly.it-incubator.app/api/1.0"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Boards Public"
+    },
+    {
+      "name": "Tasks Public"
+    },
+    {
+      "name": "Simple Authentication"
+    },
+    {
+      "name": "Authentication"
+    },
+    {
+      "name": "Boards Owner"
+    },
+    {
+      "name": "Tasks Owner"
+    }
+  ]
+}

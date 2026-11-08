@@ -1,41 +1,62 @@
-import { baseApi } from "@/app/api/baseApi.ts"
-import { LOCALSTORAGE_KEYS } from "@/common/constants"
+import type { BaseQueryApi, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
 
-import type { LoginArgs, OAuthResponse } from "./authApi.types.ts"
+import { baseApi } from "@/app/api/baseApi.ts"
+import { isTokens } from "@/common/utils"
+
+import { type AuthMethod, authEndpoints, tokenStorage } from "../lib/tokens.ts"
+import type { MeResponse, OAuthLoginArgs, SimpleLoginArgs, TokensResponse } from "./authApi.types.ts"
+
+type BaseQuery = (args: string | FetchArgs) => PromiseLike<{ data?: unknown; error?: FetchBaseQueryError }> | object
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    me: build.query<{ userId: string; login: string }, void>({
+    me: build.query<MeResponse, void>({
       query: () => "auth/me",
-      providesTags: ["Auth"],
+      providesTags: ["Me"],
     }),
-    login: build.mutation<OAuthResponse, LoginArgs>({
-      async onQueryStarted(_args, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          if (!data) return
-          localStorage.setItem(LOCALSTORAGE_KEYS.refreshToken, data.refreshToken)
-          localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.accessToken)
-        } catch (err) {
-          console.log(err)
-        }
-      },
-      query: (body) => ({ url: "auth/login", method: "post", body }),
-      invalidatesTags: ["Auth"],
+    // OAuth flow: code from API Hub → token pair
+    login: build.mutation<TokensResponse, OAuthLoginArgs>({
+      queryFn: (body, api, _extraOptions, baseQuery) =>
+        loginWith("oauth", { url: "auth/login", method: "post", body }, api, baseQuery),
+    }),
+    // Login/password flow
+    simpleLogin: build.mutation<TokensResponse, SimpleLoginArgs>({
+      queryFn: (body, api, _extraOptions, baseQuery) =>
+        loginWith("simple", { url: "auth/simple/login", method: "post", body }, api, baseQuery),
     }),
     logout: build.mutation<void, void>({
-      async onQueryStarted(_args, { queryFulfilled, dispatch }) {
-        await queryFulfilled
-        localStorage.removeItem(LOCALSTORAGE_KEYS.accessToken)
-        localStorage.removeItem(LOCALSTORAGE_KEYS.refreshToken)
-        dispatch(baseApi.util.resetApiState())
+      queryFn: async (_args, _api, _extraOptions, baseQuery) => {
+        const refreshToken = tokenStorage.getRefreshToken()
+        const method = tokenStorage.getAuthMethod()
+        // Even if the server call fails, the user must end up logged out locally
+        if (refreshToken) {
+          await baseQuery({ url: authEndpoints.logout(method), method: "post", body: { refreshToken } })
+        }
+        return { data: undefined }
       },
-      query: () => {
-        const refreshToken = localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken)
-        return { url: "auth/logout", method: "post", body: { refreshToken } }
+      onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+        await queryFulfilled
+        tokenStorage.clear()
+        dispatch(baseApi.util.resetApiState())
       },
     }),
   }),
 })
 
-export const { useLoginMutation, useLogoutMutation, useMeQuery } = authApi
+/**
+ * Exchanges credentials for tokens, saves them and loads the profile
+ * before the mutation resolves — so the UI can redirect right after `unwrap()`.
+ */
+const loginWith = async (method: AuthMethod, args: FetchArgs, api: BaseQueryApi, baseQuery: BaseQuery) => {
+  const result = (await baseQuery(args)) as { data?: unknown; error?: FetchBaseQueryError }
+  if (result.error) return { error: result.error }
+  if (!isTokens(result.data)) {
+    return { error: { status: "CUSTOM_ERROR", error: "Unexpected login response" } as FetchBaseQueryError }
+  }
+
+  tokenStorage.save(result.data, method)
+  await api.dispatch(authApi.endpoints.me.initiate(undefined, { forceRefetch: true }))
+  return { data: result.data }
+}
+
+export const { useMeQuery, useLoginMutation, useSimpleLoginMutation, useLogoutMutation } = authApi

@@ -8,9 +8,16 @@
     "build": "tsc -b && vite build",
     "test": "vitest",
     "preview": "vite preview",
-    "generate-api": "npx @rtk-query/codegen-openapi openapi-config.js"
+    "generate-api": "npx @rtk-query/codegen-openapi openapi-config.js",
+    "test:e2e": "playwright test --project=app",
+    "test:e2e:ui": "playwright test --project=app --ui",
+    "test:e2e:live": "E2E_LIVE=1 playwright test --project=live"
   },
   "dependencies": {
+    "@dnd-kit/core": "6.3.1",
+    "@dnd-kit/modifiers": "9.0.0",
+    "@dnd-kit/sortable": "10.0.0",
+    "@dnd-kit/utilities": "3.2.2",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
     "@hookform/resolvers": "4.1.1",
@@ -18,7 +25,6 @@
     "@mui/material": "6.3.1",
     "@reduxjs/toolkit": "2.8.2",
     "async-mutex": "0.5.0",
-    "axios": "1.7.9",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hook-form": "7.54.2",
@@ -27,6 +33,7 @@
     "zod": "3.24.2"
   },
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "@rtk-query/codegen-openapi": "2.0.0",
     "@types/node": "22.10.6",
     "@types/react": "19.0.7",

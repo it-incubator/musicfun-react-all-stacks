@@ -1,12 +1,17 @@
-import { z } from "zod"
+import type { ImageVariant, JsonApiMeta, JsonApiPayload, PaginationArgs } from "@/common/types"
 
-import type { Meta } from "@/common/types"
+export type BoardImages = {
+  main: ImageVariant[]
+}
 
-export type FilterValues = "all" | "active" | "completed"
-
-export type BoardsResponse = {
-  data: Board[]
-  meta: Meta
+export type BoardAttributes = {
+  title: string
+  description: string | null
+  addedAt: string
+  updatedAt: string
+  order: number
+  isImportant: boolean
+  images: BoardImages
 }
 
 export type Board = {
@@ -15,50 +20,47 @@ export type Board = {
   attributes: BoardAttributes
 }
 
-export type DomainBoard = { filter: FilterValues } & Board
-
-export type DomainBoardResponse = {
-  data: DomainBoard[]
-  meta: Meta
+// Response
+export type GetMyBoardsResponse = {
+  data: Board[]
 }
 
-export type BoardAttributes = {
-  title: string
-  description: string
-  addedAt: string
-  images: Images
-  isImportant: boolean
-  order: number
-  updatedAt: string
+export type GetBoardsResponse = {
+  data: Board[]
+  meta: JsonApiMeta
 }
 
-// TODO: проверить реально ли такой тип возвращает бекенд
-export type Images = {
-  main: Cover[]
-}
-
-export type Cover = {
-  type: "original" | "medium" | "thumbnail"
-  width: number
-  height: number
-  fileSize: number
-  url: string
+export type BoardResponse = {
+  data: Board
 }
 
 // Arguments
-export type UpdateBoardArgs = {
-  id: string
+export type GetBoardsArgs = PaginationArgs
+
+export type CreateBoardAttributes = {
   title: string
-  description: string
+  description?: string | null
+}
+
+export type ReplaceBoardAttributes = {
+  title: string
+  description: string | null
   isImportant: boolean
 }
 
-// 👴 old with zod
-export const TodolistSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  addedDate: z.string(),
-  order: z.number(),
-})
+export type PatchBoardAttributes = Partial<ReplaceBoardAttributes>
 
-export type Todolist = z.infer<typeof TodolistSchema>
+export type ReplaceBoardArgs = { boardId: string } & ReplaceBoardAttributes
+export type PatchBoardArgs = { boardId: string } & PatchBoardAttributes
+
+export type ReorderBoardArgs = {
+  boardId: string
+  putAfterItemId: string | null
+}
+
+export type UploadBoardCoverArgs = {
+  boardId: string
+  file: File
+}
+
+export type BoardPayload<T> = JsonApiPayload<"boards", T>

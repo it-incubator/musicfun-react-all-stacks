@@ -11,7 +11,7 @@ type Props = {
 
 export const ProtectedRoute = ({ children, isAllowed, redirectPath = Path.Main }: Props) => {
   if (!isAllowed) {
-    return <Navigate to={redirectPath} />
+    return <Navigate to={redirectPath} replace />
   }
   return children || <Outlet />
 }

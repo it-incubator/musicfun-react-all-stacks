@@ -1,39 +1,15 @@
-import { BaseQueryApi, FetchBaseQueryError, FetchBaseQueryMeta, QueryReturnValue } from "@reduxjs/toolkit/query/react"
+import type { BaseQueryApi, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
 
-import { setAppErrorAC } from "@/app/model/app-slice.ts"
+import { showNotificationAC } from "@/app/model/app-slice.ts"
 
-import { isErrorWithMessage } from "./isErrorWithMessage"
+import { getErrorMessage } from "./getErrorMessage"
 
-export const handleError = (
-  api: BaseQueryApi,
-  result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>,
-) => {
-  let error = "Some error occurred"
+export const handleError = (api: BaseQueryApi, error: FetchBaseQueryError | undefined) => {
+  if (!error) return
+  // 401 is handled by the refresh logic; an anonymous user is not an error
+  if (error.status === 401) return
+  // a missing item is rendered by the page itself ("Board not found"), no toast needed
+  if (api.type === "query" && error.status === 404) return
 
-  if (result.error) {
-    switch (result.error.status) {
-      case "FETCH_ERROR":
-      case "PARSING_ERROR":
-      case "CUSTOM_ERROR":
-        error = result.error.error
-        break
-      case 401:
-        return // Не показываем на фронте 401 ошибку
-      case 403:
-        error = "403 Forbidden Error. Check API-KEY"
-        break
-      case 400:
-      case 500:
-        if (isErrorWithMessage(result.error.data)) {
-          error = result.error.data.message
-        } else {
-          error = JSON.stringify(result.error.data)
-        }
-        break
-      default:
-        error = JSON.stringify(result.error)
-        break
-    }
-    api.dispatch(setAppErrorAC({ error }))
-  }
+  api.dispatch(showNotificationAC({ message: getErrorMessage(error), severity: "error" }))
 }

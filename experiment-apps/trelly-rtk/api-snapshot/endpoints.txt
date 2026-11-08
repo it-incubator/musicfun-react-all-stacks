@@ -1,0 +1,268 @@
+POST   /auth/login  [AuthController_login]
+    body application/json: {"$ref": "#/components/schemas/LoginRequestPayload"}
+    200: {"application/json": {"$ref": "#/components/schemas/RefreshOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/BadRequestException"}}
+    401: {"application/json": {"$ref": "#/components/schemas/UnauthorizedException"}}
+    security: [{"api-key": []}]
+POST   /auth/logout  [AuthController_logout]
+    body application/json: {"$ref": "#/components/schemas/LogoutRequestPayload"}
+    204: {}
+    security: [{"api-key": []}]
+GET    /auth/me  [AuthController_getMe]
+    200: {"application/json": {"$ref": "#/components/schemas/GetMeOutput"}}
+    401: {}
+    security: [{"basic": []}, {"bearer": []}, {"api-key": []}]
+GET    /auth/oauth-redirect  [AuthController_OauthRedirect]
+    param query:callbackUrl required=True schema={"example": "http://localhost:3000/oauth2/callback", "type": "string"}
+    200: {}
+    security: [{"api-key": []}]
+POST   /auth/refresh  [AuthController_refresh]
+    body application/json: {"$ref": "#/components/schemas/RefreshRequestPayload"}
+    200: {"application/json": {"$ref": "#/components/schemas/RefreshOutput"}}
+    401: {"application/json": {"$ref": "#/components/schemas/UnauthorizedException"}}
+    security: [{"api-key": []}]
+POST   /auth/simple/login  [SimpleAuthController_login]
+    body application/json: {"$ref": "#/components/schemas/SimpleLoginRequestPayload"}
+    200: {"application/json": {"$ref": "#/components/schemas/SimpleLoginOutput"}}
+    401: {"application/json": {"$ref": "#/components/schemas/UnauthorizedException"}}
+    security: [{"api-key": []}]
+POST   /auth/simple/logout  [SimpleAuthController_logout]
+    body application/json: {"$ref": "#/components/schemas/SimpleLogoutRequestPayload"}
+    204: {}
+    security: [{"api-key": []}]
+POST   /auth/simple/refresh  [SimpleAuthController_refresh]
+    body application/json: {"$ref": "#/components/schemas/SimpleRefreshRequestPayload"}
+    200: {"application/json": {"$ref": "#/components/schemas/SimpleLoginOutput"}}
+    401: {"application/json": {"$ref": "#/components/schemas/UnauthorizedException"}}
+    security: [{"api-key": []}]
+GET    /boards  [BoardsPublicController_getBoards]
+    param query:pageNumber required=False schema={"default": 1, "minimum": 1, "type": "number"}
+    param query:pageSize required=False schema={"default": 10, "maximum": 20, "minimum": 1, "type": "number"}
+    200: {"application/json": {"$ref": "#/components/schemas/GetBoardsOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"api-key": []}]
+POST   /boards  [BoardsController_createBoard]
+    body application/json: {"$ref": "#/components/schemas/CreateBoardRequestPayload"}
+    201: {"application/json": {"$ref": "#/components/schemas/GetBoardOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+GET    /boards/my  [BoardsController_getMyBoards]
+    200: {"application/json": {"$ref": "#/components/schemas/GetMyBoardsOutput"}}
+    401: {}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+GET    /boards/tasks  [TasksPublicController_getAllTasks]
+    param query:pageNumber required=False schema={"default": 1, "minimum": 1, "type": "number"}
+    param query:pageSize required=False schema={"default": 10, "maximum": 20, "minimum": 1, "type": "number"}
+    200: {"application/json": {"$ref": "#/components/schemas/GlobalTaskListResponse"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"api-key": []}]
+DELETE /boards/{boardId}  [BoardsController_deleteBoard]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    204: {}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+GET    /boards/{boardId}  [BoardsPublicController_getBoardById]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    200: {"application/json": {"$ref": "#/components/schemas/GetBoardOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"api-key": []}]
+PATCH  /boards/{boardId}  [BoardsController_patchBoard]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    body application/json: {"$ref": "#/components/schemas/PatchBoardRequestPayload"}
+    200: {"application/json": {"$ref": "#/components/schemas/GetBoardOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+PUT    /boards/{boardId}  [BoardsController_updateBoard]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    body application/json: {"$ref": "#/components/schemas/ReplaceBoardRequestPayload"}
+    200: {"application/json": {"$ref": "#/components/schemas/GetBoardOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+POST   /boards/{boardId}/images/main  [BoardsController_upload]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    body multipart/form-data: {"properties": {"file": {"format": "binary", "type": "string"}}, "required": ["file"], "type": "object"}
+    201: {"application/json": {"$ref": "#/components/schemas/BoardImagesOutputDTO"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    500: {}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+PUT    /boards/{boardId}/reorder  [BoardsController_reorder]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    body application/json: {"$ref": "#/components/schemas/ReorderBoardsRequestPayload"}
+    204: {}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+GET    /boards/{boardId}/tasks  [TasksPublicController_getBoardTasks]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    param query:pageNumber required=False schema={"default": 1, "minimum": 1, "type": "number"}
+    param query:pageSize required=False schema={"default": 10, "maximum": 20, "minimum": 1, "type": "number"}
+    200: {"application/json": {"$ref": "#/components/schemas/BoardTaskListResponse"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"api-key": []}]
+POST   /boards/{boardId}/tasks  [TasksController_createTask]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    body application/json: {"$ref": "#/components/schemas/CreateTaskRequestPayload"}
+    201: {"application/json": {"$ref": "#/components/schemas/GetTaskOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+DELETE /boards/{boardId}/tasks/{taskId}  [TasksController_deleteTask]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    param path:taskId required=True schema={"example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c", "format": "uuid", "type": "string"}
+    204: {}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+GET    /boards/{boardId}/tasks/{taskId}  [TasksPublicController_getTaskDetails]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    param path:taskId required=True schema={"example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c", "format": "uuid", "type": "string"}
+    200: {"application/json": {"$ref": "#/components/schemas/GetTaskOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"api-key": []}]
+PATCH  /boards/{boardId}/tasks/{taskId}  [TasksController_patchTask]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    param path:taskId required=True schema={"example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c", "format": "uuid", "type": "string"}
+    body application/json: {"$ref": "#/components/schemas/PatchTaskRequestPayload"}
+    200: {"application/json": {"$ref": "#/components/schemas/GetTaskOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+PUT    /boards/{boardId}/tasks/{taskId}  [TasksController_updateTask]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    param path:taskId required=True schema={"example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c", "format": "uuid", "type": "string"}
+    body application/json: {"$ref": "#/components/schemas/ReplaceTaskRequestPayload"}
+    200: {"application/json": {"$ref": "#/components/schemas/GetTaskOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+POST   /boards/{boardId}/tasks/{taskId}/attachments  [TasksController_uploadAttachment]
+    param path:taskId required=True schema={"example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c", "format": "uuid", "type": "string"}
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    body multipart/form-data: {"properties": {"files": {"items": {"format": "binary", "type": "string"}, "type": "array"}}, "required": ["files"], "type": "object"}
+    201: {"application/json": {"$ref": "#/components/schemas/GetTaskOutput"}}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    500: {}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+DELETE /boards/{boardId}/tasks/{taskId}/attachments/{attachmentId}  [TasksController_deleteAttachment]
+    param path:taskId required=True schema={"example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c", "format": "uuid", "type": "string"}
+    param path:attachmentId required=True schema={"example": "7a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d", "format": "uuid", "type": "string"}
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    204: {}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+PUT    /boards/{boardId}/tasks/{taskId}/move  [TasksController_moveTaskToBoard]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    param path:taskId required=True schema={"example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c", "format": "uuid", "type": "string"}
+    body application/json: {"$ref": "#/components/schemas/MoveTaskToBoardRequestPayload"}
+    204: {}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+PUT    /boards/{boardId}/tasks/{taskId}/reorder  [TasksController_reorderTask]
+    param path:boardId required=True schema={"example": "b25f3f43-e7e1-4cdd-9b77-01b3b8fa9888", "format": "uuid", "type": "string"}
+    param path:taskId required=True schema={"example": "0f6a3c1e-5b2d-4a8e-9c7f-1d2e3f4a5b6c", "format": "uuid", "type": "string"}
+    body application/json: {"$ref": "#/components/schemas/ReorderBoardsRequestPayload"}
+    204: {}
+    400: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    401: {}
+    403: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    404: {"application/json": {"$ref": "#/components/schemas/JsonApiErrorDocument"}}
+    security: [{"basic": []}, {"bearer": []}, {"bearer": []}, {"api-key": []}]
+
+== SCHEMAS ==
+AttachmentDto: {"properties": {"addedAt": {"format": "date-time", "type": "string"}, "contentType": {"type": "string"}, "fileSize": {"type": "number"}, "id": {"format": "uuid", "type": "string"}, "images": {"items": {"$ref": "#/components/schemas/ImageVariant"}, "type": "array"}, "isImage": {"type": "boolean"}, "originalName": {"type": "string"}, "url": {"type": "string"}}, "required": ["id", "url", "contentType", "originalName", "fileSize", "isImage", "addedAt", "images"], "type": "object"}
+BadRequestException: {"properties": {}, "type": "object"}
+BinaryFile: {"format": "binary", "type": "string"}
+BoardAttributes: {"properties": {"addedAt": {"format": "date-time", "type": "string"}, "images": {"allOf": [{"$ref": "#/components/schemas/BoardImagesOutputDTO"}]}, "isImportant": {"type": "boolean"}, "order": {"type": "number"}, "title": {"type": "string"}, "updatedAt": {"format": "date-time", "type": "string"}}, "required": ["title", "description", "addedAt", "updatedAt", "order", "isImportant", "images"], "type": "object"}
+BoardImagesOutputDTO: {"properties": {"main": {"items": {"$ref": "#/components/schemas/ImageVariant"}, "type": "array"}}, "required": ["main"], "type": "object"}
+BoardResourceIdentifier: {"properties": {"id": {"format": "uuid", "type": "string"}, "type": {"type": "string"}}, "required": ["id", "type"], "type": "object"}
+BoardSingleData: {"properties": {"attributes": {"$ref": "#/components/schemas/BoardAttributes"}, "id": {"format": "uuid", "type": "string"}, "type": {"type": "string"}}, "required": ["id", "type", "attributes"], "type": "object"}
+BoardTaskListItemAttributes: {"properties": {"addedAt": {"format": "date-time", "type": "string"}, "attachments": {"items": {"$ref": "#/components/schemas/AttachmentDto"}, "type": "array"}, "deadline": {"format": "date-time", "nullable": true, "type": "string"}, "order": {"type": "number"}, "priority": {"allOf": [{"$ref": "#/components/schemas/TaskPriority"}]}, "startDate": {"format": "date-time", "nullable": true, "type": "string"}, "status": {"allOf": [{"$ref": "#/components/schemas/TaskStatus"}]}, "title": {"type": "string"}, "updatedAt": {"format": "date-time", "type": "string"}}, "required": ["title", "addedAt", "order", "status", "priority", "startDate", "deadline", "updatedAt", "attachments"], "type": "object"}
+BoardTaskListItemJsonApiData: {"properties": {"attributes": {"$ref": "#/components/schemas/BoardTaskListItemAttributes"}, "id": {"format": "uuid", "type": "string"}, "relationships": {"$ref": "#/components/schemas/TaskRelationships"}, "type": {"type": "string"}}, "required": ["id", "type", "attributes", "relationships"], "type": "object"}
+BoardTaskListResponse: {"properties": {"data": {"items": {"$ref": "#/components/schemas/BoardTaskListItemJsonApiData"}, "type": "array"}, "included": {"items": {"$ref": "#/components/schemas/IncludedBoard"}, "type": "array"}, "meta": {"$ref": "#/components/schemas/JsonApiMeta"}}, "required": ["data", "included", "meta"], "type": "object"}
+CreateBoardAttributes: {"properties": {"title": {"maxLength": 100, "minLength": 1, "type": "string"}}, "required": ["title"], "type": "object"}
+CreateBoardData: {"properties": {"attributes": {"$ref": "#/components/schemas/CreateBoardAttributes"}, "type": {"type": "string"}}, "required": ["type", "attributes"], "type": "object"}
+CreateBoardRequestPayload: {"properties": {"data": {"$ref": "#/components/schemas/CreateBoardData"}}, "required": ["data"], "type": "object"}
+CreateTaskAttributes: {"properties": {"title": {"maxLength": 100, "minLength": 1, "type": "string"}}, "required": ["title"], "type": "object"}
+CreateTaskData: {"properties": {"attributes": {"$ref": "#/components/schemas/CreateTaskAttributes"}, "type": {"type": "string"}}, "required": ["type", "attributes"], "type": "object"}
+CreateTaskRequestPayload: {"properties": {"data": {"$ref": "#/components/schemas/CreateTaskData"}}, "required": ["data"], "type": "object"}
+GetBoardOutput: {"properties": {"data": {"$ref": "#/components/schemas/BoardSingleData"}}, "required": ["data"], "type": "object"}
+GetBoardsOutput: {"properties": {"data": {"items": {"$ref": "#/components/schemas/BoardSingleData"}, "type": "array"}, "meta": {"$ref": "#/components/schemas/JsonApiMeta"}}, "required": ["data", "meta"], "type": "object"}
+GetMeOutput: {"properties": {"login": {"type": "string"}, "userId": {"type": "string"}}, "required": ["userId", "login"], "type": "object"}
+GetMyBoardsOutput: {"properties": {"data": {"items": {"$ref": "#/components/schemas/BoardSingleData"}, "type": "array"}}, "required": ["data"], "type": "object"}
+GetPaginatedItemsRequestPayload: {"properties": {"pageNumber": {"default": 1, "minimum": 1, "type": "number"}, "pageSize": {"default": 10, "maximum": 20, "minimum": 1, "type": "number"}}, "type": "object"}
+GetTaskOutput: {"properties": {"data": {"$ref": "#/components/schemas/TaskDetailsData"}, "included": {"items": {"$ref": "#/components/schemas/IncludedBoard"}, "type": "array"}}, "required": ["data", "included"], "type": "object"}
+GlobalTaskListItemAttributes: {"properties": {"addedAt": {"format": "date-time", "type": "string"}, "attachmentsCount": {"type": "number"}, "priority": {"allOf": [{"$ref": "#/components/schemas/TaskPriority"}]}, "status": {"allOf": [{"$ref": "#/components/schemas/TaskStatus"}]}, "title": {"type": "string"}}, "required": ["title", "status", "priority", "addedAt", "attachmentsCount"], "type": "object"}
+GlobalTaskListItemJsonApiData: {"properties": {"attributes": {"$ref": "#/components/schemas/GlobalTaskListItemAttributes"}, "id": {"format": "uuid", "type": "string"}, "relationships": {"$ref": "#/components/schemas/TaskRelationships"}, "type": {"type": "string"}}, "required": ["id", "type", "attributes", "relationships"], "type": "object"}
+GlobalTaskListResponse: {"properties": {"data": {"items": {"$ref": "#/components/schemas/GlobalTaskListItemJsonApiData"}, "type": "array"}, "included": {"items": {"$ref": "#/components/schemas/IncludedBoard"}, "type": "array"}, "meta": {"$ref": "#/components/schemas/JsonApiMeta"}}, "required": ["data", "included", "meta"], "type": "object"}
+ImageSizeType: {"enum": ["original", "thumbnail", "medium"], "type": "string"}
+ImageVariant: {"properties": {"fileSize": {"type": "number"}, "height": {"type": "number"}, "type": {"allOf": [{"$ref": "#/components/schemas/ImageSizeType"}]}, "url": {"type": "string"}, "width": {"type": "number"}}, "required": ["type", "width", "height", "fileSize", "url"], "type": "object"}
+IncludedBoard: {"properties": {"attributes": {"$ref": "#/components/schemas/IncludedBoardAttributes"}, "id": {"format": "uuid", "type": "string"}, "type": {"type": "string"}}, "required": ["id", "type", "attributes"], "type": "object"}
+IncludedBoardAttributes: {"properties": {"title": {"type": "string"}}, "required": ["title"], "type": "object"}
+JsonApiError: {"properties": {"code": {"type": "object"}, "detail": {"type": "string"}, "meta": {"type": "object"}, "source": {"allOf": [{"$ref": "#/components/schemas/JsonApiErrorSource"}]}, "status": {"type": "string"}, "title": {"type": "string"}}, "required": ["status"], "type": "object"}
+JsonApiErrorDocument: {"properties": {"errors": {"items": {"$ref": "#/components/schemas/JsonApiError"}, "type": "array"}, "meta": {"type": "object"}}, "required": ["errors"], "type": "object"}
+JsonApiErrorSource: {"properties": {"parameter": {"type": "string"}, "pointer": {"type": "string"}}, "type": "object"}
+JsonApiMeta: {"properties": {"page": {"type": "number"}, "pageSize": {"type": "number"}, "pagesCount": {"type": "number"}, "totalCount": {"type": "number"}}, "required": ["page", "pageSize", "totalCount", "pagesCount"], "type": "object"}
+LoginRequestPayload: {"properties": {"accessTokenTTL": {"type": "string"}, "code": {"type": "string"}, "redirectUri": {"type": "string"}, "rememberMe": {"type": "boolean"}}, "required": ["code", "redirectUri", "rememberMe"], "type": "object"}
+LogoutRequestPayload: {"properties": {"refreshToken": {"type": "string"}}, "required": ["refreshToken"], "type": "object"}
+MoveTaskToBoardRequestPayload: {"properties": {"putAfterItemId": {"format": "uuid", "nullable": true, "type": "string"}, "targetBoardId": {"format": "uuid", "type": "string"}}, "required": ["targetBoardId", "putAfterItemId"], "type": "object"}
+PatchBoardAttributes: {"properties": {"isImportant": {"type": "boolean"}, "title": {"maxLength": 100, "minLength": 1, "type": "string"}}, "type": "object"}
+PatchBoardData: {"properties": {"attributes": {"$ref": "#/components/schemas/PatchBoardAttributes"}, "type": {"type": "string"}}, "required": ["type", "attributes"], "type": "object"}
+PatchBoardRequestPayload: {"properties": {"data": {"$ref": "#/components/schemas/PatchBoardData"}}, "required": ["data"], "type": "object"}
+PatchTaskAttributes: {"properties": {"deadline": {"format": "date-time", "nullable": true, "type": "string"}, "priority": {"allOf": [{"$ref": "#/components/schemas/TaskPriority"}]}, "startDate": {"format": "date-time", "nullable": true, "type": "string"}, "status": {"allOf": [{"$ref": "#/components/schemas/TaskStatus"}]}, "title": {"maxLength": 100, "minLength": 1, "type": "string"}}, "type": "object"}
+PatchTaskData: {"properties": {"attributes": {"$ref": "#/components/schemas/PatchTaskAttributes"}, "type": {"type": "string"}}, "required": ["type", "attributes"], "type": "object"}
+PatchTaskRequestPayload: {"properties": {"data": {"$ref": "#/components/schemas/PatchTaskData"}}, "required": ["data"], "type": "object"}
+RefreshOutput: {"properties": {"accessToken": {"type": "string"}, "refreshToken": {"type": "string"}}, "required": ["refreshToken", "accessToken"], "type": "object"}
+RefreshRequestPayload: {"properties": {"refreshToken": {"type": "string"}}, "required": ["refreshToken"], "type": "object"}
+ReorderBoardsRequestPayload: {"properties": {"putAfterItemId": {"format": "uuid", "nullable": true, "type": "string"}}, "required": ["putAfterItemId"], "type": "object"}
+ReplaceBoardAttributes: {"properties": {"isImportant": {"type": "boolean"}, "title": {"maxLength": 100, "minLength": 1, "type": "string"}}, "required": ["title", "description", "isImportant"], "type": "object"}
+ReplaceBoardData: {"properties": {"attributes": {"$ref": "#/components/schemas/ReplaceBoardAttributes"}, "type": {"type": "string"}}, "required": ["type", "attributes"], "type": "object"}
+ReplaceBoardRequestPayload: {"properties": {"data": {"$ref": "#/components/schemas/ReplaceBoardData"}}, "required": ["data"], "type": "object"}
+ReplaceTaskAttributes: {"properties": {"deadline": {"format": "date-time", "nullable": true, "type": "string"}, "priority": {"allOf": [{"$ref": "#/components/schemas/TaskPriority"}]}, "startDate": {"format": "date-time", "nullable": true, "type": "string"}, "status": {"allOf": [{"$ref": "#/components/schemas/TaskStatus"}]}, "title": {"maxLength": 100, "minLength": 1, "type": "string"}}, "required": ["title", "description", "status", "priority", "startDate", "deadline"], "type": "object"}
+ReplaceTaskData: {"properties": {"attributes": {"$ref": "#/components/schemas/ReplaceTaskAttributes"}, "type": {"type": "string"}}, "required": ["type", "attributes"], "type": "object"}
+ReplaceTaskRequestPayload: {"properties": {"data": {"$ref": "#/components/schemas/ReplaceTaskData"}}, "required": ["data"], "type": "object"}
+SimpleLoginOutput: {"properties": {"accessToken": {"type": "string"}, "refreshToken": {"type": "string"}}, "required": ["accessToken", "refreshToken"], "type": "object"}
+SimpleLoginRequestPayload: {"properties": {"login": {"type": "string"}, "password": {"type": "string"}, "rememberMe": {"default": true, "type": "boolean"}}, "required": ["login", "password", "rememberMe"], "type": "object"}
+SimpleLogoutRequestPayload: {"properties": {"refreshToken": {"type": "string"}}, "required": ["refreshToken"], "type": "object"}
+SimpleRefreshRequestPayload: {"properties": {"refreshToken": {"type": "string"}}, "required": ["refreshToken"], "type": "object"}
+TaskBoardRelationship: {"properties": {"data": {"$ref": "#/components/schemas/BoardResourceIdentifier"}}, "required": ["data"], "type": "object"}
+TaskDetailsAttributes: {"properties": {"addedAt": {"format": "date-time", "type": "string"}, "attachments": {"items": {"$ref": "#/components/schemas/AttachmentDto"}, "type": "array"}, "deadline": {"format": "date-time", "nullable": true, "type": "string"}, "order": {"type": "number"}, "priority": {"allOf": [{"$ref": "#/components/schemas/TaskPriority"}]}, "startDate": {"format": "date-time", "nullable": true, "type": "string"}, "status": {"allOf": [{"$ref": "#/components/schemas/TaskStatus"}]}, "title": {"type": "string"}, "updatedAt": {"format": "date-time", "type": "string"}}, "required": ["title", "description", "order", "status", "priority", "startDate", "deadline", "addedAt", "updatedAt", "attachments"], "type": "object"}
+TaskDetailsData: {"properties": {"attributes": {"$ref": "#/components/schemas/TaskDetailsAttributes"}, "id": {"format": "uuid", "type": "string"}, "relationships": {"$ref": "#/components/schemas/TaskRelationships"}, "type": {"type": "string"}}, "required": ["id", "type", "attributes", "relationships"], "type": "object"}
+TaskPriority: {"enum": [0, 1, 2, 3, 4], "type": "number"}
+TaskRelationships: {"properties": {"board": {"allOf": [{"$ref": "#/components/schemas/TaskBoardRelationship"}]}}, "required": ["board"], "type": "object"}
+TaskStatus: {"enum": [0, 1, 2, 3], "type": "number"}
+UnauthorizedException: {"properties": {}, "type": "object"}

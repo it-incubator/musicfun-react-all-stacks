@@ -1,14 +1,13 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-import { LOCALSTORAGE_KEYS } from "@/common/constants"
+import { tokenStorage } from "@/features/auth/lib/tokens.ts"
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
-  headers: {
-    "API-KEY": import.meta.env.VITE_API_KEY,
-  },
   prepareHeaders: (headers) => {
-    const accessToken = localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)
+    headers.set("API-KEY", import.meta.env.VITE_API_KEY)
+
+    const accessToken = tokenStorage.getAccessToken()
     if (accessToken) {
       headers.set("Authorization", `Bearer ${accessToken}`)
     }

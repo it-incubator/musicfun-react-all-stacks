@@ -1,38 +1,42 @@
-import { CircularProgress } from "@mui/material"
+import Box from "@mui/material/Box"
+import CircularProgress from "@mui/material/CircularProgress"
 import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
+import { useMemo } from "react"
 
 import { selectThemeMode } from "@/app/model/app-slice.ts"
-import { ErrorSnackbar, Header } from "@/common/components"
+import { Header, Notifier } from "@/common/components"
 import { useAppSelector } from "@/common/hooks"
-import { Routing } from "@/common/routing"
 import { getTheme } from "@/common/theme"
-import { useMeQuery } from "@/features/auth/api/authApi.ts"
+import { tokenStorage } from "@/features/auth/lib/tokens.ts"
+import { useAuth } from "@/features/auth/lib/useAuth.ts"
 
-import s from "./App.module.css"
+import { Routing } from "./Routing.tsx"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
-  const theme = getTheme(themeMode)
+  const theme = useMemo(() => getTheme(themeMode), [themeMode])
 
-  const { isLoading } = useMeQuery()
-
-  if (isLoading) {
-    return (
-      <div className={s.circularProgressContainer}>
-        <CircularProgress size={150} thickness={3} />
-      </div>
-    )
-  }
+  const { isLoading } = useAuth()
+  // anonymous visitors don't wait for /auth/me
+  const isRestoringSession = isLoading && !!tokenStorage.getAccessToken()
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={s.app}>
-        <CssBaseline />
-        <Header />
-        <Routing />
-        <ErrorSnackbar />
-      </div>
+      <CssBaseline />
+      {isRestoringSession ? (
+        <Box sx={{ display: "grid", placeItems: "center", minHeight: "100vh" }}>
+          <CircularProgress size={56} thickness={3} />
+        </Box>
+      ) : (
+        <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+          <Header />
+          <Box component="main" sx={{ flexGrow: 1 }}>
+            <Routing />
+          </Box>
+          <Notifier />
+        </Box>
+      )}
     </ThemeProvider>
   )
 }

@@ -2,13 +2,17 @@ import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolk
 import { Mutex } from "async-mutex"
 
 import { baseApi } from "@/app/api/baseApi.ts"
-import { LOCALSTORAGE_KEYS } from "@/common/constants"
-import { handleError } from "@/common/utils"
-import { isTokens } from "@/common/utils/isTokens.ts"
+import { handleError, isTokens } from "@/common/utils"
+import { authEndpoints, tokenStorage } from "@/features/auth/lib/tokens.ts"
 
 import { baseQuery } from "./baseQuery.ts"
 
 const mutex = new Mutex()
+
+// 401 from these endpoints means wrong credentials/tokens, not an expired access token
+const NO_REFRESH_URLS = ["auth/login", "auth/refresh", "auth/logout", "auth/simple/"]
+
+const getUrl = (args: string | FetchArgs) => (typeof args === "string" ? args : args.url)
 
 export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
@@ -19,35 +23,33 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
 
   let result = await baseQuery(args, api, extraOptions)
 
-  handleError(api, result) // Стандартная обработка ошибок
+  const canRefresh = !NO_REFRESH_URLS.some((url) => getUrl(args).startsWith(url))
 
   // refresh logic
-  if (result.error && result.error.status === 401) {
+  if (result.error && result.error.status === 401 && canRefresh) {
     // checking whether the mutex is locked
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {
-        const refreshToken = localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken)
+        const refreshToken = tokenStorage.getRefreshToken()
 
-        if (!refreshToken) return result
+        if (refreshToken) {
+          const method = tokenStorage.getAuthMethod()
+          const { data } = await baseQuery(
+            { url: authEndpoints.refresh(method), method: "post", body: { refreshToken } },
+            api,
+            extraOptions,
+          )
 
-        const { data } = await baseQuery(
-          { url: "auth/refresh", method: "post", body: { refreshToken } as { refreshToken: string } },
-          api,
-          extraOptions,
-        )
-
-        if (data && isTokens(data)) {
-          localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.accessToken)
-          localStorage.setItem(LOCALSTORAGE_KEYS.refreshToken, data.refreshToken)
-
-          result = await baseQuery(args, api, extraOptions) // Повтор запроса с новым токеном
-        } else {
-          // @ts-expect-error
-          api.dispatch(baseApi.endpoints.logout.initiate())
+          if (isTokens(data)) {
+            tokenStorage.save(data)
+            result = await baseQuery(args, api, extraOptions) // Повтор запроса с новым токеном
+          } else {
+            // refresh token is expired or revoked: the session is over
+            tokenStorage.clear()
+            api.dispatch(baseApi.util.resetApiState())
+          }
         }
-      } catch (err) {
-        console.error("Token refresh failed:", err)
       } finally {
         // release must be called once the mutex should be released again.
         release()
@@ -58,6 +60,8 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
       result = await baseQuery(args, api, extraOptions)
     }
   }
+
+  handleError(api, result.error) // Стандартная обработка ошибок
 
   return result
 }
